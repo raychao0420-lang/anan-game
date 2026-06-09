@@ -80,3 +80,12 @@
   .numpad-btn.confirm { font-size: 1.8rem; }
   .numpad-btn.delete  { font-size: 1.8rem; }
 }
+
+@media (min-width: 900px) {
+  .numpad-wrap    { max-width: none; width: 100%; gap: 14px; }
+  .numpad-display { font-size: 3.6rem; min-height: 88px; border-radius: 20px; }
+  .numpad-grid    { gap: 12px; }
+  .numpad-btn     { height: 90px; font-size: 2.2rem; border-radius: 16px; }
+  .numpad-btn.confirm { font-size: 1.7rem; }
+  .numpad-btn.delete  { font-size: 1.7rem; }
+}

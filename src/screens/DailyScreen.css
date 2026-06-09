@@ -186,3 +186,26 @@
   .daily-all-done { font-size: 1.3rem; padding: 18px 24px; }
   .daily-bonus-hint { font-size: 1.1rem; }
 }
+
+@media (min-width: 900px) {
+  .daily-screen {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-areas:
+      "header  header"
+      "date    date"
+      "tasks   sidebar"
+      "hint    sidebar";
+    height: 100dvh;
+    overflow: hidden;
+    padding: 28px 48px;
+    gap: 16px 48px;
+  }
+  .daily-header    { grid-area: header; }
+  .daily-date      { grid-area: date; }
+  .daily-all-done  { grid-column: 1 / -1; }
+  .daily-tasks     { grid-area: tasks; overflow-y: auto; }
+  .daily-tip       { grid-area: sidebar; align-self: start; }
+  .daily-bonus-hint { grid-area: hint; align-self: end; }
+}

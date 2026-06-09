@@ -37,6 +37,7 @@ export default function ShopScreen({ onNavigate }) {
         <span className="shop-coins">💰 {coins}</span>
       </div>
 
+      <div className="shop-sidebar">
       {/* Active pet preview with equipped items */}
       <div className="shop-pet-preview">
         <motion.div
@@ -82,6 +83,7 @@ export default function ShopScreen({ onNavigate }) {
           </motion.button>
         ))}
       </div>
+      </div>{/* end shop-sidebar */}
 
       {/* Items grid */}
       <div className="shop-grid">

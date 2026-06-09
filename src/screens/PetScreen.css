@@ -224,3 +224,26 @@
   .pet-unlock-cost, .pet-evolve-cost { font-size: 1.2rem; }
   .pet-max-label { font-size: 1.3rem; padding: 18px; }
 }
+
+@media (min-width: 900px) {
+  .pet-screen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header  header"
+      "tabs    actions"
+      "main    actions";
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .pet-header  { grid-area: header; }
+  .pet-tabs    { grid-area: tabs; padding: 0 32px; margin-bottom: 0; }
+  .pet-main    { grid-area: main; padding: 16px 32px; align-self: center; }
+  .pet-actions { grid-area: actions; padding: 40px 32px; justify-content: center; align-self: center; }
+
+  .pet-big-bubble { width: 240px; height: 240px; }
+  .pet-info-name  { font-size: 2.2rem; }
+  .pet-evolve-preview { font-size: 1.2rem; }
+  .evo-dot { width: 60px; height: 60px; font-size: 1.7rem; }
+}

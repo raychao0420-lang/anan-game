@@ -150,3 +150,31 @@
   .question-text { font-size: 4rem; }
   .game-numpad { max-width: 440px; }
 }
+
+@media (min-width: 900px) {
+  .game-screen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-areas:
+      "header   header"
+      "timer    timer"
+      "pet      numpad"
+      "question numpad";
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    gap: 12px 48px;
+    padding: 28px 48px;
+    align-items: start;
+  }
+  .game-header   { grid-area: header; }
+  .timer-bar-bg  { grid-area: timer; }
+  .game-pet-area { grid-area: pet; align-self: center; justify-self: center; margin: 0; }
+  .question-card { grid-area: question; max-width: none; align-self: start; }
+  .game-numpad   { grid-area: numpad; max-width: none; margin: 0; align-self: center; }
+
+  .game-pet-bubble { width: 160px; height: 160px; }
+  .question-text   { font-size: 4.5rem; }
+  .question-card   { padding: 28px 36px; }
+}

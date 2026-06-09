@@ -128,3 +128,27 @@
   .home-equipped-badge { width: 52px; height: 52px; font-size: 2rem; }
   .home-buttons { max-width: 480px; gap: 16px; }
 }
+
+@media (min-width: 900px) {
+  .home-screen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "title   pet"
+      "coins   pet"
+      "buttons pet";
+    height: 100dvh;
+    padding: 48px 64px;
+    gap: 20px 64px;
+    align-items: start;
+  }
+  .home-title    { grid-area: title; text-align: left; font-size: 3rem; }
+  .home-title-sub { font-size: 2.2rem; }
+  .home-coins    { grid-area: coins; align-self: start; justify-self: start; font-size: 1.4rem; }
+  .home-pet-area { grid-area: pet; align-self: center; justify-self: center; }
+  .home-buttons  { grid-area: buttons; max-width: none; align-self: start; }
+  .home-pet-bubble { width: 280px; height: 280px; }
+  .home-pet-name   { font-size: 1.4rem; }
+  .home-equipped-badge { width: 60px; height: 60px; font-size: 2.3rem; }
+}

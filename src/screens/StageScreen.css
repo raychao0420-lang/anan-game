@@ -112,3 +112,17 @@
   .stage-stars { font-size: 0.9rem; }
   .stage-lock  { font-size: 1.3rem; }
 }
+
+@media (min-width: 900px) {
+  .stage-screen  { min-height: 100dvh; }
+  .stage-chapters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 40px;
+    padding: 16px 40px;
+  }
+  .chapter-title { font-size: 1.5rem; }
+  .stage-grid  { gap: 10px; }
+  .stage-btn   { min-height: 80px; }
+  .stage-num   { font-size: 1.4rem; }
+}

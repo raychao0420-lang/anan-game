@@ -126,3 +126,14 @@
   .achieve-desc  { font-size: 1rem; margin-top: 4px; }
   .achieve-badge { font-size: 1.6rem; }
 }
+
+@media (min-width: 900px) {
+  .achieve-screen { padding: 28px 48px; gap: 20px; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; }
+  .achieve-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    overflow-y: auto;
+    padding-bottom: 20px;
+  }
+}

@@ -325,3 +325,38 @@
   .boss-reward-emoji { font-size: 7rem; }
   .boss-reward-name  { font-size: 1.3rem; }
 }
+
+@media (min-width: 900px) {
+  /* Fight - two columns */
+  .boss-fight {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto 1fr auto;
+    grid-template-areas:
+      "fight-header fight-header"
+      "hp           hp"
+      "timer        timer"
+      "pet          numpad"
+      "question     numpad";
+    height: 100dvh;
+    overflow: hidden;
+    gap: 10px 48px;
+    padding: 24px 48px;
+    align-items: start;
+  }
+  .boss-fight-header { grid-area: fight-header; }
+  .boss-hp-row       { grid-area: hp; }
+  .boss-timer-bar    { grid-area: timer; }
+  .boss-pet-area     { grid-area: pet; align-self: center; justify-self: center; }
+  .boss-question     { grid-area: question; max-width: none; font-size: 4rem; padding: 28px 40px; }
+  .boss-numpad       { grid-area: numpad; align-self: center; }
+
+  .boss-pet-bubble { width: 150px; height: 150px; }
+
+  /* Intro / Win / Lose - centered wide card */
+  .boss-intro-card,
+  .boss-result-card { max-width: 600px; }
+  .boss-emoji-big   { font-size: 9rem; }
+  .boss-egg         { font-size: 8rem; }
+  .boss-reward-emoji { font-size: 8rem; }
+}
