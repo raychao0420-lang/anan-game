@@ -29,6 +29,17 @@
   color: #996600;
 }
 
+.shop-home-hint {
+  font-size: 0.72rem;
+  color: #e07b20;
+  background: #fff3e0;
+  border: 1px solid #ffcc80;
+  border-radius: 10px;
+  padding: 5px 10px;
+  text-align: center;
+  margin-top: 2px;
+}
+
 /* Pet preview */
 .shop-pet-preview {
   display: flex;

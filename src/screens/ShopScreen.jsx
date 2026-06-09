@@ -6,7 +6,7 @@ import { SHOP_ITEMS, SHOP_CATEGORIES } from '../data/shop'
 import './ShopScreen.css'
 
 export default function ShopScreen({ onNavigate }) {
-  const { coins, activePet, pets, ownedItems, equippedItems, buyItem, toggleEquip } = useGameStore()
+  const { coins, activePet, pets, ownedItems, equippedItems, equippedHomeItems, buyItem, toggleEquip, toggleHomeItem } = useGameStore()
   const [category, setCategory] = useState('food')
   const [buyFeedback, setBuyFeedback] = useState(null)
 
@@ -16,6 +16,17 @@ export default function ShopScreen({ onNavigate }) {
 
   const hasAnyRare = SHOP_ITEMS.filter(i => i.category === 'rare').some(i => ownedItems.includes(i.id))
   const visibleCategories = SHOP_CATEGORIES.filter(c => c.id !== 'rare' || hasAnyRare)
+
+  const isEquipped = (item) =>
+    item.category === 'home' ? equippedHomeItems.includes(item.id) : equippedItems.includes(item.id)
+
+  const handleToggleEquip = (item) =>
+    item.category === 'home' ? toggleHomeItem(item.id) : toggleEquip(item.id)
+
+  const equipLabel = (item) => {
+    if (item.category === 'home') return isEquipped(item) ? '✅ 已擺放' : '擺放'
+    return isEquipped(item) ? '✅ 已裝備' : '裝備'
+  }
 
   const filtered = SHOP_ITEMS.filter((i) => i.category === category)
 
@@ -67,7 +78,12 @@ export default function ShopScreen({ onNavigate }) {
               })
           }
         </div>
-        <div className="shop-pet-name">{petDef.name} 的裝扮</div>
+        <div className="shop-pet-name">
+          {category === 'home' ? '🏠 家居佈置模式' : `${petDef.name} 的裝扮`}
+        </div>
+        {category === 'home' && (
+          <div className="shop-home-hint">購買後點「擺放」會出現在你的家！</div>
+        )}
       </div>
 
       {/* Category tabs */}
@@ -89,13 +105,12 @@ export default function ShopScreen({ onNavigate }) {
       <div className="shop-grid">
         {filtered.map((item) => {
           const owned = ownedItems.includes(item.id)
-          const equipped = equippedItems.includes(item.id)
           const canAfford = coins >= item.price
 
           return (
             <motion.div
               key={item.id}
-              className={`shop-item ${owned ? 'owned' : ''} ${equipped ? 'equipped' : ''}`}
+              className={`shop-item ${owned ? 'owned' : ''} ${isEquipped(item) ? 'equipped' : ''}`}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
@@ -116,11 +131,11 @@ export default function ShopScreen({ onNavigate }) {
 
               {owned ? (
                 <motion.button
-                  className={`shop-equip-btn ${equipped ? 'unequip' : ''}`}
+                  className={`shop-equip-btn ${isEquipped(item) ? 'unequip' : ''}`}
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => toggleEquip(item.id)}
+                  onClick={() => handleToggleEquip(item)}
                 >
-                  {equipped ? '✅ 已裝備' : '裝備'}
+                  {equipLabel(item)}
                 </motion.button>
               ) : item.boss ? (
                 <div className="shop-boss-locked">⚔️ Boss獎勵</div>

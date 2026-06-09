@@ -86,6 +86,14 @@ export default function HomeScreen({ onNavigate }) {
           </motion.button>
         </div>
 
+        <motion.button
+          className="btn-home-room"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => nav('homeroom')}
+        >
+          🏠 我的家
+        </motion.button>
+
         <div className="home-row">
           <motion.button
             className="btn-secondary home-daily-btn"

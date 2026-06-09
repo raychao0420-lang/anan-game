@@ -46,4 +46,16 @@ export const sfx = {
   unlock:   () => [523, 784, 1047].forEach((f, i) => tone(f, 0.12, 'sine', 0.18, i * 0.1)),
   achieve:  () => { tone(659, 0.1); tone(784, 0.1, 'sine', 0.2, 0.1); tone(1047, 0.2, 'sine', 0.2, 0.22) },
   star:     (n) => tone([523, 659, 784][n - 1] || 523, 0.12, 'sine', 0.2),
+  beagle:   () => {
+    tone(280, 0.05, 'sawtooth', 0.32)
+    tone(200, 0.1,  'sawtooth', 0.24, 0.04)
+    tone(260, 0.05, 'sawtooth', 0.2,  0.17)
+    tone(185, 0.12, 'sawtooth', 0.18, 0.21)
+  },
+  otter:    () => {
+    tone(1200, 0.06, 'sine', 0.22)
+    tone(1450, 0.05, 'sine', 0.18, 0.1)
+    tone(1100, 0.06, 'sine', 0.2,  0.2)
+    tone(1350, 0.05, 'sine', 0.15, 0.3)
+  },
 }

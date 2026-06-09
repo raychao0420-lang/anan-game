@@ -1,0 +1,189 @@
+.home-room {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #fff9f0;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.room-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 2px solid #ffe5cc;
+  position: relative;
+  z-index: 20;
+  flex-shrink: 0;
+}
+
+.room-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #6b3f1e;
+}
+
+.room-shop-btn {
+  background: #ff9f43;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 2px 6px rgba(255, 159, 67, 0.4);
+}
+
+/* ── Room scene ── */
+.room-scene {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  /* Warm room: wall top 38%, baseboard strip, wooden floor */
+  background:
+    linear-gradient(
+      to bottom,
+      #fde3b6 0%,
+      #f5c98a 37%,
+      #c8935a 37%,
+      #c8935a 40%,
+      #e8c07a 40%,
+      #d4a85a 100%
+    );
+}
+
+/* Subtle wallpaper stripe */
+.room-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 61% 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 38px,
+    rgba(255, 255, 255, 0.12) 38px,
+    rgba(255, 255, 255, 0.12) 39px
+  );
+  pointer-events: none;
+}
+
+/* Floor grain */
+.room-scene::after {
+  content: '';
+  position: absolute;
+  inset: 40% 0 0 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 28px,
+    rgba(0, 0, 0, 0.04) 28px,
+    rgba(0, 0, 0, 0.04) 29px
+  );
+  pointer-events: none;
+}
+
+/* ── Decorations ── */
+.room-deco {
+  position: absolute;
+  text-align: center;
+  user-select: none;
+  z-index: 5;
+  filter: drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.15));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.room-deco-label {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: rgba(80, 50, 20, 0.75);
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 6px;
+  padding: 1px 4px;
+}
+
+/* ── Pets ── */
+.room-pet {
+  position: absolute;
+  cursor: pointer;
+  user-select: none;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Smooth wandering */
+  transition: left 2.6s ease-in-out, top 2.2s ease-in-out;
+  /* Anchor to bottom-center so position is the pet's feet */
+  transform: translateX(-50%);
+}
+
+.room-pet-emoji {
+  font-size: 2.9rem;
+  line-height: 1;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.18));
+  display: block;
+}
+
+.room-pet-accs {
+  display: flex;
+  gap: 1px;
+  font-size: 1rem;
+  justify-content: center;
+  margin-top: -4px;
+}
+
+.room-pet-name {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #5c3a1e;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 8px;
+  padding: 1px 7px;
+  margin-top: 3px;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.room-pet-burst {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.6rem;
+  pointer-events: none;
+  z-index: 30;
+}
+
+/* ── Empty hint ── */
+.room-empty-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #8c6030;
+  font-size: 0.82rem;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 14px;
+  padding: 10px 18px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 5;
+}
+
+.room-empty-hint span {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.room-empty-hint p {
+  margin: 0;
+}

@@ -41,8 +41,9 @@ export const useGameStore = create(
         kotaro: { unlocked: false, evolutionStage: 1, accessories: [] },
       },
       stages: makeStages(),
-      ownedItems:    [],
-      equippedItems: [],
+      ownedItems:         [],
+      equippedItems:      [],
+      equippedHomeItems:  [],
 
       // M3: daily tasks
       dailyDate: null,
@@ -129,6 +130,14 @@ export const useGameStore = create(
           return { equippedItems: [...s.equippedItems, itemId] }
         }),
 
+      toggleHomeItem: (itemId) =>
+        set((s) => {
+          if (s.equippedHomeItems.includes(itemId)) {
+            return { equippedHomeItems: s.equippedHomeItems.filter((id) => id !== itemId) }
+          }
+          return { equippedHomeItems: [...s.equippedHomeItems, itemId] }
+        }),
+
       // ── M3: Daily tasks ──
       initDaily: (today) => {
         const s = get()
@@ -210,8 +219,9 @@ export const useGameStore = create(
             kotaro: { unlocked: false, evolutionStage: 1, accessories: [] },
           },
           stages: makeStages(),
-          ownedItems: [],
-          equippedItems: [],
+          ownedItems:        [],
+          equippedItems:     [],
+          equippedHomeItems: [],
           dailyDate: null,
           dailyProgress: {},
           dailyTasksDone: [],
