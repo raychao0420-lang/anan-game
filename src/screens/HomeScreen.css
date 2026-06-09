@@ -14,12 +14,24 @@
   color: #FF6B6B;
   text-align: center;
   line-height: 1.1;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .home-title-sub {
   display: block;
   font-size: 1.5rem;
   color: #4ECDC4;
+}
+
+.home-mute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(0,0,0,0.06) !important;
 }
 
 .home-coins {
@@ -116,6 +128,20 @@
 
 .home-badge.achieve {
   background: #FF8C00;
+}
+
+.btn-cloud {
+  background: none;
+  border: 1.5px dashed #BBB;
+  border-radius: 14px;
+  color: #999;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
 }
 
 @media (min-width: 640px) {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useGameStore } from './store/gameStore'
 import HomeScreen from './screens/HomeScreen'
 import StageScreen from './screens/StageScreen'
@@ -11,6 +12,12 @@ import BossScreen from './screens/BossScreen'
 import AchievementScreen from './screens/AchievementScreen'
 import AchievementToast from './components/AchievementToast'
 import './index.css'
+
+const pageVariants = {
+  initial: { opacity: 0, y: 18 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.22, ease: 'easeOut' } },
+  exit:    { opacity: 0, y: -10, transition: { duration: 0.15 } },
+}
 
 export default function App() {
   const [screen, setScreen] = useState('home')
@@ -41,43 +48,52 @@ export default function App() {
     setScreen('boss')
   }
 
+  const wrap = (key, node) => (
+    <motion.div key={key} variants={pageVariants} initial="initial" animate="animate" exit="exit"
+      style={{ position: 'absolute', inset: 0, overflowY: 'auto' }}>
+      {node}
+    </motion.div>
+  )
+
   return (
-    <>
+    <div style={{ position: 'relative', minHeight: '100dvh', overflow: 'hidden' }}>
       <AchievementToast />
 
-      {screen === 'home'         && <HomeScreen onNavigate={setScreen} />}
-      {screen === 'stages'       && <StageScreen onNavigate={setScreen} onStartStage={handleStartStage} />}
-      {screen === 'pets'         && <PetScreen onNavigate={setScreen} />}
-      {screen === 'shop'         && <ShopScreen onNavigate={setScreen} />}
-      {screen === 'daily'        && <DailyScreen onNavigate={setScreen} />}
-      {screen === 'achievements' && <AchievementScreen onNavigate={setScreen} />}
+      <AnimatePresence mode="wait">
+        {screen === 'home'         && wrap('home', <HomeScreen onNavigate={setScreen} />)}
+        {screen === 'stages'       && wrap('stages', <StageScreen onNavigate={setScreen} onStartStage={handleStartStage} />)}
+        {screen === 'pets'         && wrap('pets', <PetScreen onNavigate={setScreen} />)}
+        {screen === 'shop'         && wrap('shop', <ShopScreen onNavigate={setScreen} />)}
+        {screen === 'daily'        && wrap('daily', <DailyScreen onNavigate={setScreen} />)}
+        {screen === 'achievements' && wrap('achievements', <AchievementScreen onNavigate={setScreen} />)}
 
-      {screen === 'game' && activeStage && (
-        <GameScreen
-          key={`${activeStage}-${Date.now()}`}
-          stageId={activeStage}
-          onFinish={handleGameFinish}
-        />
-      )}
+        {screen === 'game' && activeStage && wrap(`game-${activeStage}`,
+          <GameScreen
+            key={`${activeStage}-${Date.now()}`}
+            stageId={activeStage}
+            onFinish={handleGameFinish}
+          />
+        )}
 
-      {screen === 'result' && gameResults && (
-        <ResultScreen
-          stageId={activeStage}
-          results={gameResults}
-          onRetry={() => handleStartStage(activeStage)}
-          onNext={() => handleStartStage(activeStage + 1)}
-          onHome={() => setScreen('home')}
-          onBoss={handleBossChallenge}
-        />
-      )}
+        {screen === 'result' && gameResults && wrap('result',
+          <ResultScreen
+            stageId={activeStage}
+            results={gameResults}
+            onRetry={() => handleStartStage(activeStage)}
+            onNext={() => handleStartStage(activeStage + 1)}
+            onHome={() => setScreen('home')}
+            onBoss={handleBossChallenge}
+          />
+        )}
 
-      {screen === 'boss' && activeBoss && (
-        <BossScreen
-          key={`boss-${activeBoss}`}
-          chapterId={activeBoss}
-          onBack={() => setScreen('home')}
-        />
-      )}
-    </>
+        {screen === 'boss' && activeBoss && wrap(`boss-${activeBoss}`,
+          <BossScreen
+            key={`boss-${activeBoss}`}
+            chapterId={activeBoss}
+            onBack={() => setScreen('home')}
+          />
+        )}
+      </AnimatePresence>
+    </div>
   )
 }

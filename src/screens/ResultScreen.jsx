@@ -1,7 +1,9 @@
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { STAGE_NAMES } from '../data/questions'
+import { sfx } from '../utils/sound'
 import './ResultScreen.css'
 
 function calcStars(correctCount) {
@@ -28,6 +30,16 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
     updateDailyProgress('stages', 1)
     if (stars === 3) updateDailyProgress('stars3', 1)
   }
+
+  useEffect(() => {
+    const t1 = setTimeout(() => {
+      for (let i = 1; i <= stars; i++) {
+        setTimeout(() => sfx.star(i), (i - 1) * 200)
+      }
+    }, 500)
+    const t2 = setTimeout(() => { if (totalCoins > 0) sfx.coins() }, 1200)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const isBossStage = stageId % 10 === 0 && [10, 20, 30, 40].includes(stageId)
   const bossClearedThis = bossCleared[stageId]

@@ -1,12 +1,17 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import { getTodayTasks } from '../data/dailyTasks'
+import MuteButton from '../components/MuteButton'
+import SaveModal from '../components/SaveModal'
+import { sfx } from '../utils/sound'
 import './HomeScreen.css'
 
 export default function HomeScreen({ onNavigate }) {
   const { coins, activePet, pets, equippedItems, dailyTasksDone, achievements } = useGameStore()
+  const [showSave, setShowSave] = useState(false)
   const today = new Date().toISOString().slice(0, 10)
   const todayTasks = getTodayTasks(today)
   const dailyDoneCount = todayTasks.filter(t => dailyTasksDone.includes(t.id)).length
@@ -17,11 +22,14 @@ export default function HomeScreen({ onNavigate }) {
   const stage = pet.stages[petData.evolutionStage]
   const equipped = equippedItems.map((id) => SHOP_ITEMS.find((i) => i.id === id)).filter(Boolean)
 
+  const nav = (dest) => { sfx.click(); onNavigate(dest) }
+
   return (
     <div className="home-screen">
       <div className="home-title">
         <span>安安</span>
         <span className="home-title-sub">數學大冒險</span>
+        <MuteButton className="home-mute" />
       </div>
 
       <div className="home-coins">
@@ -56,7 +64,7 @@ export default function HomeScreen({ onNavigate }) {
         <motion.button
           className="btn-primary btn-lg"
           whileTap={{ scale: 0.94 }}
-          onClick={() => onNavigate('stages')}
+          onClick={() => nav('stages')}
         >
           🎮 開始闖關
         </motion.button>
@@ -65,14 +73,14 @@ export default function HomeScreen({ onNavigate }) {
           <motion.button
             className="btn-secondary"
             whileTap={{ scale: 0.94 }}
-            onClick={() => onNavigate('pets')}
+            onClick={() => nav('pets')}
           >
             🐾 我的寵物
           </motion.button>
           <motion.button
             className="btn-secondary"
             whileTap={{ scale: 0.94 }}
-            onClick={() => onNavigate('shop')}
+            onClick={() => nav('shop')}
           >
             🛍️ 商店
           </motion.button>
@@ -82,7 +90,7 @@ export default function HomeScreen({ onNavigate }) {
           <motion.button
             className="btn-secondary home-daily-btn"
             whileTap={{ scale: 0.94 }}
-            onClick={() => onNavigate('daily')}
+            onClick={() => nav('daily')}
           >
             📋 每日任務
             {!dailyAllDone && (
@@ -93,7 +101,7 @@ export default function HomeScreen({ onNavigate }) {
           <motion.button
             className="btn-secondary home-achieve-btn"
             whileTap={{ scale: 0.94 }}
-            onClick={() => onNavigate('achievements')}
+            onClick={() => nav('achievements')}
           >
             🏆 成就
             {achieveCount > 0 && (
@@ -101,7 +109,19 @@ export default function HomeScreen({ onNavigate }) {
             )}
           </motion.button>
         </div>
+
+        <motion.button
+          className="btn-cloud"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => setShowSave(true)}
+        >
+          ☁️ 雲端存檔
+        </motion.button>
       </div>
+
+      <AnimatePresence>
+        {showSave && <SaveModal onClose={() => setShowSave(false)} />}
+      </AnimatePresence>
     </div>
   )
 }

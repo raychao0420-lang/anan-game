@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { ACHIEVEMENTS } from '../data/achievements'
+import { sfx } from '../utils/sound'
 import './AchievementToast.css'
 
 export default function AchievementToast() {
@@ -12,6 +13,7 @@ export default function AchievementToast() {
 
   useEffect(() => {
     if (!achieve) return
+    sfx.achieve()
     const timer = setTimeout(clearPendingAchievement, 3500)
     return () => clearTimeout(timer)
   }, [achieve, clearPendingAchievement])

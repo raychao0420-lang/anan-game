@@ -5,6 +5,7 @@ import { generateStageQuestions } from '../data/questions'
 import { BOSS_DEFS, BOSS_REWARDS } from '../data/achievements'
 import { PETS } from '../data/pets'
 import NumberPad from '../components/NumberPad'
+import { sfx } from '../utils/sound'
 import './BossScreen.css'
 
 const BOSS_QUESTIONS = 15
@@ -62,8 +63,10 @@ export default function BossScreen({ chapterId, onBack }) {
       if (newCorrect >= BOSS_PASS) {
         clearBoss(chapterId, reward.id)
         updateTotalCoins(100)
+        setTimeout(() => sfx.bossWin(), 300)
         setPhase('win')
       } else {
+        setTimeout(() => sfx.bossLose(), 300)
         setPhase('lose')
       }
     } else {
@@ -80,6 +83,7 @@ export default function BossScreen({ chapterId, onBack }) {
         if (t <= 1) {
           clearInterval(timerRef.current)
           showFeedback(false)
+          sfx.wrong()
           nextQuestion(false)
           return BOSS_TIME
         }
@@ -94,6 +98,8 @@ export default function BossScreen({ chapterId, onBack }) {
     clearInterval(timerRef.current)
     const correct = parseInt(input) === currentQ.answer
     showFeedback(correct)
+    if (correct) sfx.bossHit()
+    else sfx.wrong()
     setTimeout(() => nextQuestion(correct), 500)
   }, [input, currentQ, phase, nextQuestion])
 

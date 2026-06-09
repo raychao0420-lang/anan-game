@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS, PET_ORDER } from '../data/pets'
 import EvolveModal from '../components/EvolveModal'
+import { sfx } from '../utils/sound'
 import './PetScreen.css'
 
 const EVOLVE_COSTS = [0, 200, 500, 1000] // cost to reach stage 2/3/4
@@ -23,12 +24,14 @@ export default function PetScreen({ onNavigate }) {
   const handleEvolve = () => {
     if (!canEvolve) return
     evolvePet(selected, evolveCost)
+    sfx.evolve()
     setEvolveModal({ petId: selected, newStage: petData.evolutionStage + 1 })
   }
 
   const handleUnlock = () => {
     if (coins < petDef.unlockCost) return
     unlockPet(selected, petDef.unlockCost)
+    sfx.unlock()
   }
 
   return (

@@ -4,6 +4,7 @@ import { useGameStore } from '../store/gameStore'
 import { generateStageQuestions, STAGE_NAMES } from '../data/questions'
 import { PETS } from '../data/pets'
 import NumberPad from '../components/NumberPad'
+import { sfx } from '../utils/sound'
 import './GameScreen.css'
 
 const TIME_LIMIT = 20
@@ -60,6 +61,7 @@ export default function GameScreen({ stageId, onFinish }) {
           setMood('sad')
           showFeedback(false, 0)
           setCombo(0)
+          sfx.wrong()
           nextQuestion({ correct: false, coins: 0, time: TIME_LIMIT })
           return TIME_LIMIT
         }
@@ -92,6 +94,12 @@ export default function GameScreen({ stageId, onFinish }) {
     setTotalCoins(c => c + earned)
     setMood(correct ? 'happy' : 'sad')
     showFeedback(correct, earned)
+    if (correct) {
+      if (newCombo >= 3) sfx.combo(newCombo)
+      else sfx.correct()
+    } else {
+      sfx.wrong()
+    }
     if (correct) updateDailyProgress('correct', 1)
     if (earned > 0) updateDailyProgress('coins', earned)
     if (newCombo >= 5) updateDailyProgress('combo5', 1)
