@@ -1,0 +1,74 @@
+import { motion } from 'framer-motion'
+import { useGameStore } from '../store/gameStore'
+import { STAGE_NAMES } from '../data/questions'
+import './StageScreen.css'
+
+const CHAPTERS = [
+  { label: '加減法', range: [1, 10], icon: '➕' },
+  { label: '三位數', range: [11, 20], icon: '🔢' },
+  { label: '乘法', range: [21, 30], icon: '✖️' },
+  { label: '除法', range: [31, 40], icon: '➗' },
+]
+
+function Stars({ count }) {
+  return (
+    <span className="stage-stars">
+      {[1,2,3].map(i => (
+        <span key={i} style={{ opacity: i <= count ? 1 : 0.2 }}>⭐</span>
+      ))}
+    </span>
+  )
+}
+
+export default function StageScreen({ onNavigate, onStartStage }) {
+  const { stages, coins } = useGameStore()
+
+  const isUnlocked = (id) => {
+    if (id === 1) return true
+    return stages[id - 1]?.completed
+  }
+
+  return (
+    <div className="stage-screen">
+      <div className="stage-header">
+        <motion.button className="btn-back" whileTap={{ scale: 0.9 }} onClick={() => onNavigate('home')}>
+          ← 返回
+        </motion.button>
+        <span className="stage-coins">💰 {coins}</span>
+      </div>
+
+      <div className="stage-chapters">
+        {CHAPTERS.map(({ label, range, icon }) => (
+          <div key={label} className="chapter-section">
+            <div className="chapter-title">{icon} {label}</div>
+            <div className="stage-grid">
+              {Array.from({ length: range[1] - range[0] + 1 }, (_, i) => {
+                const id = range[0] + i
+                const unlocked = isUnlocked(id)
+                const s = stages[id]
+                return (
+                  <motion.button
+                    key={id}
+                    className={`stage-btn ${!unlocked ? 'locked' : ''} ${s?.completed ? 'done' : ''}`}
+                    whileTap={unlocked ? { scale: 0.9 } : {}}
+                    onClick={() => unlocked && onStartStage(id)}
+                    disabled={!unlocked}
+                  >
+                    <span className="stage-num">{id}</span>
+                    {unlocked ? (
+                      s?.completed
+                        ? <Stars count={s.stars} />
+                        : <span className="stage-name">{STAGE_NAMES[id] || `關卡${id}`}</span>
+                    ) : (
+                      <span className="stage-lock">🔒</span>
+                    )}
+                  </motion.button>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

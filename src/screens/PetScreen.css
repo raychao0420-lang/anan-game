@@ -1,0 +1,226 @@
+.pet-screen {
+  min-height: 100dvh;
+  background: linear-gradient(160deg, #FFF5E6 0%, #F0F4FF 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 32px;
+}
+
+.pet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.pet-screen-title {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #444;
+}
+
+.pet-coins {
+  background: #FFF3CD;
+  border: 2px solid #FFD700;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #996600;
+}
+
+/* Tabs */
+.pet-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.pet-tab {
+  flex: 1;
+  background: white;
+  border: 2px solid #E0E0E0;
+  border-radius: 14px;
+  padding: 10px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.pet-tab.active {
+  border-color: #FF6B6B;
+  background: #FFF0F0;
+}
+
+.pet-tab.locked {
+  opacity: 0.55;
+}
+
+.pet-tab-emoji {
+  font-size: 1.8rem;
+}
+
+.pet-tab-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #666;
+}
+
+/* Main */
+.pet-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+}
+
+.pet-big-bubble {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pet-info {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pet-info-name {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #333;
+}
+
+.pet-info-breed {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.pet-info-stage {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #FF6B6B;
+}
+
+/* Evolution track */
+.evo-track {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.evo-dot {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #EEE;
+  border: 2px solid #DDD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  opacity: 0.4;
+  transition: all 0.3s;
+}
+
+.evo-dot.filled {
+  background: #FFF3CD;
+  border-color: #FFD700;
+  opacity: 1;
+}
+
+/* Actions */
+.pet-actions {
+  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pet-unlock-area, .pet-evolve-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pet-unlock-cost, .pet-evolve-cost {
+  text-align: center;
+  font-size: 1rem;
+  color: #777;
+  font-weight: 600;
+}
+
+.pet-evolve-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: #555;
+  font-weight: 700;
+}
+
+.pet-evolve-label {
+  color: #FF6B6B;
+}
+
+.evolve-btn {
+  background: linear-gradient(135deg, #FFD700, #FF8E53) !important;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 0 #CC8800 !important;
+}
+
+.btn-primary.disabled {
+  background: #DDD !important;
+  color: #999 !important;
+  box-shadow: 0 4px 0 #BBB !important;
+}
+
+.set-active-btn {
+  text-align: center;
+}
+
+.set-active-btn.is-active {
+  border-color: #6BCB77;
+  background: #F0FFF0;
+  color: #2E7D32;
+}
+
+.pet-max-label {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #FFD700;
+  background: #FFF8E0;
+  border: 2px solid #FFD700;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+@media (min-width: 640px) {
+  .pet-header { padding: 20px 28px; }
+  .pet-screen-title { font-size: 1.5rem; }
+  .pet-tabs { padding: 0 24px; gap: 12px; margin-bottom: 20px; }
+  .pet-tab  { padding: 14px 8px; border-radius: 18px; }
+  .pet-tab-emoji { font-size: 2.4rem; }
+  .pet-tab-name  { font-size: 0.95rem; }
+  .pet-main { padding: 0 28px; gap: 18px; }
+  .pet-big-bubble { width: 260px; height: 260px; }
+  .pet-info-name  { font-size: 2rem; }
+  .pet-info-breed { font-size: 1rem; }
+  .pet-info-stage { font-size: 1.2rem; }
+  .evo-dot  { width: 64px; height: 64px; font-size: 1.8rem; }
+  .pet-actions { padding: 24px 28px 0; gap: 16px; }
+  .pet-unlock-cost, .pet-evolve-cost { font-size: 1.2rem; }
+  .pet-max-label { font-size: 1.3rem; padding: 18px; }
+}

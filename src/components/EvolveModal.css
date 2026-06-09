@@ -1,0 +1,85 @@
+.evolve-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px;
+}
+
+.evolve-card {
+  background: white;
+  border-radius: 28px;
+  padding: 36px 28px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  overflow: visible;
+}
+
+.evolve-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 1.4rem;
+  pointer-events: none;
+  transform-origin: center;
+}
+
+.evolve-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #FF6B6B;
+}
+
+.evolve-pets {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.evolve-before, .evolve-after {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.evolve-bubble {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.evolve-arrow {
+  font-size: 2rem;
+  color: #FFB347;
+  font-weight: 900;
+}
+
+.evolve-sublabel {
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: 600;
+}
+
+.evolve-sublabel.new {
+  color: #FF6B6B;
+  font-size: 0.9rem;
+}
+
+.evolve-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #444;
+  text-align: center;
+}

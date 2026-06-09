@@ -1,0 +1,40 @@
+.achieve-toast {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #FFD700, #FF8C00);
+  color: white;
+  border-radius: 20px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 6px 24px rgba(255, 140, 0, 0.5);
+  cursor: pointer;
+  z-index: 9999;
+  max-width: 320px;
+  width: calc(100% - 40px);
+}
+
+.achieve-toast-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.achieve-toast-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.achieve-toast-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.9;
+  letter-spacing: 1px;
+}
+
+.achieve-toast-label {
+  font-size: 1.1rem;
+  font-weight: 900;
+}

@@ -1,0 +1,130 @@
+.home-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 20px;
+  min-height: 100dvh;
+  background: linear-gradient(160deg, #FFF5E6 0%, #F0F4FF 100%);
+}
+
+.home-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #FF6B6B;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.home-title-sub {
+  display: block;
+  font-size: 1.5rem;
+  color: #4ECDC4;
+}
+
+.home-coins {
+  background: #FFF3CD;
+  border: 2px solid #FFD700;
+  border-radius: 24px;
+  padding: 8px 24px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #996600;
+}
+
+.home-pet-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.home-pet-bubble {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+}
+
+.home-equipped-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.home-equipped-badge {
+  font-size: 1.6rem;
+  background: white;
+  border: 2px solid #FFB347;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.home-pet-name {
+  font-size: 1rem;
+  color: #888;
+  font-weight: 600;
+}
+
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 8px;
+}
+
+.home-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.home-daily-btn,
+.home-achieve-btn {
+  position: relative;
+}
+
+.home-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #FF6B6B;
+  color: white;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  min-width: 22px;
+  text-align: center;
+  border: 2px solid white;
+}
+
+.home-badge.done {
+  background: #4CAF50;
+}
+
+.home-badge.achieve {
+  background: #FF8C00;
+}
+
+@media (min-width: 640px) {
+  .home-screen { gap: 28px; padding: 36px 32px; }
+  .home-title { font-size: 2.8rem; }
+  .home-title-sub { font-size: 2rem; }
+  .home-coins { font-size: 1.5rem; padding: 10px 32px; border-radius: 28px; }
+  .home-pet-bubble { width: 220px; height: 220px; }
+  .home-pet-name { font-size: 1.2rem; }
+  .home-equipped-badge { width: 52px; height: 52px; font-size: 2rem; }
+  .home-buttons { max-width: 480px; gap: 16px; }
+}

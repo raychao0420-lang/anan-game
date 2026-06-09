@@ -1,0 +1,188 @@
+.daily-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  min-height: 100dvh;
+  background: linear-gradient(160deg, #FFF5E6 0%, #F0F4FF 100%);
+}
+
+.daily-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.daily-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #444;
+}
+
+.daily-coins {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #996600;
+  background: #FFF3CD;
+  border: 2px solid #FFD700;
+  border-radius: 16px;
+  padding: 4px 12px;
+}
+
+.daily-date {
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.daily-all-done {
+  background: linear-gradient(135deg, #FFD700, #FF8C00);
+  color: white;
+  border-radius: 16px;
+  padding: 14px 20px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+}
+
+.daily-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.daily-task {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.daily-task.done {
+  border-color: #4CAF50;
+  background: #F1FFF1;
+}
+
+.daily-task-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.daily-task-icon {
+  font-size: 1.8rem;
+  width: 40px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.daily-task-info {
+  flex: 1;
+}
+
+.daily-task-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.daily-task-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.daily-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #EEE;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.daily-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ECDC4, #44B0A8);
+  border-radius: 4px;
+  min-width: 4px;
+}
+
+.daily-task.done .daily-progress-fill {
+  background: linear-gradient(90deg, #4CAF50, #2E7D32);
+}
+
+.daily-progress-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #888;
+  white-space: nowrap;
+}
+
+.daily-task.done .daily-progress-text {
+  color: #4CAF50;
+}
+
+.daily-reward {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #FF8C00;
+  margin-left: 12px;
+  white-space: nowrap;
+}
+
+.daily-reward.claimed {
+  font-size: 1.4rem;
+  color: #4CAF50;
+}
+
+.daily-tip {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.daily-tip-title {
+  font-weight: 800;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.daily-tip-row {
+  font-size: 0.88rem;
+  color: #777;
+  padding: 3px 0;
+}
+
+.daily-bonus-hint {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #888;
+  padding-bottom: 20px;
+}
+
+.daily-bonus-hint strong {
+  color: #FF8C00;
+}
+
+@media (min-width: 640px) {
+  .daily-screen { padding: 28px 32px; gap: 20px; }
+  .daily-task   { padding: 20px; border-radius: 20px; }
+  .daily-task-icon  { font-size: 2.4rem; width: 52px; }
+  .daily-task-label { font-size: 1.2rem; margin-bottom: 8px; }
+  .daily-progress-bar { height: 10px; }
+  .daily-progress-text { font-size: 0.95rem; }
+  .daily-reward { font-size: 1.2rem; }
+  .daily-reward.claimed { font-size: 1.7rem; }
+  .daily-all-done { font-size: 1.3rem; padding: 18px 24px; }
+  .daily-bonus-hint { font-size: 1.1rem; }
+}
