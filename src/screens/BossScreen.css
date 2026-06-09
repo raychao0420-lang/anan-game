@@ -63,7 +63,11 @@
 /* ── Fight ── */
 .boss-fight {
   background: linear-gradient(160deg, #1a0030 0%, #3d0060 100%);
-  gap: 12px;
+  gap: 8px;
+  height: 100dvh;
+  min-height: unset;
+  overflow: hidden;
+  padding: 10px 16px 10px;
 }
 
 .boss-fight-header {
@@ -161,8 +165,8 @@
 }
 
 .boss-pet-bubble {
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -185,14 +189,14 @@
 .boss-feedback.wrong   { color: #FF6B6B; }
 
 .boss-question {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   font-weight: 900;
   color: white;
   text-align: center;
   background: rgba(255,255,255,0.08);
   border: 2px solid rgba(200, 100, 255, 0.4);
-  border-radius: 20px;
-  padding: 20px 32px;
+  border-radius: 16px;
+  padding: 10px 24px;
   width: 100%;
   text-shadow: 0 0 10px rgba(200, 100, 255, 0.5);
 }

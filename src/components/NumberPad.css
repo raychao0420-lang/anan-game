@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
   max-width: 320px;
   margin: 0 auto;
@@ -12,13 +12,13 @@
   width: 100%;
   background: #fff;
   border: 3px solid #FFB347;
-  border-radius: 16px;
-  font-size: 2.6rem;
+  border-radius: 14px;
+  font-size: 2rem;
   font-weight: 800;
   text-align: center;
-  padding: 12px 0;
+  padding: 6px 0;
   color: #333;
-  min-height: 72px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,19 +31,19 @@
 .numpad-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 8px;
   width: 100%;
 }
 
 .numpad-btn {
   background: #fff;
   border: 2px solid #E0E0E0;
-  border-radius: 14px;
-  font-size: 1.8rem;
+  border-radius: 12px;
+  font-size: 1.6rem;
   font-weight: 700;
   color: #333;
   padding: 0;
-  height: 72px;
+  height: 58px;
   cursor: pointer;
   touch-action: manipulation;
   user-select: none;
@@ -61,7 +61,7 @@
   border-color: #4CAF50;
   color: white;
   box-shadow: 0 3px 0 #388E3C;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
 .numpad-btn.delete {
@@ -69,7 +69,7 @@
   border-color: #FFB347;
   color: #FF6B35;
   box-shadow: 0 3px 0 #FF8C00;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
 @media (min-width: 640px) {
