@@ -6,6 +6,7 @@ import { SHOP_ITEMS } from '../data/shop'
 import { getTodayTasks } from '../data/dailyTasks'
 import MuteButton from '../components/MuteButton'
 import SaveModal from '../components/SaveModal'
+import PetAvatar from '../components/PetAvatar'
 import { sfx } from '../utils/sound'
 import './HomeScreen.css'
 
@@ -43,20 +44,16 @@ export default function HomeScreen({ onNavigate }) {
         transition={{ type: 'spring', stiffness: 200 }}
       >
         <motion.div
-          className="home-pet-bubble"
-          style={{ background: stage.bg, border: `3px solid ${stage.border}` }}
           animate={{ y: [0, -10, 0] }}
           transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
         >
-          <span style={{ fontSize: stage.size }}>{stage.emoji}</span>
+          <PetAvatar
+            petId={activePet}
+            evolutionStage={petData.evolutionStage}
+            equipped={equipped}
+            size={130}
+          />
         </motion.div>
-        {equipped.length > 0 && (
-          <div className="home-equipped-row">
-            {equipped.map((item) => (
-              <span key={item.id} className="home-equipped-badge">{item.emoji}</span>
-            ))}
-          </div>
-        )}
         <div className="home-pet-name">{pet.name} · {stage.label}</div>
       </motion.div>
 

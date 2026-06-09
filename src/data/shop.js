@@ -1,9 +1,11 @@
 export const SHOP_CATEGORIES = [
-  { id: 'food', label: '食物', icon: '🍖' },
-  { id: 'hat',  label: '帽子', icon: '🎩' },
-  { id: 'toy',  label: '玩具', icon: '🎮' },
-  { id: 'home', label: '家居', icon: '🏠' },
-  { id: 'rare', label: '稀有', icon: '⭐' },
+  { id: 'food',      label: '食物', icon: '🍖' },
+  { id: 'hat',       label: '帽子', icon: '🎩' },
+  { id: 'clothes',   label: '衣著', icon: '👗' },
+  { id: 'accessory', label: '配件', icon: '👓' },
+  { id: 'toy',       label: '玩具', icon: '🎮' },
+  { id: 'home',      label: '家居', icon: '🏠' },
+  { id: 'rare',      label: '稀有', icon: '⭐' },
 ]
 
 export const SHOP_ITEMS = [
@@ -17,6 +19,16 @@ export const SHOP_ITEMS = [
   { id: 'cap',     name: '棒球帽',   emoji: '🧢', category: 'hat',  price: 120, desc: '運動風' },
   { id: 'crown',   name: '皇冠',     emoji: '👑', category: 'hat',  price: 300, desc: '王者之選' },
   { id: 'flower',  name: '花圈',     emoji: '🌸', category: 'hat',  price: 150, desc: '春天氣息' },
+  // ── 衣著 ──
+  { id: 'sweater',  name: '毛衣',     emoji: '🧶', category: 'clothes',   price: 150, desc: '柔軟暖心' },
+  { id: 'apron',    name: '廚師圍裙', emoji: '🍳', category: 'clothes',   price: 120, desc: '小廚師登場' },
+  { id: 'hoodie',   name: '帽T',      emoji: '🫧', category: 'clothes',   price: 180, desc: '酷帥休閒風' },
+  { id: 'dress',    name: '小洋裝',   emoji: '👗', category: 'clothes',   price: 200, desc: '超美麗！' },
+  // ── 配件 ──
+  { id: 'glasses',  name: '眼鏡',     emoji: '👓', category: 'accessory', price: 100, desc: '知識感滿滿' },
+  { id: 'scarf',    name: '圍巾',     emoji: '🧣', category: 'accessory', price: 80,  desc: '暖暖的' },
+  { id: 'backpack', name: '小背包',   emoji: '🎒', category: 'accessory', price: 120, desc: '探險必備' },
+  { id: 'necklace', name: '珍珠項鍊', emoji: '💎', category: 'accessory', price: 150, desc: '閃亮亮！' },
   // ── 玩具 ──
   { id: 'ball',    name: '網球',     emoji: '🎾', category: 'toy',  price: 80,  desc: 'LULU 愛追' },
   { id: 'teddy',   name: '玩偶',     emoji: '🧸', category: 'toy',  price: 120, desc: '軟綿綿' },

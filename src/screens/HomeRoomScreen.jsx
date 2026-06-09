@@ -4,6 +4,7 @@ import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import { sfx } from '../utils/sound'
+import PetAvatar from '../components/PetAvatar'
 import './HomeRoomScreen.css'
 
 const POOL_RADIUS = 18   // % distance threshold for pool interaction
@@ -109,8 +110,6 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
   const poolPosRef = useRef(poolPos)
   useEffect(() => { poolPosRef.current = poolPos }, [poolPos])
 
-  const petStage = petDef.stages[petData.evolutionStage]
-
   // Distance to pool
   const distToPool = poolPos
     ? Math.sqrt((pos.x - poolPos.x) ** 2 + (pos.y - poolPos.y) ** 2)
@@ -176,12 +175,12 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
           transition={{ duration: 0.28, ease: 'easeInOut' }}
           style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center' }}
         >
-          <span className="room-pet-emoji">{petStage.emoji}</span>
-          {equippedPetItems.length > 0 && (
-            <div className="room-pet-accs">
-              {equippedPetItems.map(it => <span key={it.id}>{it.emoji}</span>)}
-            </div>
-          )}
+          <PetAvatar
+            petId={petId}
+            evolutionStage={petData.evolutionStage}
+            equipped={equippedPetItems}
+            size={65}
+          />
         </motion.div>
       </motion.div>
 

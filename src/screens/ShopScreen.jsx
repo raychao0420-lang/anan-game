@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS, PET_ORDER } from '../data/pets'
 import { SHOP_ITEMS, SHOP_CATEGORIES } from '../data/shop'
+import PetAvatar from '../components/PetAvatar'
 import './ShopScreen.css'
 
 export default function ShopScreen({ onNavigate }) {
@@ -54,12 +55,15 @@ export default function ShopScreen({ onNavigate }) {
         {/* Active pet preview */}
         <div className="shop-pet-preview">
           <motion.div
-            className="shop-pet-bubble"
-            style={{ background: petStage.bg, border: `3px solid ${petStage.border}` }}
             animate={{ y: [0, -6, 0] }}
             transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
           >
-            <span style={{ fontSize: '3.5rem' }}>{petStage.emoji}</span>
+            <PetAvatar
+              petId={activePet}
+              evolutionStage={petData.evolutionStage}
+              equipped={activePetEquipped}
+              size={100}
+            />
           </motion.div>
           <div className="shop-equipped-row">
             {activePetEquipped.length === 0
