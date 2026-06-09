@@ -29,6 +29,55 @@
   color: #996600;
 }
 
+.shop-pet-btns {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.shop-pet-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  background: #f8f8f8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.shop-pet-btn.active {
+  border-color: #4CAF50;
+  background: #e8f5e9;
+}
+
+.shop-pet-btn-emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.shop-pet-btn-check {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
 .shop-home-hint {
   font-size: 0.72rem;
   color: #e07b20;

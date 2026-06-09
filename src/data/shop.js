@@ -31,6 +31,7 @@ export const SHOP_ITEMS = [
   { id: 'rainbow',   name: '彩虹窗',    emoji: '🌈', category: 'home', price: 90,  desc: '光線美麗' },
   { id: 'disco',     name: '旋轉燈',    emoji: '🪩', category: 'home', price: 180, desc: '派對時間！' },
   { id: 'fish_tank', name: '小魚缸',    emoji: '🐠', category: 'home', price: 160, desc: '水獺最愛盯著看' },
+  { id: 'pool',      name: '大水池',    emoji: '🌊', category: 'home', price: 280, desc: '水獺最愛！LULU有點怕…' },
   // ── 稀有（Boss 獎勵，不可購買） ──
   { id: 'boss_medal1', name: '勇者勳章',   emoji: '🎖️', category: 'rare', price: 0, desc: '打倒第一章Boss', boss: true },
   { id: 'boss_medal2', name: '三位數之印', emoji: '🏅', category: 'rare', price: 0, desc: '打倒第二章Boss', boss: true },

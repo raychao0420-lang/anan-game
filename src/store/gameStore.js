@@ -41,9 +41,10 @@ export const useGameStore = create(
         kotaro: { unlocked: false, evolutionStage: 1, accessories: [] },
       },
       stages: makeStages(),
-      ownedItems:         [],
-      equippedItems:      [],
-      equippedHomeItems:  [],
+      ownedItems:        [],
+      petEquipment:      { lulu: [], hana: [], kotaro: [] },
+      equippedHomeItems: [],
+      homeDecoPositions: {},
 
       // M3: daily tasks
       dailyDate: null,
@@ -119,15 +120,14 @@ export const useGameStore = create(
         get().checkAchievements()
       },
 
-      toggleEquip: (itemId) =>
+      equipToPet: (petId, itemId) =>
         set((s) => {
-          if (s.equippedItems.includes(itemId)) {
-            return { equippedItems: s.equippedItems.filter((id) => id !== itemId) }
+          const current = s.petEquipment[petId] || []
+          if (current.includes(itemId)) {
+            return { petEquipment: { ...s.petEquipment, [petId]: current.filter(id => id !== itemId) } }
           }
-          if (s.equippedItems.length >= 3) {
-            return { equippedItems: [...s.equippedItems.slice(1), itemId] }
-          }
-          return { equippedItems: [...s.equippedItems, itemId] }
+          const next = current.length >= 3 ? [...current.slice(1), itemId] : [...current, itemId]
+          return { petEquipment: { ...s.petEquipment, [petId]: next } }
         }),
 
       toggleHomeItem: (itemId) =>
@@ -137,6 +137,11 @@ export const useGameStore = create(
           }
           return { equippedHomeItems: [...s.equippedHomeItems, itemId] }
         }),
+
+      moveHomeDeco: (itemId, x, y) =>
+        set((s) => ({
+          homeDecoPositions: { ...s.homeDecoPositions, [itemId]: { x, y } },
+        })),
 
       // ── M3: Daily tasks ──
       initDaily: (today) => {
@@ -220,8 +225,9 @@ export const useGameStore = create(
           },
           stages: makeStages(),
           ownedItems:        [],
-          equippedItems:     [],
+          petEquipment:      { lulu: [], hana: [], kotaro: [] },
           equippedHomeItems: [],
+          homeDecoPositions: {},
           dailyDate: null,
           dailyProgress: {},
           dailyTasksDone: [],

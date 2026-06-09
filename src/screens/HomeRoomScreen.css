@@ -43,7 +43,6 @@
   position: relative;
   flex: 1;
   overflow: hidden;
-  /* Warm room: wall top 38%, baseboard strip, wooden floor */
   background:
     linear-gradient(
       to bottom,
@@ -56,7 +55,6 @@
     );
 }
 
-/* Subtle wallpaper stripe */
 .room-scene::before {
   content: '';
   position: absolute;
@@ -71,7 +69,6 @@
   pointer-events: none;
 }
 
-/* Floor grain */
 .room-scene::after {
   content: '';
   position: absolute;
@@ -86,7 +83,7 @@
   pointer-events: none;
 }
 
-/* ── Decorations ── */
+/* ── Decorations (draggable) ── */
 .room-deco {
   position: absolute;
   text-align: center;
@@ -97,6 +94,12 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  touch-action: none;
+}
+
+.room-deco.dragging {
+  z-index: 50;
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.28));
 }
 
 .room-deco-label {
@@ -109,6 +112,66 @@
   padding: 1px 4px;
 }
 
+.room-deco-drag-hint {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.5rem;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  border-radius: 6px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+/* ── Water pool ── */
+.room-pool-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.room-pool-water {
+  width: 84px;
+  height: 52px;
+  background: radial-gradient(ellipse at 50% 40%, #b3e5fc 0%, #29b6f6 55%, #0277bd 100%);
+  border-radius: 50%;
+  border: 3px solid #4fc3f7;
+  box-shadow:
+    0 0 14px rgba(79, 195, 247, 0.55),
+    inset 0 2px 6px rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  animation: pool-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes pool-glow {
+  0%, 100% { box-shadow: 0 0 14px rgba(79, 195, 247, 0.55), inset 0 2px 6px rgba(255,255,255,0.4); }
+  50%       { box-shadow: 0 0 24px rgba(79, 195, 247, 0.85), inset 0 2px 6px rgba(255,255,255,0.4); }
+}
+
+.room-pool-wave {
+  font-size: 2rem;
+  animation: wave-shift 1.8s ease-in-out infinite;
+  display: block;
+}
+
+.room-pool-wave.delay {
+  animation-delay: 0.9s;
+  position: absolute;
+  opacity: 0.6;
+}
+
+@keyframes wave-shift {
+  0%, 100% { transform: translateX(-6px); }
+  50%       { transform: translateX(6px); }
+}
+
 /* ── Pets ── */
 .room-pet {
   position: absolute;
@@ -118,10 +181,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Smooth wandering */
   transition: left 2.6s ease-in-out, top 2.2s ease-in-out;
-  /* Anchor to bottom-center so position is the pet's feet */
   transform: translateX(-50%);
+}
+
+.room-pet.in-pool {
+  /* Slow down position transition when swimming */
+  transition: left 4s ease-in-out, top 3.5s ease-in-out;
 }
 
 .room-pet-emoji {
@@ -161,6 +227,37 @@
   z-index: 30;
 }
 
+/* Splash indicator when otter is in pool */
+.room-pet-splash {
+  position: absolute;
+  top: -8px;
+  right: -14px;
+  font-size: 1.2rem;
+  animation: splash-bounce 0.6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes splash-bounce {
+  from { transform: translateY(0) rotate(-10deg); }
+  to   { transform: translateY(-5px) rotate(10deg); }
+}
+
+/* Scared indicator when LULU is near pool */
+.room-pet-scared {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  animation: scared-shake 0.25s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes scared-shake {
+  from { transform: translateX(-52%) rotate(-8deg); }
+  to   { transform: translateX(-48%) rotate(8deg); }
+}
+
 /* ── Empty hint ── */
 .room-empty-hint {
   position: absolute;
@@ -184,6 +281,4 @@
   margin-bottom: 4px;
 }
 
-.room-empty-hint p {
-  margin: 0;
-}
+.room-empty-hint p { margin: 0; }

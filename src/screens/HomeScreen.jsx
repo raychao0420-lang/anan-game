@@ -10,7 +10,7 @@ import { sfx } from '../utils/sound'
 import './HomeScreen.css'
 
 export default function HomeScreen({ onNavigate }) {
-  const { coins, activePet, pets, equippedItems, dailyTasksDone, achievements } = useGameStore()
+  const { coins, activePet, pets, petEquipment, dailyTasksDone, achievements } = useGameStore()
   const [showSave, setShowSave] = useState(false)
   const today = new Date().toISOString().slice(0, 10)
   const todayTasks = getTodayTasks(today)
@@ -20,7 +20,7 @@ export default function HomeScreen({ onNavigate }) {
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const stage = pet.stages[petData.evolutionStage]
-  const equipped = equippedItems.map((id) => SHOP_ITEMS.find((i) => i.id === id)).filter(Boolean)
+  const equipped = (petEquipment[activePet] || []).map((id) => SHOP_ITEMS.find((i) => i.id === id)).filter(Boolean)
 
   const nav = (dest) => { sfx.click(); onNavigate(dest) }
 
