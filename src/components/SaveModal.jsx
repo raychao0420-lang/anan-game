@@ -57,6 +57,30 @@ export default function SaveModal({ onClose }) {
       >
         <div className="save-title">☁️ 雲端存檔</div>
 
+        <div className="save-howto">
+          <div className="save-howto-row">
+            <span className="save-howto-num">1</span>
+            <div>
+              <b>第一次存檔</b><br />
+              按「⬆️ 立即同步到雲端」，系統會產生一組<b>存檔碼</b>。
+            </div>
+          </div>
+          <div className="save-howto-row">
+            <span className="save-howto-num">2</span>
+            <div>
+              <b>記下存檔碼</b><br />
+              截圖或抄下那 8 個字母數字，換設備時會用到。
+            </div>
+          </div>
+          <div className="save-howto-row">
+            <span className="save-howto-num">3</span>
+            <div>
+              <b>換設備讀取</b><br />
+              在下方輸入存檔碼，按「載入」就能還原所有進度！
+            </div>
+          </div>
+        </div>
+
         {savedCode && (
           <div className="save-code-box">
             <div className="save-code-label">我的存檔碼</div>
