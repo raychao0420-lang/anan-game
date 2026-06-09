@@ -5,14 +5,18 @@
 const EVO = {
   lulu: [
     null,
-    // Stage 1: Light cream — tiny newborn pup
-    { body:'#FDE8C8', ear:'#D4A870', mark:'#C49050', nose:'#2D1B0E' },
-    // Stage 2: Warm peach-pink — chubby rosy pup
-    { body:'#FFCCA8', ear:'#E08050', mark:'#C86030', nose:'#2D1B0E' },
-    // Stage 3: Honey golden — sun-kissed little dog
-    { body:'#F0C840', ear:'#C89820', mark:'#A07010', nose:'#2D1B0E' },
-    // Stage 4: Bright shimmer gold — legendary
-    { body:'#FFE580', ear:'#D4B030', mark:'#C09820', nose:'#3D2B10', glow:'#FFD700' },
+    // Stage 1: Classic Beagle tri-color (tan face, dark saddle, white muzzle)
+    { body:'#C8844A', belly:'#FFF0E0', ear:'#9A5F28', earInner:'#E8A878',
+      saddle:'#2E1808', muzzle:'#FFF8EE', nose:'#1A0808' },
+    // Stage 2: Warmer peachy tones
+    { body:'#D49050', belly:'#FFF5E8', ear:'#AA6F38', earInner:'#F0B898',
+      saddle:'#3C2010', muzzle:'#FFFAF5', nose:'#1A0808' },
+    // Stage 3: Honey golden pup
+    { body:'#E8B040', belly:'#FFFCE8', ear:'#C08820', earInner:'#F8D898',
+      saddle:'#4A2808', muzzle:'#FFFFF5', nose:'#1A0808' },
+    // Stage 4: Legendary gold + glow
+    { body:'#FFD060', belly:'#FFFFFF', ear:'#E0A820', earInner:'#FFE898',
+      saddle:'#604010', muzzle:'#FFFFFF', nose:'#2A1200', glow:'#FFD700' },
   ],
   hana: [
     null,
@@ -35,41 +39,71 @@ const EVO = {
 function LuluBase({ c }) {
   return (
     <g>
-      {/* Right ear (behind head) */}
-      <ellipse cx="72" cy="26" rx="12" ry="21" fill={c.ear} transform="rotate(18,72,26)" />
-      <ellipse cx="72" cy="26" rx="7" ry="14" fill="#E8A888" opacity="0.6" transform="rotate(18,72,26)" />
-      {/* Body */}
-      <ellipse cx="50" cy="92" rx="27" ry="20" fill={c.body} />
-      <ellipse cx="50" cy="93" rx="17" ry="13" fill="#FFF5E6" opacity="0.75" />
-      {/* Head */}
-      <circle cx="50" cy="44" r="30" fill={c.body} />
-      {/* Forehead patch */}
-      <ellipse cx="50" cy="27" rx="9" ry="7" fill={c.mark} />
-      {/* Left ear (front) */}
-      <ellipse cx="28" cy="26" rx="12" ry="21" fill={c.ear} transform="rotate(-18,28,26)" />
-      <ellipse cx="28" cy="26" rx="7" ry="14" fill="#E8A888" opacity="0.6" transform="rotate(-18,28,26)" />
+      {/* ── Body ── */}
+      <ellipse cx="50" cy="95" rx="25" ry="18" fill={c.body} />
+      {/* Dark saddle on back */}
+      <ellipse cx="50" cy="84" rx="18" ry="10" fill={c.saddle} opacity="0.55" />
+      {/* White belly */}
+      <ellipse cx="50" cy="97" rx="15" ry="11" fill={c.belly} />
+
+      {/* ── Floppy ears (classic Beagle — hang down past the chin) ── */}
+      {/* Right ear behind head */}
+      <path d="M74,30 C88,36 92,58 88,70 Q82,82 74,78 C66,70 66,48 70,30 Z" fill={c.ear} />
+      <path d="M74,34 C84,40 86,60 82,70 Q78,78 74,74 C70,68 70,52 72,36 Z" fill={c.earInner} opacity="0.5" />
+      {/* Left ear behind head */}
+      <path d="M26,30 C12,36 8,58 12,70 Q18,82 26,78 C34,70 34,48 30,30 Z" fill={c.ear} />
+      <path d="M26,34 C16,40 14,60 18,70 Q22,78 26,74 C30,68 30,52 28,36 Z" fill={c.earInner} opacity="0.5" />
+
+      {/* ── Head circle ── */}
+      <circle cx="50" cy="44" r="26" fill={c.body} />
+
+      {/* Dark saddle on top of head — classic Beagle black cap */}
+      <ellipse cx="50" cy="25" rx="22" ry="16" fill={c.saddle} />
+
+      {/* Tan eye-brow patches */}
+      <ellipse cx="38" cy="40" rx="9.5" ry="7.5" fill={c.body} opacity="0.9" />
+      <ellipse cx="62" cy="40" rx="9.5" ry="7.5" fill={c.body} opacity="0.9" />
+
+      {/* White forehead blaze */}
+      <ellipse cx="50" cy="33" rx="5" ry="9" fill={c.belly} opacity="0.8" />
+
+      {/* Muzzle — lighter box area */}
+      <ellipse cx="50" cy="56" rx="15" ry="11" fill={c.muzzle} />
+
       {/* Eyes */}
-      <circle cx="41" cy="44" r="7" fill="#2D1B0E" />
-      <circle cx="59" cy="44" r="7" fill="#2D1B0E" />
-      <circle cx="43" cy="41" r="2.5" fill="white" />
-      <circle cx="61" cy="41" r="2.5" fill="white" />
-      <circle cx="42" cy="45" r="2" fill="#0e0805" />
-      <circle cx="60" cy="45" r="2" fill="#0e0805" />
-      {/* Nose */}
-      <ellipse cx="50" cy="55" rx="6" ry="4.5" fill={c.nose} />
-      <ellipse cx="48.5" cy="54" rx="1.5" ry="1" fill="rgba(255,255,255,0.45)" />
+      <circle cx="38" cy="42" r="6.5" fill="#2D1200" />
+      <circle cx="62" cy="42" r="6.5" fill="#2D1200" />
+      <circle cx="40" cy="39" r="2.2" fill="white" />
+      <circle cx="64" cy="39" r="2.2" fill="white" />
+      <circle cx="39" cy="43" r="1.8" fill="#0e0800" />
+      <circle cx="63" cy="43" r="1.8" fill="#0e0800" />
+
+      {/* Nose — wide & square, classic Beagle */}
+      <rect x="43" y="50" width="14" height="9" rx="4" fill={c.nose} />
+      <ellipse cx="47" cy="51.5" rx="2" ry="1.2" fill="rgba(255,255,255,0.4)" />
+      {/* Nose line */}
+      <line x1="50" y1="59" x2="50" y2="63" stroke={c.nose} strokeWidth="1.4" />
+
       {/* Mouth */}
-      <path d="M44,60 Q50,67 56,60" fill="none" stroke={c.nose} strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M44,63 Q50,70 56,63" fill="none" stroke={c.nose} strokeWidth="1.8" strokeLinecap="round" />
+
       {/* Cheek blush */}
-      <ellipse cx="32" cy="54" rx="7" ry="5" fill="rgba(255,160,140,0.32)" />
-      <ellipse cx="68" cy="54" rx="7" ry="5" fill="rgba(255,160,140,0.32)" />
-      {/* Paws */}
-      <ellipse cx="33" cy="107" rx="10" ry="7" fill={c.body} />
-      <ellipse cx="67" cy="107" rx="10" ry="7" fill={c.body} />
-      {[28,33,38].map(x => <ellipse key={x} cx={x} cy="106" rx="3" ry="2" fill={c.mark} opacity="0.4" />)}
-      {[62,67,72].map(x => <ellipse key={x} cx={x} cy="106" rx="3" ry="2" fill={c.mark} opacity="0.4" />)}
-      {/* Tail */}
-      <ellipse cx="78" cy="85" rx="9" ry="7" fill={c.ear} transform="rotate(-25,78,85)" />
+      <ellipse cx="29" cy="54" rx="6.5" ry="4.5" fill="rgba(255,160,140,0.28)" />
+      <ellipse cx="71" cy="54" rx="6.5" ry="4.5" fill="rgba(255,160,140,0.28)" />
+
+      {/* ── Paws ── */}
+      <ellipse cx="34" cy="107" rx="11" ry="7" fill={c.body} />
+      <ellipse cx="66" cy="107" rx="11" ry="7" fill={c.body} />
+      {[29,34,39].map(x => <ellipse key={x} cx={x} cy="106" rx="3.2" ry="2.5" fill={c.saddle} opacity="0.3" />)}
+      {[61,66,71].map(x => <ellipse key={x} cx={x} cy="106" rx="3.2" ry="2.5" fill={c.saddle} opacity="0.3" />)}
+
+      {/* ── Tail — upright Beagle tail with white tip ── */}
+      <path d="M73,90 C86,78 88,64 78,60 C72,58 68,64 71,70"
+        fill="none" stroke={c.body} strokeWidth="9" strokeLinecap="round" />
+      <path d="M73,90 C86,78 88,64 78,60 C72,58 68,64 71,70"
+        fill="none" stroke={c.belly} strokeWidth="4" strokeLinecap="round" opacity="0.75" />
+      {/* White tip */}
+      <circle cx="78" cy="60" r="5" fill={c.belly} />
     </g>
   )
 }
@@ -409,13 +443,13 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
         : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 
-      {/* LULU stage markings — stays puppy but gets cuter! */}
+      {/* LULU stage markings */}
       {petId === 'lulu' && stage === 2 && (
-        /* Stage 2: pink heart on forehead */
-        <g transform="translate(50,24)">
+        /* Stage 2: pink heart on forehead blaze */
+        <g transform="translate(50,31)">
           <path
             d="M0,-3 C-1.5,-6 -6,-4.5 -6,-1.5 C-6,1.5 -3,4.5 0,7.5 C3,4.5 6,1.5 6,-1.5 C6,-4.5 1.5,-6 0,-3 Z"
-            fill="#FF69B4" opacity="0.85"
+            fill="#FF69B4" opacity="0.9"
           />
         </g>
       )}
@@ -423,12 +457,12 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
         /* Stage 3: gold stars on cheeks */
         <g>
           <polygon
-            points="28,48 29.2,50.4 31.8,50.8 29.9,52.6 30.4,55.2 28,54 25.6,55.2 26.1,52.6 24.2,50.8 26.8,50.4"
-            fill="#FFD700" opacity="0.9"
+            points="29,50 30.2,52.4 32.8,52.8 30.9,54.6 31.4,57.2 29,56 26.6,57.2 27.1,54.6 25.2,52.8 27.8,52.4"
+            fill="#FFD700" opacity="0.92"
           />
           <polygon
-            points="72,48 73.2,50.4 75.8,50.8 73.9,52.6 74.4,55.2 72,54 69.6,55.2 70.1,52.6 68.2,50.8 70.8,50.4"
-            fill="#FFD700" opacity="0.9"
+            points="71,50 72.2,52.4 74.8,52.8 72.9,54.6 73.4,57.2 71,56 68.6,57.2 69.1,54.6 67.2,52.8 69.8,52.4"
+            fill="#FFD700" opacity="0.92"
           />
         </g>
       )}
