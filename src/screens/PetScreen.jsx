@@ -1,29 +1,36 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
-import { PETS, PET_ORDER } from '../data/pets'
+import { PETS, PET_ORDER, EVOLVE_EXP } from '../data/pets'
+import { SHOP_ITEMS } from '../data/shop'
+import PetAvatar from '../components/PetAvatar'
 import EvolveModal from '../components/EvolveModal'
 import { sfx } from '../utils/sound'
 import './PetScreen.css'
 
-const EVOLVE_COSTS = [0, 200, 500, 1000] // cost to reach stage 2/3/4
+const FOOD_ITEMS = SHOP_ITEMS.filter(i => i.category === 'food')
 
 export default function PetScreen({ onNavigate }) {
-  const { coins, pets, activePet, evolvePet, unlockPet, setActivePet } = useGameStore()
+  const { coins, pets, activePet, evolvePetFood, unlockPet, setActivePet, petEquipment } = useGameStore()
   const [selected, setSelected] = useState(activePet)
-  const [evolveModal, setEvolveModal] = useState(null) // { petId, newStage }
+  const [evolveModal, setEvolveModal] = useState(null)
 
   const petData = pets[selected]
   const petDef = PETS[selected]
   const stage = petDef.stages[petData.evolutionStage]
   const nextStage = petDef.stages[petData.evolutionStage + 1]
-  const evolveCost = EVOLVE_COSTS[petData.evolutionStage] // cost to go to next stage
-  const canEvolve = petData.unlocked && petData.evolutionStage < 4 && coins >= evolveCost
   const maxEvolved = petData.evolutionStage >= 4
+
+  const foodExp = petData.foodExp || 0
+  const expThreshold = EVOLVE_EXP[petData.evolutionStage] || 0
+  const expPct = maxEvolved ? 100 : Math.min(100, (foodExp / expThreshold) * 100)
+  const canEvolve = petData.unlocked && !maxEvolved && foodExp >= expThreshold
+
+  const equipped = (petEquipment[selected] || []).map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
 
   const handleEvolve = () => {
     if (!canEvolve) return
-    evolvePet(selected, evolveCost)
+    evolvePetFood(selected)
     sfx.evolve()
     setEvolveModal({ petId: selected, newStage: petData.evolutionStage + 1 })
   }
@@ -70,17 +77,16 @@ export default function PetScreen({ onNavigate }) {
       <div className="pet-main">
         <motion.div
           key={selected}
-          className="pet-big-bubble"
-          style={{ background: stage.bg, border: `4px solid ${stage.border}`, boxShadow: stage.glow ? '0 0 24px 8px #FFD700' : '0 6px 24px rgba(0,0,0,0.12)' }}
           initial={{ scale: 0.8, opacity: 0 }}
           animate={petData.unlocked ? { scale: 1, opacity: 1, y: [0, -10, 0] } : { scale: 1, opacity: 1 }}
           transition={petData.unlocked
             ? { scale: { type: 'spring', stiffness: 250 }, y: { repeat: Infinity, duration: 2.5, ease: 'easeInOut' } }
             : { type: 'spring', stiffness: 250 }}
         >
-          <span style={{ fontSize: '5.5rem' }}>
-            {petData.unlocked ? stage.emoji : '🔒'}
-          </span>
+          {petData.unlocked
+            ? <PetAvatar petId={selected} evolutionStage={petData.evolutionStage} equipped={equipped} size={150} />
+            : <div className="pet-locked-bubble">🔒</div>
+          }
         </motion.div>
 
         <div className="pet-info">
@@ -91,7 +97,7 @@ export default function PetScreen({ onNavigate }) {
           )}
         </div>
 
-        {/* Evolution stages progress */}
+        {/* Evolution stage dots */}
         {petData.unlocked && (
           <div className="evo-track">
             {[1, 2, 3, 4].map((s) => (
@@ -99,6 +105,34 @@ export default function PetScreen({ onNavigate }) {
                 <span>{petDef.stages[s].emoji}</span>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Exp bar */}
+        {petData.unlocked && !maxEvolved && (
+          <div className="pet-exp-wrap">
+            <div className="pet-exp-label">
+              <span>🍖 進化經驗</span>
+              <span className="pet-exp-num">{foodExp} / {expThreshold}</span>
+            </div>
+            <div className="pet-exp-bar-bg">
+              <motion.div
+                className="pet-exp-bar"
+                animate={{ width: `${expPct}%` }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              />
+            </div>
+            {/* Food preference hints */}
+            <div className="pet-food-hints">
+              {FOOD_ITEMS.map(f => (
+                <span key={f.id} className="pet-food-hint-chip">
+                  {f.emoji} <b>+{f.exp[selected]}</b>
+                </span>
+              ))}
+            </div>
+            <div className="pet-food-goto" onClick={() => onNavigate('shop')}>
+              去商店餵食 →
+            </div>
           </div>
         )}
       </div>
@@ -119,21 +153,32 @@ export default function PetScreen({ onNavigate }) {
           </div>
         ) : maxEvolved ? (
           <div className="pet-max-label">👑 已達最高進化！傳說等級！</div>
-        ) : (
+        ) : canEvolve ? (
           <div className="pet-evolve-area">
             <div className="pet-evolve-preview">
               <span>下一階段：</span>
-              <span style={{ fontSize: '1.5rem' }}>{nextStage?.emoji}</span>
+              <span style={{ fontSize: '1.4rem' }}>{nextStage?.emoji}</span>
               <span className="pet-evolve-label">{nextStage?.label}</span>
             </div>
-            <div className="pet-evolve-cost">進化費用：{evolveCost} 💰</div>
             <motion.button
-              className={`btn-primary evolve-btn ${!canEvolve ? 'disabled' : ''}`}
-              whileTap={canEvolve ? { scale: 0.94 } : {}}
+              className="btn-primary evolve-btn"
+              whileTap={{ scale: 0.94 }}
               onClick={handleEvolve}
-              disabled={!canEvolve}
+              animate={{ scale: [1, 1.04, 1] }}
+              transition={{ repeat: Infinity, duration: 1.2 }}
             >
-              {canEvolve ? '✨ 進化！' : `💰 還差 ${evolveCost - coins} 金幣`}
+              ✨ 進化！
+            </motion.button>
+          </div>
+        ) : (
+          <div className="pet-feed-hint">
+            <span>繼續餵食來積累進化經驗吧！</span>
+            <motion.button
+              className="btn-secondary"
+              whileTap={{ scale: 0.94 }}
+              onClick={() => onNavigate('shop')}
+            >
+              🛍️ 去商店餵食
             </motion.button>
           </div>
         )}

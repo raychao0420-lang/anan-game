@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { ACHIEVEMENTS } from '../data/achievements'
+import { EVOLVE_EXP } from '../data/pets'
 
 const makeStages = () => {
   const s = {}
@@ -36,9 +37,9 @@ export const useGameStore = create(
       coins: 0,
       activePet: 'lulu',
       pets: {
-        lulu:   { unlocked: true,  evolutionStage: 1, accessories: [] },
-        hana:   { unlocked: false, evolutionStage: 1, accessories: [] },
-        kotaro: { unlocked: false, evolutionStage: 1, accessories: [] },
+        lulu:   { unlocked: true,  evolutionStage: 1, foodExp: 0, accessories: [] },
+        hana:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        kotaro: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
       },
       stages: makeStages(),
       ownedItems:        [],
@@ -86,14 +87,32 @@ export const useGameStore = create(
         get().checkAchievements()
       },
 
-      evolvePet: (petId, cost) => {
+      feedPet: (petId, cost, expGain) => {
         set((s) => {
           if (s.coins < cost) return s
           const pet = s.pets[petId]
-          if (pet.evolutionStage >= 4) return s
           return {
             coins: s.coins - cost,
-            pets: { ...s.pets, [petId]: { ...pet, evolutionStage: pet.evolutionStage + 1 } },
+            pets: { ...s.pets, [petId]: { ...pet, foodExp: (pet.foodExp || 0) + expGain } },
+          }
+        })
+      },
+
+      evolvePetFood: (petId) => {
+        set((s) => {
+          const pet = s.pets[petId]
+          if (pet.evolutionStage >= 4) return s
+          const threshold = EVOLVE_EXP[pet.evolutionStage]
+          if ((pet.foodExp || 0) < threshold) return s
+          return {
+            pets: {
+              ...s.pets,
+              [petId]: {
+                ...pet,
+                evolutionStage: pet.evolutionStage + 1,
+                foodExp: (pet.foodExp || 0) - threshold,
+              },
+            },
           }
         })
         get().checkAchievements()
@@ -219,9 +238,9 @@ export const useGameStore = create(
           coins: 0,
           activePet: 'lulu',
           pets: {
-            lulu:   { unlocked: true,  evolutionStage: 1, accessories: [] },
-            hana:   { unlocked: false, evolutionStage: 1, accessories: [] },
-            kotaro: { unlocked: false, evolutionStage: 1, accessories: [] },
+            lulu:   { unlocked: true,  evolutionStage: 1, foodExp: 0, accessories: [] },
+            hana:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            kotaro: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
           },
           stages: makeStages(),
           ownedItems:        [],

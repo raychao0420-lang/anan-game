@@ -10,10 +10,11 @@ export default function ShopScreen({ onNavigate }) {
   const {
     coins, activePet, pets, ownedItems,
     petEquipment, equippedHomeItems,
-    buyItem, equipToPet, toggleHomeItem,
+    buyItem, equipToPet, toggleHomeItem, feedPet,
   } = useGameStore()
   const [category, setCategory] = useState('food')
   const [buyFeedback, setBuyFeedback] = useState(null)
+  const [feedFlash, setFeedFlash] = useState(null) // { itemId, exp }
 
   const petDef = PETS[activePet]
   const petData = pets[activePet]
@@ -38,6 +39,14 @@ export default function ShopScreen({ onNavigate }) {
     buyItem(item.id, item.price)
     setBuyFeedback(item.id)
     setTimeout(() => setBuyFeedback(null), 1000)
+  }
+
+  const handleFeed = (item) => {
+    if (coins < item.price) return
+    const expGain = item.exp[activePet] || 0
+    feedPet(activePet, item.price, expGain)
+    setFeedFlash({ itemId: item.id, exp: expGain })
+    setTimeout(() => setFeedFlash(null), 1200)
   }
 
   return (
@@ -106,9 +115,11 @@ export default function ShopScreen({ onNavigate }) {
       {/* Items grid */}
       <div className="shop-grid">
         {filtered.map((item) => {
-          const owned = ownedItems.includes(item.id)
+          const isFood = item.category === 'food'
+          const owned = !isFood && ownedItems.includes(item.id)
           const canAfford = coins >= item.price
           const isHome = item.category === 'home'
+          const petExpGain = isFood ? (item.exp[activePet] || 0) : 0
 
           return (
             <motion.div
@@ -127,10 +138,29 @@ export default function ShopScreen({ onNavigate }) {
                   🎉
                 </motion.div>
               )}
+              {feedFlash?.itemId === item.id && (
+                <motion.div
+                  className="shop-buy-flash shop-feed-flash"
+                  initial={{ scale: 0, y: 0 }}
+                  animate={{ scale: [1.2, 1], y: -24, opacity: [1, 1, 0] }}
+                  transition={{ duration: 1 }}
+                >
+                  +{feedFlash.exp} exp
+                </motion.div>
+              )}
 
-              {owned ? (
+              {isFood ? (
+                /* Food: always feedable, costs coins, gives pet-specific exp */
+                <motion.button
+                  className={`shop-buy-btn food-feed-btn ${!canAfford ? 'broke' : ''}`}
+                  whileTap={canAfford ? { scale: 0.9 } : {}}
+                  onClick={() => handleFeed(item)}
+                  disabled={!canAfford}
+                >
+                  🍖 餵食 <span className="feed-exp-badge">+{petExpGain} exp</span>
+                </motion.button>
+              ) : owned ? (
                 isHome ? (
-                  /* Home items: single place/remove button */
                   <motion.button
                     className={`shop-equip-btn ${isHomePlaced(item) ? 'unequip' : ''}`}
                     whileTap={{ scale: 0.9 }}

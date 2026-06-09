@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { PETS } from '../data/pets'
+import PetAvatar from './PetAvatar'
 import './EvolveModal.css'
 
 const SPARKS = Array.from({ length: 12 }, (_, i) => ({
@@ -50,9 +51,7 @@ export default function EvolveModal({ petId, newStage, onClose }) {
 
         <div className="evolve-pets">
           <div className="evolve-before">
-            <div className="evolve-bubble" style={{ background: prev.bg, border: `2px solid ${prev.border}` }}>
-              <span style={{ fontSize: '3rem' }}>{prev.emoji}</span>
-            </div>
+            <PetAvatar petId={petId} evolutionStage={newStage - 1} equipped={[]} size={72} />
             <div className="evolve-sublabel">{prev.label}</div>
           </div>
 
@@ -66,12 +65,10 @@ export default function EvolveModal({ petId, newStage, onClose }) {
 
           <div className="evolve-after">
             <motion.div
-              className="evolve-bubble"
-              style={{ background: next.bg, border: `3px solid ${next.border}`, boxShadow: next.glow ? '0 0 20px 6px #FFD700' : undefined }}
               animate={{ scale: [0.8, 1.15, 1] }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <span style={{ fontSize: '3.5rem' }}>{next.emoji}</span>
+              <PetAvatar petId={petId} evolutionStage={newStage} equipped={[]} size={88} />
             </motion.div>
             <div className="evolve-sublabel new">{next.label}</div>
           </div>

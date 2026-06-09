@@ -5,9 +5,13 @@
 const EVO = {
   lulu: [
     null,
-    { body:'#F5DEB3', ear:'#C4A267', mark:'#C4A267', nose:'#2D1B0E' },
-    { body:'#F0D0A0', ear:'#C09050', mark:'#B08040', nose:'#2D1B0E' },
-    { body:'#EAC090', ear:'#B08040', mark:'#A07030', nose:'#2D1B0E' },
+    // Stage 1: Light cream — tiny newborn pup
+    { body:'#FDE8C8', ear:'#D4A870', mark:'#C49050', nose:'#2D1B0E' },
+    // Stage 2: Warm peach-pink — chubby rosy pup
+    { body:'#FFCCA8', ear:'#E08050', mark:'#C86030', nose:'#2D1B0E' },
+    // Stage 3: Honey golden — sun-kissed little dog
+    { body:'#F0C840', ear:'#C89820', mark:'#A07010', nose:'#2D1B0E' },
+    // Stage 4: Bright shimmer gold — legendary
     { body:'#FFE580', ear:'#D4B030', mark:'#C09820', nose:'#3D2B10', glow:'#FFD700' },
   ],
   hana: [
@@ -404,6 +408,30 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
         ? <LuluBase c={colors} />
         : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
+
+      {/* LULU stage markings — stays puppy but gets cuter! */}
+      {petId === 'lulu' && stage === 2 && (
+        /* Stage 2: pink heart on forehead */
+        <g transform="translate(50,24)">
+          <path
+            d="M0,-3 C-1.5,-6 -6,-4.5 -6,-1.5 C-6,1.5 -3,4.5 0,7.5 C3,4.5 6,1.5 6,-1.5 C6,-4.5 1.5,-6 0,-3 Z"
+            fill="#FF69B4" opacity="0.85"
+          />
+        </g>
+      )}
+      {petId === 'lulu' && stage === 3 && (
+        /* Stage 3: gold stars on cheeks */
+        <g>
+          <polygon
+            points="28,48 29.2,50.4 31.8,50.8 29.9,52.6 30.4,55.2 28,54 25.6,55.2 26.1,52.6 24.2,50.8 26.8,50.4"
+            fill="#FFD700" opacity="0.9"
+          />
+          <polygon
+            points="72,48 73.2,50.4 75.8,50.8 73.9,52.6 74.4,55.2 72,54 69.6,55.2 70.1,52.6 68.2,50.8 70.8,50.4"
+            fill="#FFD700" opacity="0.9"
+          />
+        </g>
+      )}
 
       {/* Clothes (over body) */}
       {clothes?.id === 'sweater' && <ClothesSweater />}

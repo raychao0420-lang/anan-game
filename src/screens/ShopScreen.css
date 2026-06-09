@@ -255,6 +255,31 @@
 }
 .shop-boss-locked { font-size: 0.8rem; font-weight: 700; color: #9b30ff; padding: 6px 10px; background: #f5e6ff; border-radius: 10px; }
 
+.food-feed-btn {
+  background: linear-gradient(135deg, #FF9A3C, #FF6B6B) !important;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+}
+
+.feed-exp-badge {
+  background: rgba(255,255,255,0.3);
+  border-radius: 8px;
+  padding: 1px 6px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.shop-feed-flash {
+  color: #FF6B00;
+  font-weight: 900;
+  font-size: 1rem !important;
+  background: rgba(255, 200, 100, 0.9);
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+
 @media (min-width: 640px) {
   .shop-header { padding: 20px 28px; }
   .shop-title  { font-size: 1.5rem; }
