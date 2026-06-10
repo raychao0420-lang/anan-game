@@ -8,7 +8,7 @@ const CHAPTERS = [
   { label: '三位數', range: [11, 20], icon: '🔢' },
   { label: '乘法', range: [21, 30], icon: '✖️' },
   { label: '除法', range: [31, 40], icon: '➗' },
-  { label: '加減進階', range: [41, 45], icon: '⚡' },
+  { label: '加減進階', range: [41, 55], icon: '⚡' },
 ]
 
 // chapter-first-stage → prerequisite stage

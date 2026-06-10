@@ -8,7 +8,11 @@ import { sfx } from '../utils/sound'
 import './GameScreen.css'
 
 const QUESTIONS_PER_STAGE = 10
-const getTimeLimit = (id) => (id >= 11 && id <= 20) ? 30 : 20
+const getTimeLimit = (id) => {
+  if (id >= 11 && id <= 20) return 30               // 3位數
+  if (id <= 10 || (id >= 41 && id <= 55)) return 35 // 2位數
+  return 20                                          // 乘除法
+}
 
 // ── Vertical question display ──────────────────────────────────────────────────
 function VerticalQuestion({ q }) {

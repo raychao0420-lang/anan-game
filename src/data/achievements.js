@@ -1,7 +1,7 @@
 export const ACHIEVEMENTS = [
   { id: 'first_stage',  icon: '🌱', label: '初出茅廬',   desc: '完成第1關' },
   { id: 'stage_10',     icon: '🔟', label: '闖關十傑',   desc: '完成10個關卡' },
-  { id: 'stage_all',    icon: '🏆', label: '數學大師',   desc: '完成全部45關' },
+  { id: 'stage_all',    icon: '🏆', label: '數學大師',   desc: '完成全部55關' },
   { id: 'perfect',      icon: '💯', label: '完美主義',   desc: '某關卡答對全10題' },
   { id: 'combo10',      icon: '🔥', label: '火力全開',   desc: '達成10連答' },
   { id: 'evolve1',      icon: '✨', label: '成長的喜悅', desc: '進化寵物一次' },

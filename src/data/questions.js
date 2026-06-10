@@ -57,6 +57,26 @@ const generators = {
   43: () => { const a = rand(16, 74); const b = rand(16, 99 - a); return makeAdd(a, b) },
   44: () => { const a = rand(32, 99); const b = rand(13, a - 1); return makeSub(a, b) },
   45: () => { const ops = [generators[41], generators[42], generators[43], generators[44]]; return ops[rand(0, 3)]() },
+  // 必進位加法：個位相加必進位
+  46: () => { const aO = rand(2, 9); const bO = rand(10 - aO, 9); const aT = rand(1, 8); const bT = rand(1, Math.min(8, 9 - aT)); return makeAdd(aT * 10 + aO, bT * 10 + bO) },
+  // 必退位減法：個位必退位
+  47: () => { const aO = rand(0, 8); const bO = rand(aO + 1, 9); const aT = rand(2, 9); const bT = rand(1, aT - 1); return makeSub(aT * 10 + aO, bT * 10 + bO) },
+  // 大數相加（兩數都 40+）
+  48: () => { const a = rand(41, 79); const b = rand(10, 99 - a); return makeAdd(a, b) },
+  // 大數相減（被減數 60+）
+  49: () => { const a = rand(61, 99); const b = rand(11, a - 11); return makeSub(a, b) },
+  // 混合挑戰 I
+  50: () => { const ops = [generators[46], generators[47], generators[48], generators[49]]; return ops[rand(0, 3)]() },
+  // 加法衝刺（中等數值）
+  51: () => { const a = rand(23, 68); const b = rand(13, 99 - a); return makeAdd(a, b) },
+  // 減法衝刺（中等數值）
+  52: () => { const a = rand(34, 89); const b = rand(12, a - 12); return makeSub(a, b) },
+  // 進位＋大數混合
+  53: () => { const ops = [generators[46], generators[48], generators[43]]; return ops[rand(0, 2)]() },
+  // 退位＋大數混合
+  54: () => { const ops = [generators[47], generators[49], generators[44]]; return ops[rand(0, 2)]() },
+  // 加減終極挑戰
+  55: () => { const ops = [generators[46], generators[47], generators[48], generators[49], generators[51], generators[52]]; return ops[rand(0, 5)]() },
 }
 
 // Fill missing stages with similar difficulty
@@ -88,6 +108,8 @@ export const STAGE_NAMES = {
   21: '乘法初探', 22: '乘法進階', 23: '九九全表', 24: '乘法高手', 25: '乘法達人',
   31: '除法初探', 32: '除法進階', 33: '除法全攻', 34: '除法高手', 35: '除法達人',
   41: '進階加法', 42: '進階減法', 43: '大數加法', 44: '大數減法', 45: '加減總挑戰',
+  46: '必進位加', 47: '必退位減', 48: '大數加II', 49: '大數減II', 50: '混合挑戰I',
+  51: '加法衝刺', 52: '減法衝刺', 53: '進位大數', 54: '退位大數', 55: '加減終極',
 }
 
 for (let i = 16; i <= 20; i++) STAGE_NAMES[i] = `挑戰 ${i}`
