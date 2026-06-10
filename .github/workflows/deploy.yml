@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -28,11 +29,10 @@ jobs:
           cache: npm
 
       - run: npm ci
-      - run: npm run build
-        env:
-          VITE_GIST_TOKEN: ${{ secrets.VITE_GIST_TOKEN }}
 
-      - uses: actions/configure-pages@v4
+      - run: npm run build
+
+      - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
