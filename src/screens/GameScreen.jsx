@@ -10,6 +10,108 @@ import './GameScreen.css'
 const QUESTIONS_PER_STAGE = 10
 const getTimeLimit = (id) => (id >= 11 && id <= 20) ? 30 : 20
 
+// ── Vertical question display ──────────────────────────────────────────────────
+function VerticalQuestion({ q }) {
+  const { num1, num2, operator } = q
+  const s1 = String(num1)
+  const s2 = String(num2)
+  const sp = ' '
+  const w  = Math.max(s1.length, 1 + s2.length)
+
+  return (
+    <div className="vq">
+      <div>{sp.repeat(w - s1.length)}{s1}</div>
+      <div><span className="vq-op">{operator}</span>{sp.repeat(w - 1 - s2.length)}{s2}</div>
+      <div className="vq-line" />
+      <div className="vq-ans">{sp.repeat(w - 1)}？</div>
+    </div>
+  )
+}
+
+// ── Scratch pad (doodle canvas) ────────────────────────────────────────────────
+function DoodleCanvas() {
+  const canvasRef  = useRef(null)
+  const drawingRef = useRef(false)
+  const lastRef    = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const init = () => {
+      const rect = canvas.getBoundingClientRect()
+      if (!rect.width) return
+      const dpr = window.devicePixelRatio || 1
+      canvas.width  = Math.round(rect.width  * dpr)
+      canvas.height = Math.round(rect.height * dpr)
+      const ctx = canvas.getContext('2d')
+      ctx.scale(dpr, dpr)
+      ctx.strokeStyle = '#444'
+      ctx.lineWidth   = 2.5
+      ctx.lineCap     = 'round'
+      ctx.lineJoin    = 'round'
+    }
+    const obs = new ResizeObserver(init)
+    obs.observe(canvas)
+    return () => obs.disconnect()
+  }, [])
+
+  const getXY = (e) => {
+    const rect = canvasRef.current.getBoundingClientRect()
+    const src  = e.touches ? e.touches[0] : e
+    return { x: src.clientX - rect.left, y: src.clientY - rect.top }
+  }
+
+  const onStart = (e) => {
+    e.preventDefault()
+    drawingRef.current = true
+    lastRef.current    = getXY(e)
+    const ctx = canvasRef.current.getContext('2d')
+    ctx.beginPath()
+    ctx.arc(lastRef.current.x, lastRef.current.y, 1, 0, Math.PI * 2)
+    ctx.fillStyle = '#444'
+    ctx.fill()
+  }
+
+  const onMove = (e) => {
+    if (!drawingRef.current) return
+    e.preventDefault()
+    const pos = getXY(e)
+    const ctx = canvasRef.current.getContext('2d')
+    ctx.beginPath()
+    ctx.moveTo(lastRef.current.x, lastRef.current.y)
+    ctx.lineTo(pos.x, pos.y)
+    ctx.stroke()
+    lastRef.current = pos
+  }
+
+  const onEnd = () => { drawingRef.current = false; lastRef.current = null }
+
+  const clear = () => {
+    const c = canvasRef.current
+    c.getContext('2d').clearRect(0, 0, c.width, c.height)
+  }
+
+  return (
+    <div className="doodle-area">
+      <div className="doodle-topbar">
+        <span className="doodle-label">✏️ 算草紙</span>
+        <button className="doodle-clear-btn" onClick={clear} title="清除">🗑️</button>
+      </div>
+      <canvas
+        ref={canvasRef}
+        className="doodle-canvas"
+        onMouseDown={onStart}
+        onMouseMove={onMove}
+        onMouseUp={onEnd}
+        onMouseLeave={onEnd}
+        onTouchStart={onStart}
+        onTouchMove={onMove}
+        onTouchEnd={onEnd}
+      />
+    </div>
+  )
+}
+
 export default function GameScreen({ stageId, onFinish }) {
   const { activePet, pets, updateDailyProgress, updateMaxCombo, updateTotalCoins } = useGameStore()
   const pet = PETS[activePet]
@@ -171,7 +273,7 @@ export default function GameScreen({ stageId, onFinish }) {
         </AnimatePresence>
       </div>
 
-      {/* Question */}
+      {/* Question (vertical) */}
       <motion.div
         key={qIndex}
         className="question-card"
@@ -179,8 +281,11 @@ export default function GameScreen({ stageId, onFinish }) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 300 }}
       >
-        <span className="question-text">{currentQ.display} = ?</span>
+        <VerticalQuestion q={currentQ} />
       </motion.div>
+
+      {/* Scratch pad – key clears canvas on each new question */}
+      <DoodleCanvas key={qIndex} />
 
       {/* Number pad */}
       <div className="game-numpad">
