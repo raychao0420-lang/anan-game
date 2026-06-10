@@ -14,7 +14,7 @@ function calcStars(correctCount) {
 }
 
 export default function ResultScreen({ stageId, results, onRetry, onNext, onHome, onBoss }) {
-  const { completeStage, activePet, pets, bossCleared, updateDailyProgress } = useGameStore()
+  const { completeStage, addCoins, activePet, pets, bossCleared, updateDailyProgress } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
@@ -24,12 +24,19 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
   const stars = calcStars(correctCount)
 
   const savedData = useGameStore(s => s.stages[stageId])
-  const alreadySaved = savedData?.completed
-  if (!alreadySaved) {
-    completeStage(stageId, stars, totalCoins)
-    updateDailyProgress('stages', 1)
-    if (stars === 3) updateDailyProgress('stars3', 1)
-  }
+  const isReplay = savedData?.completed
+  const replayCoins = Math.floor(totalCoins / 4)
+  const displayCoins = isReplay ? replayCoins : totalCoins
+
+  useEffect(() => {
+    if (!isReplay) {
+      completeStage(stageId, stars, totalCoins)
+      updateDailyProgress('stages', 1)
+      if (stars === 3) updateDailyProgress('stars3', 1)
+    } else if (replayCoins > 0) {
+      addCoins(replayCoins)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const t1 = setTimeout(() => {
@@ -37,7 +44,7 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
         setTimeout(() => sfx.star(i), (i - 1) * 200)
       }
     }, 500)
-    const t2 = setTimeout(() => { if (totalCoins > 0) sfx.coins() }, 1200)
+    const t2 = setTimeout(() => { if (displayCoins > 0) sfx.coins() }, 1200)
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -97,8 +104,8 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
             <span className="result-val">{correctCount} / {results.length}</span>
           </div>
           <div className="result-row">
-            <span>獲得金幣</span>
-            <span className="result-val coins">+{totalCoins} 💰</span>
+            <span>獲得金幣{isReplay && <span className="replay-badge">重複挑戰 ×¼</span>}</span>
+            <span className="result-val coins">+{displayCoins} 💰</span>
           </div>
         </div>
 

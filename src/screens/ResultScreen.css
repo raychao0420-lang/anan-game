@@ -75,6 +75,18 @@
   color: #CC8800;
 }
 
+.replay-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  background: #f0e0b0;
+  color: #996600;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
 .result-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
