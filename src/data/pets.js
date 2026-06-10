@@ -1,4 +1,4 @@
-// LULU: 膽小、怕人、怕水的米格魯（永遠的小奶狗！）
+// LULU: 膽小、怕人、怕水的米格魯（永遠的小狗寶貝！）
 // Hana & Kotaro: 日本超人氣水獺組合
 // 吉吉: 神秘隱藏黑貓，解鎖 Kotaro 後出現
 
@@ -14,10 +14,10 @@ export const PETS = {
     unlockCost: 0,
     stages: [
       null,
-      { emoji: '🐶', label: '小奶狗',     size: '5rem', bg: '#FFF0E0', border: '#FFB347' },
-      { emoji: '🐶', label: '蓬鬆幼犬',   size: '5rem', bg: '#FFE0D0', border: '#FF9060' },
-      { emoji: '🐶', label: '蜂蜜小狗',   size: '5rem', bg: '#FFF0A0', border: '#FFB800' },
-      { emoji: '🐶', label: '傳說小奶狗', size: '5rem', bg: '#FFE066', border: '#FFD700', glow: true },
+      { emoji: '🐶', label: '狗寶寶',     size: '5rem', bg: '#FFF0E0', border: '#FFB347' },
+      { emoji: '🐶', label: '毛茸茸',     size: '5rem', bg: '#FFE0D0', border: '#FF9060' },
+      { emoji: '🐶', label: '蜂蜜狗狗',   size: '5rem', bg: '#FFF0A0', border: '#FFB800' },
+      { emoji: '🐶', label: '傳說毛寶貝', size: '5rem', bg: '#FFE066', border: '#FFD700', glow: true },
     ],
     scaredEmoji: '😰',
     happyEmoji: '🥰',
