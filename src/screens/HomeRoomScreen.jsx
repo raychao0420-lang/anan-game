@@ -9,6 +9,13 @@ import './HomeRoomScreen.css'
 
 const POOL_RADIUS = 18   // % distance threshold for pool interaction
 
+// Items closer to back wall (small y) appear smaller; front of room (large y) = full size
+function getDepthScale(y) {
+  if (y < 38) return 1.0  // on the wall
+  const t = Math.min(1, (y - 38) / 50)
+  return 0.68 + t * 0.32
+}
+
 const PET_CONFIG = {
   lulu:   { startPos: { x: 12, y: 50 }, bobDuration: 1.8, wanderInterval: 2800, burstEmoji: '🐾' },
   hana:   { startPos: { x: 44, y: 54 }, bobDuration: 2.1, wanderInterval: 3500, burstEmoji: '💙' },
@@ -65,12 +72,21 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
   }
 
   const isPool = item.id === 'pool'
+  const isFloorItem = localPos.y >= 38
+  const depthScale = getDepthScale(localPos.y)
+  const itemZIndex = dragging ? 100 : (isFloorItem ? Math.round(localPos.y) : 7)
 
   return (
     <motion.div
       className={`room-deco ${dragging ? 'dragging' : ''}`}
-      style={{ left: `${localPos.x}%`, top: `${localPos.y}%`, cursor: dragging ? 'grabbing' : 'grab' }}
-      animate={{ scale: dragging ? 1.1 : 1, opacity: 1 }}
+      style={{
+        left: `${localPos.x}%`,
+        top: `${localPos.y}%`,
+        cursor: dragging ? 'grabbing' : 'grab',
+        zIndex: itemZIndex,
+        transformOrigin: 'bottom center',
+      }}
+      animate={{ scale: dragging ? Math.max(depthScale * 1.12, 0.88) : depthScale, opacity: 1 }}
       initial={{ scale: 0, opacity: 0 }}
       transition={{ type: 'spring', stiffness: 280 }}
       onPointerDown={onPointerDown}
@@ -78,6 +94,7 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
     >
+      {isFloorItem && <div className="room-deco-shadow" />}
       {isPool ? (
         <div className="room-pool-visual">
           <div className="room-pool-water">
@@ -157,12 +174,21 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
     onPetClick(petId)
   }
 
+  const depthScale = getDepthScale(pos.y)
+
   return (
     <div
       className={`room-pet ${isInPool ? 'in-pool' : ''} ${isScared ? 'scared-pool' : ''}`}
-      style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
+      style={{
+        left: `${pos.x}%`,
+        top: `${pos.y}%`,
+        transform: `translateX(-50%) scale(${depthScale})`,
+        transformOrigin: 'bottom center',
+        zIndex: Math.round(pos.y),
+      }}
       onClick={handleClick}
     >
+      <div className="room-pet-shadow" />
       {/* Bob layer */}
       <motion.div
         animate={{ y: isInPool ? [0, -4, 0] : [0, -10, 0] }}
@@ -251,6 +277,13 @@ export default function HomeRoomScreen({ onNavigate }) {
       </div>
 
       <div className="room-scene" ref={containerRef}>
+        {/* Isometric room background layers */}
+        <div className="room-wall" />
+        <div className="room-floor-wrap">
+          <div className="room-floor-grid" />
+        </div>
+        <div className="room-side-shade" />
+
         {/* Decorations (draggable) */}
         {homeDecos.map((item, idx) => (
           <DraggableDeco
