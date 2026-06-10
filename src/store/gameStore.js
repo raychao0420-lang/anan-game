@@ -158,9 +158,12 @@ export const useGameStore = create(
           return { equippedHomeItems: [...s.equippedHomeItems, itemId] }
         }),
 
-      moveHomeDeco: (itemId, x, y) =>
+      moveHomeDeco: (itemId, x, y, scale) =>
         set((s) => ({
-          homeDecoPositions: { ...s.homeDecoPositions, [itemId]: { x, y } },
+          homeDecoPositions: {
+            ...s.homeDecoPositions,
+            [itemId]: { x, y, scale: scale ?? s.homeDecoPositions[itemId]?.scale ?? 1 },
+          },
         })),
 
       // ── M3: Daily tasks ──

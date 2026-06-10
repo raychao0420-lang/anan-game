@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
@@ -40,44 +40,117 @@ const DECO_BOUNDS = { xMin: 2,  xMax: 88, yMin: 2,  yMax: 86 }
 // ── Draggable decoration ──────────────────────────────────────────────────────
 
 function DraggableDeco({ item, pos, onMove, containerRef }) {
-  const [localPos, setLocalPos] = useState(pos)
-  const [dragging, setDragging] = useState(false)
-  const startRef = useRef(null)
+  const [localPos, setLocalPos]   = useState({ x: pos.x, y: pos.y })
+  const [userScale, setUserScale] = useState(pos.scale ?? 1)
+  const [dragging, setDragging]   = useState(false)
+  const [pinching, setPinching]   = useState(false)
+
+  const pointersRef   = useRef(new Map())
+  const dragStartRef  = useRef(null)
+  const pinchStartRef = useRef(null)
+  const localPosRef   = useRef(localPos)
+  const userScaleRef  = useRef(pos.scale ?? 1)
+  const wheelTimerRef = useRef(null)
+  const decoRef       = useRef(null)
+
+  useEffect(() => { localPosRef.current = localPos },  [localPos])
+  useEffect(() => { userScaleRef.current = userScale }, [userScale])
 
   useEffect(() => {
-    if (!dragging) setLocalPos(pos)
-  }, [pos.x, pos.y, dragging])
+    if (!dragging && !pinching) {
+      setLocalPos({ x: pos.x, y: pos.y })
+      setUserScale(pos.scale ?? 1)
+    }
+  }, [pos.x, pos.y, pos.scale, dragging, pinching])
+
+  const save = useCallback(() => {
+    onMove(item.id, localPosRef.current.x, localPosRef.current.y, userScaleRef.current)
+  }, [item.id, onMove])
+
+  // Non-passive wheel listener for desktop scaling
+  useEffect(() => {
+    const el = decoRef.current
+    if (!el) return
+    const handleWheel = (e) => {
+      e.preventDefault()
+      const factor = e.deltaY < 0 ? 1.1 : 0.9
+      const next = Math.max(0.3, Math.min(3.0, userScaleRef.current * factor))
+      userScaleRef.current = next
+      setUserScale(next)
+      clearTimeout(wheelTimerRef.current)
+      wheelTimerRef.current = setTimeout(save, 400)
+    }
+    el.addEventListener('wheel', handleWheel, { passive: false })
+    return () => el.removeEventListener('wheel', handleWheel)
+  }, [save])
 
   const onPointerDown = (e) => {
     e.currentTarget.setPointerCapture(e.pointerId)
-    const rect = containerRef.current?.getBoundingClientRect()
-    if (!rect) return
-    setDragging(true)
-    startRef.current = { cx: e.clientX, cy: e.clientY, px: localPos.x, py: localPos.y, rw: rect.width, rh: rect.height }
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+    if (pointersRef.current.size === 1) {
+      const rect = containerRef.current?.getBoundingClientRect()
+      if (!rect) return
+      setDragging(true)
+      dragStartRef.current = {
+        cx: e.clientX, cy: e.clientY,
+        px: localPosRef.current.x, py: localPosRef.current.y,
+        rw: rect.width, rh: rect.height,
+      }
+    } else if (pointersRef.current.size === 2) {
+      setDragging(false)
+      dragStartRef.current = null
+      setPinching(true)
+      const pts = [...pointersRef.current.values()]
+      const dist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y)
+      pinchStartRef.current = { dist, scale: userScaleRef.current }
+    }
   }
 
   const onPointerMove = (e) => {
-    if (!dragging || !startRef.current) return
-    const { cx, cy, px, py, rw, rh } = startRef.current
-    const nx = Math.max(DECO_BOUNDS.xMin, Math.min(DECO_BOUNDS.xMax, px + (e.clientX - cx) / rw * 100))
-    const ny = Math.max(DECO_BOUNDS.yMin, Math.min(DECO_BOUNDS.yMax, py + (e.clientY - cy) / rh * 100))
-    setLocalPos({ x: nx, y: ny })
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+    if (pointersRef.current.size >= 2 && pinchStartRef.current) {
+      const pts = [...pointersRef.current.values()]
+      const dist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y)
+      const next = Math.max(0.3, Math.min(3.0, pinchStartRef.current.scale * dist / pinchStartRef.current.dist))
+      userScaleRef.current = next
+      setUserScale(next)
+    } else if (dragging && dragStartRef.current) {
+      const { cx, cy, px, py, rw, rh } = dragStartRef.current
+      const nx = Math.max(DECO_BOUNDS.xMin, Math.min(DECO_BOUNDS.xMax, px + (e.clientX - cx) / rw * 100))
+      const ny = Math.max(DECO_BOUNDS.yMin, Math.min(DECO_BOUNDS.yMax, py + (e.clientY - cy) / rh * 100))
+      setLocalPos({ x: nx, y: ny })
+    }
   }
 
-  const onPointerUp = () => {
-    if (!dragging) return
-    setDragging(false)
-    startRef.current = null
-    onMove(item.id, localPos.x, localPos.y)
+  const onPointerUp = (e) => {
+    pointersRef.current.delete(e.pointerId)
+    const remaining = pointersRef.current.size
+
+    if (remaining === 0) {
+      if (dragging || pinching) save()
+      setDragging(false)
+      setPinching(false)
+      dragStartRef.current  = null
+      pinchStartRef.current = null
+    } else if (remaining < 2 && pinching) {
+      save()
+      setPinching(false)
+      pinchStartRef.current = null
+    }
   }
 
-  const isPool = item.id === 'pool'
+  const isPool      = item.id === 'pool'
   const isFloorItem = localPos.y >= 38
-  const depthScale = getDepthScale(localPos.y)
-  const itemZIndex = dragging ? 100 : (isFloorItem ? Math.round(localPos.y) : 7)
+  const depthScale  = getDepthScale(localPos.y)
+  const finalScale  = depthScale * userScale
+  const activeScale = dragging ? Math.max(finalScale * 1.12, 0.88) : finalScale
+  const itemZIndex  = dragging ? 100 : (isFloorItem ? Math.round(localPos.y) : 7)
 
   return (
     <motion.div
+      ref={decoRef}
       className={`room-deco ${dragging ? 'dragging' : ''}`}
       style={{
         left: `${localPos.x}%`,
@@ -86,9 +159,9 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
         zIndex: itemZIndex,
         transformOrigin: 'bottom center',
       }}
-      animate={{ scale: dragging ? Math.max(depthScale * 1.12, 0.88) : depthScale, opacity: 1 }}
+      animate={{ scale: pinching ? finalScale : activeScale, opacity: 1 }}
       initial={{ scale: 0, opacity: 0 }}
-      transition={{ type: 'spring', stiffness: 280 }}
+      transition={pinching ? { duration: 0 } : { type: 'spring', stiffness: 280 }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -109,7 +182,8 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
           <div className="room-deco-label">{item.name}</div>
         </>
       )}
-      {dragging && <div className="room-deco-drag-hint">放開擺放</div>}
+      {dragging  && <div className="room-deco-drag-hint">放開擺放</div>}
+      {pinching  && <div className="room-deco-drag-hint">縮放中...</div>}
     </motion.div>
   )
 }
@@ -255,8 +329,8 @@ export default function HomeRoomScreen({ onNavigate }) {
 
   const getDecoPos = (item, idx) => {
     if (homeDecoPositions[item.id]) return homeDecoPositions[item.id]
-    if (item.id === 'pool') return { x: 45, y: 71 }
-    return DECO_SLOTS[idx % DECO_SLOTS.length]
+    if (item.id === 'pool') return { x: 45, y: 71, scale: 1 }
+    return { ...DECO_SLOTS[idx % DECO_SLOTS.length], scale: 1 }
   }
 
   const handlePetClick = (petId) => {
