@@ -8,7 +8,11 @@ const CHAPTERS = [
   { label: '三位數', range: [11, 20], icon: '🔢' },
   { label: '乘法', range: [21, 30], icon: '✖️' },
   { label: '除法', range: [31, 40], icon: '➗' },
+  { label: '加減進階', range: [41, 45], icon: '⚡' },
 ]
+
+// chapter-first-stage → prerequisite stage
+const CHAPTER_PREREQS = { 41: 10 }
 
 function Stars({ count }) {
   return (
@@ -25,7 +29,8 @@ export default function StageScreen({ onNavigate, onStartStage }) {
 
   const isUnlocked = (id) => {
     if (id === 1) return true
-    return stages[id - 1]?.completed
+    const prereq = CHAPTER_PREREQS[id] ?? id - 1
+    return stages[prereq]?.completed
   }
 
   return (

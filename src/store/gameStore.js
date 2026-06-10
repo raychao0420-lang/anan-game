@@ -5,7 +5,7 @@ import { EVOLVE_EXP } from '../data/pets'
 
 const makeStages = () => {
   const s = {}
-  for (let i = 1; i <= 40; i++) s[i] = { completed: false, stars: 0 }
+  for (let i = 1; i <= 45; i++) s[i] = { completed: false, stars: 0 }
   return s
 }
 
@@ -16,7 +16,7 @@ function checkAllAchievements(s) {
 
   if (!a.first_stage  && completedCount >= 1)  unlocked.push('first_stage')
   if (!a.stage_10     && completedCount >= 10) unlocked.push('stage_10')
-  if (!a.stage_all    && completedCount >= 40) unlocked.push('stage_all')
+  if (!a.stage_all    && completedCount >= 45) unlocked.push('stage_all')
   if (!a.perfect      && s.perfectStages > 0)  unlocked.push('perfect')
   if (!a.combo10      && s.maxCombo >= 10)      unlocked.push('combo10')
   if (!a.evolve1      && Object.values(s.pets).some(p => p.evolutionStage >= 2)) unlocked.push('evolve1')

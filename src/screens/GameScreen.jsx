@@ -7,14 +7,16 @@ import NumberPad from '../components/NumberPad'
 import { sfx } from '../utils/sound'
 import './GameScreen.css'
 
-const TIME_LIMIT = 20
 const QUESTIONS_PER_STAGE = 10
+const getTimeLimit = (id) => (id >= 11 && id <= 20) ? 30 : 20
 
 export default function GameScreen({ stageId, onFinish }) {
   const { activePet, pets, updateDailyProgress, updateMaxCombo, updateTotalCoins } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
+
+  const TIME_LIMIT = getTimeLimit(stageId)
 
   const [questions] = useState(() => generateStageQuestions(stageId))
   const [qIndex, setQIndex] = useState(0)

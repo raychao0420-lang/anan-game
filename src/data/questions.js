@@ -51,6 +51,12 @@ const generators = {
   33: () => makeDiv(rand(2, 9), rand(2, 9)),
   34: () => makeDiv(rand(2, 9), rand(2, 9)),
   35: () => { const ops = [generators[31], generators[32]]; return ops[rand(0, 1)]() },
+  // 2位數進階
+  41: () => { const a = rand(28, 79); const b = rand(10, 99 - a); return makeAdd(a, b) },
+  42: () => { const a = rand(43, 98); const b = rand(11, a - 11); return makeSub(a, b) },
+  43: () => { const a = rand(16, 74); const b = rand(16, 99 - a); return makeAdd(a, b) },
+  44: () => { const a = rand(32, 99); const b = rand(13, a - 1); return makeSub(a, b) },
+  45: () => { const ops = [generators[41], generators[42], generators[43], generators[44]]; return ops[rand(0, 3)]() },
 }
 
 // Fill missing stages with similar difficulty
@@ -81,6 +87,7 @@ export const STAGE_NAMES = {
   11: '三位數加', 12: '三位數加+', 13: '三位數減', 14: '三位數減+', 15: '三位混合',
   21: '乘法初探', 22: '乘法進階', 23: '九九全表', 24: '乘法高手', 25: '乘法達人',
   31: '除法初探', 32: '除法進階', 33: '除法全攻', 34: '除法高手', 35: '除法達人',
+  41: '進階加法', 42: '進階減法', 43: '大數加法', 44: '大數減法', 45: '加減總挑戰',
 }
 
 for (let i = 16; i <= 20; i++) STAGE_NAMES[i] = `挑戰 ${i}`

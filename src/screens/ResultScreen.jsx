@@ -128,7 +128,7 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
           <motion.button className="btn-secondary" whileTap={{ scale: 0.92 }} onClick={onRetry}>
             🔄 再挑戰
           </motion.button>
-          {stageId < 40 && (
+          {stageId < 45 && (
             <motion.button className="btn-primary" whileTap={{ scale: 0.92 }} onClick={onNext}>
               下一關 →
             </motion.button>
