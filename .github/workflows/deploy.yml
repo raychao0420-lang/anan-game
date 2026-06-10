@@ -31,6 +31,8 @@ jobs:
       - run: npm ci
 
       - run: npm run build
+        env:
+          VITE_GIST_TOKEN: ${{ secrets.VITE_GIST_TOKEN }}
 
       - uses: actions/configure-pages@v5
 
