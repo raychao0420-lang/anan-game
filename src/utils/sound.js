@@ -56,7 +56,7 @@ export const sfx = {
   unlock:   () => [523, 784, 1047].forEach((f, i) => tone(f, 0.12, 'sine', 0.18, i * 0.1)),
   achieve:  () => { tone(659, 0.1); tone(784, 0.1, 'sine', 0.2, 0.1); tone(1047, 0.2, 'sine', 0.2, 0.22) },
   star:     (n) => tone([523, 659, 784][n - 1] || 523, 0.12, 'sine', 0.2),
-  beagle:   () => playAudioFile(new URL('../assets/sounds/beagle-bark.wav', import.meta.url).href),
+  beagle:   () => playAudioFile(new URL('../assets/sounds/beagle-bark.mp3', import.meta.url).href),
   otter:    () => {
     tone(1200, 0.06, 'sine', 0.22)
     tone(1450, 0.05, 'sine', 0.18, 0.1)
