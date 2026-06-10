@@ -57,6 +57,8 @@ export default function PetScreen({ onNavigate }) {
         {PET_ORDER.map((id) => {
           const p = PETS[id]
           const pd = pets[id]
+          const isHidden = p.unlockRequires && !pets[p.unlockRequires]?.unlocked
+          if (isHidden) return null
           return (
             <motion.button
               key={id}
@@ -67,7 +69,7 @@ export default function PetScreen({ onNavigate }) {
               <span className="pet-tab-emoji">
                 {pd.unlocked ? p.stages[pd.evolutionStage].emoji : '🔒'}
               </span>
-              <span className="pet-tab-name">{p.name}</span>
+              <span className="pet-tab-name">{pd.unlocked ? p.name : '???'}</span>
             </motion.button>
           )
         })}
@@ -90,8 +92,16 @@ export default function PetScreen({ onNavigate }) {
         </motion.div>
 
         <div className="pet-info">
-          <div className="pet-info-name">{petDef.name}</div>
-          <div className="pet-info-breed">{petDef.breed} · {petDef.personality}</div>
+          <div className="pet-info-name">
+            {petData.unlocked ? petDef.name : (petDef.unlockRequires ? '???' : petDef.name)}
+          </div>
+          <div className="pet-info-breed">
+            {petData.unlocked
+              ? `${petDef.breed} · ${petDef.personality}`
+              : petDef.unlockRequires
+              ? '神秘來客，快解鎖牠吧！'
+              : `${petDef.breed} · ${petDef.personality}`}
+          </div>
           {petData.unlocked && (
             <div className="pet-info-stage">{stage.label}</div>
           )}
@@ -148,7 +158,9 @@ export default function PetScreen({ onNavigate }) {
               onClick={handleUnlock}
               disabled={coins < petDef.unlockCost}
             >
-              {coins >= petDef.unlockCost ? `🔓 解鎖 ${petDef.name}！` : `💰 金幣不足（差 ${petDef.unlockCost - coins}）`}
+              {coins >= petDef.unlockCost
+                ? `🔓 解鎖${petDef.unlockRequires ? '牠' : petDef.name}！`
+                : `💰 金幣不足（差 ${petDef.unlockCost - coins}）`}
             </motion.button>
           </div>
         ) : maxEvolved ? (

@@ -10,10 +10,10 @@ export const SHOP_CATEGORIES = [
 
 export const SHOP_ITEMS = [
   // ── 食物（餵食用，直接給 exp，不佔道具欄）──
-  { id: 'bone',  name: '大骨頭', emoji: '🦴', category: 'food', price: 50, desc: 'LULU 超愛！水獺普通',  exp: { lulu: 100, hana: 50,  kotaro: 50  } },
-  { id: 'fish',  name: '小魚乾', emoji: '🐟', category: 'food', price: 50, desc: '水獺超愛！LULU 普通', exp: { lulu: 50,  hana: 100, kotaro: 100 } },
-  { id: 'meat',  name: '烤肉串', emoji: '🍖', category: 'food', price: 80, desc: '大家都愛！',           exp: { lulu: 80,  hana: 80,  kotaro: 80  } },
-  { id: 'apple', name: '蘋果',   emoji: '🍎', category: 'food', price: 40, desc: '健康零食',             exp: { lulu: 30,  hana: 30,  kotaro: 30  } },
+  { id: 'bone',  name: '大骨頭', emoji: '🦴', category: 'food', price: 50, desc: 'LULU 超愛！水獺普通',  exp: { lulu: 100, hana: 50,  kotaro: 50,  jiji: 20  } },
+  { id: 'fish',  name: '小魚乾', emoji: '🐟', category: 'food', price: 50, desc: '水獺超愛！黑貓也愛！', exp: { lulu: 50,  hana: 100, kotaro: 100, jiji: 120 } },
+  { id: 'meat',  name: '烤肉串', emoji: '🍖', category: 'food', price: 80, desc: '大家都愛！',           exp: { lulu: 80,  hana: 80,  kotaro: 80,  jiji: 80  } },
+  { id: 'apple', name: '蘋果',   emoji: '🍎', category: 'food', price: 40, desc: '健康零食',             exp: { lulu: 30,  hana: 30,  kotaro: 30,  jiji: 10  } },
   // ── 帽子 ──
   { id: 'bow',     name: '蝴蝶結',   emoji: '🎀', category: 'hat',  price: 100, desc: '可愛滿分' },
   { id: 'cap',     name: '棒球帽',   emoji: '🧢', category: 'hat',  price: 120, desc: '運動風' },

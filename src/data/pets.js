@@ -1,5 +1,6 @@
 // LULU: 膽小、怕人、怕水的米格魯（永遠的小奶狗！）
 // Hana & Kotaro: 日本超人氣水獺組合
+// 吉吉: 神秘隱藏黑貓，解鎖 Kotaro 後出現
 
 // exp needed to go from stage N to N+1 (index = current stage)
 export const EVOLVE_EXP = [0, 500, 2000, 5000]
@@ -54,6 +55,23 @@ export const PETS = {
     happyEmoji: '😊',
     sadEmoji: '🥺',
   },
+  jiji: {
+    id: 'jiji',
+    name: '吉吉',
+    breed: '黑貓',
+    personality: '神秘、安靜、會魔法？',
+    unlockCost: 800,
+    unlockRequires: 'kotaro',
+    stages: [
+      null,
+      { emoji: '🐱', label: '小黑貓',     size: '5rem', bg: '#F0E6FF', border: '#9C6FD6' },
+      { emoji: '🐈‍⬛', label: '淘氣黑貓',   size: '5rem', bg: '#DDD0FF', border: '#7B4FC8' },
+      { emoji: '🐈‍⬛', label: '神秘黑貓',   size: '5rem', bg: '#C4B0FF', border: '#5A2FA0' },
+      { emoji: '🐈‍⬛', label: '傳說魔法貓', size: '5rem', bg: '#2A1A4A', border: '#C084FC', glow: true },
+    ],
+    happyEmoji: '😸',
+    sadEmoji: '😾',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji']
