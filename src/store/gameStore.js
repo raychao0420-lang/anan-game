@@ -64,6 +64,7 @@ export const useGameStore = create(
       examBossCleared: false,
       subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
       subjectQueues:   { math: [], social: [], nature: [], chinese: [] },
+      subjectStreaks:  { math: 0, social: 0, nature: 0, chinese: 0 },
 
       // M3: achievements
       achievements: {},
@@ -253,6 +254,18 @@ export const useGameStore = create(
       },
 
       // ── M5: Exam Boss ──
+      recordSubjectResult: (subjectId, passed, rewardItemId) => {
+        set((s) => {
+          const prev     = s.subjectStreaks?.[subjectId] ?? 0
+          const newStreak = passed ? prev + 1 : 0
+          const shouldAward = passed && newStreak >= 5 && !s.ownedItems.includes(rewardItemId)
+          return {
+            subjectStreaks: { ...(s.subjectStreaks ?? {}), [subjectId]: newStreak },
+            ...(shouldAward ? { ownedItems: [...s.ownedItems, rewardItemId] } : {}),
+          }
+        })
+      },
+
       popSubjectQuestions: (subjectId, allIds, n) => {
         let picked = []
         set((s) => {
@@ -347,6 +360,7 @@ export const useGameStore = create(
           examBossCleared: false,
           subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
           subjectQueues:   { math: [], social: [], nature: [], chinese: [] },
+          subjectStreaks:  { math: 0, social: 0, nature: 0, chinese: 0 },
           achievements: {},
           pendingAchievement: null,
           totalCoinsEarned: 0,
@@ -376,6 +390,9 @@ export const useGameStore = create(
         }
         if (!state.subjectQueues) {
           state.subjectQueues = { math: [], social: [], nature: [], chinese: [] }
+        }
+        if (!state.subjectStreaks) {
+          state.subjectStreaks = { math: 0, social: 0, nature: 0, chinese: 0 }
         }
         // Add stages 56-70 if missing (added in v2.1)
         for (let i = 56; i <= 70; i++) {

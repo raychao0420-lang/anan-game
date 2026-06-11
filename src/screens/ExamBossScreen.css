@@ -173,6 +173,33 @@
   gap: 6px;
 }
 
+.exam-subject-streak-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.streak-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: inline-block;
+  transition: background 0.2s;
+}
+
+.streak-dot-lg {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  display: inline-block;
+}
+
+.streak-dot.on,
+.streak-dot-lg.on {
+  /* background set inline via style */
+}
+
 /* ── Result buttons ─────────────────────────────────────── */
 .exam-result-btns {
   display: flex;

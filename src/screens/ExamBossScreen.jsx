@@ -16,30 +16,32 @@ const CATEGORY_TIPS = {
 const formatTime = (t) => t >= 60 ? `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}` : `${t}s`
 
 export default function ExamBossScreen({ onBack }) {
-  const { activePet, pets, subjectPerfects, ownedItems, addCoins, recordSubjectPerfect, popSubjectQuestions } = useGameStore()
-  const pet = PETS[activePet]
-  const petData = pets[activePet]
+  const {
+    activePet, pets, subjectStreaks, ownedItems,
+    addCoins, recordSubjectResult, popSubjectQuestions,
+  } = useGameStore()
+  const pet      = PETS[activePet]
+  const petData  = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
 
-  const [phase, setPhase] = useState('select')
+  const [phase, setPhase]         = useState('select')
   const [activeSubject, setActiveSubject] = useState(null)
   const [questions, setQuestions] = useState([])
 
-  const [qIndex, setQIndex] = useState(0)
-  const [input, setInput] = useState('')
-  const [scratchpad, setScratchpad] = useState('')
-  const [timeLeft, setTimeLeft] = useState(20)
-  const [correctCount, setCorrectCount] = useState(0)
-  const [wrongCount, setWrongCount] = useState(0)
-  const [feedback, setFeedback] = useState(null)
+  const [qIndex, setQIndex]               = useState(0)
+  const [input, setInput]                 = useState('')
+  const [scratchpad, setScratchpad]       = useState('')
+  const [timeLeft, setTimeLeft]           = useState(20)
+  const [correctCount, setCorrectCount]   = useState(0)
+  const [wrongCount, setWrongCount]       = useState(0)
+  const [feedback, setFeedback]           = useState(null)
   const [selectedChoice, setSelectedChoice] = useState(null)
-  const [eggHatched, setEggHatched] = useState(false)
-  const [wasPerfect, setWasPerfect] = useState(false)
-  const [coinsEarned, setCoinsEarned] = useState(0)
+  const [wasPerfect, setWasPerfect]       = useState(false)
+  const [coinsEarned, setCoinsEarned]     = useState(0)
 
-  const prevPerfectsRef = useRef(0)
-  const timerRef = useRef(null)
-  const feedbackRef = useRef(null)
+  const prevStreakRef = useRef(0)
+  const timerRef     = useRef(null)
+  const feedbackRef  = useRef(null)
 
   const currentQ = questions[qIndex]
 
@@ -58,18 +60,13 @@ export default function ExamBossScreen({ onBack }) {
     if (qIndex >= activeSubject.totalQuestions - 1) {
       const passed    = newCorrect >= activeSubject.passScore
       const isPerfect = newCorrect === activeSubject.totalQuestions
-      if (passed) {
-        const coins = isPerfect ? 200 : 100
-        setWasPerfect(isPerfect)
-        setCoinsEarned(coins)
-        addCoins(coins)
-        if (isPerfect) recordSubjectPerfect(activeSubject.id, activeSubject.rewardItemId)
-        setTimeout(() => sfx.bossWin(), 300)
-        setPhase('win')
-      } else {
-        setTimeout(() => sfx.bossLose(), 300)
-        setPhase('lose')
-      }
+      const coins     = passed ? (isPerfect ? 200 : 100) : 0
+      setWasPerfect(isPerfect)
+      setCoinsEarned(coins)
+      if (coins > 0) addCoins(coins)
+      recordSubjectResult(activeSubject.id, passed, activeSubject.rewardItemId)
+      setTimeout(() => passed ? sfx.bossWin() : sfx.bossLose(), 300)
+      setPhase(passed ? 'win' : 'lose')
     } else {
       setQIndex(i => i + 1)
       setInput('')
@@ -77,7 +74,7 @@ export default function ExamBossScreen({ onBack }) {
       setSelectedChoice(null)
       setTimeLeft(activeSubject.timePerQuestion)
     }
-  }, [qIndex, correctCount, wrongCount, activeSubject, addCoins, recordSubjectPerfect])
+  }, [qIndex, correctCount, wrongCount, activeSubject, addCoins, recordSubjectResult])
 
   useEffect(() => {
     if (phase !== 'fight' || !currentQ) return
@@ -117,16 +114,16 @@ export default function ExamBossScreen({ onBack }) {
   }, [currentQ, phase, nextQuestion, selectedChoice])
 
   const startSubject = (subConf) => {
-    prevPerfectsRef.current = subjectPerfects?.[subConf.id] ?? 0
+    prevStreakRef.current = subjectStreaks?.[subConf.id] ?? 0
     setActiveSubject(subConf)
-    const allIds = getSubjectQuestionIds(subConf.category)
+    const allIds    = getSubjectQuestionIds(subConf.category)
     const pickedIds = popSubjectQuestions(subConf.id, allIds, subConf.totalQuestions)
     setQuestions(getQuestionsByIds(pickedIds))
     setQIndex(0)
     setInput(''); setScratchpad(''); setSelectedChoice(null)
     setTimeLeft(subConf.timePerQuestion)
     setCorrectCount(0); setWrongCount(0)
-    setFeedback(null); setEggHatched(false)
+    setFeedback(null)
     setWasPerfect(false); setCoinsEarned(0)
     setPhase('fight')
   }
@@ -144,12 +141,13 @@ export default function ExamBossScreen({ onBack }) {
           transition={{ repeat: Infinity, duration: 2.8 }}
         >📚</motion.div>
         <div className="exam-intro-title">期末考大魔王</div>
-        <div className="exam-intro-sub">選擇科目挑戰・三次滿分獲得皇冠 👑</div>
+        <div className="exam-intro-sub">選擇科目挑戰・題目全做過就得皇冠 👑</div>
 
         <div className="exam-subject-grid">
           {SUBJECT_CONFIGS.map(sub => {
-            const perfects    = Math.min(subjectPerfects?.[sub.id] ?? 0, sub.perfectsNeeded)
+            const streak      = subjectStreaks?.[sub.id] ?? 0
             const crownEarned = ownedItems.includes(sub.rewardItemId)
+            const displayStreak = Math.min(streak, sub.streakNeeded)
             return (
               <motion.button
                 key={sub.id}
@@ -161,11 +159,16 @@ export default function ExamBossScreen({ onBack }) {
                 {crownEarned && <span className="exam-subject-crown-badge">👑</span>}
                 <span className="exam-subject-emoji">{sub.emoji}</span>
                 <span className="exam-subject-name" style={{ color: sub.color }}>{sub.category}</span>
-                <div className="exam-subject-stars">
-                  {Array.from({ length: sub.perfectsNeeded }, (_, i) => (
-                    <span key={i} style={{ opacity: i < perfects ? 1 : 0.2 }}>⭐</span>
+                <div className="exam-subject-streak-dots">
+                  {Array.from({ length: sub.streakNeeded }, (_, i) => (
+                    <span key={i} className={`streak-dot ${i < displayStreak ? 'on' : ''}`}
+                      style={{ background: i < displayStreak ? sub.color : undefined }}
+                    />
                   ))}
                 </div>
+                <span className="exam-subject-hint">
+                  {crownEarned ? '👑 皇冠已獲得' : `連過 ${displayStreak}/${sub.streakNeeded} 關`}
+                </span>
                 <span className="exam-subject-hint">
                   {sub.totalQuestions} 題・{sub.timePerQuestion >= 60 ? `${sub.timePerQuestion / 60}分鐘/題` : `${sub.timePerQuestion}秒/題`}
                 </span>
@@ -179,9 +182,9 @@ export default function ExamBossScreen({ onBack }) {
 
   // ── WIN ────────────────────────────────────────────────────────
   if (phase === 'win') {
-    const currentPerfects = subjectPerfects?.[activeSubject?.id] ?? 0
+    const currentStreak   = subjectStreaks?.[activeSubject?.id] ?? 0
     const crownEarned     = ownedItems.includes(activeSubject?.rewardItemId)
-    const justEarnedCrown = wasPerfect && prevPerfectsRef.current < 3 && currentPerfects >= 3
+    const justEarnedCrown = prevStreakRef.current < activeSubject?.streakNeeded && currentStreak >= activeSubject?.streakNeeded
 
     return (
       <div className="exam-screen exam-win">
@@ -204,47 +207,41 @@ export default function ExamBossScreen({ onBack }) {
             {activeSubject.category} ・ 答對 {correctCount} / {activeSubject.totalQuestions} 題
           </div>
 
-          {/* 滿分進度 / 皇冠解鎖 */}
-          {wasPerfect && (
-            <div className="exam-perfect-box" style={{ borderColor: activeSubject.color }}>
-              {justEarnedCrown ? (
-                <>
-                  <motion.div
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 260, delay: 0.4 }}
-                    style={{ fontSize: '4rem' }}
-                  >👑</motion.div>
-                  <div style={{ color: '#FFD700', fontWeight: 800, fontSize: '1.05rem', textAlign: 'center' }}>
-                    🎊 {activeSubject.category}皇冠 解鎖！道具袋已收錄
+          {/* 連勝進度 / 皇冠解鎖 */}
+          <div className="exam-perfect-box" style={{ borderColor: activeSubject.color }}>
+            {justEarnedCrown ? (
+              <>
+                <motion.div
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: 'spring', stiffness: 260, delay: 0.4 }}
+                  style={{ fontSize: '4rem' }}
+                >👑</motion.div>
+                <div style={{ color: '#FFD700', fontWeight: 800, fontSize: '1.05rem', textAlign: 'center' }}>
+                  🎊 {activeSubject.category}皇冠 解鎖！道具袋已收錄
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ fontSize: '0.85rem', color: '#888', fontWeight: 700 }}>
+                  🔥 {activeSubject.category} 連勝進度
+                </div>
+                <div className="exam-perfect-stars">
+                  {Array.from({ length: activeSubject.streakNeeded }, (_, i) => (
+                    <span key={i} className={`streak-dot-lg ${i < Math.min(currentStreak, activeSubject.streakNeeded) ? 'on' : ''}`}
+                      style={{ background: i < Math.min(currentStreak, activeSubject.streakNeeded) ? activeSubject.color : undefined }}
+                    />
+                  ))}
+                </div>
+                {!crownEarned && (
+                  <div style={{ color: '#888', fontSize: '0.82rem' }}>
+                    再連過 {activeSubject.streakNeeded - Math.min(currentStreak, activeSubject.streakNeeded)} 關即可獲得皇冠！
                   </div>
-                </>
-              ) : (
-                <>
-                  <div style={{ fontSize: '0.85rem', color: '#888', fontWeight: 700 }}>
-                    {activeSubject.category} 滿分進度
-                  </div>
-                  <div className="exam-perfect-stars">
-                    {Array.from({ length: activeSubject.perfectsNeeded }, (_, i) => (
-                      <span key={i} style={{ fontSize: '1.6rem', opacity: i < Math.min(currentPerfects, activeSubject.perfectsNeeded) ? 1 : 0.2 }}>⭐</span>
-                    ))}
-                  </div>
-                  {!crownEarned && (
-                    <div style={{ color: '#888', fontSize: '0.82rem' }}>
-                      再 {activeSubject.perfectsNeeded - Math.min(currentPerfects, activeSubject.perfectsNeeded)} 次滿分即可獲得皇冠！
-                    </div>
-                  )}
-                </>
-              )}
-              <div style={{ color: '#FFD700', fontWeight: 900, fontSize: '1.4rem' }}>+ {coinsEarned} 💰</div>
-            </div>
-          )}
-
-          {!wasPerfect && (
-            <div style={{ color: '#AAA', fontSize: '0.88rem', textAlign: 'center' }}>
-              + {coinsEarned} 💰（滿分可獲得 200 💰 及皇冠進度）
-            </div>
-          )}
+                )}
+              </>
+            )}
+            <div style={{ color: '#FFD700', fontWeight: 900, fontSize: '1.4rem' }}>+ {coinsEarned} 💰</div>
+          </div>
 
           <div className="exam-result-btns">
             <motion.button className="btn-primary" whileTap={{ scale: 0.94 }}
@@ -263,47 +260,54 @@ export default function ExamBossScreen({ onBack }) {
   }
 
   // ── LOSE ───────────────────────────────────────────────────────
-  if (phase === 'lose') return (
-    <div className="exam-screen exam-lose">
-      <motion.div className="exam-result-card"
-        initial={{ scale: 0.7, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-      >
-        <div className="exam-lose-title">😓 這次沒過關</div>
-        <motion.div className="exam-lose-emoji"
-          animate={{ x: [0, -8, 8, -8, 0] }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >📚</motion.div>
-        <div className="exam-score">
-          {activeSubject.category} ・ 答對 {correctCount} / {activeSubject.totalQuestions} 題（需要 {activeSubject.passScore} 題）
-        </div>
-        <div className="exam-retry-hint">再多練習幾次，一定可以過關！加油 💪</div>
-        <div className="exam-result-btns">
-          <motion.button className="btn-primary" whileTap={{ scale: 0.94 }}
-            onClick={() => startSubject(activeSubject)}
-          >🔄 再挑戰！</motion.button>
-          <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }}
-            onClick={() => setPhase('select')}
-          >📚 選擇其他科目</motion.button>
-          <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }}
-            onClick={onBack}
-          >🏠 回首頁</motion.button>
-        </div>
-      </motion.div>
-    </div>
-  )
+  if (phase === 'lose') {
+    const prevStreak = prevStreakRef.current
+    return (
+      <div className="exam-screen exam-lose">
+        <motion.div className="exam-result-card"
+          initial={{ scale: 0.7, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+        >
+          <div className="exam-lose-title">😓 這次沒過關</div>
+          <motion.div className="exam-lose-emoji"
+            animate={{ x: [0, -8, 8, -8, 0] }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >📚</motion.div>
+          <div className="exam-score">
+            {activeSubject.category} ・ 答對 {correctCount} / {activeSubject.totalQuestions} 題（需要 {activeSubject.passScore} 題）
+          </div>
+          {prevStreak > 0 && (
+            <div style={{ color: '#FF9966', fontWeight: 700, fontSize: '0.9rem', textAlign: 'center' }}>
+              💔 {prevStreak} 連勝中斷，下次重新累積！
+            </div>
+          )}
+          <div className="exam-retry-hint">再多練習幾次，一定可以過關！加油 💪</div>
+          <div className="exam-result-btns">
+            <motion.button className="btn-primary" whileTap={{ scale: 0.94 }}
+              onClick={() => startSubject(activeSubject)}
+            >🔄 再挑戰！</motion.button>
+            <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }}
+              onClick={() => setPhase('select')}
+            >📚 選擇其他科目</motion.button>
+            <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }}
+              onClick={onBack}
+            >🏠 回首頁</motion.button>
+          </div>
+        </motion.div>
+      </div>
+    )
+  }
 
   // ── FIGHT ──────────────────────────────────────────────────────
   if (!currentQ) return null
 
-  const catColor  = activeSubject.color
-  const timerPct  = (timeLeft / activeSubject.timePerQuestion) * 100
+  const catColor   = activeSubject.color
+  const timerPct   = (timeLeft / activeSubject.timePerQuestion) * 100
   const timerColor = timerPct > 65 ? '#6BCB77' : timerPct > 35 ? '#FFB347' : '#FF6B6B'
 
   return (
     <div className="exam-screen exam-fight">
 
-      {/* Header */}
       <div className="exam-fight-header">
         <div className="exam-fight-left">
           <div className="exam-pet-mini"
@@ -319,7 +323,6 @@ export default function ExamBossScreen({ onBack }) {
         </div>
       </div>
 
-      {/* Timer bar */}
       <div className="exam-timer-track">
         <motion.div className="exam-timer-fill"
           style={{ background: timerColor }}
@@ -328,7 +331,6 @@ export default function ExamBossScreen({ onBack }) {
         />
       </div>
 
-      {/* Category + timer */}
       <div className="exam-meta-row">
         <span className="exam-category-badge" style={{ background: catColor }}>
           {currentQ.category}
@@ -337,7 +339,6 @@ export default function ExamBossScreen({ onBack }) {
         <span className="exam-timer-label" style={{ color: timerColor }}>{formatTime(timeLeft)}</span>
       </div>
 
-      {/* Question */}
       <AnimatePresence mode="wait">
         <motion.div key={`q-${qIndex}`} className="exam-question"
           initial={{ scale: 0.88, opacity: 0 }}
@@ -349,7 +350,6 @@ export default function ExamBossScreen({ onBack }) {
         </motion.div>
       </AnimatePresence>
 
-      {/* Feedback overlay */}
       <AnimatePresence>
         {feedback && (
           <motion.div className={`exam-feedback-overlay ${feedback}`}
@@ -363,7 +363,6 @@ export default function ExamBossScreen({ onBack }) {
         )}
       </AnimatePresence>
 
-      {/* Input area */}
       {currentQ.type === 'number' ? (
         <>
           <div className="exam-scratchpad-wrap">
@@ -402,10 +401,10 @@ export default function ExamBossScreen({ onBack }) {
       ) : (
         <div className="exam-choices">
           {currentQ.options.map((opt, idx) => {
-            const optNum        = idx + 1
-            const isCorrectOpt  = optNum === currentQ.answer
+            const optNum          = idx + 1
+            const isCorrectOpt    = optNum === currentQ.answer
             const isSelectedWrong = selectedChoice !== null && optNum === selectedChoice && !isCorrectOpt
-            const choiceClass   = selectedChoice !== null
+            const choiceClass     = selectedChoice !== null
               ? isCorrectOpt ? 'choice-correct' : isSelectedWrong ? 'choice-wrong' : 'choice-dim'
               : ''
             return (
