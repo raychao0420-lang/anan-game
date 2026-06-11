@@ -34,8 +34,9 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
       completeStage(stageId, stars, totalCoins)
       updateDailyProgress('stages', 1)
       if (stars === 3) updateDailyProgress('stars3', 1)
-    } else if (replayCoins > 0) {
-      addCoins(replayCoins)
+    } else {
+      // Always update stars so the stage list shows the highest stars achieved
+      completeStage(stageId, stars, replayCoins)
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -129,7 +130,7 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
           <motion.button className="btn-secondary" whileTap={{ scale: 0.92 }} onClick={onRetry}>
             🔄 再挑戰
           </motion.button>
-          {stageId < 55 && (
+          {stageId < 70 && (
             <motion.button className="btn-primary" whileTap={{ scale: 0.92 }} onClick={onNext}>
               下一關 →
             </motion.button>

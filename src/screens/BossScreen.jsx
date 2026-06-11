@@ -9,7 +9,6 @@ import { sfx } from '../utils/sound'
 import './BossScreen.css'
 
 const BOSS_QUESTIONS = 15
-const BOSS_TIME = 10
 const BOSS_PASS = 10
 
 export default function BossScreen({ chapterId, onBack }) {
@@ -19,6 +18,7 @@ export default function BossScreen({ chapterId, onBack }) {
   const petStage = pet.stages[petData.evolutionStage]
 
   const boss = BOSS_DEFS[chapterId]
+  const BOSS_TIME = boss.time ?? 10
   const reward = BOSS_REWARDS[chapterId]
   const alreadyCleared = bossCleared[chapterId]
 

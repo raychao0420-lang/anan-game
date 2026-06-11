@@ -23,8 +23,8 @@ export const BOSS_REWARDS = {
 }
 
 export const BOSS_DEFS = {
-  10: { name: '二位數巨獸', emoji: '👾', chapter: '第一章' },
-  20: { name: '三位數魔王', emoji: '🤖', chapter: '第二章' },
-  30: { name: '乘法惡魔',   emoji: '😈', chapter: '第三章' },
-  40: { name: '終極數學神', emoji: '🌟', chapter: '終章' },
+  10: { name: '二位數巨獸', emoji: '👾', chapter: '第一章', time: 10 },
+  20: { name: '三位數魔王', emoji: '🤖', chapter: '第二章', time: 20 },
+  30: { name: '乘法惡魔',   emoji: '😈', chapter: '第三章', time: 10 },
+  40: { name: '終極數學神', emoji: '🌟', chapter: '終章',   time: 10 },
 }

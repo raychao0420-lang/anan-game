@@ -9,12 +9,16 @@ const CHAPTERS = [
   { label: '三位數', range: [11, 20], icon: '🔢' },
   { label: '乘法', range: [21, 30], icon: '✖️' },
   { label: '除法', range: [31, 40], icon: '➗' },
+  { label: '綜合進階', range: [56, 70], icon: '🚀' },
 ]
 
 // chapter-first-stage → prerequisite stage
 const CHAPTER_PREREQS = { 41: 10, 11: 55 }
 
-const CHAPTER_LOCK_HINT = { 11: '⚡ 完成加減進階第55關才能挑戰！' }
+const CHAPTER_LOCK_HINT = {
+  11:  '⚡ 完成加減進階第55關才能挑戰！',
+  56:  '🚀 完成加減進階第55關才能解鎖！',
+}
 
 function Stars({ count }) {
   return (

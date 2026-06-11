@@ -5,7 +5,7 @@ import { EVOLVE_EXP } from '../data/pets'
 
 const makeStages = () => {
   const s = {}
-  for (let i = 1; i <= 55; i++) s[i] = { completed: false, stars: 0 }
+  for (let i = 1; i <= 70; i++) s[i] = { completed: false, stars: 0 }
   return s
 }
 
@@ -337,6 +337,10 @@ export const useGameStore = create(
             state.petEquipment[id] = []
         })
         if (state.examBossCleared === undefined) state.examBossCleared = false
+        // Add stages 56-70 if missing (added in v2.1)
+        for (let i = 56; i <= 70; i++) {
+          if (!state.stages[i]) state.stages[i] = { completed: false, stars: 0 }
+        }
         if (!state.petMoods) {
           state.petMoods = { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80 }
         } else {

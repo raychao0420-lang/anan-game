@@ -4,7 +4,7 @@ export const EXAM_BOSS_CONFIG = {
   subtitle: '114學年下學期　三年級數學期末',
   totalQuestions: 10,
   passScore: 7,
-  timePerQuestion: 60,
+  timePerQuestion: 20,
   firstClearCoins: 500,
   replayClearCoins: 100,
   rewardItemId: 'exam_trophy',

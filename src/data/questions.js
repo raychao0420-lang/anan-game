@@ -84,6 +84,43 @@ for (let i = 16; i <= 20; i++) generators[i] = generators[15]
 for (let i = 26; i <= 30; i++) generators[i] = generators[25]
 for (let i = 36; i <= 40; i++) generators[i] = generators[35]
 
+// ── 綜合進階（56-70）── 乘除 × 三位數加減 混合，每題20秒
+generators[56] = () => makeMul(rand(11, 39), rand(2, 9))          // 2位數乘 小數
+generators[57] = () => makeMul(rand(40, 79), rand(2, 9))          // 2位數乘 大數
+generators[58] = () => makeMul(rand(12, 99), rand(2, 9))          // 2位數乘 全範圍
+generators[59] = () => { const a = rand(11, 49); const b = rand(2, 9); return makeDiv(a, b) }  // ÷1位 答案≤49
+generators[60] = () => { const a = rand(50, 99); const b = rand(2, 9); return makeDiv(a, b) }  // ÷1位 答案≥50
+generators[61] = () => { const a = rand(100, 699); const b = rand(100, Math.min(899 - a, 400)); return makeAdd(a, b) } // 3位+3位
+generators[62] = () => { const a = rand(300, 999); const b = rand(100, a - 100); return makeSub(a, b) }               // 3位-3位
+generators[63] = () => (rand(0, 1) ? generators[61]() : generators[62]())  // 3位加減混合
+generators[64] = () => (rand(0, 1) ? generators[56]() : generators[59]())  // 乘÷ I
+generators[65] = () => (rand(0, 1) ? generators[57]() : generators[60]())  // 乘÷ II
+generators[66] = () => makeMul(rand(13, 79), rand(3, 9))           // 乘法衝刺
+generators[67] = () => { const a = rand(13, 99); const b = rand(3, 9); return makeDiv(a, b) }  // 除法衝刺
+generators[68] = () => {                                           // 乘除大混合
+  const r = rand(0, 3)
+  if (r === 0) return generators[58]()
+  if (r === 1) return generators[60]()
+  if (r === 2) return generators[66]()
+  return generators[67]()
+}
+generators[69] = () => {                                           // 乘除加減混合
+  const r = rand(0, 3)
+  if (r === 0) return generators[61]()
+  if (r === 1) return generators[62]()
+  if (r === 2) return generators[58]()
+  return generators[60]()
+}
+generators[70] = () => {                                           // 終極綜合挑戰
+  const r = rand(0, 5)
+  if (r === 0) return generators[58]()
+  if (r === 1) return generators[60]()
+  if (r === 2) return generators[61]()
+  if (r === 3) return generators[62]()
+  if (r === 4) return generators[66]()
+  return generators[67]()
+}
+
 export function generateStageQuestions(stageId) {
   const gen = generators[stageId] || generators[10]
   const questions = []
@@ -115,3 +152,20 @@ export const STAGE_NAMES = {
 for (let i = 16; i <= 20; i++) STAGE_NAMES[i] = `挑戰 ${i}`
 for (let i = 26; i <= 30; i++) STAGE_NAMES[i] = `乘法 ${i}`
 for (let i = 36; i <= 40; i++) STAGE_NAMES[i] = `除法 ${i}`
+
+// 綜合進階
+STAGE_NAMES[56] = '兩位數乘 I'
+STAGE_NAMES[57] = '兩位數乘 II'
+STAGE_NAMES[58] = '乘法全攻'
+STAGE_NAMES[59] = '除法進階 I'
+STAGE_NAMES[60] = '除法進階 II'
+STAGE_NAMES[61] = '三位數加 II'
+STAGE_NAMES[62] = '三位數減 II'
+STAGE_NAMES[63] = '三位數加減'
+STAGE_NAMES[64] = '乘除混合 I'
+STAGE_NAMES[65] = '乘除混合 II'
+STAGE_NAMES[66] = '乘法衝刺'
+STAGE_NAMES[67] = '除法衝刺'
+STAGE_NAMES[68] = '乘除大混合'
+STAGE_NAMES[69] = '乘除加減'
+STAGE_NAMES[70] = '🔥 終極挑戰'
