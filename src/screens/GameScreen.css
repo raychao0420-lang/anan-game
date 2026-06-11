@@ -195,6 +195,77 @@
   margin-top: 0;
 }
 
+/* ── Pause icon button ── */
+.pause-icon-btn {
+  background: rgba(0,0,0,0.08);
+  border: none;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+}
+.pause-icon-btn:hover { background: rgba(0,0,0,0.14); }
+
+/* ── Pause overlay ── */
+.pause-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pause-panel {
+  background: white;
+  border-radius: 24px;
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-width: 220px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.pause-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.pause-btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* ── Floating hearts ── */
+.floating-hearts {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.floating-heart {
+  position: absolute;
+  font-size: 1.4rem;
+  line-height: 1;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
 @media (min-width: 640px) {
   .game-screen { gap: 14px; padding: 20px 32px 24px; }
   .game-stage-label { font-size: 1.2rem; }

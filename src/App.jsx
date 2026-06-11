@@ -27,11 +27,13 @@ export default function App() {
   const [gameResults, setGameResults] = useState(null)
 
   const initDaily = useGameStore(s => s.initDaily)
+  const checkMoodDecay = useGameStore(s => s.checkMoodDecay)
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10)
     initDaily(today)
-  }, [initDaily])
+    checkMoodDecay()
+  }, [initDaily, checkMoodDecay])
 
   const handleStartStage = (id) => {
     setActiveStage(id)
@@ -74,6 +76,7 @@ export default function App() {
             key={`${activeStage}-${Date.now()}`}
             stageId={activeStage}
             onFinish={handleGameFinish}
+            onExit={() => setScreen('stages')}
           />
         )}
 

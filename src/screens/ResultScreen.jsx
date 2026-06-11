@@ -14,7 +14,7 @@ function calcStars(correctCount) {
 }
 
 export default function ResultScreen({ stageId, results, onRetry, onNext, onHome, onBoss }) {
-  const { completeStage, addCoins, activePet, pets, bossCleared, updateDailyProgress } = useGameStore()
+  const { completeStage, addCoins, activePet, pets, bossCleared, updateDailyProgress, stampPlayTime } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
@@ -29,6 +29,7 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
   const displayCoins = isReplay ? replayCoins : totalCoins
 
   useEffect(() => {
+    stampPlayTime()
     if (!isReplay) {
       completeStage(stageId, stars, totalCoins)
       updateDailyProgress('stages', 1)

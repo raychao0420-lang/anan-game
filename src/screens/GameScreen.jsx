@@ -7,6 +7,42 @@ import NumberPad from '../components/NumberPad'
 import { sfx } from '../utils/sound'
 import './GameScreen.css'
 
+// ── Floating hearts on correct answer ─────────────────────────────────────────
+function FloatingHearts({ trigger, count }) {
+  const [hearts, setHearts] = useState([])
+
+  useEffect(() => {
+    if (!trigger) return
+    const n = Math.min(count, 5)
+    setHearts(Array.from({ length: n }, (_, i) => ({
+      id: Date.now() + i,
+      x: (Math.random() - 0.5) * 70,
+      delay: i * 0.08,
+    })))
+    const t = setTimeout(() => setHearts([]), 1000)
+    return () => clearTimeout(t)
+  }, [trigger])
+
+  return (
+    <div className="floating-hearts">
+      <AnimatePresence>
+        {hearts.map((h) => (
+          <motion.div
+            key={h.id}
+            className="floating-heart"
+            style={{ left: `calc(50% + ${h.x}px)` }}
+            initial={{ y: 0, opacity: 1, scale: 0.6 }}
+            animate={{ y: -65, opacity: 0, scale: 1.3 }}
+            transition={{ duration: 0.85, ease: 'easeOut', delay: h.delay }}
+          >
+            ❤️
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 const QUESTIONS_PER_STAGE = 10
 const getTimeLimit = (id) => {
   if (id >= 11 && id <= 20) return 30               // 3位數
@@ -116,8 +152,8 @@ function DoodleCanvas() {
   )
 }
 
-export default function GameScreen({ stageId, onFinish }) {
-  const { activePet, pets, updateDailyProgress, updateMaxCombo, updateTotalCoins } = useGameStore()
+export default function GameScreen({ stageId, onFinish, onExit }) {
+  const { activePet, pets, updateDailyProgress, updateMaxCombo, updateTotalCoins, updatePetMood } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
@@ -133,9 +169,12 @@ export default function GameScreen({ stageId, onFinish }) {
   const [results, setResults] = useState([]) // { correct, coins, time }
   const [mood, setMood] = useState('idle')
   const [feedback, setFeedback] = useState(null) // { correct, points }
+  const [paused, setPaused] = useState(false)
+  const [heartTrigger, setHeartTrigger] = useState(0)
   const timerRef = useRef(null)
   const feedbackRef = useRef(null)
   const comboRef = useRef(0)
+  const pausedRef = useRef(false)
 
   const currentQ = questions[qIndex]
   const isLast = qIndex >= QUESTIONS_PER_STAGE - 1
@@ -159,10 +198,15 @@ export default function GameScreen({ stageId, onFinish }) {
     }
   }, [qIndex])
 
+  const handlePause = () => { pausedRef.current = true; setPaused(true) }
+  const handleResume = () => { pausedRef.current = false; setPaused(false) }
+  const handleExit = () => { if (onExit) onExit() }
+
   // Timer
   useEffect(() => {
     if (qIndex >= QUESTIONS_PER_STAGE) return
     timerRef.current = setInterval(() => {
+      if (pausedRef.current) return
       setTimeLeft(t => {
         if (t <= 1) {
           clearInterval(timerRef.current)
@@ -170,6 +214,7 @@ export default function GameScreen({ stageId, onFinish }) {
           showFeedback(false, 0)
           setCombo(0)
           sfx.wrong()
+          updatePetMood(activePet, 1)
           nextQuestion({ correct: false, coins: 0, time: TIME_LIMIT })
           return TIME_LIMIT
         }
@@ -205,8 +250,11 @@ export default function GameScreen({ stageId, onFinish }) {
     if (correct) {
       if (newCombo >= 3) sfx.combo(newCombo)
       else sfx.correct()
+      updatePetMood(activePet, 4)
+      setHeartTrigger(n => n + 1)
     } else {
       sfx.wrong()
+      updatePetMood(activePet, 1)
     }
     if (correct) updateDailyProgress('correct', 1)
     if (earned > 0) updateDailyProgress('coins', earned)
@@ -223,8 +271,39 @@ export default function GameScreen({ stageId, onFinish }) {
   const timerPct = (timeLeft / TIME_LIMIT) * 100
   const timerColor = timeLeft > 8 ? '#6BCB77' : timeLeft > 4 ? '#FFB347' : '#FF6B6B'
 
+  const heartCount = combo >= 5 ? 3 : combo >= 2 ? 2 : 1
+
   return (
     <div className="game-screen">
+      {/* Pause overlay */}
+      <AnimatePresence>
+        {paused && (
+          <motion.div
+            className="pause-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div
+              className="pause-panel"
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <div className="pause-title">⏸️ 暫停中</div>
+              <motion.button className="btn-primary pause-btn" whileTap={{ scale: 0.94 }} onClick={handleResume}>
+                ▶️ 繼續
+              </motion.button>
+              <motion.button className="btn-secondary pause-btn" whileTap={{ scale: 0.94 }} onClick={handleExit}>
+                🚪 離開
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <div className="game-header">
         <div className="game-info">
@@ -234,6 +313,9 @@ export default function GameScreen({ stageId, onFinish }) {
         <div className="game-meta">
           {combo >= 2 && <span className="game-combo">🔥 ×{combo}</span>}
           <span className="game-coins">💰 {totalCoins}</span>
+          <motion.button className="pause-icon-btn" whileTap={{ scale: 0.85 }} onClick={handlePause}>
+            ⏸
+          </motion.button>
         </div>
       </div>
 
@@ -249,6 +331,7 @@ export default function GameScreen({ stageId, onFinish }) {
 
       {/* Pet */}
       <div className="game-pet-area">
+        <FloatingHearts trigger={heartTrigger} count={heartCount} />
         <motion.div
           className="game-pet-bubble"
           style={{ background: petStage.bg, border: `2px solid ${petStage.border}` }}

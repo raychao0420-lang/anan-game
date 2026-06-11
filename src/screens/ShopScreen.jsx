@@ -34,9 +34,11 @@ export default function ShopScreen({ onNavigate }) {
     .map(id => SHOP_ITEMS.find(i => i.id === id))
     .filter(Boolean)
 
+  const MOOD_BOOST = { toy: 8, home: 5, accessory: 3 }
+
   const handleBuy = (item) => {
     if (ownedItems.includes(item.id) || coins < item.price) return
-    buyItem(item.id, item.price)
+    buyItem(item.id, item.price, MOOD_BOOST[item.category] || 0)
     setBuyFeedback(item.id)
     setTimeout(() => setBuyFeedback(null), 1000)
   }

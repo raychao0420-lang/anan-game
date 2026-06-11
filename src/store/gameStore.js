@@ -68,6 +68,10 @@ export const useGameStore = create(
       maxCombo: 0,
       perfectStages: 0,
 
+      // M4: pet moods
+      petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80 },
+      lastPlayedAt: null,
+
       // ── Core actions ──
       addCoins: (amount) => set((s) => ({ coins: s.coins + amount })),
 
@@ -94,9 +98,11 @@ export const useGameStore = create(
         set((s) => {
           if (s.coins < cost) return s
           const pet = s.pets[petId]
+          const currentMood = s.petMoods?.[petId] ?? 80
           return {
             coins: s.coins - cost,
             pets: { ...s.pets, [petId]: { ...pet, foodExp: (pet.foodExp || 0) + expGain } },
+            petMoods: { ...s.petMoods, [petId]: Math.min(100, currentMood + 10) },
           }
         })
       },
@@ -134,9 +140,18 @@ export const useGameStore = create(
 
       setActivePet: (petId) => set({ activePet: petId }),
 
-      buyItem: (itemId, price) => {
+      buyItem: (itemId, price, moodBoost = 0) => {
         set((s) => {
           if (s.coins < price || s.ownedItems.includes(itemId)) return s
+          if (moodBoost > 0) {
+            const petId = s.activePet
+            const currentMood = s.petMoods?.[petId] ?? 80
+            return {
+              coins: s.coins - price,
+              ownedItems: [...s.ownedItems, itemId],
+              petMoods: { ...s.petMoods, [petId]: Math.min(100, currentMood + moodBoost) },
+            }
+          }
           return { coins: s.coins - price, ownedItems: [...s.ownedItems, itemId] }
         })
         get().checkAchievements()
@@ -239,6 +254,28 @@ export const useGameStore = create(
       updateTotalCoins: (amount) =>
         set((s) => ({ totalCoinsEarned: s.totalCoinsEarned + amount })),
 
+      // M4: mood actions
+      updatePetMood: (petId, delta) =>
+        set((s) => {
+          const current = s.petMoods?.[petId] ?? 80
+          return { petMoods: { ...s.petMoods, [petId]: Math.min(100, Math.max(0, current + delta)) } }
+        }),
+
+      stampPlayTime: () => set({ lastPlayedAt: Date.now() }),
+
+      checkMoodDecay: () => {
+        const s = get()
+        if (!s.lastPlayedAt) return
+        const daysSince = (Date.now() - s.lastPlayedAt) / (1000 * 60 * 60 * 24)
+        const decay = Math.floor(daysSince) * 8
+        if (decay <= 0) return
+        const newMoods = {}
+        Object.keys(s.petMoods || {}).forEach((id) => {
+          newMoods[id] = Math.max(5, (s.petMoods[id] ?? 80) - decay)
+        })
+        set({ petMoods: newMoods })
+      },
+
       resetGame: () =>
         set({
           coins: 0,
@@ -266,19 +303,28 @@ export const useGameStore = create(
           totalCoinsEarned: 0,
           maxCombo: 0,
           perfectStages: 0,
+          petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80 },
+          lastPlayedAt: null,
         }),
     }),
     {
       name: 'anan-game-v2',
       onRehydrateStorage: () => (state) => {
         if (!state) return
-        const newPets = ['kitsune', 'mejiro']
-        newPets.forEach((id) => {
+        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro']
+        allPets.forEach((id) => {
           if (!state.pets[id])
             state.pets[id] = { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] }
           if (!state.petEquipment[id])
             state.petEquipment[id] = []
         })
+        if (!state.petMoods) {
+          state.petMoods = { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80 }
+        } else {
+          allPets.forEach((id) => {
+            if (state.petMoods[id] === undefined) state.petMoods[id] = 80
+          })
+        }
       },
     }
   )

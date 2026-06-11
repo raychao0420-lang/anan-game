@@ -10,14 +10,31 @@ import './PetScreen.css'
 
 const FOOD_ITEMS = SHOP_ITEMS.filter(i => i.category === 'food')
 
+function getMoodEmoji(val) {
+  if (val >= 80) return '😄'
+  if (val >= 60) return '🙂'
+  if (val >= 40) return '😐'
+  if (val >= 20) return '😔'
+  return '😢'
+}
+
+function getMoodColor(val) {
+  if (val >= 80) return '#6BCB77'
+  if (val >= 60) return '#B8D95A'
+  if (val >= 40) return '#FFB347'
+  if (val >= 20) return '#FF8C42'
+  return '#FF6B6B'
+}
+
 export default function PetScreen({ onNavigate }) {
-  const { coins, pets, activePet, evolvePetFood, unlockPet, setActivePet, petEquipment } = useGameStore()
+  const { coins, pets, activePet, evolvePetFood, unlockPet, setActivePet, petEquipment, petMoods } = useGameStore()
   const [selected, setSelected] = useState(activePet)
   const [evolveModal, setEvolveModal] = useState(null)
 
   const petData = pets[selected]
   const petDef = PETS[selected]
   const stage = petDef.stages[petData.evolutionStage]
+  const moodVal = petMoods?.[selected] ?? 80
   const nextStage = petDef.stages[petData.evolutionStage + 1]
   const maxEvolved = petData.evolutionStage >= 4
 
@@ -104,6 +121,23 @@ export default function PetScreen({ onNavigate }) {
           </div>
           {petData.unlocked && (
             <div className="pet-info-stage">{stage.label}</div>
+          )}
+          {petData.unlocked && (
+            <div className="pet-mood-wrap">
+              <div className="pet-mood-label">
+                <span>心情</span>
+                <span className="pet-mood-emoji">{getMoodEmoji(moodVal)}</span>
+                <span className="pet-mood-num" style={{ color: getMoodColor(moodVal) }}>{moodVal}</span>
+              </div>
+              <div className="pet-mood-bar-bg">
+                <motion.div
+                  className="pet-mood-bar"
+                  style={{ background: getMoodColor(moodVal) }}
+                  animate={{ width: `${moodVal}%` }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                />
+              </div>
+            </div>
           )}
         </div>
 
