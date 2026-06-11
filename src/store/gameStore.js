@@ -37,14 +37,16 @@ export const useGameStore = create(
       coins: 0,
       activePet: 'lulu',
       pets: {
-        lulu:   { unlocked: true,  evolutionStage: 1, foodExp: 0, accessories: [] },
-        hana:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        kotaro: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        jiji:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        lulu:    { unlocked: true,  evolutionStage: 1, foodExp: 0, accessories: [] },
+        hana:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        kotaro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        jiji:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        kitsune: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        mejiro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
       },
       stages: makeStages(),
       ownedItems:        [],
-      petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [] },
+      petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [] },
       equippedHomeItems: [],
       homeDecoPositions: {},
 
@@ -242,14 +244,16 @@ export const useGameStore = create(
           coins: 0,
           activePet: 'lulu',
           pets: {
-            lulu:   { unlocked: true,  evolutionStage: 1, foodExp: 0, accessories: [] },
-            hana:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            kotaro: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            jiji:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            lulu:    { unlocked: true,  evolutionStage: 1, foodExp: 0, accessories: [] },
+            hana:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            kotaro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            jiji:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            kitsune: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            mejiro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
           },
           stages: makeStages(),
           ownedItems:        [],
-          petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [] },
+          petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [] },
           equippedHomeItems: [],
           homeDecoPositions: {},
           dailyDate: null,
@@ -264,6 +268,18 @@ export const useGameStore = create(
           perfectStages: 0,
         }),
     }),
-    { name: 'anan-game-v2' }
+    {
+      name: 'anan-game-v2',
+      onRehydrateStorage: () => (state) => {
+        if (!state) return
+        const newPets = ['kitsune', 'mejiro']
+        newPets.forEach((id) => {
+          if (!state.pets[id])
+            state.pets[id] = { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] }
+          if (!state.petEquipment[id])
+            state.petEquipment[id] = []
+        })
+      },
+    }
   )
 )

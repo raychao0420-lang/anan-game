@@ -1,6 +1,8 @@
 // LULU: 膽小、怕人、怕水的米格魯（永遠的小狗寶貝！）
 // Hana & Kotaro: 日本超人氣水獺組合
 // 吉吉: 神秘隱藏黑貓，解鎖 Kotaro 後出現
+// 小北: 動物園來的北極狐，解鎖吉吉後出現
+// 小綠: 動物園的小綠繡眼，解鎖小北後出現
 
 // exp needed to go from stage N to N+1 (index = current stage)
 export const EVOLVE_EXP = [0, 500, 2000, 5000]
@@ -64,7 +66,7 @@ export const PETS = {
     unlockRequires: 'kotaro',
     stages: [
       null,
-      { emoji: '🐱', label: '小黑貓',     size: '5rem', bg: '#F0E6FF', border: '#9C6FD6' },
+      { emoji: '🐱',  label: '小黑貓',     size: '5rem', bg: '#F0E6FF', border: '#9C6FD6' },
       { emoji: '🐈‍⬛', label: '淘氣黑貓',   size: '5rem', bg: '#DDD0FF', border: '#7B4FC8' },
       { emoji: '🐈‍⬛', label: '神秘黑貓',   size: '5rem', bg: '#C4B0FF', border: '#5A2FA0' },
       { emoji: '🐈‍⬛', label: '傳說魔法貓', size: '5rem', bg: '#2A1A4A', border: '#C084FC', glow: true },
@@ -72,6 +74,40 @@ export const PETS = {
     happyEmoji: '😸',
     sadEmoji: '😾',
   },
+  kitsune: {
+    id: 'kitsune',
+    name: '小北',
+    breed: '北極狐',
+    personality: '好奇、愛在雪地打滾、偶爾傲嬌',
+    unlockCost: 1000,
+    unlockRequires: 'jiji',
+    stages: [
+      null,
+      { emoji: '🦊', label: '雪地小狐',   size: '5rem', bg: '#EEF8FF', border: '#A8D8EA' },
+      { emoji: '🦊', label: '冰原狐狸',   size: '5rem', bg: '#D4EEFF', border: '#5BA4CF' },
+      { emoji: '🦊', label: '霜雪之狐',   size: '5rem', bg: '#B8E0FF', border: '#2C7CB0' },
+      { emoji: '🦊', label: '傳說北極狐', size: '5rem', bg: '#9ACFFF', border: '#0A5CA8', glow: true },
+    ],
+    happyEmoji: '🥰',
+    sadEmoji: '🥺',
+  },
+  mejiro: {
+    id: 'mejiro',
+    name: '小綠',
+    breed: '繡眼鳥',
+    personality: '愛唱歌、停不下來、喜歡花蜜',
+    unlockCost: 1200,
+    unlockRequires: 'kitsune',
+    stages: [
+      null,
+      { emoji: '🐦', label: '小小繡眼', size: '5rem', bg: '#F0FFF4', border: '#90EE90' },
+      { emoji: '🐦', label: '翠鳴繡眼', size: '5rem', bg: '#DCFFDC', border: '#4CAF50' },
+      { emoji: '🐦', label: '林間歌者', size: '5rem', bg: '#C8FFC8', border: '#2E7D32' },
+      { emoji: '🐦', label: '傳說繡眼', size: '5rem', bg: '#B4FFB4', border: '#1B5E20', glow: true },
+    ],
+    happyEmoji: '🥰',
+    sadEmoji: '😔',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro']

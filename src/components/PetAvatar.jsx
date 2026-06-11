@@ -32,6 +32,30 @@ const EVO = {
     { body:'#5A3A1E', belly:'#B0886A', ear:'#4A2A0E', nose:'#1a0e07' },
     { body:'#2A5A32', belly:'#90D4A0', ear:'#1A4A22', nose:'#0D1F0F', glow:'#90EE90' },
   ],
+  // 黑貓：深紫黑色調，stage 4 魔法紫光
+  jiji: [
+    null,
+    { body:'#1E0E30', belly:'#2E1A48', ear:'#160A24', nose:'#080010' },
+    { body:'#160822', belly:'#26143A', ear:'#100618', nose:'#050008' },
+    { body:'#0E0618', belly:'#1C0E2E', ear:'#0A0410', nose:'#030006' },
+    { body:'#0A0412', belly:'#180A28', ear:'#060208', nose:'#020004', glow:'#C084FC' },
+  ],
+  // 北極狐：白冰藍色調，stage 4 冰藍光暈
+  kitsune: [
+    null,
+    { body:'#EEF4FF', belly:'#FFFFFF', ear:'#D0E8FF', nose:'#5080A8' },
+    { body:'#E0EEFF', belly:'#F8FCFF', ear:'#B8D8F8', nose:'#406898' },
+    { body:'#D0E4FF', belly:'#F0F8FF', ear:'#A0C8F0', nose:'#305888' },
+    { body:'#C0D8FF', belly:'#E8F4FF', ear:'#88B8E8', nose:'#204878', glow:'#A8D8FF' },
+  ],
+  // 繡眼鳥：亮綠色調，stage 4 翠綠光暈
+  mejiro: [
+    null,
+    { body:'#6ABE78', belly:'#E0FFE8', ear:'#58A868', nose:'#2A5A30' },
+    { body:'#5AAE68', belly:'#D8FFE0', ear:'#489858', nose:'#1A4A20' },
+    { body:'#4A9E58', belly:'#D0FFD8', ear:'#388848', nose:'#0E3A18' },
+    { body:'#3A8E48', belly:'#C8FFD0', ear:'#288038', nose:'#082A10', glow:'#90FF90' },
+  ],
 }
 
 // ── Pet bases ─────────────────────────────────────────────────────────────────
