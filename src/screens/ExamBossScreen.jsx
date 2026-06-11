@@ -7,19 +7,17 @@ import { sfx } from '../utils/sound'
 import './ExamBossScreen.css'
 
 const CATEGORY_TIPS = {
-  '小數': '💡 小數點對齊再加減',
-  '除法': '💡 從高位開始試商',
-  '面積': '💡 面積 = 長 × 寬',
-  '時間': '💡 1小時 = 60分鐘',
-  '應用題': '💡 列式再計算',
+  '數學': '💡 用草稿區計算再填答案',
+  '社會': '💡 想想社區與生活',
+  '自然': '💡 回想自然課知識',
+  '國語': '💡 想想語文課學的',
 }
 
 const CATEGORY_COLORS = {
-  '小數':   '#6C63FF',
-  '除法':   '#E84393',
-  '面積':   '#17B978',
-  '時間':   '#F7971E',
-  '應用題': '#FF6B6B',
+  '數學': '#6C63FF',
+  '社會': '#0EA5E9',
+  '自然': '#22C55E',
+  '國語': '#EF4444',
 }
 
 const { totalQuestions, passScore, timePerQuestion, firstClearCoins, replayClearCoins, rewardItemId } = EXAM_BOSS_CONFIG
@@ -107,6 +105,16 @@ export default function ExamBossScreen({ onBack }) {
     setTimeout(() => nextQuestion(isCorrect), 700)
   }, [input, currentQ, phase, nextQuestion])
 
+  const handleChoiceSelect = useCallback((optionIndex) => {
+    if (phase !== 'fight') return
+    clearInterval(timerRef.current)
+    const isCorrect = optionIndex === currentQ.answer
+    showFeedback(isCorrect ? 'correct' : 'wrong')
+    if (isCorrect) sfx.correct()
+    else sfx.wrong()
+    setTimeout(() => nextQuestion(isCorrect), 700)
+  }, [currentQ, phase, nextQuestion])
+
   const resetBattle = () => {
     setQIndex(0); setInput(''); setScratchpad('')
     setTimeLeft(timePerQuestion); setCorrectCount(0); setWrongCount(0)
@@ -114,7 +122,7 @@ export default function ExamBossScreen({ onBack }) {
   }
 
   const timerPct   = (timeLeft / timePerQuestion) * 100
-  const timerColor = timeLeft > 20 ? '#6BCB77' : timeLeft > 10 ? '#FFB347' : '#FF6B6B'
+  const timerColor = timeLeft > 13 ? '#6BCB77' : timeLeft > 7 ? '#FFB347' : '#FF6B6B'
 
   // ── INTRO ──────────────────────────────────────────────────────────────────
   if (phase === 'intro') return (
@@ -134,10 +142,11 @@ export default function ExamBossScreen({ onBack }) {
         <div className="exam-intro-title">{EXAM_BOSS_CONFIG.name}</div>
         <div className="exam-intro-sub">{EXAM_BOSS_CONFIG.subtitle}</div>
         <div className="exam-intro-rules">
-          <div>🎲 每次隨機抽 {totalQuestions} 題</div>
+          <div>🎲 每次隨機抽 {totalQuestions} 題（數學4、社會2、自然2、國語2）</div>
           <div>⏱️ 每題 {timePerQuestion} 秒作答</div>
           <div>✅ 答對 {passScore} 題以上過關</div>
-          <div>✏️ 每題都有計算草稿區，可以打草稿</div>
+          <div>🔢 數學題輸入答案；其他科目點選選項</div>
+          <div>✏️ 數學題有計算草稿區</div>
           <div>🏆 首次過關：<strong>{firstClearCoins} 金幣 + 狀元獎盃</strong></div>
         </div>
         {examBossCleared && (
@@ -326,42 +335,61 @@ export default function ExamBossScreen({ onBack }) {
         )}
       </AnimatePresence>
 
-      {/* Scratchpad */}
-      <div className="exam-scratchpad-wrap">
-        <div className="exam-scratchpad-label">✏️ 計算草稿區</div>
-        <textarea
-          className="exam-scratchpad"
-          value={scratchpad}
-          onChange={e => setScratchpad(e.target.value)}
-          placeholder="在這裡寫算式草稿..."
-          rows={3}
-        />
-      </div>
-
-      {/* Answer */}
-      <div className="exam-answer-wrap">
-        <span className="exam-answer-label">答案：</span>
-        <input
-          ref={inputRef}
-          className="exam-answer-input"
-          type="text"
-          inputMode="decimal"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder="填入答案"
-          onKeyDown={e => { if (e.key === 'Enter') handleConfirm() }}
-        />
-        {currentQ.unit && <span className="exam-answer-unit">{currentQ.unit}</span>}
-        <motion.button
-          className="exam-confirm-btn"
-          style={{ background: catColor }}
-          whileTap={{ scale: 0.94 }}
-          onClick={handleConfirm}
-          disabled={!input.trim()}
-        >
-          確認 ✓
-        </motion.button>
-      </div>
+      {/* Scratchpad (number type only) */}
+      {currentQ.type === 'number' ? (
+        <>
+          <div className="exam-scratchpad-wrap">
+            <div className="exam-scratchpad-label">✏️ 計算草稿區</div>
+            <textarea
+              className="exam-scratchpad"
+              value={scratchpad}
+              onChange={e => setScratchpad(e.target.value)}
+              placeholder="在這裡寫算式草稿..."
+              rows={3}
+            />
+          </div>
+          <div className="exam-answer-wrap">
+            <span className="exam-answer-label">答案：</span>
+            <input
+              ref={inputRef}
+              className="exam-answer-input"
+              type="text"
+              inputMode="decimal"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="填入答案"
+              onKeyDown={e => { if (e.key === 'Enter') handleConfirm() }}
+            />
+            {currentQ.unit && <span className="exam-answer-unit">{currentQ.unit}</span>}
+            <motion.button
+              className="exam-confirm-btn"
+              style={{ background: catColor }}
+              whileTap={{ scale: 0.94 }}
+              onClick={handleConfirm}
+              disabled={!input.trim()}
+            >
+              確認 ✓
+            </motion.button>
+          </div>
+        </>
+      ) : (
+        <div className="exam-choices">
+          {currentQ.options.map((opt, idx) => (
+            <motion.button
+              key={idx}
+              className="exam-choice-btn"
+              style={{ borderColor: catColor }}
+              whileTap={{ scale: 0.93 }}
+              onClick={() => handleChoiceSelect(idx + 1)}
+            >
+              <span className="exam-choice-num" style={{ background: catColor }}>
+                {['①','②','③','④'][idx]}
+              </span>
+              <span className="exam-choice-text">{opt}</span>
+            </motion.button>
+          ))}
+        </div>
+      )}
 
     </div>
   )
