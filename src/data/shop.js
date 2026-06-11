@@ -50,7 +50,8 @@ export const SHOP_ITEMS = [
   { id: 'bamboo',       name: '竹林角落',  emoji: '🎋', category: 'home', price: 90,  desc: '清新自然、超療癒' },
   { id: 'bird_perch',   name: '棲木架',    emoji: '🪵', category: 'home', price: 110, desc: '繡眼鳥最愛停的地方' },
   { id: 'fairy_light',  name: '星光燈串',  emoji: '✨', category: 'home', price: 150, desc: '夢幻閃爍、超浪漫' },
-  { id: 'snow_globe',   name: '雪景水晶球', emoji: '🔮', category: 'home', price: 180, desc: '北極狐的最愛' },
+  { id: 'snow_globe',   name: '雪景水晶球', emoji: '🔮', category: 'home', price: 180, desc: 'Yuki 的最愛' },
+  { id: 'igloo',        name: '冰屋',       emoji: '🛖', category: 'home', price: 220, desc: 'Yuki 的秘密冬日基地' },
   // ── 稀有（Boss 獎勵，不可購買） ──
   { id: 'boss_medal1', name: '勇者勳章',   emoji: '🎖️', category: 'rare', price: 0, desc: '打倒第一章Boss', boss: true },
   { id: 'boss_medal2', name: '三位數之印', emoji: '🏅', category: 'rare', price: 0, desc: '打倒第二章Boss', boss: true },

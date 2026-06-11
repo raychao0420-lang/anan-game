@@ -76,9 +76,9 @@ export const PETS = {
   },
   kitsune: {
     id: 'kitsune',
-    name: '小北',
+    name: 'Yuki',
     breed: '北極狐',
-    personality: '好奇、愛在雪地打滾、偶爾傲嬌',
+    personality: '愛在雪地打滾、慵懶又傲嬌',
     unlockCost: 1000,
     unlockRequires: 'jiji',
     stages: [
