@@ -20,6 +20,9 @@ const PET_CONFIG = {
   lulu:   { startPos: { x: 12, y: 50 }, bobDuration: 1.8, wanderInterval: 2800, burstEmoji: '🐾' },
   hana:   { startPos: { x: 44, y: 54 }, bobDuration: 2.1, wanderInterval: 3500, burstEmoji: '💙' },
   kotaro: { startPos: { x: 72, y: 51 }, bobDuration: 2.4, wanderInterval: 4200, burstEmoji: '💚' },
+  jiji:   { startPos: { x: 58, y: 48 }, bobDuration: 2.0, wanderInterval: 3200, burstEmoji: '✨' },
+  kitsune:{ startPos: { x: 28, y: 52 }, bobDuration: 2.3, wanderInterval: 3800, burstEmoji: '❄️' },
+  mejiro: { startPos: { x: 64, y: 45 }, bobDuration: 1.5, wanderInterval: 2500, burstEmoji: '🌸' },
 }
 
 // Default decoration slots (% positions)
@@ -335,7 +338,7 @@ export default function HomeRoomScreen({ onNavigate }) {
 
   const handlePetClick = (petId) => {
     if (petId === 'lulu') sfx.beagle()
-    else sfx.otter()
+    else sfx.otter()   // hana/kotaro/jiji/kitsune/mejiro 共用合成音效
   }
 
   return (
