@@ -6,10 +6,10 @@ import './StageScreen.css'
 const CHAPTERS = [
   { label: '加減法', range: [1, 10], icon: '➕' },
   { label: '加減進階', range: [41, 55], icon: '⚡' },
+  { label: '綜合進階', range: [56, 70], icon: '🚀' },
   { label: '三位數', range: [11, 20], icon: '🔢' },
   { label: '乘法', range: [21, 30], icon: '✖️' },
   { label: '除法', range: [31, 40], icon: '➗' },
-  { label: '綜合進階', range: [56, 70], icon: '🚀' },
 ]
 
 // chapter-first-stage → prerequisite stage
