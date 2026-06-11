@@ -87,4 +87,50 @@ export const sfx = {
       osc.stop(t + 0.65)
     } catch(e) {}
   },
+  fox: () => {
+    // 北極狐 yip：鋸齒波短促上揚再跌落，帶點沙啞感
+    if (muted) return
+    const c = ctx()
+    if (!c) return
+    try {
+      const osc  = c.createOscillator()
+      const gain = c.createGain()
+      osc.connect(gain)
+      gain.connect(c.destination)
+      osc.type = 'sawtooth'
+      const t = c.currentTime
+      osc.frequency.setValueAtTime(480, t)
+      osc.frequency.linearRampToValueAtTime(820, t + 0.07)
+      osc.frequency.linearRampToValueAtTime(380, t + 0.22)
+      gain.gain.setValueAtTime(0, t)
+      gain.gain.linearRampToValueAtTime(0.2, t + 0.03)
+      gain.gain.setValueAtTime(0.2, t + 0.1)
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28)
+      osc.start(t)
+      osc.stop(t + 0.32)
+    } catch(e) {}
+  },
+  bird: () => {
+    // 繡眼鳥：四聲高頻啁啾，音高交錯上下
+    if (muted) return
+    const c = ctx()
+    if (!c) return
+    try {
+      [[3000, 0, 0.055], [3400, 0.07, 0.05], [2800, 0.14, 0.06], [3200, 0.21, 0.055]].forEach(([freq, delay, dur]) => {
+        const osc  = c.createOscillator()
+        const gain = c.createGain()
+        osc.connect(gain)
+        gain.connect(c.destination)
+        osc.type = 'sine'
+        const t = c.currentTime + delay
+        osc.frequency.setValueAtTime(freq, t)
+        osc.frequency.linearRampToValueAtTime(freq * 1.12, t + dur * 0.45)
+        osc.frequency.linearRampToValueAtTime(freq * 0.96, t + dur)
+        gain.gain.setValueAtTime(0.16, t)
+        gain.gain.exponentialRampToValueAtTime(0.001, t + dur)
+        osc.start(t)
+        osc.stop(t + dur + 0.01)
+      })
+    } catch(e) {}
+  },
 }
