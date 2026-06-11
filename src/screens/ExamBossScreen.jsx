@@ -64,7 +64,7 @@ export default function ExamBossScreen({ onBack }) {
       setWasPerfect(isPerfect)
       setCoinsEarned(coins)
       if (coins > 0) addCoins(coins)
-      recordSubjectResult(activeSubject.id, passed, activeSubject.rewardItemId)
+      recordSubjectResult(activeSubject.id, passed, activeSubject.rewardItemId, activeSubject.streakNeeded)
       setTimeout(() => passed ? sfx.bossWin() : sfx.bossLose(), 300)
       setPhase(passed ? 'win' : 'lose')
     } else {

@@ -254,11 +254,12 @@ export const useGameStore = create(
       },
 
       // ── M5: Exam Boss ──
-      recordSubjectResult: (subjectId, passed, rewardItemId) => {
+      recordSubjectResult: (subjectId, passed, rewardItemId, streakNeeded) => {
         set((s) => {
-          const prev     = s.subjectStreaks?.[subjectId] ?? 0
+          const prev      = s.subjectStreaks?.[subjectId] ?? 0
           const newStreak = passed ? prev + 1 : 0
-          const shouldAward = passed && newStreak >= 5 && !s.ownedItems.includes(rewardItemId)
+          const threshold = streakNeeded ?? 5
+          const shouldAward = passed && newStreak >= threshold && !s.ownedItems.includes(rewardItemId)
           return {
             subjectStreaks: { ...(s.subjectStreaks ?? {}), [subjectId]: newStreak },
             ...(shouldAward ? { ownedItems: [...s.ownedItems, rewardItemId] } : {}),
