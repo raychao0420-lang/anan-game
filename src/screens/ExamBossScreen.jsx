@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
-import { EXAM_BOSS_CONFIG, pickExamQuestions } from '../data/examBoss'
+import { SUBJECT_CONFIGS, pickSubjectQuestions } from '../data/examBoss'
 import { PETS } from '../data/pets'
 import { sfx } from '../utils/sound'
 import './ExamBossScreen.css'
@@ -13,40 +13,33 @@ const CATEGORY_TIPS = {
   '國語': '💡 想想語文課學的',
 }
 
-const CATEGORY_COLORS = {
-  '數學': '#6C63FF',
-  '社會': '#0EA5E9',
-  '自然': '#22C55E',
-  '國語': '#EF4444',
-}
-
-const { totalQuestions, passScore, timePerQuestion, mathTimePerQuestion, firstClearCoins, replayClearCoins, rewardItemId } = EXAM_BOSS_CONFIG
-
-const getQTime = (q) => q?.type === 'number' ? mathTimePerQuestion : timePerQuestion
 const formatTime = (t) => t >= 60 ? `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}` : `${t}s`
 
 export default function ExamBossScreen({ onBack }) {
-  const { activePet, pets, examBossCleared, clearExamBoss } = useGameStore()
+  const { activePet, pets, subjectPerfects, ownedItems, addCoins, recordSubjectPerfect } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
 
-  const [questions] = useState(() => pickExamQuestions(totalQuestions))
-  const [phase, setPhase]             = useState('intro')
-  const [qIndex, setQIndex]           = useState(0)
-  const [input, setInput]             = useState('')
-  const [scratchpad, setScratchpad]   = useState('')
-  const [timeLeft, setTimeLeft]       = useState(() => getQTime(questions[0]))
-  const [correctCount, setCorrectCount] = useState(0)
-  const [wrongCount, setWrongCount]   = useState(0)
-  const [feedback, setFeedback]       = useState(null)
-  const [selectedChoice, setSelectedChoice] = useState(null)
-  const [wasFirstClear, setWasFirstClear] = useState(false)
-  const [eggHatched, setEggHatched]   = useState(false)
+  const [phase, setPhase] = useState('select')
+  const [activeSubject, setActiveSubject] = useState(null)
+  const [questions, setQuestions] = useState([])
 
-  const timerRef    = useRef(null)
+  const [qIndex, setQIndex] = useState(0)
+  const [input, setInput] = useState('')
+  const [scratchpad, setScratchpad] = useState('')
+  const [timeLeft, setTimeLeft] = useState(20)
+  const [correctCount, setCorrectCount] = useState(0)
+  const [wrongCount, setWrongCount] = useState(0)
+  const [feedback, setFeedback] = useState(null)
+  const [selectedChoice, setSelectedChoice] = useState(null)
+  const [eggHatched, setEggHatched] = useState(false)
+  const [wasPerfect, setWasPerfect] = useState(false)
+  const [coinsEarned, setCoinsEarned] = useState(0)
+
+  const prevPerfectsRef = useRef(0)
+  const timerRef = useRef(null)
   const feedbackRef = useRef(null)
-  const inputRef    = useRef(null)
 
   const currentQ = questions[qIndex]
 
@@ -62,11 +55,15 @@ export default function ExamBossScreen({ onBack }) {
     setCorrectCount(newCorrect)
     setWrongCount(newWrong)
 
-    if (qIndex >= totalQuestions - 1) {
-      if (newCorrect >= passScore) {
-        const isFirst = !examBossCleared
-        setWasFirstClear(isFirst)
-        clearExamBoss(isFirst ? firstClearCoins : replayClearCoins, rewardItemId)
+    if (qIndex >= activeSubject.totalQuestions - 1) {
+      const passed    = newCorrect >= activeSubject.passScore
+      const isPerfect = newCorrect === activeSubject.totalQuestions
+      if (passed) {
+        const coins = isPerfect ? 200 : 100
+        setWasPerfect(isPerfect)
+        setCoinsEarned(coins)
+        addCoins(coins)
+        if (isPerfect) recordSubjectPerfect(activeSubject.id, activeSubject.rewardItemId)
         setTimeout(() => sfx.bossWin(), 300)
         setPhase('win')
       } else {
@@ -78,12 +75,12 @@ export default function ExamBossScreen({ onBack }) {
       setInput('')
       setScratchpad('')
       setSelectedChoice(null)
-      setTimeLeft(getQTime(questions[qIndex + 1]))
+      setTimeLeft(activeSubject.timePerQuestion)
     }
-  }, [qIndex, correctCount, wrongCount, examBossCleared, clearExamBoss])
+  }, [qIndex, correctCount, wrongCount, activeSubject, addCoins, recordSubjectPerfect])
 
   useEffect(() => {
-    if (phase !== 'fight') return
+    if (phase !== 'fight' || !currentQ) return
     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
@@ -102,11 +99,10 @@ export default function ExamBossScreen({ onBack }) {
   const handleConfirm = useCallback(() => {
     if (!input.trim() || phase !== 'fight') return
     clearInterval(timerRef.current)
-    const userVal  = parseFloat(input)
+    const userVal   = parseFloat(input)
     const isCorrect = !isNaN(userVal) && Math.abs(userVal - currentQ.answer) < 0.01
     showFeedback(isCorrect ? 'correct' : 'wrong')
-    if (isCorrect) sfx.correct()
-    else sfx.wrong()
+    if (isCorrect) sfx.correct(); else sfx.wrong()
     setTimeout(() => nextQuestion(isCorrect), 700)
   }, [input, currentQ, phase, nextQuestion])
 
@@ -116,136 +112,155 @@ export default function ExamBossScreen({ onBack }) {
     const isCorrect = optionIndex === currentQ.answer
     setSelectedChoice(optionIndex)
     showFeedback(isCorrect ? 'correct' : 'wrong')
-    if (isCorrect) sfx.correct()
-    else sfx.wrong()
+    if (isCorrect) sfx.correct(); else sfx.wrong()
     setTimeout(() => nextQuestion(isCorrect), isCorrect ? 700 : 1500)
   }, [currentQ, phase, nextQuestion, selectedChoice])
 
-  const resetBattle = () => {
-    setQIndex(0); setInput(''); setScratchpad('')
-    setSelectedChoice(null)
-    setTimeLeft(getQTime(questions[0])); setCorrectCount(0); setWrongCount(0)
+  const startSubject = (subConf) => {
+    prevPerfectsRef.current = subjectPerfects?.[subConf.id] ?? 0
+    setActiveSubject(subConf)
+    setQuestions(pickSubjectQuestions(subConf.category, subConf.totalQuestions))
+    setQIndex(0)
+    setInput(''); setScratchpad(''); setSelectedChoice(null)
+    setTimeLeft(subConf.timePerQuestion)
+    setCorrectCount(0); setWrongCount(0)
     setFeedback(null); setEggHatched(false)
+    setWasPerfect(false); setCoinsEarned(0)
+    setPhase('fight')
   }
 
-  const maxTime    = getQTime(currentQ)
-  const timerPct   = (timeLeft / maxTime) * 100
-  const timerColor = timerPct > 65 ? '#6BCB77' : timerPct > 35 ? '#FFB347' : '#FF6B6B'
-
-  // ── INTRO ──────────────────────────────────────────────────────────────────
-  if (phase === 'intro') return (
+  // ── SELECT ─────────────────────────────────────────────────────
+  if (phase === 'select') return (
     <div className="exam-screen exam-intro">
-      <motion.div className="exam-intro-card"
-        initial={{ scale: 0.7, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 200 }}
-      >
-        <div className="exam-intro-label">📖 期末考 BOSS</div>
+      <div className="exam-select-wrap">
+        <motion.button className="exam-back-btn" whileTap={{ scale: 0.9 }} onClick={onBack}>
+          ← 返回
+        </motion.button>
+
         <motion.div className="exam-intro-emoji"
-          animate={{ y: [0, -16, 0], rotate: [0, 8, -8, 0] }}
+          animate={{ y: [0, -14, 0] }}
           transition={{ repeat: Infinity, duration: 2.8 }}
-        >
-          📚
-        </motion.div>
-        <div className="exam-intro-title">{EXAM_BOSS_CONFIG.name}</div>
-        <div className="exam-intro-sub">{EXAM_BOSS_CONFIG.subtitle}</div>
-        <div className="exam-intro-rules">
-          <div>🎲 每次隨機抽 {totalQuestions} 題（數學4、社會2、自然2、國語2）</div>
-          <div>✅ 答對 {passScore} 題以上過關</div>
-          <div>⏱️ 數學題 <strong>2分鐘</strong>、其他科目 {timePerQuestion} 秒</div>
-          <div>🔢 數學題輸入答案；其他科目點選選項</div>
-          <div>✏️ 數學題有計算草稿區</div>
-          <div>🏆 首次過關：<strong>{firstClearCoins} 金幣 + 狀元獎盃</strong></div>
+        >📚</motion.div>
+        <div className="exam-intro-title">期末考大魔王</div>
+        <div className="exam-intro-sub">選擇科目挑戰・三次滿分獲得皇冠 👑</div>
+
+        <div className="exam-subject-grid">
+          {SUBJECT_CONFIGS.map(sub => {
+            const perfects    = Math.min(subjectPerfects?.[sub.id] ?? 0, sub.perfectsNeeded)
+            const crownEarned = ownedItems.includes(sub.rewardItemId)
+            return (
+              <motion.button
+                key={sub.id}
+                className="exam-subject-card"
+                style={{ borderColor: sub.color }}
+                whileTap={{ scale: 0.93 }}
+                onClick={() => startSubject(sub)}
+              >
+                {crownEarned && <span className="exam-subject-crown-badge">👑</span>}
+                <span className="exam-subject-emoji">{sub.emoji}</span>
+                <span className="exam-subject-name" style={{ color: sub.color }}>{sub.category}</span>
+                <div className="exam-subject-stars">
+                  {Array.from({ length: sub.perfectsNeeded }, (_, i) => (
+                    <span key={i} style={{ opacity: i < perfects ? 1 : 0.2 }}>⭐</span>
+                  ))}
+                </div>
+                <span className="exam-subject-hint">
+                  {sub.totalQuestions} 題・{sub.timePerQuestion >= 60 ? `${sub.timePerQuestion / 60}分鐘/題` : `${sub.timePerQuestion}秒/題`}
+                </span>
+              </motion.button>
+            )
+          })}
         </div>
-        {examBossCleared && (
-          <div className="exam-already-cleared">✅ 你已打倒過此Boss！再次過關 +{replayClearCoins} 金幣</div>
-        )}
-        <motion.button className="btn-primary" style={{ maxWidth: 260 }}
-          whileTap={{ scale: 0.94 }}
-          onClick={() => { resetBattle(); setPhase('fight') }}
-        >
-          📝 開始應試！
-        </motion.button>
-        <motion.button className="btn-secondary" style={{ maxWidth: 260 }}
-          whileTap={{ scale: 0.94 }}
-          onClick={onBack}
-        >
-          先回去練習
-        </motion.button>
-      </motion.div>
+      </div>
     </div>
   )
 
-  // ── WIN ────────────────────────────────────────────────────────────────────
-  if (phase === 'win') return (
-    <div className="exam-screen exam-win">
-      <motion.div className="exam-result-card"
-        initial={{ scale: 0.7, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 200 }}
-      >
-        <div className="exam-win-title">🎉 期末考過關啦！</div>
-        <motion.div className="exam-result-pet"
-          style={{ background: petStage.bg, border: `3px solid ${petStage.border}` }}
-          animate={{ scale: [1, 1.2, 1, 1.2, 1], rotate: [0, 15, -15, 10, 0] }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          <span style={{ fontSize: '3.5rem' }}>{petStage.emoji}</span>
-        </motion.div>
-        <div className="exam-score">答對 {correctCount} / {totalQuestions} 題</div>
+  // ── WIN ────────────────────────────────────────────────────────
+  if (phase === 'win') {
+    const currentPerfects = subjectPerfects?.[activeSubject?.id] ?? 0
+    const crownEarned     = ownedItems.includes(activeSubject?.rewardItemId)
+    const justEarnedCrown = wasPerfect && prevPerfectsRef.current < 3 && currentPerfects >= 3
 
-        <div className="exam-egg-area">
-          {!eggHatched ? (
-            <>
-              <motion.div className="exam-egg"
-                animate={{ rotate: [-5, 5, -5, 5, -5, 0], y: [0, -6, 0] }}
-                transition={{ duration: 1.5, repeat: 2, onComplete: () => setEggHatched(true) }}
-                onClick={() => setEggHatched(true)}
-              >
-                🥚
-              </motion.div>
-              <div className="exam-egg-hint">點擊蛋來開獎！</div>
-            </>
-          ) : (
-            <motion.div className="exam-reward-reveal"
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 260 }}
-            >
-              {wasFirstClear ? (
+    return (
+      <div className="exam-screen exam-win">
+        <motion.div className="exam-result-card"
+          initial={{ scale: 0.7, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 200 }}
+        >
+          <div className="exam-win-title">{wasPerfect ? '🌟 完美滿分！' : '🎉 過關了！'}</div>
+
+          <motion.div className="exam-result-pet"
+            style={{ background: petStage.bg, border: `3px solid ${petStage.border}` }}
+            animate={{ scale: [1, 1.2, 1, 1.2, 1], rotate: [0, 15, -15, 10, 0] }}
+            transition={{ duration: 1, delay: 0.3 }}
+          >
+            <span style={{ fontSize: '3.5rem' }}>{petStage.emoji}</span>
+          </motion.div>
+
+          <div className="exam-score">
+            {activeSubject.category} ・ 答對 {correctCount} / {activeSubject.totalQuestions} 題
+          </div>
+
+          {/* 滿分進度 / 皇冠解鎖 */}
+          {wasPerfect && (
+            <div className="exam-perfect-box" style={{ borderColor: activeSubject.color }}>
+              {justEarnedCrown ? (
                 <>
-                  <span className="exam-reward-emoji">🏆</span>
-                  <div className="exam-reward-name">狀元獎盃 已收入道具袋！</div>
-                  <div className="exam-reward-coins">+ {firstClearCoins} 💰</div>
+                  <motion.div
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 260, delay: 0.4 }}
+                    style={{ fontSize: '4rem' }}
+                  >👑</motion.div>
+                  <div style={{ color: '#FFD700', fontWeight: 800, fontSize: '1.05rem', textAlign: 'center' }}>
+                    🎊 {activeSubject.category}皇冠 解鎖！道具袋已收錄
+                  </div>
                 </>
               ) : (
                 <>
-                  <span className="exam-reward-emoji">💰</span>
-                  <div className="exam-reward-name">再次過關！</div>
-                  <div className="exam-reward-coins">+ {replayClearCoins} 💰</div>
+                  <div style={{ fontSize: '0.85rem', color: '#888', fontWeight: 700 }}>
+                    {activeSubject.category} 滿分進度
+                  </div>
+                  <div className="exam-perfect-stars">
+                    {Array.from({ length: activeSubject.perfectsNeeded }, (_, i) => (
+                      <span key={i} style={{ fontSize: '1.6rem', opacity: i < Math.min(currentPerfects, activeSubject.perfectsNeeded) ? 1 : 0.2 }}>⭐</span>
+                    ))}
+                  </div>
+                  {!crownEarned && (
+                    <div style={{ color: '#888', fontSize: '0.82rem' }}>
+                      再 {activeSubject.perfectsNeeded - Math.min(currentPerfects, activeSubject.perfectsNeeded)} 次滿分即可獲得皇冠！
+                    </div>
+                  )}
                 </>
               )}
-            </motion.div>
+              <div style={{ color: '#FFD700', fontWeight: 900, fontSize: '1.4rem' }}>+ {coinsEarned} 💰</div>
+            </div>
           )}
-        </div>
 
-        <motion.button className="btn-primary" style={{ maxWidth: 260 }}
-          whileTap={{ scale: 0.94 }}
-          onClick={onBack}
-        >
-          🏠 回首頁
-        </motion.button>
-        <motion.button className="btn-secondary" style={{ maxWidth: 260 }}
-          whileTap={{ scale: 0.94 }}
-          onClick={() => { resetBattle(); setPhase('intro') }}
-        >
-          🔄 再挑戰一次
-        </motion.button>
-      </motion.div>
-    </div>
-  )
+          {!wasPerfect && (
+            <div style={{ color: '#AAA', fontSize: '0.88rem', textAlign: 'center' }}>
+              + {coinsEarned} 💰（滿分可獲得 200 💰 及皇冠進度）
+            </div>
+          )}
 
-  // ── LOSE ───────────────────────────────────────────────────────────────────
+          <div className="exam-result-btns">
+            <motion.button className="btn-primary" whileTap={{ scale: 0.94 }}
+              onClick={() => startSubject(activeSubject)}
+            >🔄 再挑戰 {activeSubject.category}</motion.button>
+            <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }}
+              onClick={() => setPhase('select')}
+            >📚 選擇其他科目</motion.button>
+            <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }}
+              onClick={onBack}
+            >🏠 回首頁</motion.button>
+          </div>
+        </motion.div>
+      </div>
+    )
+  }
+
+  // ── LOSE ───────────────────────────────────────────────────────
   if (phase === 'lose') return (
     <div className="exam-screen exam-lose">
       <motion.div className="exam-result-card"
@@ -256,29 +271,32 @@ export default function ExamBossScreen({ onBack }) {
         <motion.div className="exam-lose-emoji"
           animate={{ x: [0, -8, 8, -8, 0] }}
           transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          📚
-        </motion.div>
-        <div className="exam-score">答對 {correctCount} / {totalQuestions} 題（需要 {passScore} 題）</div>
+        >📚</motion.div>
+        <div className="exam-score">
+          {activeSubject.category} ・ 答對 {correctCount} / {activeSubject.totalQuestions} 題（需要 {activeSubject.passScore} 題）
+        </div>
         <div className="exam-retry-hint">再多練習幾次，一定可以過關！加油 💪</div>
-        <motion.button className="btn-primary" style={{ maxWidth: 260 }}
-          whileTap={{ scale: 0.94 }}
-          onClick={() => { resetBattle(); setPhase('intro') }}
-        >
-          🔄 再挑戰！
-        </motion.button>
-        <motion.button className="btn-secondary" style={{ maxWidth: 260 }}
-          whileTap={{ scale: 0.94 }}
-          onClick={onBack}
-        >
-          🏠 回首頁
-        </motion.button>
+        <div className="exam-result-btns">
+          <motion.button className="btn-primary" whileTap={{ scale: 0.94 }}
+            onClick={() => startSubject(activeSubject)}
+          >🔄 再挑戰！</motion.button>
+          <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }}
+            onClick={() => setPhase('select')}
+          >📚 選擇其他科目</motion.button>
+          <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }}
+            onClick={onBack}
+          >🏠 回首頁</motion.button>
+        </div>
       </motion.div>
     </div>
   )
 
-  // ── FIGHT ──────────────────────────────────────────────────────────────────
-  const catColor = CATEGORY_COLORS[currentQ.category] || '#6C63FF'
+  // ── FIGHT ──────────────────────────────────────────────────────
+  if (!currentQ) return null
+
+  const catColor  = activeSubject.color
+  const timerPct  = (timeLeft / activeSubject.timePerQuestion) * 100
+  const timerColor = timerPct > 65 ? '#6BCB77' : timerPct > 35 ? '#FFB347' : '#FF6B6B'
 
   return (
     <div className="exam-screen exam-fight">
@@ -291,7 +309,7 @@ export default function ExamBossScreen({ onBack }) {
           >
             <span>{petStage.emoji}</span>
           </div>
-          <span className="exam-fight-count">第 {qIndex + 1} / {totalQuestions} 題</span>
+          <span className="exam-fight-count">第 {qIndex + 1} / {activeSubject.totalQuestions} 題</span>
         </div>
         <div className="exam-fight-score">
           <span className="exam-score-correct">{correctCount} ✅</span>
@@ -308,7 +326,7 @@ export default function ExamBossScreen({ onBack }) {
         />
       </div>
 
-      {/* Category + timer label */}
+      {/* Category + timer */}
       <div className="exam-meta-row">
         <span className="exam-category-badge" style={{ background: catColor }}>
           {currentQ.category}
@@ -343,7 +361,7 @@ export default function ExamBossScreen({ onBack }) {
         )}
       </AnimatePresence>
 
-      {/* Scratchpad (number type only) */}
+      {/* Input area */}
       {currentQ.type === 'number' ? (
         <>
           <div className="exam-scratchpad-wrap">
@@ -359,7 +377,6 @@ export default function ExamBossScreen({ onBack }) {
           <div className="exam-answer-wrap">
             <span className="exam-answer-label">答案：</span>
             <input
-              ref={inputRef}
               className="exam-answer-input"
               type="text"
               inputMode="decimal"
@@ -383,11 +400,10 @@ export default function ExamBossScreen({ onBack }) {
       ) : (
         <div className="exam-choices">
           {currentQ.options.map((opt, idx) => {
-            const optNum = idx + 1
-            const isCorrectOpt = optNum === currentQ.answer
+            const optNum        = idx + 1
+            const isCorrectOpt  = optNum === currentQ.answer
             const isSelectedWrong = selectedChoice !== null && optNum === selectedChoice && !isCorrectOpt
-            const isDim = selectedChoice !== null && !isCorrectOpt && optNum !== selectedChoice
-            const choiceClass = selectedChoice !== null
+            const choiceClass   = selectedChoice !== null
               ? isCorrectOpt ? 'choice-correct' : isSelectedWrong ? 'choice-wrong' : 'choice-dim'
               : ''
             return (

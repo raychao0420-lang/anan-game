@@ -62,6 +62,7 @@ export const useGameStore = create(
 
       // M5: exam boss
       examBossCleared: false,
+      subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
 
       // M3: achievements
       achievements: {},
@@ -251,6 +252,18 @@ export const useGameStore = create(
       },
 
       // ── M5: Exam Boss ──
+      recordSubjectPerfect: (subjectId, rewardItemId) => {
+        set((s) => {
+          const prev = s.subjectPerfects?.[subjectId] ?? 0
+          const newCount = prev + 1
+          const shouldAward = prev < 3 && newCount >= 3 && !s.ownedItems.includes(rewardItemId)
+          return {
+            subjectPerfects: { ...(s.subjectPerfects ?? {}), [subjectId]: newCount },
+            ...(shouldAward ? { ownedItems: [...s.ownedItems, rewardItemId] } : {}),
+          }
+        })
+      },
+
       clearExamBoss: (coinsReward, rewardItemId) => {
         set((s) => ({
           examBossCleared: true,
@@ -316,6 +329,7 @@ export const useGameStore = create(
           dailyDaysCompleted: 0,
           bossCleared: { 10: false, 20: false, 30: false, 40: false },
           examBossCleared: false,
+          subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
           achievements: {},
           pendingAchievement: null,
           totalCoinsEarned: 0,
@@ -337,6 +351,12 @@ export const useGameStore = create(
             state.petEquipment[id] = []
         })
         if (state.examBossCleared === undefined) state.examBossCleared = false
+        if (!state.subjectPerfects) {
+          state.subjectPerfects = { math: 0, social: 0, nature: 0, chinese: 0 }
+        } else {
+          const subs = ['math', 'social', 'nature', 'chinese']
+          subs.forEach(id => { if (state.subjectPerfects[id] === undefined) state.subjectPerfects[id] = 0 })
+        }
         // Add stages 56-70 if missing (added in v2.1)
         for (let i = 56; i <= 70; i++) {
           if (!state.stages[i]) state.stages[i] = { completed: false, stars: 0 }

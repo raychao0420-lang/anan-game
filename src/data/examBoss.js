@@ -182,3 +182,24 @@ export function pickExamQuestions() {
     ...pick('國語', 2),
   ].sort(() => Math.random() - 0.5)
 }
+
+// ── 各科單獨挑戰 ──────────────────────────────────────────────
+export const SUBJECT_CONFIGS = [
+  { id: 'math',    category: '數學', emoji: '🔢', color: '#6C63FF',
+    totalQuestions: 5, passScore: 3, timePerQuestion: 120,
+    rewardItemId: 'crown_math',    perfectsNeeded: 3 },
+  { id: 'social',  category: '社會', emoji: '🏙️',  color: '#0EA5E9',
+    totalQuestions: 5, passScore: 3, timePerQuestion: 20,
+    rewardItemId: 'crown_social',  perfectsNeeded: 3 },
+  { id: 'nature',  category: '自然', emoji: '🌿', color: '#22C55E',
+    totalQuestions: 5, passScore: 3, timePerQuestion: 20,
+    rewardItemId: 'crown_nature',  perfectsNeeded: 3 },
+  { id: 'chinese', category: '國語', emoji: '📖', color: '#EF4444',
+    totalQuestions: 5, passScore: 3, timePerQuestion: 20,
+    rewardItemId: 'crown_chinese', perfectsNeeded: 3 },
+]
+
+export function pickSubjectQuestions(category, n) {
+  const pool = EXAM_QUESTIONS.filter(q => q.category === category)
+  return [...pool].sort(() => Math.random() - 0.5).slice(0, n)
+}

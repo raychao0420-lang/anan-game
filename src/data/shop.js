@@ -83,4 +83,8 @@ export const SHOP_ITEMS = [
   { id: 'boss_medal3', name: '乘法魔法戒', emoji: '💍', category: 'rare', price: 0, desc: '打倒第三章Boss', boss: true },
   { id: 'boss_medal4', name: '傳說盾牌',   emoji: '🛡️', category: 'rare', price: 0, desc: '打倒終章Boss',   boss: true },
   { id: 'exam_trophy', name: '狀元獎盃',   emoji: '🏆', category: 'rare', price: 0, desc: '期末考大魔王首次過關獎勵', boss: true },
+  { id: 'crown_math',    name: '數學皇冠', emoji: '📐', category: 'rare', price: 0, desc: '數學科三次滿分獎勵', boss: true },
+  { id: 'crown_social',  name: '社會皇冠', emoji: '🌏', category: 'rare', price: 0, desc: '社會科三次滿分獎勵', boss: true },
+  { id: 'crown_nature',  name: '自然皇冠', emoji: '🔬', category: 'rare', price: 0, desc: '自然科三次滿分獎勵', boss: true },
+  { id: 'crown_chinese', name: '國語皇冠', emoji: '🖊️', category: 'rare', price: 0, desc: '國語科三次滿分獎勵', boss: true },
 ]
