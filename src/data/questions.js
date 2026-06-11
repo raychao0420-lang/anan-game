@@ -81,8 +81,43 @@ const generators = {
 
 // Fill missing stages with similar difficulty
 for (let i = 16; i <= 20; i++) generators[i] = generators[15]
-for (let i = 26; i <= 30; i++) generators[i] = generators[25]
-for (let i = 36; i <= 40; i++) generators[i] = generators[35]
+
+// ── 乘法：兩位數 × 一位數（26-30）──────────────────────────
+generators[26] = () => makeMul(rand(11, 19), rand(2, 9))           // 十幾 × 1位
+generators[27] = () => makeMul(rand(12, 49), rand(2, 9))           // 中等2位 × 1位
+generators[28] = () => makeMul(rand(25, 99), rand(2, 9))           // 大2位 × 1位
+generators[29] = () => makeMul(rand(11, 99), rand(2, 9))           // 全範圍2位 × 1位
+generators[30] = () => {                                            // 2位乘綜合
+  const ops = [generators[26], generators[27], generators[28]]
+  return ops[rand(0, 2)]()
+}
+
+// ── 除法：兩位數 ÷ 一位數（36-40）──────────────────────────
+generators[36] = () => {                                            // 商1位，被除數2位
+  const b = rand(2, 9)
+  const minA = Math.max(2, Math.ceil(10 / b))
+  const maxA = Math.min(9, Math.floor(99 / b))
+  return makeDiv(rand(minA, maxA), b)
+}
+generators[37] = () => {                                            // 商2位，被除數2位
+  const b = rand(2, 5)
+  const maxA = Math.floor(99 / b)
+  return makeDiv(rand(10, maxA), b)
+}
+generators[38] = () => {                                            // 被除數2位混合
+  const b = rand(2, 7)
+  const minA = Math.ceil(10 / b)
+  const maxA = Math.floor(99 / b)
+  return makeDiv(rand(minA, maxA), b)
+}
+generators[39] = () => {
+  const ops = [generators[36], generators[37], generators[38]]
+  return ops[rand(0, 2)]()
+}
+generators[40] = () => {
+  const ops = [generators[36], generators[37], generators[38]]
+  return ops[rand(0, 2)]()
+}
 
 // ── 綜合進階（56-70）── 乘除 × 三位數加減 混合，每題20秒
 generators[56] = () => makeMul(rand(11, 39), rand(2, 9))          // 2位數乘 小數
@@ -150,8 +185,18 @@ export const STAGE_NAMES = {
 }
 
 for (let i = 16; i <= 20; i++) STAGE_NAMES[i] = `挑戰 ${i}`
-for (let i = 26; i <= 30; i++) STAGE_NAMES[i] = `乘法 ${i}`
-for (let i = 36; i <= 40; i++) STAGE_NAMES[i] = `除法 ${i}`
+
+STAGE_NAMES[26] = '兩位乘一位I'
+STAGE_NAMES[27] = '兩位乘一位II'
+STAGE_NAMES[28] = '兩位乘一位III'
+STAGE_NAMES[29] = '兩位乘一位IV'
+STAGE_NAMES[30] = '兩位乘綜合'
+
+STAGE_NAMES[36] = '兩位除一位I'
+STAGE_NAMES[37] = '兩位除一位II'
+STAGE_NAMES[38] = '兩位除一位III'
+STAGE_NAMES[39] = '兩位除一位IV'
+STAGE_NAMES[40] = '兩位除綜合'
 
 // 綜合進階
 STAGE_NAMES[56] = '兩位數乘 I'
