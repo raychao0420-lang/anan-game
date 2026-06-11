@@ -5,14 +5,16 @@ import './StageScreen.css'
 
 const CHAPTERS = [
   { label: '加減法', range: [1, 10], icon: '➕' },
+  { label: '加減進階', range: [41, 55], icon: '⚡' },
   { label: '三位數', range: [11, 20], icon: '🔢' },
   { label: '乘法', range: [21, 30], icon: '✖️' },
   { label: '除法', range: [31, 40], icon: '➗' },
-  { label: '加減進階', range: [41, 55], icon: '⚡' },
 ]
 
 // chapter-first-stage → prerequisite stage
-const CHAPTER_PREREQS = { 41: 10 }
+const CHAPTER_PREREQS = { 41: 10, 11: 55 }
+
+const CHAPTER_LOCK_HINT = { 11: '⚡ 完成加減進階第55關才能挑戰！' }
 
 function Stars({ count }) {
   return (
@@ -43,9 +45,14 @@ export default function StageScreen({ onNavigate, onStartStage }) {
       </div>
 
       <div className="stage-chapters">
-        {CHAPTERS.map(({ label, range, icon }) => (
+        {CHAPTERS.map(({ label, range, icon }) => {
+          const chapterLocked = !isUnlocked(range[0])
+          const hint = CHAPTER_LOCK_HINT[range[0]]
+          return (
           <div key={label} className="chapter-section">
-            <div className="chapter-title">{icon} {label}</div>
+            <div className="chapter-title">{icon} {label}
+              {chapterLocked && hint && <span className="chapter-lock-hint">{hint}</span>}
+            </div>
             <div className="stage-grid">
               {Array.from({ length: range[1] - range[0] + 1 }, (_, i) => {
                 const id = range[0] + i
@@ -72,7 +79,8 @@ export default function StageScreen({ onNavigate, onStartStage }) {
               })}
             </div>
           </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

@@ -43,6 +43,20 @@
   font-size: 1.1rem;
   font-weight: 800;
   color: #555;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.chapter-lock-hint {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #e67e22;
+  background: #fef5e7;
+  border: 1px solid #f39c12;
+  border-radius: 8px;
+  padding: 2px 8px;
 }
 
 .stage-grid {
