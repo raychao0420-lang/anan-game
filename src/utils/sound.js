@@ -63,4 +63,28 @@ export const sfx = {
     tone(1100, 0.06, 'sine', 0.2,  0.2)
     tone(1350, 0.05, 'sine', 0.15, 0.3)
   },
+  cat: () => {
+    // meow：頻率從高滑降再微微翹尾，模擬貓叫
+    if (muted) return
+    const c = ctx()
+    if (!c) return
+    try {
+      const osc  = c.createOscillator()
+      const gain = c.createGain()
+      osc.connect(gain)
+      gain.connect(c.destination)
+      osc.type = 'sine'
+      const t = c.currentTime
+      osc.frequency.setValueAtTime(900, t)
+      osc.frequency.linearRampToValueAtTime(450, t + 0.18)
+      osc.frequency.linearRampToValueAtTime(520, t + 0.32)
+      osc.frequency.linearRampToValueAtTime(380, t + 0.55)
+      gain.gain.setValueAtTime(0, t)
+      gain.gain.linearRampToValueAtTime(0.28, t + 0.04)
+      gain.gain.setValueAtTime(0.28, t + 0.42)
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6)
+      osc.start(t)
+      osc.stop(t + 0.65)
+    } catch(e) {}
+  },
 }

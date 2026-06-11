@@ -337,8 +337,9 @@ export default function HomeRoomScreen({ onNavigate }) {
   }
 
   const handlePetClick = (petId) => {
-    if (petId === 'lulu') sfx.beagle()
-    else sfx.otter()   // hana/kotaro/jiji/kitsune/mejiro 共用合成音效
+    if (petId === 'lulu')  sfx.beagle()
+    else if (petId === 'jiji') sfx.cat()
+    else sfx.otter()
   }
 
   return (
