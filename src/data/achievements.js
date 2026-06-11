@@ -12,6 +12,7 @@ export const ACHIEVEMENTS = [
   { id: 'daily3',       icon: '📅', label: '每日勇士',   desc: '累計完成3天每日任務' },
   { id: 'coins_500',    icon: '💰', label: '小富翁',     desc: '累積獲得500金幣' },
   { id: 'shop3',        icon: '🛍️',  label: '購物達人',   desc: '購買3件商品' },
+  { id: 'exam_boss',   icon: '📚', label: '狀元及第',   desc: '打倒期末考大魔王' },
 ]
 
 export const BOSS_REWARDS = {

@@ -24,6 +24,7 @@ function checkAllAchievements(s) {
   if (!a.all_pets     && Object.values(s.pets).every(p => p.unlocked)) unlocked.push('all_pets')
   if (!a.boss1        && Object.values(s.bossCleared).some(v => v)) unlocked.push('boss1')
   if (!a.boss_all     && Object.values(s.bossCleared).filter(v => v).length >= 4) unlocked.push('boss_all')
+  if (!a.exam_boss    && s.examBossCleared) unlocked.push('exam_boss')
   if (!a.daily3       && s.dailyDaysCompleted >= 3) unlocked.push('daily3')
   if (!a.coins_500    && s.totalCoinsEarned >= 500) unlocked.push('coins_500')
   if (!a.shop3        && s.ownedItems.filter(id => !id.startsWith('boss_')).length >= 3) unlocked.push('shop3')
@@ -58,6 +59,9 @@ export const useGameStore = create(
 
       // M3: boss
       bossCleared: { 10: false, 20: false, 30: false, 40: false },
+
+      // M5: exam boss
+      examBossCleared: false,
 
       // M3: achievements
       achievements: {},
@@ -246,6 +250,19 @@ export const useGameStore = create(
         set({ achievements: newAchievements, pendingAchievement: newIds[0] })
       },
 
+      // ── M5: Exam Boss ──
+      clearExamBoss: (coinsReward, rewardItemId) => {
+        set((s) => ({
+          examBossCleared: true,
+          coins: s.coins + coinsReward,
+          totalCoinsEarned: s.totalCoinsEarned + coinsReward,
+          ownedItems: s.ownedItems.includes(rewardItemId)
+            ? s.ownedItems
+            : [...s.ownedItems, rewardItemId],
+        }))
+        get().checkAchievements()
+      },
+
       clearPendingAchievement: () => set({ pendingAchievement: null }),
 
       updateMaxCombo: (combo) =>
@@ -298,6 +315,7 @@ export const useGameStore = create(
           dailyTasksDone: [],
           dailyDaysCompleted: 0,
           bossCleared: { 10: false, 20: false, 30: false, 40: false },
+          examBossCleared: false,
           achievements: {},
           pendingAchievement: null,
           totalCoinsEarned: 0,
@@ -318,6 +336,7 @@ export const useGameStore = create(
           if (!state.petEquipment[id])
             state.petEquipment[id] = []
         })
+        if (state.examBossCleared === undefined) state.examBossCleared = false
         if (!state.petMoods) {
           state.petMoods = { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80 }
         } else {

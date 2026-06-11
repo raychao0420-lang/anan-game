@@ -57,4 +57,5 @@ export const SHOP_ITEMS = [
   { id: 'boss_medal2', name: '三位數之印', emoji: '🏅', category: 'rare', price: 0, desc: '打倒第二章Boss', boss: true },
   { id: 'boss_medal3', name: '乘法魔法戒', emoji: '💍', category: 'rare', price: 0, desc: '打倒第三章Boss', boss: true },
   { id: 'boss_medal4', name: '傳說盾牌',   emoji: '🛡️', category: 'rare', price: 0, desc: '打倒終章Boss',   boss: true },
+  { id: 'exam_trophy', name: '狀元獎盃',   emoji: '🏆', category: 'rare', price: 0, desc: '期末考大魔王首次過關獎勵', boss: true },
 ]

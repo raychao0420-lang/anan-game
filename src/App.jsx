@@ -11,6 +11,7 @@ import DailyScreen from './screens/DailyScreen'
 import BossScreen from './screens/BossScreen'
 import AchievementScreen from './screens/AchievementScreen'
 import HomeRoomScreen from './screens/HomeRoomScreen'
+import ExamBossScreen from './screens/ExamBossScreen'
 import AchievementToast from './components/AchievementToast'
 import './index.css'
 
@@ -70,6 +71,7 @@ export default function App() {
         {screen === 'daily'        && wrap('daily', <DailyScreen onNavigate={setScreen} />)}
         {screen === 'achievements' && wrap('achievements', <AchievementScreen onNavigate={setScreen} />)}
         {screen === 'homeroom'     && wrap('homeroom', <HomeRoomScreen onNavigate={setScreen} />)}
+        {screen === 'examboss'    && wrap('examboss', <ExamBossScreen onBack={() => setScreen('home')} />)}
 
         {screen === 'game' && activeStage && wrap(`game-${activeStage}`,
           <GameScreen

@@ -91,6 +91,14 @@ export default function HomeScreen({ onNavigate }) {
           🏠 我的家
         </motion.button>
 
+        <motion.button
+          className="btn-exam-boss"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => nav('examboss')}
+        >
+          📚 期末考大魔王
+        </motion.button>
+
         <div className="home-row">
           <motion.button
             className="btn-secondary home-daily-btn"
