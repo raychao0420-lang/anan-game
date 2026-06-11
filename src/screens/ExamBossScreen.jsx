@@ -20,7 +20,10 @@ const CATEGORY_COLORS = {
   '國語': '#EF4444',
 }
 
-const { totalQuestions, passScore, timePerQuestion, firstClearCoins, replayClearCoins, rewardItemId } = EXAM_BOSS_CONFIG
+const { totalQuestions, passScore, timePerQuestion, mathTimePerQuestion, firstClearCoins, replayClearCoins, rewardItemId } = EXAM_BOSS_CONFIG
+
+const getQTime = (q) => q?.type === 'number' ? mathTimePerQuestion : timePerQuestion
+const formatTime = (t) => t >= 60 ? `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}` : `${t}s`
 
 export default function ExamBossScreen({ onBack }) {
   const { activePet, pets, examBossCleared, clearExamBoss } = useGameStore()
@@ -33,7 +36,7 @@ export default function ExamBossScreen({ onBack }) {
   const [qIndex, setQIndex]           = useState(0)
   const [input, setInput]             = useState('')
   const [scratchpad, setScratchpad]   = useState('')
-  const [timeLeft, setTimeLeft]       = useState(timePerQuestion)
+  const [timeLeft, setTimeLeft]       = useState(() => getQTime(questions[0]))
   const [correctCount, setCorrectCount] = useState(0)
   const [wrongCount, setWrongCount]   = useState(0)
   const [feedback, setFeedback]       = useState(null)
@@ -73,7 +76,7 @@ export default function ExamBossScreen({ onBack }) {
       setQIndex(i => i + 1)
       setInput('')
       setScratchpad('')
-      setTimeLeft(timePerQuestion)
+      setTimeLeft(getQTime(questions[qIndex + 1]))
     }
   }, [qIndex, correctCount, wrongCount, examBossCleared, clearExamBoss])
 
@@ -117,12 +120,13 @@ export default function ExamBossScreen({ onBack }) {
 
   const resetBattle = () => {
     setQIndex(0); setInput(''); setScratchpad('')
-    setTimeLeft(timePerQuestion); setCorrectCount(0); setWrongCount(0)
+    setTimeLeft(getQTime(questions[0])); setCorrectCount(0); setWrongCount(0)
     setFeedback(null); setEggHatched(false)
   }
 
-  const timerPct   = (timeLeft / timePerQuestion) * 100
-  const timerColor = timeLeft > 13 ? '#6BCB77' : timeLeft > 7 ? '#FFB347' : '#FF6B6B'
+  const maxTime    = getQTime(currentQ)
+  const timerPct   = (timeLeft / maxTime) * 100
+  const timerColor = timerPct > 65 ? '#6BCB77' : timerPct > 35 ? '#FFB347' : '#FF6B6B'
 
   // ── INTRO ──────────────────────────────────────────────────────────────────
   if (phase === 'intro') return (
@@ -143,8 +147,8 @@ export default function ExamBossScreen({ onBack }) {
         <div className="exam-intro-sub">{EXAM_BOSS_CONFIG.subtitle}</div>
         <div className="exam-intro-rules">
           <div>🎲 每次隨機抽 {totalQuestions} 題（數學4、社會2、自然2、國語2）</div>
-          <div>⏱️ 每題 {timePerQuestion} 秒作答</div>
           <div>✅ 答對 {passScore} 題以上過關</div>
+          <div>⏱️ 數學題 <strong>2分鐘</strong>、其他科目 {timePerQuestion} 秒</div>
           <div>🔢 數學題輸入答案；其他科目點選選項</div>
           <div>✏️ 數學題有計算草稿區</div>
           <div>🏆 首次過關：<strong>{firstClearCoins} 金幣 + 狀元獎盃</strong></div>
@@ -306,7 +310,7 @@ export default function ExamBossScreen({ onBack }) {
           {currentQ.category}
         </span>
         <span className="exam-category-tip">{CATEGORY_TIPS[currentQ.category]}</span>
-        <span className="exam-timer-label" style={{ color: timerColor }}>{timeLeft}s</span>
+        <span className="exam-timer-label" style={{ color: timerColor }}>{formatTime(timeLeft)}</span>
       </div>
 
       {/* Question */}

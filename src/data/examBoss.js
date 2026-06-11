@@ -5,6 +5,7 @@ export const EXAM_BOSS_CONFIG = {
   totalQuestions: 10,
   passScore: 7,
   timePerQuestion: 20,
+  mathTimePerQuestion: 120,
   firstClearCoins: 500,
   replayClearCoins: 100,
   rewardItemId: 'exam_trophy',
