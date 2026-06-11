@@ -203,3 +203,11 @@ export function pickSubjectQuestions(category, n) {
   const pool = EXAM_QUESTIONS.filter(q => q.category === category)
   return [...pool].sort(() => Math.random() - 0.5).slice(0, n)
 }
+
+export function getSubjectQuestionIds(category) {
+  return EXAM_QUESTIONS.filter(q => q.category === category).map(q => q.id)
+}
+
+export function getQuestionsByIds(ids) {
+  return ids.map(id => EXAM_QUESTIONS.find(q => q.id === id)).filter(Boolean)
+}

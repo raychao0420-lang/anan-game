@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
-import { SUBJECT_CONFIGS, pickSubjectQuestions } from '../data/examBoss'
+import { SUBJECT_CONFIGS, getSubjectQuestionIds, getQuestionsByIds } from '../data/examBoss'
 import { PETS } from '../data/pets'
 import { sfx } from '../utils/sound'
 import './ExamBossScreen.css'
@@ -16,7 +16,7 @@ const CATEGORY_TIPS = {
 const formatTime = (t) => t >= 60 ? `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}` : `${t}s`
 
 export default function ExamBossScreen({ onBack }) {
-  const { activePet, pets, subjectPerfects, ownedItems, addCoins, recordSubjectPerfect } = useGameStore()
+  const { activePet, pets, subjectPerfects, ownedItems, addCoins, recordSubjectPerfect, popSubjectQuestions } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
@@ -119,7 +119,9 @@ export default function ExamBossScreen({ onBack }) {
   const startSubject = (subConf) => {
     prevPerfectsRef.current = subjectPerfects?.[subConf.id] ?? 0
     setActiveSubject(subConf)
-    setQuestions(pickSubjectQuestions(subConf.category, subConf.totalQuestions))
+    const allIds = getSubjectQuestionIds(subConf.category)
+    const pickedIds = popSubjectQuestions(subConf.id, allIds, subConf.totalQuestions)
+    setQuestions(getQuestionsByIds(pickedIds))
     setQIndex(0)
     setInput(''); setScratchpad(''); setSelectedChoice(null)
     setTimeLeft(subConf.timePerQuestion)
