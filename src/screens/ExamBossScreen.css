@@ -339,6 +339,20 @@
   background: #F5F5FF;
 }
 
+.exam-choice-btn.choice-correct {
+  background: #D1FAE5;
+  border-color: #22C55E;
+}
+
+.exam-choice-btn.choice-wrong {
+  background: #FEE2E2;
+  border-color: #EF4444;
+}
+
+.exam-choice-btn.choice-dim {
+  opacity: 0.35;
+}
+
 .exam-choice-num {
   color: white;
   font-size: 1.1rem;

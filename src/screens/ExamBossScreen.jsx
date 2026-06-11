@@ -40,6 +40,7 @@ export default function ExamBossScreen({ onBack }) {
   const [correctCount, setCorrectCount] = useState(0)
   const [wrongCount, setWrongCount]   = useState(0)
   const [feedback, setFeedback]       = useState(null)
+  const [selectedChoice, setSelectedChoice] = useState(null)
   const [wasFirstClear, setWasFirstClear] = useState(false)
   const [eggHatched, setEggHatched]   = useState(false)
 
@@ -76,6 +77,7 @@ export default function ExamBossScreen({ onBack }) {
       setQIndex(i => i + 1)
       setInput('')
       setScratchpad('')
+      setSelectedChoice(null)
       setTimeLeft(getQTime(questions[qIndex + 1]))
     }
   }, [qIndex, correctCount, wrongCount, examBossCleared, clearExamBoss])
@@ -109,17 +111,19 @@ export default function ExamBossScreen({ onBack }) {
   }, [input, currentQ, phase, nextQuestion])
 
   const handleChoiceSelect = useCallback((optionIndex) => {
-    if (phase !== 'fight') return
+    if (phase !== 'fight' || selectedChoice !== null) return
     clearInterval(timerRef.current)
     const isCorrect = optionIndex === currentQ.answer
+    setSelectedChoice(optionIndex)
     showFeedback(isCorrect ? 'correct' : 'wrong')
     if (isCorrect) sfx.correct()
     else sfx.wrong()
-    setTimeout(() => nextQuestion(isCorrect), 700)
-  }, [currentQ, phase, nextQuestion])
+    setTimeout(() => nextQuestion(isCorrect), isCorrect ? 700 : 1500)
+  }, [currentQ, phase, nextQuestion, selectedChoice])
 
   const resetBattle = () => {
     setQIndex(0); setInput(''); setScratchpad('')
+    setSelectedChoice(null)
     setTimeLeft(getQTime(questions[0])); setCorrectCount(0); setWrongCount(0)
     setFeedback(null); setEggHatched(false)
   }
@@ -378,20 +382,32 @@ export default function ExamBossScreen({ onBack }) {
         </>
       ) : (
         <div className="exam-choices">
-          {currentQ.options.map((opt, idx) => (
-            <motion.button
-              key={idx}
-              className="exam-choice-btn"
-              style={{ borderColor: catColor }}
-              whileTap={{ scale: 0.93 }}
-              onClick={() => handleChoiceSelect(idx + 1)}
-            >
-              <span className="exam-choice-num" style={{ background: catColor }}>
-                {['①','②','③','④'][idx]}
-              </span>
-              <span className="exam-choice-text">{opt}</span>
-            </motion.button>
-          ))}
+          {currentQ.options.map((opt, idx) => {
+            const optNum = idx + 1
+            const isCorrectOpt = optNum === currentQ.answer
+            const isSelectedWrong = selectedChoice !== null && optNum === selectedChoice && !isCorrectOpt
+            const isDim = selectedChoice !== null && !isCorrectOpt && optNum !== selectedChoice
+            const choiceClass = selectedChoice !== null
+              ? isCorrectOpt ? 'choice-correct' : isSelectedWrong ? 'choice-wrong' : 'choice-dim'
+              : ''
+            return (
+              <motion.button
+                key={idx}
+                className={`exam-choice-btn ${choiceClass}`}
+                style={selectedChoice === null ? { borderColor: catColor } : {}}
+                whileTap={selectedChoice === null ? { scale: 0.93 } : {}}
+                onClick={() => handleChoiceSelect(optNum)}
+                disabled={selectedChoice !== null}
+              >
+                <span className="exam-choice-num"
+                  style={{ background: isCorrectOpt && selectedChoice !== null ? '#22C55E' : isSelectedWrong ? '#EF4444' : catColor }}
+                >
+                  {['①','②','③','④'][idx]}
+                </span>
+                <span className="exam-choice-text">{opt}</span>
+              </motion.button>
+            )
+          })}
         </div>
       )}
 
