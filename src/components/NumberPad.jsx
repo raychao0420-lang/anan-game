@@ -5,14 +5,14 @@ export default function NumberPad({ value, onChange, onConfirm }) {
   const handleKey = (key) => {
     if (key === '←') {
       onChange(value.slice(0, -1))
-    } else if (key === '✓') {
-      if (value) onConfirm()
+    } else if (key === '.') {
+      if (!value.includes('.') && value.length < 6) onChange((value || '0') + '.')
     } else {
-      if (value.length < 4) onChange(value + key)
+      if (value.length < 6) onChange(value + key)
     }
   }
 
-  const keys = ['7','8','9','4','5','6','1','2','3','←','0','✓']
+  const keys = ['7','8','9','4','5','6','1','2','3','.','0','←']
 
   return (
     <div className="numpad-wrap">
@@ -23,7 +23,7 @@ export default function NumberPad({ value, onChange, onConfirm }) {
         {keys.map((k) => (
           <motion.button
             key={k}
-            className={`numpad-btn ${k === '✓' ? 'confirm' : ''} ${k === '←' ? 'delete' : ''}`}
+            className={`numpad-btn ${k === '←' ? 'delete' : ''} ${k === '.' ? 'dot' : ''}`}
             onPointerDown={() => handleKey(k)}
             whileTap={{ scale: 0.88 }}
             transition={{ duration: 0.08 }}
@@ -32,6 +32,15 @@ export default function NumberPad({ value, onChange, onConfirm }) {
           </motion.button>
         ))}
       </div>
+      <motion.button
+        className="numpad-btn numpad-confirm"
+        onPointerDown={() => { if (value) onConfirm() }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ duration: 0.08 }}
+        style={{ opacity: value ? 1 : 0.4 }}
+      >
+        ✓
+      </motion.button>
     </div>
   )
 }

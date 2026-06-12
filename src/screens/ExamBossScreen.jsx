@@ -4,6 +4,7 @@ import { useGameStore } from '../store/gameStore'
 import { SUBJECT_CONFIGS, getSubjectQuestionIds, getQuestionsByIds } from '../data/examBoss'
 import { PETS } from '../data/pets'
 import { sfx } from '../utils/sound'
+import NumberPad from '../components/NumberPad'
 import './ExamBossScreen.css'
 
 const CATEGORY_TIPS = {
@@ -30,7 +31,6 @@ export default function ExamBossScreen({ onBack }) {
 
   const [qIndex, setQIndex]               = useState(0)
   const [input, setInput]                 = useState('')
-  const [scratchpad, setScratchpad]       = useState('')
   const [timeLeft, setTimeLeft]           = useState(20)
   const [correctCount, setCorrectCount]   = useState(0)
   const [wrongCount, setWrongCount]       = useState(0)
@@ -42,6 +42,10 @@ export default function ExamBossScreen({ onBack }) {
   const prevStreakRef = useRef(0)
   const timerRef     = useRef(null)
   const feedbackRef  = useRef(null)
+  const canvasRef    = useRef(null)
+  const drawingRef   = useRef(false)
+  const lastXRef     = useRef(0)
+  const lastYRef     = useRef(0)
 
   const currentQ = questions[qIndex]
 
@@ -70,7 +74,6 @@ export default function ExamBossScreen({ onBack }) {
     } else {
       setQIndex(i => i + 1)
       setInput('')
-      setScratchpad('')
       setSelectedChoice(null)
       setTimeLeft(activeSubject.timePerQuestion)
     }
@@ -92,6 +95,55 @@ export default function ExamBossScreen({ onBack }) {
     }, 1000)
     return () => clearInterval(timerRef.current)
   }, [phase, qIndex, nextQuestion])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas || phase !== 'fight') return
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+  }, [qIndex, phase])
+
+  const getCanvasPos = (e) => {
+    const canvas = canvasRef.current
+    const rect = canvas.getBoundingClientRect()
+    return {
+      x: (e.clientX - rect.left) * (canvas.width / rect.width),
+      y: (e.clientY - rect.top)  * (canvas.height / rect.height),
+    }
+  }
+
+  const startDraw = (e) => {
+    e.preventDefault()
+    drawingRef.current = true
+    const { x, y } = getCanvasPos(e)
+    lastXRef.current = x
+    lastYRef.current = y
+  }
+
+  const doDraw = (e) => {
+    if (!drawingRef.current) return
+    e.preventDefault()
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+    const { x, y } = getCanvasPos(e)
+    ctx.beginPath()
+    ctx.moveTo(lastXRef.current, lastYRef.current)
+    ctx.lineTo(x, y)
+    ctx.strokeStyle = '#333'
+    ctx.lineWidth = 3
+    ctx.lineCap = 'round'
+    ctx.lineJoin = 'round'
+    ctx.stroke()
+    lastXRef.current = x
+    lastYRef.current = y
+  }
+
+  const endDraw = () => { drawingRef.current = false }
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+  }
 
   const handleConfirm = useCallback(() => {
     if (!input.trim() || phase !== 'fight') return
@@ -120,7 +172,7 @@ export default function ExamBossScreen({ onBack }) {
     const pickedIds = popSubjectQuestions(subConf.id, allIds, subConf.totalQuestions)
     setQuestions(getQuestionsByIds(pickedIds))
     setQIndex(0)
-    setInput(''); setScratchpad(''); setSelectedChoice(null)
+    setInput(''); setSelectedChoice(null)
     setTimeLeft(subConf.timePerQuestion)
     setCorrectCount(0); setWrongCount(0)
     setFeedback(null)
@@ -366,36 +418,24 @@ export default function ExamBossScreen({ onBack }) {
       {currentQ.type === 'number' ? (
         <>
           <div className="exam-scratchpad-wrap">
-            <div className="exam-scratchpad-label">✏️ 計算草稿區</div>
-            <textarea
-              className="exam-scratchpad"
-              value={scratchpad}
-              onChange={e => setScratchpad(e.target.value)}
-              placeholder="在這裡寫算式草稿..."
-              rows={3}
+            <div className="exam-scratchpad-label">
+              ✏️ 塗鴉草稿區
+              <button className="exam-scratchpad-clear" onClick={clearCanvas}>清除</button>
+            </div>
+            <canvas
+              ref={canvasRef}
+              className="exam-scratchpad-canvas"
+              width={800}
+              height={200}
+              onPointerDown={startDraw}
+              onPointerMove={doDraw}
+              onPointerUp={endDraw}
+              onPointerLeave={endDraw}
             />
           </div>
-          <div className="exam-answer-wrap">
-            <span className="exam-answer-label">答案：</span>
-            <input
-              className="exam-answer-input"
-              type="text"
-              inputMode="decimal"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              placeholder="填入答案"
-              onKeyDown={e => { if (e.key === 'Enter') handleConfirm() }}
-            />
-            {currentQ.unit && <span className="exam-answer-unit">{currentQ.unit}</span>}
-            <motion.button
-              className="exam-confirm-btn"
-              style={{ background: catColor }}
-              whileTap={{ scale: 0.94 }}
-              onClick={handleConfirm}
-              disabled={!input.trim()}
-            >
-              確認 ✓
-            </motion.button>
+          <div className="exam-numpad-wrap">
+            {currentQ.unit && <div className="exam-numpad-unit">單位：{currentQ.unit}</div>}
+            <NumberPad value={input} onChange={setInput} onConfirm={handleConfirm} />
           </div>
         </>
       ) : (
