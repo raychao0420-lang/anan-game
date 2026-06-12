@@ -585,6 +585,12 @@
 }
 
 /* ── Responsive ────────────────────────────────────────── */
+@media (max-height: 700px) and (max-width: 639px) {
+  .exam-fight         { gap: 5px; padding: 6px 14px 6px; }
+  .exam-question      { padding: 8px 14px; }
+  .exam-scratchpad-canvas { min-height: 50px; }
+}
+
 @media (min-width: 640px) {
   .exam-intro-card   { gap: 18px; }
   .exam-intro-emoji  { font-size: 8rem; }

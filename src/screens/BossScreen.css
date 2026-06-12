@@ -309,6 +309,13 @@
   font-size: 0.9rem;
 }
 
+@media (max-height: 700px) and (max-width: 639px) {
+  .boss-fight      { gap: 5px; padding: 6px 14px 6px; }
+  .boss-pet-area   { margin: 0; }
+  .boss-pet-bubble { width: 70px; height: 91px; }
+  .boss-question   { font-size: 1.8rem; padding: 6px 16px; }
+}
+
 @media (min-width: 640px) {
   .boss-intro-card { gap: 20px; }
   .boss-emoji-big  { font-size: 8rem; }

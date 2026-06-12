@@ -267,6 +267,13 @@
   pointer-events: none;
 }
 
+@media (max-height: 700px) and (max-width: 639px) {
+  .game-screen     { gap: 5px; padding: 6px 14px 6px; }
+  .game-pet-area   { margin: 0; }
+  .game-pet-bubble { width: 64px; height: 83px; }
+  .question-card   { padding: 6px 20px 8px; }
+}
+
 @media (min-width: 640px) {
   .game-screen { gap: 14px; padding: 20px 32px 24px; }
   .game-stage-label { font-size: 1.2rem; }
