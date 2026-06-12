@@ -1,5 +1,5 @@
 .game-screen {
-  height: 100dvh;
+  height: 100%;
   overflow: hidden;
   background: linear-gradient(160deg, #FFF5E6 0%, #F0F4FF 100%);
   display: flex;
@@ -14,6 +14,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-shrink: 0;
 }
 
 .game-info {
@@ -70,6 +71,7 @@
   background: #E0E0E0;
   border-radius: 8px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .timer-bar-fill {
@@ -83,6 +85,7 @@
   display: flex;
   justify-content: center;
   margin: 4px 0;
+  flex-shrink: 0;
 }
 
 .game-pet-bubble {
@@ -125,6 +128,7 @@
   max-width: 340px;
   display: flex;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 /* ── Vertical question ── */
@@ -153,7 +157,10 @@
   border-radius: 14px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   overflow: hidden;
-  flex-shrink: 0;
+  flex: 1 1 60px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 .doodle-topbar {
   display: flex;
@@ -162,6 +169,7 @@
   padding: 3px 10px;
   background: #FFFDE7;
   border-bottom: 1px solid #F0F0F0;
+  flex-shrink: 0;
 }
 .doodle-label {
   font-size: 0.7rem;
@@ -183,7 +191,8 @@
 .doodle-canvas {
   display: block;
   width: 100%;
-  height: 80px;
+  flex: 1 1 auto;
+  min-height: 40px;
   touch-action: none;
   cursor: crosshair;
   background: #FAFAFA;
@@ -193,6 +202,7 @@
   width: 100%;
   max-width: 340px;
   margin-top: 0;
+  flex-shrink: 0;
 }
 
 /* ── Pause icon button ── */

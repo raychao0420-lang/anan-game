@@ -59,6 +59,13 @@ export default function App() {
     </motion.div>
   )
 
+  const wrapFixed = (key, node) => (
+    <motion.div key={key} variants={pageVariants} initial="initial" animate="animate" exit="exit"
+      style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+      {node}
+    </motion.div>
+  )
+
   return (
     <div style={{ position: 'relative', minHeight: '100dvh', overflow: 'hidden' }}>
       <AchievementToast />
@@ -73,7 +80,7 @@ export default function App() {
         {screen === 'homeroom'     && wrap('homeroom', <HomeRoomScreen onNavigate={setScreen} />)}
         {screen === 'examboss'    && wrap('examboss', <ExamBossScreen onBack={() => setScreen('home')} />)}
 
-        {screen === 'game' && activeStage && wrap(`game-${activeStage}`,
+        {screen === 'game' && activeStage && wrapFixed(`game-${activeStage}`,
           <GameScreen
             key={`${activeStage}-${Date.now()}`}
             stageId={activeStage}
