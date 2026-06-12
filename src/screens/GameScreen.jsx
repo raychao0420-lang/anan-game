@@ -361,15 +361,18 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
       </div>
 
       {/* Question (vertical) */}
-      <motion.div
-        key={qIndex}
-        className="question-card"
-        initial={{ scale: 0.85, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 300 }}
-      >
-        <VerticalQuestion q={currentQ} />
-      </motion.div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={qIndex}
+          className="question-card"
+          initial={{ scale: 0.85, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.85, opacity: 0 }}
+          transition={{ duration: 0.12 }}
+        >
+          <VerticalQuestion q={currentQ} />
+        </motion.div>
+      </AnimatePresence>
 
       {/* Scratch pad – key clears canvas on each new question */}
       <DoodleCanvas key={qIndex} />
