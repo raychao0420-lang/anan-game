@@ -1,5 +1,6 @@
 .game-screen {
-  height: 100%;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   background: linear-gradient(160deg, #FFF5E6 0%, #F0F4FF 100%);
   display: flex;
