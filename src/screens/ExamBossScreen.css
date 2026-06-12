@@ -592,9 +592,6 @@
   .exam-intro-title  { font-size: 2.6rem; }
   .exam-intro-rules  { font-size: 1.05rem; }
   .exam-question     { font-size: 2rem; padding: 20px 28px; }
-  .exam-scratchpad   { font-size: 1.1rem; }
-  .exam-answer-input { font-size: 1.4rem; }
-  .exam-confirm-btn  { font-size: 1.1rem; padding: 12px 22px; }
   .exam-win-title    { font-size: 2.6rem; }
   .exam-lose-title   { font-size: 2.6rem; }
   .exam-result-pet   { width: 150px; height: 150px; }
@@ -602,32 +599,39 @@
   .exam-reward-emoji { font-size: 7rem; }
   .exam-reward-name  { font-size: 1.3rem; }
   .exam-reward-coins { font-size: 2rem; }
-}
 
-@media (min-width: 900px) {
+  /* 平板：畫布左、鍵盤右並排 */
   .exam-fight {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto auto 1fr auto;
+    grid-template-columns: 1fr 260px;
+    grid-template-rows: auto auto auto auto 1fr;
     grid-template-areas:
-      "header  header"
-      "timer   timer"
-      "meta    meta"
+      "header   header"
+      "timer    timer"
+      "meta     meta"
       "question question"
-      "scratch  scratch"
-      "answer   answer";
-    gap: 10px 32px;
-    padding: 20px 48px 20px;
+      "scratch  numpad";
+    gap: 10px 20px;
+    padding: 14px 20px 14px;
     height: 100dvh;
     overflow: hidden;
   }
   .exam-fight-header    { grid-area: header; }
   .exam-timer-track     { grid-area: timer; }
   .exam-meta-row        { grid-area: meta; }
-  .exam-question        { grid-area: question; font-size: 2.2rem; }
+  .exam-question        { grid-area: question; }
   .exam-scratchpad-wrap { grid-area: scratch; }
-  .exam-numpad-wrap     { grid-area: answer; }
-  .exam-choices         { grid-area: scratch / scratch / answer / answer; align-content: start; }
+  .exam-numpad-wrap     { grid-area: numpad; justify-content: center; }
+  .exam-choices         { grid-area: scratch / scratch / numpad / numpad; align-content: center; }
+}
+
+@media (min-width: 900px) {
+  .exam-fight {
+    grid-template-columns: 1fr 300px;
+    gap: 12px 32px;
+    padding: 20px 48px 20px;
+  }
+  .exam-question { font-size: 2.2rem; }
 
   .exam-intro-card,
   .exam-result-card { max-width: 560px; }
