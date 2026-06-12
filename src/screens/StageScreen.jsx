@@ -7,11 +7,11 @@ import './StageScreen.css'
 const CHAPTERS = [
   { label: '加減法',       range: [1,  10], icon: '➕', cat: 'addsub'  },
   { label: '加減進階',     range: [41, 55], icon: '⚡', cat: 'addsub'  },
-  { label: '兩位加減深化', range: [71, 80], icon: '💪', cat: 'addsub'  },
+  { label: '兩位加減進階', range: [71, 80], icon: '💪', cat: 'addsub'  },
   { label: '三位數',       range: [11, 20], icon: '🔢', cat: 'digits3' },
   { label: '乘法',         range: [21, 30], icon: '✖️',  cat: 'muldiv'  },
   { label: '除法',         range: [31, 40], icon: '➗', cat: 'muldiv'  },
-  { label: '乘除深化',     range: [86, 95], icon: '🎯', cat: 'muldiv'  },
+  { label: '乘除進階',     range: [86, 95], icon: '🎯', cat: 'muldiv'  },
   { label: '綜合進階',     range: [56, 70], icon: '🚀', cat: 'mixed'   },
 ]
 
