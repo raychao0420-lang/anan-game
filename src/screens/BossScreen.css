@@ -165,13 +165,13 @@
 }
 
 .boss-pet-bubble {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
+  width: 90px;
+  height: 117px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 20px rgba(200, 100, 255, 0.3);
+  overflow: visible;
+  filter: drop-shadow(0 0 12px rgba(200,100,255,0.3));
 }
 
 .boss-feedback {
@@ -240,11 +240,11 @@
 
 .boss-result-pet {
   width: 110px;
-  height: 110px;
-  border-radius: 50%;
+  height: 143px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 .boss-lose-emoji {
@@ -318,11 +318,11 @@
   .boss-fight-count { font-size: 1.1rem; }
   .boss-hp-bar     { height: 14px; }
   .boss-timer-bar  { height: 12px; }
-  .boss-pet-bubble { width: 130px; height: 130px; }
+  .boss-pet-bubble { width: 110px; height: 143px; }
   .boss-question   { font-size: 3.4rem; padding: 28px 48px; border-radius: 24px; }
   .boss-win-title  { font-size: 2.6rem; }
   .boss-lose-title { font-size: 2.6rem; }
-  .boss-result-pet { width: 150px; height: 150px; }
+  .boss-result-pet { width: 130px; height: 169px; }
   .boss-score      { font-size: 1.3rem; }
   .boss-coin-reward { font-size: 2rem; }
   .boss-egg        { font-size: 7rem; }
@@ -355,7 +355,7 @@
   .boss-question     { grid-area: question; max-width: none; font-size: 4rem; padding: 28px 40px; }
   .boss-numpad       { grid-area: numpad; align-self: center; }
 
-  .boss-pet-bubble { width: 150px; height: 150px; }
+  .boss-pet-bubble { width: 130px; height: 169px; }
 
   /* Intro / Win / Lose - centered wide card */
   .boss-intro-card,

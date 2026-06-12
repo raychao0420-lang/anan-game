@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
-import { PETS } from '../data/pets'
+import { PETS, PET_ORDER } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import { getTodayTasks } from '../data/dailyTasks'
 import MuteButton from '../components/MuteButton'
@@ -11,7 +11,7 @@ import { sfx } from '../utils/sound'
 import './HomeScreen.css'
 
 export default function HomeScreen({ onNavigate }) {
-  const { coins, activePet, pets, petEquipment, dailyTasksDone, achievements } = useGameStore()
+  const { coins, activePet, pets, petEquipment, dailyTasksDone, achievements, setActivePet } = useGameStore()
   const [showSave, setShowSave] = useState(false)
   const today = new Date().toISOString().slice(0, 10)
   const todayTasks = getTodayTasks(today)
@@ -22,6 +22,7 @@ export default function HomeScreen({ onNavigate }) {
   const petData = pets[activePet]
   const stage = pet.stages[petData.evolutionStage]
   const equipped = (petEquipment[activePet] || []).map((id) => SHOP_ITEMS.find((i) => i.id === id)).filter(Boolean)
+  const unlockedPets = PET_ORDER.filter(id => pets[id]?.unlocked)
 
   const nav = (dest) => { sfx.click(); onNavigate(dest) }
 
@@ -56,6 +57,30 @@ export default function HomeScreen({ onNavigate }) {
         </motion.div>
         <div className="home-pet-name">{pet.name} · {stage.label}</div>
       </motion.div>
+
+      {/* Pet switcher - only show when 2+ unlocked */}
+      {unlockedPets.length > 1 && (
+        <div className="home-pet-switcher">
+          {unlockedPets.map(id => {
+            const p  = PETS[id]
+            const pd = pets[id]
+            const s  = p.stages[pd.evolutionStage]
+            const eq = (petEquipment[id] || []).map(eid => SHOP_ITEMS.find(i => i.id === eid)).filter(Boolean)
+            return (
+              <motion.button
+                key={id}
+                className={`home-pet-switch-btn ${activePet === id ? 'active' : ''}`}
+                style={activePet === id ? { borderColor: s.border, background: s.bg } : {}}
+                whileTap={{ scale: 0.88 }}
+                onClick={() => { setActivePet(id); sfx.click() }}
+              >
+                <PetAvatar petId={id} evolutionStage={pd.evolutionStage} equipped={eq} size={46} />
+                <span className="home-pet-switch-name">{p.name}</span>
+              </motion.button>
+            )
+          })}
+        </div>
+      )}
 
       <div className="home-buttons">
         <motion.button

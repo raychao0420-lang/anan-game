@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { generateStageQuestions, STAGE_NAMES } from '../data/questions'
 import { PETS } from '../data/pets'
+import { SHOP_ITEMS } from '../data/shop'
 import NumberPad from '../components/NumberPad'
+import PetAvatar from '../components/PetAvatar'
 import { sfx } from '../utils/sound'
 import './GameScreen.css'
 
@@ -153,10 +155,11 @@ function DoodleCanvas() {
 }
 
 export default function GameScreen({ stageId, onFinish, onExit }) {
-  const { activePet, pets, updateDailyProgress, updateMaxCombo, updateTotalCoins, updatePetMood } = useGameStore()
+  const { activePet, pets, petEquipment, updateDailyProgress, updateMaxCombo, updateTotalCoins, updatePetMood } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
+  const equipped = (petEquipment[activePet] || []).map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
 
   const TIME_LIMIT = getTimeLimit(stageId)
 
@@ -334,7 +337,6 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
         <FloatingHearts trigger={heartTrigger} count={heartCount} />
         <motion.div
           className="game-pet-bubble"
-          style={{ background: petStage.bg, border: `2px solid ${petStage.border}` }}
           animate={mood === 'happy' ? { scale: [1, 1.25, 1], rotate: [0, 10, -10, 0] }
             : mood === 'sad' ? { x: [0, -8, 8, -8, 0] }
             : { y: [0, -5, 0] }}
@@ -342,7 +344,7 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
             ? { repeat: Infinity, duration: 2.5, ease: 'easeInOut' }
             : { duration: 0.4 }}
         >
-          <span style={{ fontSize: '3rem' }}>{petStage.emoji}</span>
+          <PetAvatar petId={activePet} evolutionStage={petData.evolutionStage} equipped={equipped} size={80} />
         </motion.div>
 
         <AnimatePresence>

@@ -180,6 +180,124 @@ function OtterBase({ c, isKotaro }) {
   )
 }
 
+// ── Extra clothes ─────────────────────────────────────────────────────────────
+
+function ClothesKimono() {
+  return (
+    <g transform="translate(50,82)">
+      <path d="M-22,-10 Q-34,0 -32,18 Q-26,26 -18,20 Q-20,8 -18,-6 Z" fill="#C0006B" />
+      <path d="M22,-10 Q34,0 32,18 Q26,26 18,20 Q20,8 18,-6 Z" fill="#C0006B" />
+      <path d="M-20,-8 Q-22,14 -18,26 Q0,32 18,26 Q22,14 20,-8 Z" fill="#C0006B" />
+      <path d="M-6,-20 Q2,-4 -2,26 L-14,26 Q-16,12 -16,-8 Z" fill="#E0007B" />
+      <path d="M-6,-20 Q0,-24 6,-20" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" />
+      <rect x="-20" y="4" width="40" height="10" rx="2" fill="#FFD700" />
+      <rect x="-16" y="6" width="32" height="6" rx="1" fill="#FFC400" />
+      <ellipse cx="0" cy="9" rx="6" ry="5" fill="#FF8C00" />
+      <circle cx="-10" cy="-2" r="3.5" fill="rgba(255,192,203,0.7)" />
+      <circle cx="10" cy="18" r="3" fill="rgba(255,192,203,0.6)" />
+      <circle cx="-4" cy="20" r="2.5" fill="rgba(255,192,203,0.5)" />
+    </g>
+  )
+}
+
+function ClothesRaincoat() {
+  return (
+    <g transform="translate(50,86)">
+      <ellipse cx="-31" cy="0" rx="7" ry="13" fill="#FF6B35" transform="rotate(-8,-31,0)" />
+      <rect x="-37" y="10" width="13" height="5" rx="2.5" fill="#E05528" />
+      <ellipse cx="31" cy="0" rx="7" ry="13" fill="#FF6B35" transform="rotate(8,31,0)" />
+      <rect x="24" y="10" width="13" height="5" rx="2.5" fill="#E05528" />
+      <ellipse cx="0" cy="6" rx="26" ry="21" fill="#FF6B35" />
+      <path d="M-18,-16 Q-20,-28 0,-30 Q20,-28 18,-16 Q0,-20 -18,-16 Z" fill="#E05528" />
+      <path d="M-10,-16 Q0,-20 10,-16 Q7,-12 0,-10 Q-7,-12 -10,-16 Z" fill="#CC4820" />
+      <circle cx="-12" cy="0" r="3.5" fill="#FFD700" />
+      <circle cx="2" cy="3" r="3" fill="#87CEEB" />
+      <circle cx="12" cy="-2" r="3.5" fill="#98FB98" />
+      <circle cx="-4" cy="12" r="3" fill="#FF69B4" />
+      <circle cx="8" cy="10" r="2.5" fill="#DDA0DD" />
+      <circle cx="0" cy="-4" r="2" fill="white" opacity="0.9" />
+      <circle cx="0" cy="5" r="2" fill="white" opacity="0.9" />
+    </g>
+  )
+}
+
+function ClothesAstronaut() {
+  return (
+    <g transform="translate(50,80)">
+      <ellipse cx="-31" cy="0" rx="8" ry="14" fill="#E0E8F8" transform="rotate(-8,-31,0)" />
+      <rect x="-37" y="10" width="14" height="6" rx="3" fill="#B8C8D8" />
+      <ellipse cx="31" cy="0" rx="8" ry="14" fill="#E0E8F8" transform="rotate(8,31,0)" />
+      <rect x="23" y="10" width="14" height="6" rx="3" fill="#B8C8D8" />
+      <ellipse cx="0" cy="6" rx="27" ry="22" fill="#E0E8F8" />
+      <rect x="-14" y="-8" width="28" height="20" rx="5" fill="#C0C8D8" />
+      <rect x="-10" y="-6" width="20" height="6" rx="3" fill="#5088AA" />
+      <circle cx="-6" cy="8" r="3" fill="#FF6B6B" />
+      <circle cx="2" cy="8" r="3" fill="#6BCB77" />
+      <circle cx="10" cy="8" r="3" fill="#FFD700" />
+      <circle cx="0" cy="-18" r="14" fill="none" stroke="#B8C8D8" strokeWidth="4" />
+      <circle cx="0" cy="-18" r="10" fill="rgba(100,180,255,0.3)" />
+      <circle cx="0" cy="-18" r="10" fill="none" stroke="#90B8D8" strokeWidth="1.5" />
+      <rect x="-21" y="-4" width="10" height="7" rx="1.5" fill="#CC2222" />
+      <line x1="-21" y1="-1" x2="-11" y2="-1" stroke="white" strokeWidth="1" />
+    </g>
+  )
+}
+
+// ── Extra accessories ─────────────────────────────────────────────────────────
+
+function AccWings() {
+  return (
+    <g>
+      <path d="M22,80 C6,62 0,44 12,36 C18,32 22,46 24,62 Z" fill="white" stroke="#E0E0FF" strokeWidth="1.2" />
+      <path d="M22,80 C8,66 4,52 14,44 C18,40 22,52 24,66 Z" fill="rgba(220,220,255,0.55)" />
+      <line x1="12" y1="38" x2="22" y2="74" stroke="rgba(180,180,230,0.4)" strokeWidth="1" />
+      <line x1="18" y1="36" x2="24" y2="70" stroke="rgba(180,180,230,0.4)" strokeWidth="1" />
+      <path d="M78,80 C94,62 100,44 88,36 C82,32 78,46 76,62 Z" fill="white" stroke="#E0E0FF" strokeWidth="1.2" />
+      <path d="M78,80 C92,66 96,52 86,44 C82,40 78,52 76,66 Z" fill="rgba(220,220,255,0.55)" />
+      <line x1="88" y1="38" x2="78" y2="74" stroke="rgba(180,180,230,0.4)" strokeWidth="1" />
+      <line x1="82" y1="36" x2="76" y2="70" stroke="rgba(180,180,230,0.4)" strokeWidth="1" />
+    </g>
+  )
+}
+
+function AccSunglasses() {
+  return (
+    <g transform="translate(50,44)">
+      <ellipse cx="-12" cy="0" rx="10" ry="8" fill="rgba(0,0,0,0.78)" stroke="#444" strokeWidth="1.5" />
+      <ellipse cx="12" cy="0" rx="10" ry="8" fill="rgba(0,0,0,0.78)" stroke="#444" strokeWidth="1.5" />
+      <ellipse cx="-9" cy="-2" rx="3" ry="2" fill="rgba(255,255,255,0.14)" />
+      <ellipse cx="15" cy="-2" rx="3" ry="2" fill="rgba(255,255,255,0.14)" />
+      <line x1="-2" y1="0" x2="2" y2="0" stroke="#444" strokeWidth="2" />
+      <line x1="-22" y1="-2" x2="-28" y2="-4" stroke="#444" strokeWidth="2" />
+      <line x1="22" y1="-2" x2="28" y2="-4" stroke="#444" strokeWidth="2" />
+    </g>
+  )
+}
+
+function AccMedal() {
+  return (
+    <g transform="translate(50,74)">
+      <path d="M-5,-18 L-7,-4 L0,-6 L7,-4 L5,-18 Z" fill="#4169E1" />
+      <path d="M-5,-18 L-2,-8 L0,-14 L2,-8 L5,-18 Z" fill="#2D55CC" />
+      <circle cx="0" cy="4" r="12" fill="#FFD700" />
+      <circle cx="0" cy="4" r="9" fill="#FFDF00" stroke="#DAA520" strokeWidth="0.5" />
+      <text x="0" y="8.5" fontSize="10" fontWeight="900" textAnchor="middle" fill="#8B6914" fontFamily="sans-serif">1</text>
+    </g>
+  )
+}
+
+function AccMagicWand() {
+  return (
+    <g>
+      <line x1="74" y1="110" x2="56" y2="78" stroke="#6B3A1A" strokeWidth="3.5" strokeLinecap="round" />
+      <polygon points="56,62 58.2,68 64.8,68 59.4,72 61.6,78 56,74 50.4,78 52.6,72 47.2,68 53.8,68" fill="#FFD700" />
+      <circle cx="68" cy="72" r="2.5" fill="#FFD700" opacity="0.9" />
+      <circle cx="46" cy="68" r="2" fill="#FF69B4" opacity="0.8" />
+      <circle cx="64" cy="84" r="1.5" fill="#87CEEB" opacity="0.8" />
+    </g>
+  )
+}
+
 // ── Hat / head accessories ────────────────────────────────────────────────────
 
 function HatBow() {
@@ -253,6 +371,43 @@ function HatFlower() {
           <circle cx="0" cy="0" r="3" fill="#FFD700" />
         </g>
       ))}
+    </g>
+  )
+}
+
+function HatWizard() {
+  return (
+    <g transform="translate(50,18)">
+      <ellipse cx="0" cy="0" rx="24" ry="6" fill="#2D1B69" />
+      <path d="M-16,0 Q-6,-18 0,-36 Q6,-18 16,0 Z" fill="#4A1AA0" />
+      <polygon points="0,-28 1.8,-24 6,-24 2.8,-21 4,-17 0,-19.5 -4,-17 -2.8,-21 -6,-24 -1.8,-24" fill="#FFD700" />
+      <path d="M-16,-1 Q0,-5 16,-1" fill="none" stroke="#9B59B6" strokeWidth="3" />
+      <circle cx="-7" cy="-12" r="1.5" fill="#FFD700" opacity="0.8" />
+      <circle cx="10" cy="-8" r="1.2" fill="#FFD700" opacity="0.7" />
+    </g>
+  )
+}
+
+function HatSanta() {
+  return (
+    <g transform="translate(50,18)">
+      <ellipse cx="0" cy="0" rx="22" ry="6" fill="white" />
+      <path d="M-14,0 Q-8,-14 4,-28 Q10,-20 12,-8 Q8,-14 0,-2 Z" fill="#CC0000" />
+      <circle cx="5" cy="-28" r="6" fill="white" />
+      <path d="M-14,0 Q-8,-12 2,-24 Q-2,-16 -2,-6 Z" fill="rgba(0,0,0,0.07)" />
+    </g>
+  )
+}
+
+function HatHelmet() {
+  return (
+    <g transform="translate(50,20)">
+      <path d="M-22,4 Q-24,-16 0,-22 Q24,-16 22,4 Z" fill="#5A7040" />
+      <rect x="-25" y="1" width="50" height="7" rx="3.5" fill="#4A5C30" />
+      <ellipse cx="-10" cy="-8" rx="5" ry="4" fill="#3A5020" opacity="0.5" />
+      <ellipse cx="8" cy="-14" rx="4" ry="3" fill="#3A5020" opacity="0.5" />
+      <ellipse cx="0" cy="-6" rx="3.5" ry="3" fill="#3A5020" opacity="0.4" />
+      <polygon points="0,-18 1.5,-14 5,-14 2.5,-11.5 3.5,-8 0,-10 -3.5,-8 -2.5,-11.5 -5,-14 -1.5,-14" fill="#FFD700" />
     </g>
   )
 }
@@ -433,14 +588,18 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
   const stage  = Math.max(1, Math.min(4, evolutionStage))
   const colors = EVO[petId]?.[stage] ?? EVO.lulu[1]
 
-  const hat      = equipped.find(i => i?.category === 'hat')
-  const clothes  = equipped.find(i => i?.category === 'clothes')
-  const glasses  = equipped.some(i => i?.id === 'glasses')
-  const scarf    = equipped.some(i => i?.id === 'scarf')
-  const necklace = equipped.some(i => i?.id === 'necklace')
-  const backpack = equipped.some(i => i?.id === 'backpack')
-  const foodItem = equipped.find(i => i?.category === 'food')
-  const toyItem  = equipped.find(i => i?.category === 'toy')
+  const hat        = equipped.find(i => i?.category === 'hat')
+  const clothes    = equipped.find(i => i?.category === 'clothes')
+  const glasses    = equipped.some(i => i?.id === 'glasses')
+  const scarf      = equipped.some(i => i?.id === 'scarf')
+  const necklace   = equipped.some(i => i?.id === 'necklace')
+  const backpack   = equipped.some(i => i?.id === 'backpack')
+  const wings      = equipped.some(i => i?.id === 'wings')
+  const sunglasses = equipped.some(i => i?.id === 'sunglasses')
+  const medal      = equipped.some(i => i?.id === 'medal')
+  const magicWand  = equipped.some(i => i?.id === 'magic_wand')
+  const foodItem   = equipped.find(i => i?.category === 'food')
+  const toyItem    = equipped.find(i => i?.category === 'toy')
 
   const glowFilter = colors.glow
     ? { filter: `drop-shadow(0 0 8px ${colors.glow})` }
@@ -459,6 +618,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
       )}
 
       {/* Behind-body items */}
+      {wings   && <AccWings />}
       {backpack && <AccBackpack />}
 
       {/* Pet base */}
@@ -492,33 +652,42 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
       )}
 
       {/* Clothes (over body) */}
-      {clothes?.id === 'sweater' && <ClothesSweater />}
-      {clothes?.id === 'apron'   && <ClothesApron />}
-      {clothes?.id === 'hoodie'  && <ClothesHoodie />}
-      {clothes?.id === 'dress'   && <ClothesDress />}
+      {clothes?.id === 'sweater'   && <ClothesSweater />}
+      {clothes?.id === 'apron'     && <ClothesApron />}
+      {clothes?.id === 'hoodie'    && <ClothesHoodie />}
+      {clothes?.id === 'dress'     && <ClothesDress />}
+      {clothes?.id === 'kimono'    && <ClothesKimono />}
+      {clothes?.id === 'raincoat'  && <ClothesRaincoat />}
+      {clothes?.id === 'astronaut' && <ClothesAstronaut />}
 
       {/* Neck accessories */}
+      {medal    && <AccMedal />}
       {scarf    && <AccScarf />}
       {necklace && <AccNecklace />}
 
       {/* Face accessories */}
-      {glasses && <AccGlasses />}
+      {glasses    && <AccGlasses />}
+      {sunglasses && <AccSunglasses />}
 
       {/* Head accessories */}
-      {hat?.id === 'bow'    && <HatBow />}
-      {hat?.id === 'cap'    && <HatCap />}
-      {hat?.id === 'crown'  && <HatCrown />}
-      {hat?.id === 'flower' && <HatFlower />}
+      {hat?.id === 'bow'        && <HatBow />}
+      {hat?.id === 'cap'        && <HatCap />}
+      {hat?.id === 'crown'      && <HatCrown />}
+      {hat?.id === 'flower'     && <HatFlower />}
+      {hat?.id === 'wizard_hat' && <HatWizard />}
+      {hat?.id === 'santa_hat'  && <HatSanta />}
+      {hat?.id === 'helmet'     && <HatHelmet />}
 
       {/* Food held in left paw */}
       {foodItem && (
         <text x="20" y="112" fontSize="14" textAnchor="middle">{foodItem.emoji}</text>
       )}
 
-      {/* Toy held in right paw */}
-      {toyItem && (
-        <text x="80" y="112" fontSize="14" textAnchor="middle">{toyItem.emoji}</text>
-      )}
+      {/* Toy or wand held in right paw */}
+      {magicWand
+        ? <AccMagicWand />
+        : toyItem && <text x="80" y="112" fontSize="14" textAnchor="middle">{toyItem.emoji}</text>
+      }
 
       {/* Stage 4 sparkles */}
       {stage === 4 && <LegendarySparkles />}

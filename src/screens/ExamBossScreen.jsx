@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { SUBJECT_CONFIGS, getSubjectQuestionIds, getQuestionsByIds } from '../data/examBoss'
 import { PETS } from '../data/pets'
+import { SHOP_ITEMS } from '../data/shop'
 import { sfx } from '../utils/sound'
 import NumberPad from '../components/NumberPad'
+import PetAvatar from '../components/PetAvatar'
 import './ExamBossScreen.css'
 
 const CATEGORY_TIPS = {
@@ -18,9 +20,10 @@ const formatTime = (t) => t >= 60 ? `${Math.floor(t / 60)}:${String(t % 60).padS
 
 export default function ExamBossScreen({ onBack }) {
   const {
-    activePet, pets, subjectStreaks, ownedItems,
+    activePet, pets, petEquipment, subjectStreaks, ownedItems,
     addCoins, recordSubjectResult, popSubjectQuestions,
   } = useGameStore()
+  const equipped = (petEquipment[activePet] || []).map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
   const pet      = PETS[activePet]
   const petData  = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
@@ -362,10 +365,8 @@ export default function ExamBossScreen({ onBack }) {
 
       <div className="exam-fight-header">
         <div className="exam-fight-left">
-          <div className="exam-pet-mini"
-            style={{ background: petStage.bg, border: `2px solid ${petStage.border}` }}
-          >
-            <span>{petStage.emoji}</span>
+          <div className="exam-pet-mini">
+            <PetAvatar petId={activePet} evolutionStage={petData.evolutionStage} equipped={equipped} size={36} />
           </div>
           <span className="exam-fight-count">第 {qIndex + 1} / {activeSubject.totalQuestions} 題</span>
         </div>

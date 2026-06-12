@@ -90,13 +90,12 @@
 }
 
 .game-pet-bubble {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
+  width: 80px;
+  height: 104px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: visible;
 }
 
 .feedback-badge {
@@ -275,7 +274,7 @@
   .game-combo  { font-size: 1.1rem; padding: 6px 16px; }
   .game-coins  { font-size: 1.1rem; padding: 6px 18px; }
   .timer-bar-bg { height: 14px; border-radius: 10px; }
-  .game-pet-bubble { width: 100px; height: 100px; }
+  .game-pet-bubble { width: 96px; height: 125px; }
   .question-card { max-width: 480px; padding: 16px 40px 20px; border-radius: 24px; }
   .vq { font-size: 2.6rem; }
   .doodle-area {
@@ -328,7 +327,7 @@
   .doodle-area   { grid-area: doodle;   max-width: none; }
   .game-numpad   { grid-area: numpad;   max-width: none; margin: 0; align-self: center; }
 
-  .game-pet-bubble { width: 130px; height: 130px; }
+  .game-pet-bubble { width: 110px; height: 143px; }
   .vq { font-size: 3rem; }
   .doodle-canvas { height: 130px; }
 }

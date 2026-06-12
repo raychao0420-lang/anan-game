@@ -4,7 +4,9 @@ import { useGameStore } from '../store/gameStore'
 import { generateStageQuestions } from '../data/questions'
 import { BOSS_DEFS, BOSS_REWARDS } from '../data/achievements'
 import { PETS } from '../data/pets'
+import { SHOP_ITEMS } from '../data/shop'
 import NumberPad from '../components/NumberPad'
+import PetAvatar from '../components/PetAvatar'
 import { sfx } from '../utils/sound'
 import './BossScreen.css'
 
@@ -12,10 +14,11 @@ const BOSS_QUESTIONS = 15
 const BOSS_PASS = 10
 
 export default function BossScreen({ chapterId, onBack }) {
-  const { activePet, pets, clearBoss, bossCleared, updateMaxCombo, updateTotalCoins } = useGameStore()
+  const { activePet, pets, petEquipment, clearBoss, bossCleared, updateMaxCombo, updateTotalCoins } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
+  const equipped = (petEquipment[activePet] || []).map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
 
   const boss = BOSS_DEFS[chapterId]
   const BOSS_TIME = boss.time ?? 10
@@ -161,11 +164,10 @@ export default function BossScreen({ chapterId, onBack }) {
         <div className="boss-win-title">🎉 Boss 打倒了！</div>
         <motion.div
           className="boss-result-pet"
-          style={{ background: petStage.bg, border: `3px solid ${petStage.border}` }}
           animate={{ scale: [1, 1.2, 1, 1.2, 1], rotate: [0, 15, -15, 10, 0] }}
           transition={{ duration: 1, delay: 0.3 }}
         >
-          <span style={{ fontSize: '3.5rem' }}>{petStage.emoji}</span>
+          <PetAvatar petId={activePet} evolutionStage={petData.evolutionStage} equipped={equipped} size={110} />
         </motion.div>
         <div className="boss-score">答對 {correctCount} / {BOSS_QUESTIONS} 題</div>
         <div className="boss-coin-reward">+ 100 💰</div>
@@ -295,7 +297,6 @@ export default function BossScreen({ chapterId, onBack }) {
       <div className="boss-pet-area">
         <motion.div
           className="boss-pet-bubble"
-          style={{ background: petStage.bg, border: `2px solid ${petStage.border}` }}
           animate={feedback === true ? { scale: [1, 1.2, 1] }
             : feedback === false ? { x: [0, -8, 8, 0] }
             : { y: [0, -5, 0] }}
@@ -303,7 +304,7 @@ export default function BossScreen({ chapterId, onBack }) {
             ? { repeat: Infinity, duration: 2.5, ease: 'easeInOut' }
             : { duration: 0.3 }}
         >
-          <span style={{ fontSize: '2.5rem' }}>{petStage.emoji}</span>
+          <PetAvatar petId={activePet} evolutionStage={petData.evolutionStage} equipped={equipped} size={90} />
         </motion.div>
 
         <AnimatePresence>
