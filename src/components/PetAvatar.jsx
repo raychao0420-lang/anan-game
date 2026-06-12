@@ -412,6 +412,33 @@ function HatHelmet() {
   )
 }
 
+// ── Exam subject crowns ───────────────────────────────────────────────────────
+
+function CrownSubject({ mainColor, gemColor, symbol }) {
+  return (
+    <g transform="translate(50,10)">
+      <polygon points="-22,-2 -15,-22 -7,-2" fill={mainColor} />
+      <polygon points="-7,-2  0,-26  7,-2" fill={mainColor} />
+      <polygon points="7,-2  15,-22 22,-2" fill={mainColor} />
+      <polygon points="-22,-2 -15,-22 -7,-2" fill="rgba(255,255,255,0.18)" />
+      <polygon points="-7,-2  0,-26  7,-2" fill="rgba(255,255,255,0.18)" />
+      <rect x="-22" y="-2" width="44" height="14" rx="3" fill={mainColor} />
+      <rect x="-22" y="-2" width="44" height="5" rx="2" fill="rgba(255,255,255,0.18)" />
+      {/* Side gems */}
+      <circle cx="-15" cy="-14" r="4.5" fill={gemColor} />
+      <circle cx="15"  cy="-14" r="4.5" fill={gemColor} />
+      <circle cx="-13" cy="-16" r="1.6" fill="rgba(255,255,255,0.75)" />
+      <circle cx="13"  cy="-16" r="1.6" fill="rgba(255,255,255,0.75)" />
+      {/* Center gem with subject symbol */}
+      <circle cx="0" cy="-19" r="7.5" fill={gemColor} />
+      <circle cx="0" cy="-19" r="7.5" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1" />
+      <circle cx="-2.5" cy="-22" r="2.5" fill="rgba(255,255,255,0.55)" />
+      <text x="0" y="-19" fontSize="9" fontWeight="900" textAnchor="middle"
+        dominantBaseline="central" fill="white" fontFamily="sans-serif">{symbol}</text>
+    </g>
+  )
+}
+
 // ── Clothes ───────────────────────────────────────────────────────────────────
 
 function ClothesSweater() {
@@ -598,6 +625,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
   const sunglasses = equipped.some(i => i?.id === 'sunglasses')
   const medal      = equipped.some(i => i?.id === 'medal')
   const magicWand  = equipped.some(i => i?.id === 'magic_wand')
+  const examCrown  = equipped.find(i => ['crown_math','crown_social','crown_nature','crown_chinese'].includes(i?.id))
   const foodItem   = equipped.find(i => i?.category === 'food')
   const toyItem    = equipped.find(i => i?.category === 'toy')
 
@@ -677,6 +705,10 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
       {hat?.id === 'wizard_hat' && <HatWizard />}
       {hat?.id === 'santa_hat'  && <HatSanta />}
       {hat?.id === 'helmet'     && <HatHelmet />}
+      {examCrown?.id === 'crown_math'    && <CrownSubject mainColor="#1B7FE0" gemColor="#A8D4FF" symbol="π" />}
+      {examCrown?.id === 'crown_social'  && <CrownSubject mainColor="#2E9E44" gemColor="#98FB98" symbol="地" />}
+      {examCrown?.id === 'crown_nature'  && <CrownSubject mainColor="#7048E8" gemColor="#C8A8FF" symbol="理" />}
+      {examCrown?.id === 'crown_chinese' && <CrownSubject mainColor="#E03030" gemColor="#FFB0B0" symbol="文" />}
 
       {/* Food held in left paw */}
       {foodItem && (
