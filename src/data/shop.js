@@ -78,7 +78,8 @@ export const SHOP_ITEMS = [
   { id: 'library',      name: '小書架',     emoji: '📚', category: 'home', price: 260, desc: '充滿智慧的角落' },
   { id: 'trampoline',   name: '彈跳床',     emoji: '🎪', category: 'home', price: 380, desc: 'LULU 跳跳停不下來！' },
   // ── 稀有（Boss 獎勵，不可購買） ──
-  { id: 'golden_finger', name: '金手指', emoji: '🤞', category: 'rare', price: 0, desc: '湊10特訓三連勝！神速心算達人的象徵', boss: true },
+  { id: 'golden_finger',  name: '金手指',  emoji: '🤞', category: 'rare', price: 0, desc: '湊10特訓三連勝！神速心算達人的象徵', boss: true },
+  { id: 'abacus_master', name: '算盤大師', emoji: '🧮', category: 'rare', price: 0, desc: '九九大作戰三連勝！乘除法天才的象徵',  boss: true },
   { id: 'boss_medal1', name: '勇者勳章',   emoji: '🎖️', category: 'rare', price: 0, desc: '打倒第一章Boss', boss: true },
   { id: 'boss_medal2', name: '三位數之印', emoji: '🏅', category: 'rare', price: 0, desc: '打倒第二章Boss', boss: true },
   { id: 'boss_medal3', name: '乘法魔法戒', emoji: '💍', category: 'rare', price: 0, desc: '打倒第三章Boss', boss: true },

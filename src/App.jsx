@@ -13,6 +13,9 @@ import AchievementScreen from './screens/AchievementScreen'
 import HomeRoomScreen from './screens/HomeRoomScreen'
 import ExamBossScreen from './screens/ExamBossScreen'
 import MaketenScreen from './screens/MaketenScreen'
+import MultiplyScreen from './screens/MultiplyScreen'
+import GachaScreen from './screens/GachaScreen'
+import ArcadeScreen from './screens/ArcadeScreen'
 import AchievementToast from './components/AchievementToast'
 import './index.css'
 
@@ -81,6 +84,9 @@ export default function App() {
         {screen === 'homeroom'     && wrap('homeroom', <HomeRoomScreen onNavigate={setScreen} />)}
         {screen === 'examboss'    && wrap('examboss', <ExamBossScreen  onBack={() => setScreen('home')} />)}
         {screen === 'maketen'     && wrap('maketen',  <MaketenScreen   onBack={() => setScreen('home')} />)}
+        {screen === 'multiply'    && wrap('multiply', <MultiplyScreen  onBack={() => setScreen('home')} />)}
+        {screen === 'gacha'       && wrap('gacha',    <GachaScreen     onBack={() => setScreen('home')} />)}
+        {screen === 'arcade'      && wrap('arcade',   <ArcadeScreen    onBack={() => setScreen('home')} />)}
 
         {screen === 'game' && activeStage && wrapFixed(`game-${activeStage}`,
           <GameScreen

@@ -1,8 +1,13 @@
 import { motion } from 'framer-motion'
 import './NumberPad.css'
 
-export default function NumberPad({ value, onChange, onConfirm }) {
+export default function NumberPad({ value, onChange, onConfirm, onInput }) {
   const handleKey = (key) => {
+    if (onInput) {
+      if (key === '←') { onInput('del'); return }
+      onInput(key)
+      return
+    }
     if (key === '←') {
       onChange(value.slice(0, -1))
     } else if (key === '.') {
@@ -10,6 +15,11 @@ export default function NumberPad({ value, onChange, onConfirm }) {
     } else {
       if (value.length < 6) onChange(value + key)
     }
+  }
+
+  const handleConfirm = () => {
+    if (onInput) { onInput('ok'); return }
+    if (value) onConfirm()
   }
 
   const keys = ['7','8','9','4','5','6','1','2','3','.','0','←']
@@ -34,7 +44,7 @@ export default function NumberPad({ value, onChange, onConfirm }) {
       </div>
       <motion.button
         className="numpad-btn numpad-confirm"
-        onPointerDown={() => { if (value) onConfirm() }}
+        onPointerDown={handleConfirm}
         whileTap={{ scale: 0.95 }}
         transition={{ duration: 0.08 }}
         style={{ opacity: value ? 1 : 0.4 }}

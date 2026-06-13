@@ -132,6 +132,31 @@ export default function HomeScreen({ onNavigate }) {
           🔟 湊10特訓
         </motion.button>
 
+        <motion.button
+          className="btn-multiply"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => nav('multiply')}
+        >
+          🔢 九九大作戰
+        </motion.button>
+
+        <div className="home-row">
+          <motion.button
+            className="btn-gacha"
+            whileTap={{ scale: 0.94 }}
+            onClick={() => nav('gacha')}
+          >
+            🎰 扭蛋機
+          </motion.button>
+          <motion.button
+            className="btn-arcade"
+            whileTap={{ scale: 0.94 }}
+            onClick={() => nav('arcade')}
+          >
+            🎮 迷你遊戲場
+          </motion.button>
+        </div>
+
         <div className="home-row">
           <motion.button
             className="btn-secondary home-daily-btn"

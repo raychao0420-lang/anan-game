@@ -1,0 +1,396 @@
+.arc-screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+  font-family: inherit;
+  background: linear-gradient(160deg, #F0F4FF 0%, #FFF5F5 100%);
+}
+
+.arc-top-bar {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+}
+
+.arc-back-btn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 0;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.arc-coins-badge {
+  background: #FFF3CD;
+  border: 2px solid #FFD700;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #996600;
+}
+
+.arc-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1565C0;
+  margin: 8px 0 16px;
+}
+
+/* ── Hub game list ────────────────────────────────────────────────────────── */
+.arc-game-list {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.arc-game-card {
+  background: white;
+  border: 2.5px solid #DDD;
+  border-radius: 20px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+
+.arc-game-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.arc-game-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.arc-game-name {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.arc-game-desc {
+  font-size: 0.76rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+.arc-game-reward {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.arc-enter-btn {
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ── Playing screens ──────────────────────────────────────────────────────── */
+.arc-play-screen {
+  padding: 12px;
+  justify-content: flex-start;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.arc-play-header {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.arc-game-label {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.arc-score-badge {
+  border: 2px solid;
+  border-radius: 16px;
+  padding: 3px 12px;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.arc-allin-stake {
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.arc-q-counter {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #555;
+}
+
+/* Timer */
+.arc-timer-wrap {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.arc-timer-track {
+  flex: 1;
+  height: 14px;
+  background: #EEE;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.arc-timer-fill {
+  height: 100%;
+  border-radius: 7px;
+}
+
+.arc-timer-num {
+  font-size: 1.5rem;
+  font-weight: 900;
+  min-width: 36px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Progress dots */
+.arc-g-dots {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  max-width: 440px;
+  justify-content: center;
+}
+
+.arc-g-dot {
+  flex: 1;
+  max-width: 28px;
+  height: 8px;
+  border-radius: 4px;
+  background: #DDD;
+  transition: background 0.25s;
+}
+
+/* Question card */
+.arc-q-card {
+  width: 100%;
+  max-width: 440px;
+  background: white;
+  border: 3px solid #E0E0E0;
+  border-radius: 22px;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  position: relative;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.arc-q-card-big { min-height: 130px; }
+
+.arc-q-text {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.arc-q-big { font-size: 2.8rem; }
+
+.arc-blank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: 3px solid #CCC;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #444;
+  transition: border-color 0.18s;
+}
+
+.arc-blank-big {
+  min-width: 72px;
+  height: 72px;
+  font-size: 2.6rem;
+  border-radius: 16px;
+}
+
+.arc-fb {
+  position: absolute;
+  top: -14px;
+  right: 16px;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.arc-fb-ok { color: #4CAF50; }
+.arc-fb-ng { color: #F44336; }
+
+/* ── Number pad ───────────────────────────────────────────────────────────── */
+.arc-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 340px;
+  margin-top: 4px;
+}
+
+.arc-pad-btn {
+  background: white;
+  border: 2px solid #E0E0E0;
+  border-radius: 16px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 14px 0;
+  cursor: pointer;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s;
+  color: #222;
+}
+
+.arc-pad-btn.del {
+  font-size: 1.2rem;
+  color: #888;
+  background: #F5F5F5;
+}
+
+.arc-pad-btn.ok {
+  background: #4CAF50;
+  border-color: #4CAF50;
+  color: white;
+  font-size: 1.8rem;
+}
+
+/* ── Result ───────────────────────────────────────────────────────────────── */
+.arc-result-screen {
+  justify-content: center;
+  gap: 0;
+}
+
+.arc-result-card {
+  background: white;
+  border: 3px solid #DDD;
+  border-radius: 28px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.12);
+}
+
+.arc-result-emoji { font-size: 3.5rem; line-height: 1; }
+
+.arc-result-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.arc-result-score {
+  font-size: 1.1rem;
+  color: #555;
+  text-align: center;
+}
+
+.arc-coins-row {
+  width: 100%;
+  background: #F9F9F9;
+  border-radius: 14px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.arc-coins-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.arc-coins-divider {
+  height: 1px;
+  background: #EEE;
+  margin: 4px 0;
+}
+
+.arc-coins-net { font-size: 1rem; }
+
+.arc-result-btn {
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding: 13px 0;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.arc-result-btn-sec {
+  background: none;
+  border: none;
+  color: #AAA;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  padding: 4px;
+}

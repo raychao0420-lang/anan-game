@@ -63,6 +63,7 @@ export const useGameStore = create(
       // M5: exam boss
       examBossCleared: false,
       makeTenCleared: false,
+      multiplyCleared: false,
       subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
       subjectQueues:   { math: [], social: [], nature: [], chinese: [] },
       subjectStreaks:  { math: 0, social: 0, nature: 0, chinese: 0 },
@@ -321,6 +322,20 @@ export const useGameStore = create(
         get().checkAchievements()
       },
 
+      clearMultiply: () => {
+        set((s) => {
+          const first = !s.multiplyCleared
+          return {
+            multiplyCleared: true,
+            ...(first ? { coins: s.coins + 500, totalCoinsEarned: s.totalCoinsEarned + 500 } : {}),
+            ownedItems: s.ownedItems.includes('abacus_master')
+              ? s.ownedItems
+              : [...s.ownedItems, 'abacus_master'],
+          }
+        })
+        get().checkAchievements()
+      },
+
       clearPendingAchievement: () => set({ pendingAchievement: null }),
 
       updateMaxCombo: (combo) =>
@@ -375,6 +390,7 @@ export const useGameStore = create(
           bossCleared: { 10: false, 20: false, 30: false, 40: false },
           examBossCleared: false,
           makeTenCleared: false,
+          multiplyCleared: false,
           subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
           subjectQueues:   { math: [], social: [], nature: [], chinese: [] },
           subjectStreaks:  { math: 0, social: 0, nature: 0, chinese: 0 },
