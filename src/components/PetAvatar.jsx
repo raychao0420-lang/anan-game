@@ -212,6 +212,133 @@ function MejiroBase({ c }) {
   )
 }
 
+function JijiBase({ c }) {
+  return (
+    <g>
+      {/* ── Tail (elegant curl around right side) ── */}
+      <path d="M66,105 C85,96 93,76 80,62 C72,52 60,56 62,70 C64,80 76,84 68,97 Q66,102 62,108 Z"
+        fill={c.body} />
+      <path d="M68,103 C83,94 88,76 77,65 C71,57 63,61 65,72 C67,80 78,84 70,95 Z"
+        fill={c.belly} opacity="0.3" />
+
+      {/* ── Body ── */}
+      <ellipse cx="50" cy="92" rx="22" ry="18" fill={c.body} />
+      {/* Chest tuft */}
+      <ellipse cx="50" cy="87" rx="9" ry="8.5" fill={c.belly} opacity="0.5" />
+
+      {/* ── Ears (pointed triangles) ── */}
+      <path d="M27,28 L18,7 L40,22 Z" fill={c.body} />
+      <path d="M28,26 L22,12 L37,22 Z" fill="#FF9A9A" opacity="0.65" />
+      <path d="M73,28 L82,7 L60,22 Z" fill={c.body} />
+      <path d="M72,26 L78,12 L63,22 Z" fill="#FF9A9A" opacity="0.65" />
+
+      {/* ── Head ── */}
+      <circle cx="50" cy="44" r="24" fill={c.body} />
+
+      {/* ── Eyes (large amber cat eyes with vertical slit) ── */}
+      <ellipse cx="37" cy="42" rx="9" ry="8" fill="#C87820" />
+      <ellipse cx="63" cy="42" rx="9" ry="8" fill="#C87820" />
+      {/* Slit pupils */}
+      <ellipse cx="37" cy="42" rx="3.2" ry="7.5" fill="#0A0010" />
+      <ellipse cx="63" cy="42" rx="3.2" ry="7.5" fill="#0A0010" />
+      <ellipse cx="37" cy="42" rx="9" ry="8" fill="none" stroke="#603010" strokeWidth="1" />
+      <ellipse cx="63" cy="42" rx="9" ry="8" fill="none" stroke="#603010" strokeWidth="1" />
+      {/* Highlights */}
+      <circle cx="40" cy="38.5" r="2.4" fill="rgba(255,255,255,0.65)" />
+      <circle cx="66" cy="38.5" r="2.4" fill="rgba(255,255,255,0.65)" />
+      <circle cx="36" cy="44.5" r="1.2" fill="#050005" />
+      <circle cx="62" cy="44.5" r="1.2" fill="#050005" />
+
+      {/* ── Nose ── */}
+      <path d="M47,52 L50,49.5 L53,52 L50,55.5 Z" fill="#FF8888" />
+      <ellipse cx="48.5" cy="51.2" rx="1.3" ry="0.9" fill="rgba(255,255,255,0.5)" />
+      <line x1="50" y1="55.5" x2="50" y2="59" stroke="#CC6666" strokeWidth="1.3" />
+      <path d="M45.5,59 Q50,63.5 54.5,59" fill="none" stroke="#CC6666" strokeWidth="1.5" strokeLinecap="round" />
+
+      {/* ── Whiskers ── */}
+      <line x1="16" y1="52" x2="36" y2="53.5" stroke="rgba(255,255,255,0.45)" strokeWidth="1.2" />
+      <line x1="16" y1="56" x2="36" y2="56"   stroke="rgba(255,255,255,0.45)" strokeWidth="1.2" />
+      <line x1="16" y1="60" x2="36" y2="58.5" stroke="rgba(255,255,255,0.45)" strokeWidth="1.2" />
+      <line x1="64" y1="53.5" x2="84" y2="52" stroke="rgba(255,255,255,0.45)" strokeWidth="1.2" />
+      <line x1="64" y1="56"   x2="84" y2="56" stroke="rgba(255,255,255,0.45)" strokeWidth="1.2" />
+      <line x1="64" y1="58.5" x2="84" y2="60" stroke="rgba(255,255,255,0.45)" strokeWidth="1.2" />
+
+      {/* ── Cheek blush ── */}
+      <ellipse cx="25" cy="51" rx="6" ry="4" fill="rgba(180,80,180,0.22)" />
+      <ellipse cx="75" cy="51" rx="6" ry="4" fill="rgba(180,80,180,0.22)" />
+
+      {/* ── Paws ── */}
+      <ellipse cx="34" cy="107" rx="11" ry="6.5" fill={c.body} />
+      <ellipse cx="66" cy="107" rx="11" ry="6.5" fill={c.body} />
+      {[29,34,39].map(x => <ellipse key={x} cx={x} cy="107" rx="3"   ry="2.2" fill={c.ear} opacity="0.55" />)}
+      {[61,66,71].map(x => <ellipse key={x} cx={x} cy="107" rx="3"   ry="2.2" fill={c.ear} opacity="0.55" />)}
+    </g>
+  )
+}
+
+function KitsuneBase({ c }) {
+  return (
+    <g>
+      {/* ── Fluffy tail (curl around right side) ── */}
+      <path d="M60,102 C80,94 93,78 86,62 C81,51 69,52 67,62 C65,72 75,78 68,90 Q65,97 58,104 Z"
+        fill={c.body} />
+      <path d="M62,100 C78,92 88,78 82,65 C78,56 70,57 69,65 C68,74 76,80 70,90 Z"
+        fill={c.belly} opacity="0.75" />
+      {/* White fluffy tail tip */}
+      <ellipse cx="87" cy="62" rx="8" ry="7" fill="white" />
+      <ellipse cx="87" cy="62" rx="5.5" ry="5" fill={c.belly} />
+
+      {/* ── Body ── */}
+      <ellipse cx="50" cy="92" rx="23" ry="18" fill={c.body} />
+      <ellipse cx="50" cy="93" rx="14" ry="11" fill={c.belly} />
+
+      {/* ── Fox ears (tall, pointed) ── */}
+      <path d="M24,30 L15,3 L40,20 Z" fill={c.body} />
+      <path d="M26,27 L20,9 L37,20 Z" fill={c.ear} />
+      <path d="M76,30 L85,3 L60,20 Z" fill={c.body} />
+      <path d="M74,27 L80,9 L63,20 Z" fill={c.ear} />
+
+      {/* ── Head ── */}
+      <circle cx="50" cy="44" r="24" fill={c.body} />
+
+      {/* ── Muzzle (slightly elongated) ── */}
+      <ellipse cx="50" cy="56" rx="13" ry="8.5" fill={c.belly} opacity="0.75" />
+
+      {/* ── Eyes (ice-blue fox eyes) ── */}
+      <ellipse cx="37" cy="41" rx="8"   ry="7.5" fill={c.nose} />
+      <ellipse cx="63" cy="41" rx="8"   ry="7.5" fill={c.nose} />
+      <ellipse cx="37" cy="42" rx="4.5" ry="6"   fill="#1A2840" />
+      <ellipse cx="63" cy="42" rx="4.5" ry="6"   fill="#1A2840" />
+      <circle cx="39.5" cy="38" r="2.4" fill="white" />
+      <circle cx="65.5" cy="38" r="2.4" fill="white" />
+      <circle cx="37.5" cy="43.5" r="1.3" fill="#080F1A" />
+      <circle cx="63.5" cy="43.5" r="1.3" fill="#080F1A" />
+
+      {/* ── Nose ── */}
+      <ellipse cx="50" cy="54" rx="5.5" ry="4" fill={c.nose} />
+      <ellipse cx="48.5" cy="52.5" rx="1.5" ry="1" fill="rgba(255,255,255,0.4)" />
+      <line x1="50" y1="58" x2="50" y2="61" stroke={c.nose} strokeWidth="1.3" />
+      <path d="M45.5,61 Q50,65.5 54.5,61" fill="none" stroke={c.nose} strokeWidth="1.5" strokeLinecap="round" />
+
+      {/* ── Whiskers ── */}
+      <line x1="19" y1="54"   x2="37" y2="55.5" stroke="rgba(180,200,230,0.55)" strokeWidth="1.2" />
+      <line x1="19" y1="58"   x2="37" y2="58"   stroke="rgba(180,200,230,0.55)" strokeWidth="1.2" />
+      <line x1="63" y1="55.5" x2="81" y2="54"   stroke="rgba(180,200,230,0.55)" strokeWidth="1.2" />
+      <line x1="63" y1="58"   x2="81" y2="58"   stroke="rgba(180,200,230,0.55)" strokeWidth="1.2" />
+
+      {/* ── Cheek blush ── */}
+      <ellipse cx="27" cy="49" rx="6" ry="4" fill="rgba(180,210,255,0.4)" />
+      <ellipse cx="73" cy="49" rx="6" ry="4" fill="rgba(180,210,255,0.4)" />
+
+      {/* ── Paws ── */}
+      <ellipse cx="34" cy="107" rx="11" ry="6.5" fill={c.body} />
+      <ellipse cx="66" cy="107" rx="11" ry="6.5" fill={c.body} />
+      {[29,34,39].map(x => <ellipse key={x} cx={x} cy="107" rx="2.8" ry="2.2" fill={c.ear} opacity="0.8" />)}
+      {[61,66,71].map(x => <ellipse key={x} cx={x} cy="107" rx="2.8" ry="2.2" fill={c.ear} opacity="0.8" />)}
+    </g>
+  )
+}
+
 function OtterBase({ c, isKotaro }) {
   return (
     <g>
@@ -730,11 +857,11 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
       {backpack && <AccBackpack />}
 
       {/* Pet base */}
-      {petId === 'lulu'
-        ? <LuluBase c={colors} />
-        : petId === 'mejiro'
-          ? <MejiroBase c={colors} />
-          : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
+      {petId === 'lulu'    ? <LuluBase    c={colors} />
+       : petId === 'mejiro'  ? <MejiroBase  c={colors} />
+       : petId === 'jiji'    ? <JijiBase    c={colors} />
+       : petId === 'kitsune' ? <KitsuneBase c={colors} />
+       : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 
       {/* LULU stage markings */}
@@ -761,6 +888,51 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
         </g>
       )}
 
+      {/* Hana stage markings */}
+      {petId === 'hana' && stage === 2 && (
+        /* Stage 2: 額頭小櫻花 */
+        <g transform="translate(50,27)">
+          {[0,72,144,216,288].map(a => (
+            <ellipse key={a}
+              cx={+(Math.cos(a*Math.PI/180)*4.2).toFixed(1)}
+              cy={+(Math.sin(a*Math.PI/180)*4.2).toFixed(1)}
+              rx="2.8" ry="4.8" fill="#FFB6C1"
+              transform={`rotate(${a})`}
+            />
+          ))}
+          <circle cx="0" cy="0" r="2.6" fill="#FFD700" />
+        </g>
+      )}
+      {petId === 'hana' && stage === 3 && (
+        /* Stage 3: 臉頰水波紋 */
+        <g>
+          <circle cx="28" cy="52" r="5.5" fill="none" stroke="#20B2AA" strokeWidth="1.6" opacity="0.7" />
+          <circle cx="28" cy="52" r="3"   fill="none" stroke="#20B2AA" strokeWidth="1"   opacity="0.45" />
+          <circle cx="72" cy="52" r="5.5" fill="none" stroke="#20B2AA" strokeWidth="1.6" opacity="0.7" />
+          <circle cx="72" cy="52" r="3"   fill="none" stroke="#20B2AA" strokeWidth="1"   opacity="0.45" />
+        </g>
+      )}
+
+      {/* Kotaro stage markings */}
+      {petId === 'kotaro' && stage === 2 && (
+        /* Stage 2: 額頭嫩葉 */
+        <g transform="translate(50,27)">
+          <path d="M0,-7 C4.5,-4 5,2.5 0,7 C-5,2.5 -4.5,-4 0,-7 Z" fill="#66BB6A" />
+          <line x1="0" y1="7" x2="0" y2="-4" stroke="#388E3C" strokeWidth="0.9" />
+          <line x1="-3" y1="1" x2="3" y2="-1" stroke="#388E3C" strokeWidth="0.7" />
+          <line x1="-2" y1="-2.5" x2="2" y2="-4" stroke="#388E3C" strokeWidth="0.7" />
+        </g>
+      )}
+      {petId === 'kotaro' && stage === 3 && (
+        /* Stage 3: 臉頰金星 */
+        <g>
+          <polygon points="28,47 29.2,50.2 32.8,50.2 30,52.2 31.2,55.4 28,53.4 24.8,55.4 26,52.2 23.2,50.2 26.8,50.2"
+            fill="#FFD700" opacity="0.88" />
+          <polygon points="72,47 73.2,50.2 76.8,50.2 74,52.2 75.2,55.4 72,53.4 68.8,55.4 70,52.2 67.2,50.2 70.8,50.2"
+            fill="#FFD700" opacity="0.88" />
+        </g>
+      )}
+
       {/* Mejiro stage markings */}
       {petId === 'mejiro' && stage === 2 && (
         /* Stage 2: 喉部出現亮黃條紋 */
@@ -773,6 +945,50 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
           <circle cx="80" cy="101" r="3" fill="#FFD700" opacity="0.85" />
           <circle cx="16" cy="95"  r="1.8" fill="#FFD700" opacity="0.55" />
           <circle cx="84" cy="95"  r="1.8" fill="#FFD700" opacity="0.55" />
+        </g>
+      )}
+
+      {/* Jiji stage markings */}
+      {petId === 'jiji' && stage === 2 && (
+        /* Stage 2: 額頭金色月牙（魔法貓印記） */
+        <g transform="translate(50,27)">
+          <circle cx="0" cy="0" r="7.5" fill="#FFD700" opacity="0.92" />
+          <circle cx="3" cy="-2.5" r="6" fill={colors.body} />
+        </g>
+      )}
+      {petId === 'jiji' && stage === 3 && (
+        /* Stage 3: 眼睛外圈魔法紫環 */
+        <g>
+          <ellipse cx="37" cy="42" rx="11.5" ry="10.5" fill="none" stroke="#C084FC" strokeWidth="1.8" opacity="0.65" />
+          <ellipse cx="63" cy="42" rx="11.5" ry="10.5" fill="none" stroke="#C084FC" strokeWidth="1.8" opacity="0.65" />
+          <ellipse cx="37" cy="42" rx="14"   ry="13"   fill="none" stroke="#C084FC" strokeWidth="0.8" opacity="0.3" />
+          <ellipse cx="63" cy="42" rx="14"   ry="13"   fill="none" stroke="#C084FC" strokeWidth="0.8" opacity="0.3" />
+        </g>
+      )}
+
+      {/* Kitsune stage markings */}
+      {petId === 'kitsune' && stage === 2 && (
+        /* Stage 2: 額頭冰晶菱形 */
+        <g transform="translate(50,27)">
+          <polygon points="0,-9 6,0 0,9 -6,0" fill="rgba(200,240,255,0.88)" stroke="rgba(130,200,255,0.75)" strokeWidth="0.9" />
+          <line x1="0" y1="-9" x2="0" y2="9" stroke="rgba(220,248,255,0.7)" strokeWidth="0.8" />
+          <line x1="-6" y1="0" x2="6" y2="0" stroke="rgba(220,248,255,0.7)" strokeWidth="0.8" />
+          <circle cx="-8" cy="-5" r="1.3" fill="rgba(200,235,255,0.8)" />
+          <circle cx="8"  cy="5"  r="1.3" fill="rgba(200,235,255,0.8)" />
+        </g>
+      )}
+      {petId === 'kitsune' && stage === 3 && (
+        /* Stage 3: 耳尖冰晶雪花 */
+        <g opacity="0.82">
+          {[24, 76].map(cx => (
+            <g key={cx}>
+              <line x1={cx}   y1="9"  x2={cx}   y2="19" stroke="rgba(200,240,255,0.9)" strokeWidth="1.3" />
+              <line x1={cx-5} y1="14" x2={cx+5} y2="14" stroke="rgba(200,240,255,0.9)" strokeWidth="1.3" />
+              <line x1={cx-3.5} y1="10.5" x2={cx+3.5} y2="17.5" stroke="rgba(200,240,255,0.9)" strokeWidth="1.1" />
+              <line x1={cx-3.5} y1="17.5" x2={cx+3.5} y2="10.5" stroke="rgba(200,240,255,0.9)" strokeWidth="1.1" />
+              <circle cx={cx} cy="14" r="2.2" fill="rgba(200,240,255,0.88)" />
+            </g>
+          ))}
         </g>
       )}
 
