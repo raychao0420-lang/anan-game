@@ -132,6 +132,86 @@ function LuluBase({ c }) {
   )
 }
 
+function MejiroBase({ c }) {
+  return (
+    <g>
+      {/* ── Tail feathers ── */}
+      <path d="M42,104 Q44,116 50,120 Q56,116 58,104 Q54,108 50,109 Q46,108 42,104 Z" fill={c.ear} />
+      <path d="M44,107 Q46,114 50,117 Q54,114 56,107 Z" fill={c.body} opacity="0.55" />
+
+      {/* ── Left wing ── */}
+      <path d="M29,76 C14,80 12,98 20,108 Q30,113 37,103 Q27,94 29,76 Z" fill={c.ear} />
+      <path d="M31,83 C21,88 21,101 27,108 Q33,110 35,102 Z" fill={c.body} opacity="0.48" />
+      <path d="M24,89 Q27,97 25,106" fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth="1" />
+      <path d="M20,95 Q23,101 21,108" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="1" />
+
+      {/* ── Right wing ── */}
+      <path d="M71,76 C86,80 88,98 80,108 Q70,113 63,103 Q73,94 71,76 Z" fill={c.ear} />
+      <path d="M69,83 C79,88 79,101 73,108 Q67,110 65,102 Z" fill={c.body} opacity="0.48" />
+      <path d="M76,89 Q73,97 75,106" fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth="1" />
+      <path d="M80,95 Q77,101 79,108" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="1" />
+
+      {/* ── Body ── */}
+      <ellipse cx="50" cy="90" rx="21" ry="18" fill={c.body} />
+      <ellipse cx="50" cy="93" rx="13" ry="11" fill={c.belly} />
+
+      {/* ── Neck (fills gap between head & body) ── */}
+      <ellipse cx="50" cy="67" rx="11" ry="8" fill={c.body} />
+
+      {/* ── Head ── */}
+      <circle cx="50" cy="42" r="23" fill={c.body} />
+      {/* Crown cap — slightly darker patch on top */}
+      <ellipse cx="50" cy="22" rx="18" ry="12" fill={c.ear} opacity="0.5" />
+
+      {/* ── White eye rings — 繡眼鳥最招牌的特徵！ ── */}
+      <circle cx="37" cy="40" r="10.5" fill="white" />
+      <circle cx="63" cy="40" r="10.5" fill="white" />
+      <circle cx="37" cy="40" r="8.5" fill="#F4FFF6" />
+      <circle cx="63" cy="40" r="8.5" fill="#F4FFF6" />
+
+      {/* ── Eyes ── */}
+      <circle cx="37" cy="40" r="6.2" fill="#181818" />
+      <circle cx="63" cy="40" r="6.2" fill="#181818" />
+      {/* Main highlight */}
+      <circle cx="39.5" cy="37.2" r="2.4" fill="white" />
+      <circle cx="65.5" cy="37.2" r="2.4" fill="white" />
+      {/* Pupil depth */}
+      <circle cx="37.8" cy="41" r="1.6" fill="#060606" />
+      <circle cx="63.8" cy="41" r="1.6" fill="#060606" />
+      {/* Tiny sparkle */}
+      <circle cx="35.8" cy="38.2" r="0.9" fill="rgba(255,255,255,0.75)" />
+      <circle cx="61.8" cy="38.2" r="0.9" fill="rgba(255,255,255,0.75)" />
+
+      {/* ── Beak ── */}
+      {/* Upper mandible */}
+      <path d="M44,51 Q50,47.5 56,51 L53,58.5 L47,58.5 Z" fill="#D4A418" />
+      {/* Lower mandible */}
+      <path d="M47,58.5 L53,58.5 Q51,63 50,64 Q49,63 47,58.5 Z" fill="#B88A10" />
+      {/* Beak shine */}
+      <ellipse cx="48.5" cy="52.2" rx="2.2" ry="1.3" fill="rgba(255,255,255,0.38)" />
+
+      {/* ── Throat patch (黃綠色喉部，真實繡眼鳥特徵) ── */}
+      <ellipse cx="50" cy="63" rx="7" ry="4.5" fill={c.belly} opacity="0.8" />
+
+      {/* ── Cheek blush ── */}
+      <ellipse cx="23" cy="46" rx="5.5" ry="4" fill="rgba(255,160,140,0.28)" />
+      <ellipse cx="77" cy="46" rx="5.5" ry="4" fill="rgba(255,160,140,0.28)" />
+
+      {/* ── Legs ── */}
+      <line x1="43" y1="108" x2="38" y2="120" stroke="#B88A10" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="57" y1="108" x2="62" y2="120" stroke="#B88A10" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Left foot */}
+      <line x1="38" y1="120" x2="30" y2="121" stroke="#B88A10" strokeWidth="2" strokeLinecap="round" />
+      <line x1="38" y1="120" x2="35" y2="126" stroke="#B88A10" strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="38" y1="120" x2="41" y2="126" stroke="#B88A10" strokeWidth="1.8" strokeLinecap="round" />
+      {/* Right foot */}
+      <line x1="62" y1="120" x2="70" y2="121" stroke="#B88A10" strokeWidth="2" strokeLinecap="round" />
+      <line x1="62" y1="120" x2="59" y2="126" stroke="#B88A10" strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="62" y1="120" x2="65" y2="126" stroke="#B88A10" strokeWidth="1.8" strokeLinecap="round" />
+    </g>
+  )
+}
+
 function OtterBase({ c, isKotaro }) {
   return (
     <g>
@@ -652,7 +732,9 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
       {/* Pet base */}
       {petId === 'lulu'
         ? <LuluBase c={colors} />
-        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
+        : petId === 'mejiro'
+          ? <MejiroBase c={colors} />
+          : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 
       {/* LULU stage markings */}
@@ -676,6 +758,21 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
             points="71,50 72.2,52.4 74.8,52.8 72.9,54.6 73.4,57.2 71,56 68.6,57.2 69.1,54.6 67.2,52.8 69.8,52.4"
             fill="#FFD700" opacity="0.92"
           />
+        </g>
+      )}
+
+      {/* Mejiro stage markings */}
+      {petId === 'mejiro' && stage === 2 && (
+        /* Stage 2: 喉部出現亮黃條紋 */
+        <ellipse cx="50" cy="63" rx="5" ry="5.5" fill="#FFE040" opacity="0.75" />
+      )}
+      {petId === 'mejiro' && stage === 3 && (
+        /* Stage 3: 翅膀末端閃金點 */
+        <g>
+          <circle cx="20" cy="101" r="3" fill="#FFD700" opacity="0.85" />
+          <circle cx="80" cy="101" r="3" fill="#FFD700" opacity="0.85" />
+          <circle cx="16" cy="95"  r="1.8" fill="#FFD700" opacity="0.55" />
+          <circle cx="84" cy="95"  r="1.8" fill="#FFD700" opacity="0.55" />
         </g>
       )}
 
