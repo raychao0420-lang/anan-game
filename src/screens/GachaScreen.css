@@ -146,35 +146,68 @@
 }
 
 /* ── Reveal ───────────────────────────────────────────────────────────────── */
+.gacha-reveal-bg {
+  overflow-y: auto;
+}
+
 .gacha-reveal-card {
   background: white;
-  border: 3px solid #DDD;
+  border: 2px solid #DDD;
   border-radius: 28px;
-  padding: 28px 24px;
+  padding: 0 20px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  max-width: 340px;
-  box-shadow: 0 6px 28px rgba(0,0,0,0.14);
+  max-width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+  overflow: hidden;
 }
 
-.gacha-prize-emoji {
-  font-size: 4rem;
+.gacha-tier-label {
+  width: calc(100% + 40px);
+  text-align: center;
+  color: white;
+  font-size: 0.88rem;
+  font-weight: 800;
+  padding: 6px 0;
+  margin-bottom: 4px;
+  letter-spacing: 0.03em;
+}
+
+/* SVG scene container */
+.gacha-prize-scene {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  flex-shrink: 0;
+}
+
+/* Emoji floating over the SVG */
+.gacha-prize-float {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3.4rem;
   line-height: 1;
+  user-select: none;
+  pointer-events: none;
 }
 
 .gacha-prize-name {
   font-size: 1.6rem;
   font-weight: 900;
   text-align: center;
+  margin-top: -4px;
 }
 
 .gacha-prize-desc {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #666;
   text-align: center;
+  line-height: 1.5;
 }
 
 .gacha-dup-notice {
@@ -182,28 +215,29 @@
   border: 1.5px solid #FFB74D;
   border-radius: 12px;
   padding: 8px 16px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #555;
   text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .gacha-new-badge {
-  background: #E8F5E9;
-  border: 1.5px solid #66BB6A;
+  background: rgba(255,255,255,0.7);
+  border: 2px solid;
   border-radius: 12px;
-  padding: 8px 20px;
-  font-size: 1rem;
+  padding: 6px 20px;
+  font-size: 0.95rem;
   font-weight: 800;
-  color: #2E7D32;
 }
 
 .gacha-collect-btn {
   color: white;
   border: none;
   border-radius: 16px;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  padding: 13px 40px;
+  padding: 13px 0;
   cursor: pointer;
   font-family: inherit;
   touch-action: manipulation;
@@ -216,7 +250,7 @@
   background: none;
   border: none;
   color: #AAA;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   cursor: pointer;
   font-family: inherit;
   touch-action: manipulation;
