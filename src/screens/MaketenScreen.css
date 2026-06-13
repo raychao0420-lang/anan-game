@@ -1,0 +1,304 @@
+.mt-screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.mt-top-bar {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.mt-back-btn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 0;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mt-card {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.mt-main-title {
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: #E65100;
+  text-align: center;
+}
+
+.mt-desc {
+  text-align: center;
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.mt-round-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mt-round-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #FAFAFA;
+  border-radius: 12px;
+  border-left: 5px solid #CCC;
+}
+
+.mt-round-no   { font-weight: 800; font-size: 0.9rem; min-width: 40px; }
+.mt-round-lbl  { flex: 1; color: #666; font-size: 0.9rem; }
+.mt-round-time { font-weight: 700; font-size: 0.9rem; }
+
+.mt-warn {
+  font-size: 0.82rem;
+  color: #E53935;
+  text-align: center;
+  margin: 0;
+}
+
+.mt-cleared-badge {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ── Playing ─────────────────────────────────────────────────────────────── */
+.mt-play {
+  padding: 12px;
+  justify-content: flex-start;
+  overflow: hidden;
+  gap: 0;
+}
+
+.mt-play-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.mt-pips { display: flex; gap: 6px; }
+
+.mt-pip {
+  padding: 4px 11px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  background: #EEE;
+  color: #999;
+  transition: background 0.3s, color 0.3s;
+}
+
+.mt-q-counter {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #555;
+}
+
+.mt-dots {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+.mt-dot {
+  flex: 1;
+  max-width: 28px;
+  height: 8px;
+  border-radius: 4px;
+  background: #DDD;
+  transition: background 0.25s;
+}
+
+.mt-timer-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.mt-timer-track {
+  flex: 1;
+  height: 16px;
+  background: #EEE;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mt-timer-fill {
+  height: 100%;
+  border-radius: 8px;
+}
+
+.mt-timer-num {
+  font-size: 1.6rem;
+  font-weight: 900;
+  min-width: 38px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mt-q-card {
+  width: 100%;
+  background: white;
+  border-radius: 22px;
+  border: 3px solid #E0E0E0;
+  padding: 28px 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 12px;
+  min-height: 120px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.mt-equation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.mt-blank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  border: 3px solid #CCC;
+  font-size: 2.2rem;
+  font-weight: 900;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.mt-number { color: #222; }
+.mt-plus   { color: #999; font-size: 2rem; }
+.mt-eq     { color: #999; font-size: 2rem; }
+.mt-ten    { color: #E65100; }
+
+.mt-fb {
+  position: absolute;
+  top: -16px;
+  right: 16px;
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.mt-fb-ok { color: #4CAF50; }
+.mt-fb-ng { color: #F44336; }
+
+.mt-pad { width: 100%; }
+
+/* ── Round pass ──────────────────────────────────────────────────────────── */
+.mt-pass-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #2E7D32;
+  text-align: center;
+}
+
+.mt-next-hint {
+  text-align: center;
+  line-height: 1.9;
+}
+
+/* ── Fail ────────────────────────────────────────────────────────────────── */
+.mt-fail-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #C62828;
+  text-align: center;
+}
+
+.mt-ans-hint {
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+}
+
+.mt-restart-note {
+  font-size: 0.82rem;
+  color: #AAA;
+  text-align: center;
+}
+
+/* ── Victory ─────────────────────────────────────────────────────────────── */
+.mt-victory-card { background: rgba(255,255,255,0.9); }
+
+.mt-victory-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #E65100;
+  text-align: center;
+}
+
+.mt-reward-box {
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(135deg, #FFF9C4, #FFE0B2);
+  border-radius: 18px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.mt-reward-name {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #E65100;
+}
+
+.mt-reward-sub {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.mt-reward-coins {
+  color: #FF8F00;
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-top: 6px;
+}
