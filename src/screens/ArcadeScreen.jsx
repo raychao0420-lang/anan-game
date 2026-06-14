@@ -38,6 +38,26 @@ function makeQ(level) {
     const b = Math.floor(Math.random() * 8) + 2
     return { text: `${a} × ${b}`, answer: a * b }
   }
+  if (level === 'allin') {
+    const type = Math.floor(Math.random() * 3)
+    if (type === 0) {
+      // 九九表難區：兩個因數都在 4-9
+      const a = Math.floor(Math.random() * 6) + 4
+      const b = Math.floor(Math.random() * 6) + 4
+      return { text: `${a} × ${b}`, answer: a * b }
+    }
+    if (type === 1) {
+      // 進位加法：個位相加 > 10
+      const a = Math.floor(Math.random() * 50) + 20
+      const b = Math.floor(Math.random() * 40) + 15
+      return { text: `${a} + ${b}`, answer: a + b }
+    }
+    // 退位減法：個位不夠減
+    const a = Math.floor(Math.random() * 50) + 30
+    const b = Math.floor(Math.random() * 25) + 8
+    const [big, sml] = a >= b ? [a, b] : [b, a]
+    return { text: `${big} - ${sml}`, answer: big - sml }
+  }
   const type = Math.floor(Math.random() * 3)
   if (type === 0) {
     const a = Math.floor(Math.random() * 30) + 10
@@ -105,7 +125,7 @@ export default function ArcadeScreen({ onBack }) {
       setTimeLeft(60)
       setScreen('l_play')
     } else if (id === 'allin') {
-      setCurrentQ(makeQ(2))
+      setCurrentQ(makeQ('allin'))
       setTimeLeft(5)
       setScreen('a_play')
     } else if (id === 'gauntlet') {
