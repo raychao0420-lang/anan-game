@@ -7,19 +7,19 @@ import './ArcadeScreen.css'
 const GAMES = [
   {
     id: 'lightning', name: '閃電60秒', emoji: '⚡',
-    cost: 100, reward: '每題 +20 💰',
+    cost: 100, reward: '每題 +8 💰',
     color: '#FF9800', bg: '#FFF3E0',
-    desc: '60秒內答越多題越好，每答對一題得20金幣！',
+    desc: '60秒內答越多題越好，每答對一題得8金幣！',
   },
   {
     id: 'allin', name: '一題定江山', emoji: '🎯',
-    cost: 200, reward: '答對得 700 💰',
+    cost: 200, reward: '答對得 400 💰',
     color: '#E91E63', bg: '#FCE4EC',
-    desc: '只有一題！5秒內答對得700金幣，答錯全輸！',
+    desc: '只有一題！5秒內答對得400金幣，答錯全輸！',
   },
   {
     id: 'gauntlet', name: '傳說連十關', emoji: '🏆',
-    cost: 500, reward: '全過得 2000 💰',
+    cost: 500, reward: '全過得 1200 💰',
     color: '#6C63FF', bg: '#EDE7F6',
     desc: '10題全對才算過，有一題答錯就輸！',
   },
@@ -191,8 +191,8 @@ export default function ArcadeScreen({ onBack }) {
       if (screen === 'a_play') {
         if (correct) {
           sfx.bossWin()
-          setResultData({ win: true, earned: 700, cost: 200 })
-          addCoins(700)
+          setResultData({ win: true, earned: 400, cost: 200 })
+          addCoins(400)
           setScreen('result')
         } else {
           sfx.wrong()
@@ -213,8 +213,8 @@ export default function ArcadeScreen({ onBack }) {
             setInput('')
             if (next >= 10) {
               sfx.bossWin()
-              addCoins(2000)
-              setResultData({ win: true, earned: 2000, cost: 500 })
+              addCoins(1200)
+              setResultData({ win: true, earned: 1200, cost: 500 })
               setScreen('result')
             } else {
               setQIdx(next)
@@ -309,7 +309,7 @@ export default function ArcadeScreen({ onBack }) {
       <div className="arc-play-header">
         <div className="arc-game-label" style={{ color: game.color }}>{game.emoji} {game.name}</div>
         <div className="arc-score-badge" style={{ borderColor: game.color, color: game.color }}>
-          {score} 題 · +{score * 20} 💰
+          {score} 題 · +{score * 8} 💰
         </div>
       </div>
 
@@ -347,7 +347,7 @@ export default function ArcadeScreen({ onBack }) {
 
   // ── Lightning end ─────────────────────────────────────────────────────────
   if (screen === 'l_end') {
-    const earned = score * 20
+    const earned = score * 8
     const net    = earned - 100
     if (!resultData) {
       addCoins(earned)
@@ -396,7 +396,7 @@ export default function ArcadeScreen({ onBack }) {
     <div className="arc-screen arc-play-screen" style={{ background: game.bg }}>
       <div className="arc-play-header">
         <div className="arc-game-label" style={{ color: game.color }}>{game.emoji} {game.name}</div>
-        <div className="arc-allin-stake" style={{ color: game.color }}>答對得 700 💰！</div>
+        <div className="arc-allin-stake" style={{ color: game.color }}>答對得 400 💰！</div>
       </div>
 
       <div className="arc-timer-wrap">
