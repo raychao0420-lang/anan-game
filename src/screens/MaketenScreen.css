@@ -97,7 +97,9 @@
 
 /* ── Playing ─────────────────────────────────────────────────────────────── */
 .mt-play {
-  padding: 12px;
+  min-height: 0;
+  height: 100dvh;
+  padding: 10px 12px;
   justify-content: flex-start;
   overflow: hidden;
   gap: 0;
@@ -132,7 +134,7 @@
 .mt-dots {
   display: flex;
   gap: 5px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   width: 100%;
   justify-content: center;
 }
@@ -151,7 +153,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 
 .mt-timer-track {
@@ -180,13 +182,13 @@
   background: white;
   border-radius: 22px;
   border: 3px solid #E0E0E0;
-  padding: 28px 16px 22px;
+  padding: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 12px;
-  min-height: 120px;
+  margin-bottom: 8px;
+  min-height: 100px;
   transition: border-color 0.2s, background 0.2s;
 }
 
@@ -229,6 +231,13 @@
 .mt-fb-ng { color: #F44336; }
 
 .mt-pad { width: 100%; }
+
+.mt-pad .numpad-wrap    { gap: 6px; }
+.mt-pad .numpad-display { min-height: 42px; font-size: 1.7rem; padding: 4px 0; }
+.mt-pad .numpad-grid    { gap: 6px; }
+.mt-pad .numpad-btn     { height: 50px; font-size: 1.4rem; }
+.mt-pad .numpad-btn.delete { font-size: 1.2rem; }
+.mt-pad .numpad-confirm { height: 46px; font-size: 1.2rem; }
 
 /* ── Round pass ──────────────────────────────────────────────────────────── */
 .mt-pass-title {
