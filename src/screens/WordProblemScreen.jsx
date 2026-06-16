@@ -10,11 +10,12 @@ import './MaketenScreen.css'
 import './WordProblemScreen.css'
 
 const ROUNDS = [
-  { no: 1, key: 'round1', timeLimit: 60, label: '熱身 · 加減', color: '#26A69A', bg: '#E0F2F1', highlightLevel: 2 },
-  { no: 2, key: 'round2', timeLimit: 50, label: '加速 · 乘除', color: '#FB8C00', bg: '#FFF3E0', highlightLevel: 1 },
-  { no: 3, key: 'round3', timeLimit: 40, label: '極速 · 混合+餘數', color: '#D81B60', bg: '#FCE4EC', highlightLevel: 0 },
+  { no: 1, key: 'round1', timeLimit: 60, label: '熱身 · 加減',         color: '#26A69A', bg: '#E0F2F1', highlightLevel: 2, pickOp: false },
+  { no: 2, key: 'round2', timeLimit: 60, label: '加速 · 乘除 + 選運算', color: '#FB8C00', bg: '#FFF3E0', highlightLevel: 1, pickOp: true  },
+  { no: 3, key: 'round3', timeLimit: 50, label: '極速 · 全靠自己',     color: '#D81B60', bg: '#FCE4EC', highlightLevel: 0, pickOp: true  },
 ]
 // highlightLevel: 2 = 數字+關鍵詞全亮, 1 = 只亮數字, 0 = 全素
+// pickOp: true 表示算式裡的運算符號要安安自己選
 
 const Q_PER_ROUND = 5
 
@@ -46,13 +47,22 @@ function ProblemText({ tokens, level }) {
   )
 }
 
-function StepRow({ step, status, input, color, prevAnswer }) {
+function StepRow({ step, status, input, color, pickOp, pickedOp, onResetOp }) {
   // status: 'pending' | 'active' | 'cleared'
   const blankCls = `wp-blank ${status === 'active' ? 'wp-blank-active' : ''} ${status === 'cleared' ? 'wp-blank-done' : ''}`
   const blankStyle = status === 'active'
     ? { borderColor: input ? color : color, color: input ? color : '#BBB' }
     : {}
   const showVal = status === 'cleared' ? step.answer : (status === 'active' ? (input || '□') : '□')
+
+  // 顯示用的運算符號：若是 pickOp 關卡，依「安安已選 / 還沒選」決定
+  const needPickOp = pickOp && step.type === 'eq' && status !== 'cleared'
+  const displayOp = step.type === 'rem'
+    ? '÷'
+    : needPickOp
+      ? (pickedOp || '?')
+      : step.op
+  const opClickable = needPickOp && pickedOp && status === 'active'
 
   return (
     <div className={`wp-step wp-step-${status}`} style={status === 'active' ? { borderColor: color } : {}}>
@@ -73,12 +83,40 @@ function StepRow({ step, status, input, color, prevAnswer }) {
       ) : (
         <div className="wp-eq">
           <span className="wp-num">{step.a}</span>
-          <span className="wp-op">{step.op}</span>
+          <span
+            className={`wp-op ${needPickOp && !pickedOp ? 'wp-op-empty' : ''} ${opClickable ? 'wp-op-clickable' : ''}`}
+            style={needPickOp ? { color } : {}}
+            onClick={opClickable ? onResetOp : undefined}
+          >
+            {displayOp}
+          </span>
           <span className="wp-num">{step.b}</span>
           <span className="wp-eq-sym">=</span>
           <span className={blankCls} style={blankStyle}>{showVal}</span>
         </div>
       )}
+    </div>
+  )
+}
+
+function OpPicker({ onPick, color }) {
+  const ops = ['+', '-', '×', '÷']
+  return (
+    <div className="wp-op-picker" style={{ borderColor: color }}>
+      <div className="wp-op-picker-label" style={{ color }}>選運算 ⬇</div>
+      <div className="wp-op-buttons">
+        {ops.map(op => (
+          <motion.button
+            key={op}
+            className="wp-op-btn"
+            style={{ borderColor: color, color }}
+            whileTap={{ scale: 0.86 }}
+            onPointerDown={() => onPick(op)}
+          >
+            {op}
+          </motion.button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -95,6 +133,7 @@ export default function WordProblemScreen({ onBack }) {
   const [qIdx, setQIdx]         = useState(0)
   const [stepIdx, setStepIdx]   = useState(0)
   const [input, setInput]       = useState('')
+  const [pickedOp, setPickedOp] = useState(null)  // pickOp 關卡：當前 step 選的運算
   const [timeLeft, setTimeLeft] = useState(60)
   const [feedback, setFeedback] = useState(null)
   const [failInfo, setFailInfo] = useState(null)
@@ -117,6 +156,7 @@ export default function WordProblemScreen({ onBack }) {
     setStepIdx(0)
     setStep1Value(null)
     setInput('')
+    setPickedOp(null)
     setTimeLeft(r.timeLimit)
     setFeedback(null)
     setFailInfo(null)
@@ -143,10 +183,12 @@ export default function WordProblemScreen({ onBack }) {
       reason: 'timeout',
       problem: currentQ?.text,
       stepLabel: failStep?.label,
+      correctOp: failStep?.type === 'eq' ? failStep?.op : null,
+      pickedOp: round.pickOp ? pickedOp : null,
     })
     clearTimeout(fbRef.current)
     fbRef.current = setTimeout(() => setPhase('fail'), 1100)
-  }, [timeLeft, phase, currentQ, stepIdx])
+  }, [timeLeft, phase, currentQ, stepIdx, round, pickedOp])
 
   const handlePad = useCallback((v) => {
     if (phase !== 'playing' || feedback) return
@@ -155,6 +197,11 @@ export default function WordProblemScreen({ onBack }) {
     if (v === 'ok') {
       if (!input) return
       const step = currentQ.steps[stepIdx]
+      // pickOp 關卡且為一般算式 → 必須先選運算
+      if (round.pickOp && step.type === 'eq' && !pickedOp) {
+        sfx.wrong()
+        return
+      }
       const correct = parseInt(input) === step.answer
       clearInterval(timerRef.current)
 
@@ -166,6 +213,8 @@ export default function WordProblemScreen({ onBack }) {
           reason: 'wrong',
           problem: currentQ.text,
           stepLabel: step.label,
+          correctOp: step.type === 'eq' ? step.op : null,
+          pickedOp: round.pickOp ? pickedOp : null,
         })
         clearTimeout(fbRef.current)
         fbRef.current = setTimeout(() => setPhase('fail'), 1100)
@@ -184,7 +233,7 @@ export default function WordProblemScreen({ onBack }) {
           setStep1Value(newStep1Value)
           setStepIdx(1)
           setInput('')
-          // 不重置 timer，繼續用同一題的剩餘時間
+          setPickedOp(null)
         }, 500)
         return
       }
@@ -211,13 +260,20 @@ export default function WordProblemScreen({ onBack }) {
           setStepIdx(0)
           setStep1Value(null)
           setInput('')
+          setPickedOp(null)
           setTimeLeft(round.timeLimit)
         }
       }, 600)
     } else {
       if (input.length < 3) setInput(i => i + v)
     }
-  }, [phase, feedback, input, currentQ, stepIdx, qIdx, roundIdx, round, wordProblemCleared, clearWordProblem])
+  }, [phase, feedback, input, currentQ, stepIdx, qIdx, roundIdx, round, pickedOp, wordProblemCleared, clearWordProblem])
+
+  const handlePickOp = useCallback((op) => {
+    if (feedback) return
+    sfx.click()
+    setPickedOp(op)
+  }, [feedback])
 
   const timerPct   = round ? Math.max(0, (timeLeft / round.timeLimit) * 100) : 100
   const timerColor = timerPct > 50 ? '#4CAF50' : timerPct > 25 ? '#FF9800' : '#F44336'
@@ -241,7 +297,7 @@ export default function WordProblemScreen({ onBack }) {
 
         <p className="mt-desc">
           看懂題目最重要！每題分兩步驟，<br />
-          熱身關有<b style={{ color: '#26A69A' }}>顏色提示</b>，幫你找出重點。<br />
+          越後面提示越少，要自己想<b style={{ color: '#FB8C00' }}>運算符號</b>！<br />
           連過三關得到 <b style={{ color: '#00695C', fontSize: '1.1rem' }}>🤓 智慧眼鏡</b>！
         </p>
 
@@ -331,11 +387,21 @@ export default function WordProblemScreen({ onBack }) {
                   status={status}
                   input={i === stepIdx ? input : ''}
                   color={round.color}
-                  prevAnswer={step1Value}
+                  pickOp={round.pickOp}
+                  pickedOp={i === stepIdx ? pickedOp : (status === 'cleared' ? step.op : null)}
+                  onResetOp={() => { sfx.click(); setPickedOp(null) }}
                 />
               )
             })}
           </div>
+
+          {/* pickOp 關卡：當前 step 是一般算式且還沒選運算時，顯示運算選擇器 */}
+          {round.pickOp
+            && currentQ.steps[stepIdx]?.type === 'eq'
+            && !pickedOp
+            && !feedback && (
+              <OpPicker onPick={handlePickOp} color={round.color} />
+          )}
 
           <AnimatePresence>
             {feedback === 'correct' && (
@@ -390,7 +456,9 @@ export default function WordProblemScreen({ onBack }) {
           </span>
           <br />
           <span style={{ color: '#666' }}>
-            {roundIdx + 1 === 1 ? '提示變少了，要看仔細喔！' : '沒有提示囉，加油！'}
+            {roundIdx + 1 === 1
+              ? '要自己選 + − × ÷ 喔！'
+              : '沒有顏色提示，全部自己想！'}
           </span>
         </div>
 
@@ -426,6 +494,12 @@ export default function WordProblemScreen({ onBack }) {
 
         {failInfo?.stepLabel && (
           <div className="wp-fail-step">{failInfo.stepLabel}</div>
+        )}
+        {failInfo?.correctOp && failInfo?.pickedOp && failInfo.pickedOp !== failInfo.correctOp && (
+          <div className="wp-fail-op-hint">
+            💡 你選了 <b className="wp-op-wrong">{failInfo.pickedOp}</b>，
+            正解是 <b className="wp-op-right">{failInfo.correctOp}</b>
+          </div>
         )}
         {failInfo?.answer != null && (
           <div className="mt-ans-hint">

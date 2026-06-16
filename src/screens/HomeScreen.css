@@ -126,7 +126,7 @@
 .home-buttons {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   max-width: 320px;
   margin-top: 8px;
@@ -135,7 +135,57 @@
 .home-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
+}
+
+.home-row-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+/* 區塊標題：細小、不搶眼，分隔不同功能群 */
+.home-section-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #999;
+  letter-spacing: 1.5px;
+  padding: 4px 4px 0;
+  margin-top: 4px;
+  text-align: left;
+  border-bottom: 1.5px dashed #E0E0E0;
+  padding-bottom: 4px;
+}
+
+/* 三欄按鈕：圖示在上、文字在下 */
+.home-trio-btn {
+  font-size: 0.78rem !important;
+  line-height: 1.2 !important;
+  padding: 8px 4px !important;
+  font-weight: 700 !important;
+}
+
+.home-trio-btn br + * {
+  font-size: 0.78rem;
+}
+
+/* NEW 標籤 */
+.home-btn-new {
+  position: relative;
+}
+
+.home-badge-new {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #FF1744;
+  color: white;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 2px solid white;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 4px rgba(255, 23, 68, 0.5);
 }
 
 .home-daily-btn,

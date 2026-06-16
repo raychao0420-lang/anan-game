@@ -201,11 +201,104 @@
   color: #C62828;
 }
 
-/* ─── 失敗畫面：步驟名 ─── */
+/* ─── 失敗畫面：步驟名 + 運算提示 ─── */
 .wp-fail-step {
   margin-top: 6px;
   font-size: 0.85rem;
   color: #999;
+}
+
+.wp-fail-op-hint {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: #666;
+  background: #FFF8E1;
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+.wp-op-wrong {
+  color: #C62828;
+  font-size: 1.15rem;
+  margin: 0 2px;
+}
+
+.wp-op-right {
+  color: #2E7D32;
+  font-size: 1.15rem;
+  margin: 0 2px;
+}
+
+/* ─── pickOp：未選的 ? 符號 ─── */
+.wp-op-empty {
+  background: #FFF59D;
+  padding: 0 8px;
+  border-radius: 8px;
+  animation: wp-op-pulse 1s ease-in-out infinite;
+  border-bottom: 2px solid currentColor;
+}
+
+@keyframes wp-op-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.1); }
+}
+
+.wp-op-clickable {
+  cursor: pointer;
+  background: #E8F5E9;
+  padding: 0 6px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.wp-op-clickable:hover {
+  background: #C8E6C9;
+}
+
+/* ─── 運算選擇器 ─── */
+.wp-op-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  background: #FFFDE7;
+  border: 2px dashed #FFD54F;
+  border-radius: 12px;
+  animation: wp-picker-in 0.25s ease-out;
+}
+
+@keyframes wp-picker-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.wp-op-picker-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.wp-op-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  flex: 1;
+}
+
+.wp-op-btn {
+  background: white;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  padding: 6px 4px;
+  cursor: pointer;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 /* ─── 鍵盤縮一點，騰出空間給題目 ─── */

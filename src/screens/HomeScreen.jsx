@@ -91,29 +91,50 @@ export default function HomeScreen({ onNavigate }) {
           🎮 開始闖關
         </motion.button>
 
+        {/* ── 數學特訓 ── */}
+        <div className="home-section-title">🧠 數學特訓</div>
+
         <div className="home-row">
           <motion.button
-            className="btn-secondary"
+            className="btn-maketen"
             whileTap={{ scale: 0.94 }}
-            onClick={() => nav('pets')}
+            onClick={() => nav('maketen')}
           >
-            🐾 我的寵物
+            🔟 湊10特訓
           </motion.button>
           <motion.button
-            className="btn-secondary"
+            className="btn-maketwenty"
             whileTap={{ scale: 0.94 }}
-            onClick={() => nav('shop')}
+            onClick={() => nav('maketwenty')}
           >
-            🛍️ 商店
+            ✌️ 湊20特訓
+          </motion.button>
+        </div>
+
+        <div className="home-row">
+          <motion.button
+            className="btn-crossequals"
+            whileTap={{ scale: 0.94 }}
+            onClick={() => nav('crossequals')}
+          >
+            ⚖️ 等號搬家
+          </motion.button>
+          <motion.button
+            className="btn-multiply"
+            whileTap={{ scale: 0.94 }}
+            onClick={() => nav('multiply')}
+          >
+            🔢 九九大作戰
           </motion.button>
         </div>
 
         <motion.button
-          className="btn-home-room"
+          className="btn-wordproblem home-btn-new"
           whileTap={{ scale: 0.94 }}
-          onClick={() => nav('homeroom')}
+          onClick={() => nav('wordproblem')}
         >
-          🏠 我的家
+          🤓 兩步應用題
+          <span className="home-badge home-badge-new">NEW</span>
         </motion.button>
 
         <motion.button
@@ -124,45 +145,35 @@ export default function HomeScreen({ onNavigate }) {
           📚 期末考大魔王
         </motion.button>
 
-        <motion.button
-          className="btn-maketen"
-          whileTap={{ scale: 0.94 }}
-          onClick={() => nav('maketen')}
-        >
-          🔟 湊10特訓
-        </motion.button>
+        {/* ── 我的小天地 ── */}
+        <div className="home-section-title">🏡 我的小天地</div>
 
-        <motion.button
-          className="btn-maketwenty"
-          whileTap={{ scale: 0.94 }}
-          onClick={() => nav('maketwenty')}
-        >
-          ✌️ 湊20特訓
-        </motion.button>
+        <div className="home-row home-row-3">
+          <motion.button
+            className="btn-secondary home-trio-btn"
+            whileTap={{ scale: 0.94 }}
+            onClick={() => nav('pets')}
+          >
+            🐾<br/>寵物
+          </motion.button>
+          <motion.button
+            className="btn-home-room home-trio-btn"
+            whileTap={{ scale: 0.94 }}
+            onClick={() => nav('homeroom')}
+          >
+            🏠<br/>我的家
+          </motion.button>
+          <motion.button
+            className="btn-secondary home-trio-btn"
+            whileTap={{ scale: 0.94 }}
+            onClick={() => nav('shop')}
+          >
+            🛍️<br/>商店
+          </motion.button>
+        </div>
 
-        <motion.button
-          className="btn-crossequals"
-          whileTap={{ scale: 0.94 }}
-          onClick={() => nav('crossequals')}
-        >
-          ⚖️ 等號搬家
-        </motion.button>
-
-        <motion.button
-          className="btn-wordproblem"
-          whileTap={{ scale: 0.94 }}
-          onClick={() => nav('wordproblem')}
-        >
-          🤓 兩步應用題
-        </motion.button>
-
-        <motion.button
-          className="btn-multiply"
-          whileTap={{ scale: 0.94 }}
-          onClick={() => nav('multiply')}
-        >
-          🔢 九九大作戰
-        </motion.button>
+        {/* ── 玩耍時間 ── */}
+        <div className="home-section-title">🎉 玩耍時間</div>
 
         <div className="home-row">
           <motion.button
