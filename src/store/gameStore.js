@@ -65,6 +65,7 @@ export const useGameStore = create(
       makeTenCleared: false,
       makeTwentyCleared: false,
       crossEqualsCleared: false,
+      wordProblemCleared: false,
       multiplyCleared: false,
       subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
       subjectQueues:   { math: [], social: [], nature: [], chinese: [] },
@@ -352,6 +353,20 @@ export const useGameStore = create(
         get().checkAchievements()
       },
 
+      clearWordProblem: () => {
+        set((s) => {
+          const first = !s.wordProblemCleared
+          return {
+            wordProblemCleared: true,
+            ...(first ? { coins: s.coins + 700, totalCoinsEarned: s.totalCoinsEarned + 700 } : {}),
+            ownedItems: s.ownedItems.includes('reading_glasses')
+              ? s.ownedItems
+              : [...s.ownedItems, 'reading_glasses'],
+          }
+        })
+        get().checkAchievements()
+      },
+
       clearMultiply: () => {
         set((s) => {
           const first = !s.multiplyCleared
@@ -422,6 +437,7 @@ export const useGameStore = create(
           makeTenCleared: false,
           makeTwentyCleared: false,
           crossEqualsCleared: false,
+          wordProblemCleared: false,
           multiplyCleared: false,
           subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
           subjectQueues:   { math: [], social: [], nature: [], chinese: [] },

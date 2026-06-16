@@ -15,6 +15,7 @@ import ExamBossScreen from './screens/ExamBossScreen'
 import MaketenScreen from './screens/MaketenScreen'
 import MakeTwentyScreen from './screens/MakeTwentyScreen'
 import CrossEqualsScreen from './screens/CrossEqualsScreen'
+import WordProblemScreen from './screens/WordProblemScreen'
 import MultiplyScreen from './screens/MultiplyScreen'
 import GachaScreen from './screens/GachaScreen'
 import ArcadeScreen from './screens/ArcadeScreen'
@@ -88,6 +89,7 @@ export default function App() {
         {screen === 'maketen'     && wrap('maketen',  <MaketenScreen    onBack={() => setScreen('home')} />)}
         {screen === 'maketwenty'  && wrap('maketwenty', <MakeTwentyScreen onBack={() => setScreen('home')} />)}
         {screen === 'crossequals' && wrap('crossequals', <CrossEqualsScreen onBack={() => setScreen('home')} />)}
+        {screen === 'wordproblem' && wrap('wordproblem', <WordProblemScreen onBack={() => setScreen('home')} />)}
         {screen === 'multiply'    && wrap('multiply', <MultiplyScreen  onBack={() => setScreen('home')} />)}
         {screen === 'gacha'       && wrap('gacha',    <GachaScreen     onBack={() => setScreen('home')} />)}
         {screen === 'arcade'      && wrap('arcade',   <ArcadeScreen    onBack={() => setScreen('home')} />)}

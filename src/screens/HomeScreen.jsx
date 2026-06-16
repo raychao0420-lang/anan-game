@@ -149,6 +149,14 @@ export default function HomeScreen({ onNavigate }) {
         </motion.button>
 
         <motion.button
+          className="btn-wordproblem"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => nav('wordproblem')}
+        >
+          🤓 兩步應用題
+        </motion.button>
+
+        <motion.button
           className="btn-multiply"
           whileTap={{ scale: 0.94 }}
           onClick={() => nav('multiply')}

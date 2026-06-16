@@ -1,0 +1,223 @@
+/* ─── 範例區（intro） ─── */
+.wp-intro-sample {
+  background: white;
+  border-radius: 12px;
+  border: 2px dashed #B2DFDB;
+  padding: 10px 12px;
+  margin: 8px 0 12px;
+  width: 100%;
+  max-width: 320px;
+  text-align: left;
+}
+
+.wp-intro-label {
+  font-size: 0.78rem;
+  color: #00796B;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.wp-intro-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.wp-intro-steps {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  color: #00695C;
+  border-top: 1px dashed #B2DFDB;
+  padding-top: 6px;
+  gap: 2px;
+}
+
+/* ─── 主畫面 ─── */
+.wp-play {
+  padding-bottom: 12px;
+}
+
+.wp-card {
+  background: white;
+  border-radius: 16px;
+  padding: 14px 14px 10px;
+  margin: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.wp-problem-text {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #333;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+/* 數字高亮：圓底亮色 */
+.wp-hl-num {
+  display: inline-block;
+  background: #FFF176;
+  color: #E65100;
+  padding: 1px 9px;
+  margin: 0 1px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 1px 3px rgba(230, 81, 0, 0.18);
+}
+
+.wp-plain-num {
+  font-weight: 700;
+  color: #333;
+}
+
+/* 關鍵詞高亮：下底波浪 */
+.wp-hl-topic {
+  background: linear-gradient(transparent 60%, #FFCDD2 60%);
+  color: #C62828;
+  font-weight: 700;
+  padding: 0 2px;
+}
+
+.wp-plain-topic {
+  color: inherit;
+}
+
+/* ─── 步驟區 ─── */
+.wp-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.wp-step {
+  border: 2px solid #E0E0E0;
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: #FAFAFA;
+  transition: border-color 0.25s, background 0.25s, opacity 0.25s;
+}
+
+.wp-step-pending {
+  opacity: 0.45;
+}
+
+.wp-step-active {
+  background: #FFFEF7;
+  border-width: 2px;
+}
+
+.wp-step-cleared {
+  background: #F1F8E9;
+  border-color: #A5D6A7;
+}
+
+.wp-step-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #666;
+  margin-bottom: 2px;
+}
+
+.wp-eq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-family: 'Courier New', monospace;
+}
+
+.wp-num {
+  color: #333;
+}
+
+.wp-op {
+  color: #5E35B1;
+  margin: 0 2px;
+}
+
+.wp-eq-sym {
+  color: #666;
+}
+
+.wp-rem-tag {
+  background: #FFE0B2;
+  color: #E65100;
+  font-size: 0.85rem;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.wp-blank {
+  display: inline-block;
+  min-width: 1.8em;
+  text-align: center;
+  border-bottom: 3px solid #BBB;
+  color: #BBB;
+  padding: 0 6px;
+}
+
+.wp-blank-active {
+  border-bottom-width: 3px;
+  animation: wp-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes wp-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+
+.wp-blank-done {
+  border-bottom: 3px solid #66BB6A !important;
+  color: #2E7D32 !important;
+  animation: none;
+}
+
+/* ─── 回饋 ─── */
+.wp-fb {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding: 8px 14px;
+  border-radius: 12px;
+  margin-top: 6px;
+}
+
+.wp-fb-ok {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.wp-fb-ng {
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+/* ─── 失敗畫面：步驟名 ─── */
+.wp-fail-step {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+/* ─── 鍵盤縮一點，騰出空間給題目 ─── */
+.wp-pad .numpad-wrap {
+  padding-top: 4px;
+}
+
+@media (max-width: 360px) {
+  .wp-problem-text {
+    font-size: 0.98rem;
+  }
+  .wp-eq {
+    font-size: 1.25rem;
+  }
+}
