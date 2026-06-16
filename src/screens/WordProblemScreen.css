@@ -42,18 +42,18 @@
 .wp-card {
   background: white;
   border-radius: 16px;
-  padding: 12px 12px 10px;
-  margin: 8px 8px 6px;
+  padding: 10px 10px 8px;
+  margin: 6px 6px 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   position: relative;
 }
 
 .wp-problem-text {
-  font-size: 1rem;
-  line-height: 1.65;
-  color: #333;
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #444;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
 }
 
 /* 數字高亮 */
@@ -90,26 +90,42 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .wp-step {
   border: 2px solid #E0E0E0;
   border-radius: 12px;
-  padding: 6px 10px 8px;
+  padding: 4px 8px 6px;
   background: #FAFAFA;
   transition: border-color 0.25s, background 0.25s, opacity 0.25s;
 }
 
-.wp-step-pending { opacity: 0.4; }
-.wp-step-active  { background: #FFFEF7; }
-.wp-step-cleared { background: #F1F8E9; border-color: #A5D6A7; }
+.wp-step-pending {
+  opacity: 0.35;
+  padding: 4px 8px 4px;
+}
+.wp-step-active {
+  background: #FFFEF7;
+  padding: 10px 12px 14px;     /* 主舞台留多一點呼吸空間 */
+  border-width: 3px;
+}
+.wp-step-cleared {
+  background: #F1F8E9;
+  border-color: #A5D6A7;
+  padding: 4px 10px 6px;
+}
 
 .wp-step-label {
   font-size: 0.78rem;
   font-weight: 700;
   color: #666;
   margin-bottom: 4px;
+}
+
+.wp-step-active .wp-step-label {
+  font-size: 0.88rem;
+  margin-bottom: 8px;
 }
 
 /* ─── 算式列 ─── */
@@ -122,6 +138,23 @@
   font-weight: 800;
   font-family: 'Courier New', monospace;
   flex-wrap: nowrap;
+}
+
+/* 活動中的算式列：大很多，讓安安看清楚 */
+.wp-step-active .wp-eq {
+  font-size: 1.9rem;
+  gap: 10px;
+  padding: 4px 0 2px;
+}
+
+.wp-step-pending .wp-eq {
+  font-size: 1rem;
+  gap: 4px;
+}
+
+.wp-step-cleared .wp-eq {
+  font-size: 1.15rem;
+  gap: 6px;
 }
 
 .wp-num-fixed {
@@ -148,16 +181,16 @@
 
 /* ─── 算式格子（自己組） ─── */
 .wp-eq-build {
-  gap: 4px;
+  gap: 6px;
 }
 
 .wp-slot {
-  min-width: 2.4em;
-  height: 2.2em;
+  min-width: 2em;
+  height: 2em;
   border: 2px dashed #CCC;
   border-radius: 10px;
   background: white;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 800;
   font-family: inherit;
   color: #BBB;
@@ -167,6 +200,16 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.15s, border-color 0.15s, background 0.15s;
+}
+
+/* 活動中的格子：放大版（草稿區主舞台） */
+.wp-step-active .wp-slot {
+  min-width: 2.8em;
+  height: 2.6em;
+  font-size: 1.85rem;
+  border-width: 3px;
+  border-radius: 14px;
+  padding: 0 10px;
 }
 
 .wp-slot:disabled {
@@ -191,12 +234,16 @@
 }
 
 @keyframes wp-slot-pulse {
-  0%, 100% { transform: scale(1);   border-color: var(--pulse-color, #FFD54F); }
-  50%      { transform: scale(1.06); }
+  0%, 100% { transform: scale(1);   }
+  50%      { transform: scale(1.08); }
 }
 
 .wp-slot-op-btn {
   min-width: 1.8em;
+}
+
+.wp-step-active .wp-slot-op-btn {
+  min-width: 2.2em;
 }
 
 .wp-blank {
@@ -209,6 +256,13 @@
   font-family: 'Courier New', monospace;
   font-size: 1.3rem;
   font-weight: 800;
+}
+
+.wp-step-active .wp-blank {
+  font-size: 1.95rem;
+  min-width: 2.4em;
+  border-bottom-width: 4px;
+  padding: 0 12px;
 }
 
 .wp-blank-active {
@@ -230,26 +284,26 @@
   animation: none;
 }
 
-/* ─── 選數字/選運算面板 ─── */
+/* ─── 選數字/選運算面板（草稿區） ─── */
 .wp-build-panel {
   background: #FFFDE7;
   border: 2px solid #FFE082;
-  border-radius: 12px;
-  padding: 8px 10px;
+  border-radius: 14px;
+  padding: 10px 12px;
   margin-bottom: 8px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 
 .wp-build-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .wp-build-label {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 800;
   color: #E65100;
   flex-shrink: 0;
@@ -260,7 +314,7 @@
 .wp-tiles, .wp-ops {
   display: flex;
   flex: 1;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -271,13 +325,14 @@
 
 .wp-tile {
   flex: 1;
-  min-width: 44px;
+  min-width: 52px;
+  min-height: 52px;
   background: white;
   border: 2px solid #E0E0E0;
-  border-radius: 10px;
-  font-size: 1.2rem;
+  border-radius: 12px;
+  font-size: 1.5rem;
   font-weight: 800;
-  padding: 6px 8px;
+  padding: 10px 12px;
   cursor: pointer;
   font-family: inherit;
   color: #333;
@@ -295,30 +350,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4px 6px;
+  padding: 6px 10px;
   background: #FFF3E0;
   border-style: solid;
-  line-height: 1;
+  line-height: 1.05;
 }
 
 .wp-tile-prev-label {
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 1px;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .wp-tile-prev-val {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .wp-op-btn {
   background: white;
   border: 2px solid #E0E0E0;
-  border-radius: 10px;
-  font-size: 1.3rem;
+  border-radius: 12px;
+  font-size: 1.7rem;
   font-weight: 800;
-  padding: 6px 4px;
+  padding: 10px 4px;
+  min-height: 52px;
   cursor: pointer;
   font-family: inherit;
   touch-action: manipulation;

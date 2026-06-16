@@ -182,21 +182,21 @@
   background: white;
   border-radius: 22px;
   border: 3px solid #E0E0E0;
-  padding: 16px;
+  padding: 18px 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   margin-bottom: 8px;
-  min-height: 100px;
+  min-height: 120px;
   transition: border-color 0.2s, background 0.2s;
 }
 
 .mt-equation {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 2.6rem;
+  gap: 12px;
+  font-size: 3rem;
   font-weight: 900;
   line-height: 1;
 }
@@ -205,18 +205,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 64px;
-  height: 64px;
+  min-width: 76px;
+  height: 76px;
   border-radius: 14px;
   border: 3px solid #CCC;
-  font-size: 2.2rem;
+  font-size: 2.6rem;
   font-weight: 900;
   transition: border-color 0.2s, color 0.2s;
 }
 
 .mt-number { color: #222; }
-.mt-plus   { color: #999; font-size: 2rem; }
-.mt-eq     { color: #999; font-size: 2rem; }
+.mt-plus   { color: #999; font-size: 2.3rem; }
+.mt-eq     { color: #999; font-size: 2.3rem; }
 .mt-ten    { color: #E65100; }
 
 .mt-fb {
