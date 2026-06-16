@@ -214,6 +214,22 @@
   font-family: inherit;
 }
 
+.btn-maketwenty {
+  background: linear-gradient(135deg, #00897B 0%, #004D40 100%);
+  color: white;
+  border: 2px solid #80CBC4;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 12px 16px;
+  cursor: pointer;
+  width: 100%;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 3px 12px rgba(0, 137, 123, 0.4);
+  font-family: inherit;
+}
+
 .btn-multiply {
   background: linear-gradient(135deg, #3949AB 0%, #1A237E 100%);
   color: white;

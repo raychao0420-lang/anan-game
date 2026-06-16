@@ -63,6 +63,7 @@ export const useGameStore = create(
       // M5: exam boss
       examBossCleared: false,
       makeTenCleared: false,
+      makeTwentyCleared: false,
       multiplyCleared: false,
       subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
       subjectQueues:   { math: [], social: [], nature: [], chinese: [] },
@@ -322,6 +323,20 @@ export const useGameStore = create(
         get().checkAchievements()
       },
 
+      clearMakeTwenty: () => {
+        set((s) => {
+          const first = !s.makeTwentyCleared
+          return {
+            makeTwentyCleared: true,
+            ...(first ? { coins: s.coins + 500, totalCoinsEarned: s.totalCoinsEarned + 500 } : {}),
+            ownedItems: s.ownedItems.includes('double_v')
+              ? s.ownedItems
+              : [...s.ownedItems, 'double_v'],
+          }
+        })
+        get().checkAchievements()
+      },
+
       clearMultiply: () => {
         set((s) => {
           const first = !s.multiplyCleared
@@ -390,6 +405,7 @@ export const useGameStore = create(
           bossCleared: { 10: false, 20: false, 30: false, 40: false },
           examBossCleared: false,
           makeTenCleared: false,
+          makeTwentyCleared: false,
           multiplyCleared: false,
           subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
           subjectQueues:   { math: [], social: [], nature: [], chinese: [] },

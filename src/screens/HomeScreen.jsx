@@ -133,6 +133,14 @@ export default function HomeScreen({ onNavigate }) {
         </motion.button>
 
         <motion.button
+          className="btn-maketwenty"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => nav('maketwenty')}
+        >
+          ✌️ 湊20特訓
+        </motion.button>
+
+        <motion.button
           className="btn-multiply"
           whileTap={{ scale: 0.94 }}
           onClick={() => nav('multiply')}

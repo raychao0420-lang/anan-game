@@ -13,6 +13,7 @@ import AchievementScreen from './screens/AchievementScreen'
 import HomeRoomScreen from './screens/HomeRoomScreen'
 import ExamBossScreen from './screens/ExamBossScreen'
 import MaketenScreen from './screens/MaketenScreen'
+import MakeTwentyScreen from './screens/MakeTwentyScreen'
 import MultiplyScreen from './screens/MultiplyScreen'
 import GachaScreen from './screens/GachaScreen'
 import ArcadeScreen from './screens/ArcadeScreen'
@@ -83,7 +84,8 @@ export default function App() {
         {screen === 'achievements' && wrap('achievements', <AchievementScreen onNavigate={setScreen} />)}
         {screen === 'homeroom'     && wrap('homeroom', <HomeRoomScreen onNavigate={setScreen} />)}
         {screen === 'examboss'    && wrap('examboss', <ExamBossScreen  onBack={() => setScreen('home')} />)}
-        {screen === 'maketen'     && wrap('maketen',  <MaketenScreen   onBack={() => setScreen('home')} />)}
+        {screen === 'maketen'     && wrap('maketen',  <MaketenScreen    onBack={() => setScreen('home')} />)}
+        {screen === 'maketwenty'  && wrap('maketwenty', <MakeTwentyScreen onBack={() => setScreen('home')} />)}
         {screen === 'multiply'    && wrap('multiply', <MultiplyScreen  onBack={() => setScreen('home')} />)}
         {screen === 'gacha'       && wrap('gacha',    <GachaScreen     onBack={() => setScreen('home')} />)}
         {screen === 'arcade'      && wrap('arcade',   <ArcadeScreen    onBack={() => setScreen('home')} />)}
