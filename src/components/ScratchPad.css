@@ -1,0 +1,61 @@
+.scratch-wrap {
+  background: #F5F5F5;
+  border: 2px dashed #BDBDBD;
+  border-radius: 12px;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+}
+
+.scratch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.scratch-label {
+  font-size: 0.78rem;
+  color: #616161;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.scratch-clear-btn {
+  background: white;
+  border: 1.5px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: #757575;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s;
+}
+
+.scratch-clear-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.scratch-clear-btn:not(:disabled):active {
+  background: #FFEBEE;
+  border-color: #FFCDD2;
+  color: #C62828;
+}
+
+.scratch-canvas {
+  display: block;
+  width: 100%;
+  background: #FFFEF0;
+  background-image:
+    linear-gradient(#E0E0E0 1px, transparent 1px),
+    linear-gradient(90deg, #E0E0E0 1px, transparent 1px);
+  background-size: 24px 24px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px #DDD;
+  cursor: crosshair;
+  touch-action: none;
+}

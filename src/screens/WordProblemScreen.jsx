@@ -5,6 +5,7 @@ import { SHOP_ITEMS } from '../data/shop'
 import { WORD_PROBLEMS, parseText } from '../data/wordProblems'
 import NumberPad from '../components/NumberPad'
 import PetAvatar from '../components/PetAvatar'
+import ScratchPad from '../components/ScratchPad'
 import { sfx } from '../utils/sound'
 import './MaketenScreen.css'
 import './WordProblemScreen.css'
@@ -511,6 +512,8 @@ export default function WordProblemScreen({ onBack }) {
                 )
               })}
             </div>
+
+            <ScratchPad key={`scratch-${qIdx}`} height={130} />
 
             {!isRemStep && (
               <BuildPanel
