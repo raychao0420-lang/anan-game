@@ -492,39 +492,45 @@ export default function WordProblemScreen({ onBack }) {
           >
             <ProblemText tokens={currentTokens} level={round.highlightLevel} />
 
-            <div className="wp-steps">
-              {currentQ.steps.map((step, i) => {
-                const status = i < stepIdx ? 'cleared' : i === stepIdx ? 'active' : 'pending'
-                return (
-                  <StepDisplay
-                    key={i}
-                    step={step}
-                    status={status}
-                    userA={i === stepIdx ? userA : null}
-                    userOp={i === stepIdx ? userOp : null}
-                    userB={i === stepIdx ? userB : null}
-                    input={i === stepIdx ? input : ''}
+            <div className="wp-side-row">
+              <div className="wp-side-left">
+                <div className="wp-steps">
+                  {currentQ.steps.map((step, i) => {
+                    const status = i < stepIdx ? 'cleared' : i === stepIdx ? 'active' : 'pending'
+                    return (
+                      <StepDisplay
+                        key={i}
+                        step={step}
+                        status={status}
+                        userA={i === stepIdx ? userA : null}
+                        userOp={i === stepIdx ? userOp : null}
+                        userB={i === stepIdx ? userB : null}
+                        input={i === stepIdx ? input : ''}
+                        color={round.color}
+                        onClearA={() => { sfx.click(); setUserA(null) }}
+                        onClearOp={() => { sfx.click(); setUserOp(null) }}
+                        onClearB={() => { sfx.click(); setUserB(null) }}
+                      />
+                    )
+                  })}
+                </div>
+
+                {!isRemStep && (
+                  <BuildPanel
+                    numbers={availableNumbers}
+                    prevValue={prevTileValue}
+                    onTapNum={tapNum}
+                    onTapOp={tapOp}
                     color={round.color}
-                    onClearA={() => { sfx.click(); setUserA(null) }}
-                    onClearOp={() => { sfx.click(); setUserOp(null) }}
-                    onClearB={() => { sfx.click(); setUserB(null) }}
+                    disabled={!!feedback}
                   />
-                )
-              })}
+                )}
+              </div>
+
+              <div className="wp-side-right">
+                <ScratchPad key={`scratch-${qIdx}`} fill />
+              </div>
             </div>
-
-            <ScratchPad key={`scratch-${qIdx}`} height={110} />
-
-            {!isRemStep && (
-              <BuildPanel
-                numbers={availableNumbers}
-                prevValue={prevTileValue}
-                onTapNum={tapNum}
-                onTapOp={tapOp}
-                color={round.color}
-                disabled={!!feedback}
-              />
-            )}
 
             <AnimatePresence>
               {feedback === 'correct' && (

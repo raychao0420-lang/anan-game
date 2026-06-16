@@ -97,11 +97,11 @@
 
 /* ── Playing ─────────────────────────────────────────────────────────────── */
 .mt-play {
-  min-height: 0;
-  height: 100dvh;
+  min-height: 100dvh;
   padding: 10px 12px;
   justify-content: flex-start;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   gap: 0;
 }
 

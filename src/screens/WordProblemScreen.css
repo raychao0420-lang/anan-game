@@ -54,13 +54,133 @@
   margin: 6px 6px 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   position: relative;
-  /* 重要：讓內容區塊吃掉剩餘空間並內部捲動，
-     才不會把底下的 NumberPad ✓ 鈕擠出畫面 */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 側邊布局：左邊放算式 + 選擇面板，右邊放草稿區（全高） */
+.wp-side-row {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+.wp-side-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;       /* 自己不捲，內部 wp-steps 捲 */
+  padding-right: 2px;
+  min-height: 0;
+}
+
+/* 算式區可以捲動（活動中題目較高時），但 BuildPanel 永遠固定在底部 */
+.wp-side-left .wp-steps {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  margin-bottom: 6px;
+}
+
+.wp-side-left .wp-build-panel {
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.wp-side-right {
+  width: 130px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+@media (max-width: 360px) {
+  .wp-side-right { width: 110px; }
+}
+
+@media (min-width: 500px) {
+  .wp-side-right { width: 180px; }
+}
+
+@media (min-width: 700px) {
+  .wp-side-right { width: 240px; }
+}
+
+/* ─── 側邊布局時，左邊算式區縮小尺寸塞得下窄欄 ─── */
+.wp-side-left .wp-step-active .wp-eq {
+  font-size: 1.45rem;
+  gap: 5px;
+}
+
+.wp-side-left .wp-step-active .wp-slot {
+  min-width: 1.9em;
+  height: 1.9em;
+  font-size: 1.35rem;
+  padding: 0 5px;
+  border-width: 2.5px;
+  border-radius: 10px;
+}
+
+.wp-side-left .wp-step-active .wp-blank {
+  font-size: 1.45rem;
+  min-width: 1.9em;
+  padding: 0 6px;
+}
+
+.wp-side-left .wp-step-active .wp-slot-op-btn {
+  min-width: 1.5em;
+}
+
+/* 數字 tiles / 運算按鈕：窄欄專用尺寸 */
+.wp-side-left .wp-build-panel {
+  padding: 6px 8px;
+  gap: 6px;
+  border-radius: 12px;
+}
+
+.wp-side-left .wp-build-row {
+  gap: 6px;
+}
+
+.wp-side-left .wp-build-label {
+  width: 28px;
+  font-size: 0.68rem;
+}
+
+.wp-side-left .wp-tile {
+  font-size: 1.05rem;
+  padding: 6px 6px;
+  min-width: 36px;
+  min-height: 40px;
+  border-radius: 10px;
+}
+
+.wp-side-left .wp-tile-prev-val {
+  font-size: 1.05rem;
+}
+
+.wp-side-left .wp-op-btn {
+  font-size: 1.2rem;
+  padding: 6px 4px;
+  min-height: 40px;
+  border-radius: 10px;
+}
+
+/* 比較寬的螢幕：左欄寬足以放大字體 */
+@media (min-width: 500px) {
+  .wp-side-left .wp-step-active .wp-eq    { font-size: 1.8rem; gap: 8px; }
+  .wp-side-left .wp-step-active .wp-slot  { min-width: 2.4em; height: 2.3em; font-size: 1.7rem; }
+  .wp-side-left .wp-step-active .wp-blank { font-size: 1.8rem; min-width: 2.2em; padding: 0 10px; }
+  .wp-side-left .wp-tile      { font-size: 1.35rem; padding: 10px 12px; min-width: 50px; min-height: 50px; }
+  .wp-side-left .wp-op-btn    { font-size: 1.5rem; padding: 10px 6px; min-height: 50px; }
+  .wp-side-left .wp-build-label { width: 36px; font-size: 0.78rem; }
 }
 
 .wp-problem-text {
@@ -491,3 +611,11 @@
   .wp-build-label { width: 32px; font-size: 0.68rem; }
   .wp-tile, .wp-op-btn { font-size: 1.05rem; padding: 5px 4px; }
 }
+
+/* ─── 鍵盤縮小：把空間讓給上方算式區 + 選填面板 ─── */
+.wp-pad .numpad-wrap     { padding-top: 4px; gap: 4px; }
+.wp-pad .numpad-display  { min-height: 30px; font-size: 1.35rem; padding: 2px 0; }
+.wp-pad .numpad-grid     { gap: 4px; }
+.wp-pad .numpad-btn      { height: 36px; font-size: 1.1rem; border-radius: 8px; }
+.wp-pad .numpad-btn.delete { font-size: 0.95rem; }
+.wp-pad .numpad-confirm  { height: 34px; font-size: 1rem; border-radius: 8px; }

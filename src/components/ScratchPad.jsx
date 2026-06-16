@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './ScratchPad.css'
 
-export default function ScratchPad({ height = 140, color = '#37474F' }) {
+export default function ScratchPad({ height = 140, color = '#37474F', fill = false }) {
   const canvasRef = useRef(null)
   const drawingRef = useRef(false)
   const lastPointRef = useRef(null)
@@ -88,21 +88,21 @@ export default function ScratchPad({ height = 140, color = '#37474F' }) {
   }
 
   return (
-    <div className="scratch-wrap">
+    <div className={`scratch-wrap ${fill ? 'scratch-wrap-fill' : ''}`}>
       <div className="scratch-header">
-        <span className="scratch-label">📝 草稿區</span>
+        <span className="scratch-label">📝 草稿</span>
         <button
           className="scratch-clear-btn"
           onPointerDown={(e) => { e.stopPropagation(); clearAll() }}
           disabled={!hasInk}
         >
-          🧽 清除
+          🧽 清
         </button>
       </div>
       <canvas
         ref={canvasRef}
         className="scratch-canvas"
-        style={{ height: `${height}px`, touchAction: 'none' }}
+        style={fill ? { touchAction: 'none' } : { height: `${height}px`, touchAction: 'none' }}
         onPointerDown={startDraw}
         onPointerMove={draw}
         onPointerUp={endDraw}
