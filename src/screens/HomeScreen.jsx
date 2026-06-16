@@ -141,6 +141,14 @@ export default function HomeScreen({ onNavigate }) {
         </motion.button>
 
         <motion.button
+          className="btn-crossequals"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => nav('crossequals')}
+        >
+          ⚖️ 等號搬家
+        </motion.button>
+
+        <motion.button
           className="btn-multiply"
           whileTap={{ scale: 0.94 }}
           onClick={() => nav('multiply')}

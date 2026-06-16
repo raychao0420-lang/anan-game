@@ -64,6 +64,7 @@ export const useGameStore = create(
       examBossCleared: false,
       makeTenCleared: false,
       makeTwentyCleared: false,
+      crossEqualsCleared: false,
       multiplyCleared: false,
       subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
       subjectQueues:   { math: [], social: [], nature: [], chinese: [] },
@@ -337,6 +338,20 @@ export const useGameStore = create(
         get().checkAchievements()
       },
 
+      clearCrossEquals: () => {
+        set((s) => {
+          const first = !s.crossEqualsCleared
+          return {
+            crossEqualsCleared: true,
+            ...(first ? { coins: s.coins + 600, totalCoinsEarned: s.totalCoinsEarned + 600 } : {}),
+            ownedItems: s.ownedItems.includes('equation_scale')
+              ? s.ownedItems
+              : [...s.ownedItems, 'equation_scale'],
+          }
+        })
+        get().checkAchievements()
+      },
+
       clearMultiply: () => {
         set((s) => {
           const first = !s.multiplyCleared
@@ -406,6 +421,7 @@ export const useGameStore = create(
           examBossCleared: false,
           makeTenCleared: false,
           makeTwentyCleared: false,
+          crossEqualsCleared: false,
           multiplyCleared: false,
           subjectPerfects: { math: 0, social: 0, nature: 0, chinese: 0 },
           subjectQueues:   { math: [], social: [], nature: [], chinese: [] },
