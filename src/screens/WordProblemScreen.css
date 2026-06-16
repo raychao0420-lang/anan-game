@@ -39,6 +39,14 @@
   padding-bottom: 6px;
 }
 
+/* 固定不可壓縮的區塊（header / timer / 數字鍵盤），
+   讓中間 wp-card 拿剩餘空間並內部捲動 */
+.wp-play > .mt-play-header,
+.wp-play > .mt-timer-wrap,
+.wp-play > .mt-pad {
+  flex-shrink: 0;
+}
+
 .wp-card {
   background: white;
   border-radius: 16px;
@@ -46,6 +54,13 @@
   margin: 6px 6px 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   position: relative;
+  /* 重要：讓內容區塊吃掉剩餘空間並內部捲動，
+     才不會把底下的 NumberPad ✓ 鈕擠出畫面 */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .wp-problem-text {

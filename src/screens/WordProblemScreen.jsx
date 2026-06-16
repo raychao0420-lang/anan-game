@@ -513,7 +513,7 @@ export default function WordProblemScreen({ onBack }) {
               })}
             </div>
 
-            <ScratchPad key={`scratch-${qIdx}`} height={130} />
+            <ScratchPad key={`scratch-${qIdx}`} height={110} />
 
             {!isRemStep && (
               <BuildPanel
