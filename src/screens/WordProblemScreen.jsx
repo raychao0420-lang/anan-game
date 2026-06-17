@@ -237,6 +237,7 @@ export default function WordProblemScreen({ onBack }) {
   const [wonFirst, setWonFirst] = useState(false)
   const timerRef = useRef(null)
   const fbRef    = useRef(null)
+  const deadlineRef = useRef(null)
 
   const round    = ROUNDS[roundIdx]
   const currentQ = problems[qIdx]
@@ -267,11 +268,16 @@ export default function WordProblemScreen({ onBack }) {
 
   useEffect(() => {
     if (phase !== 'playing') { clearInterval(timerRef.current); return }
+    // 用截止時間戳計算剩餘秒數：平板 Safari 在持續觸控（例如在草稿區畫畫）時會把
+    // setInterval 節流／暫停，純計數會「停住」；改以牆鐘時間重算，恢復後會自動補回流逝時間。
+    deadlineRef.current = Date.now() + timeLeft * 1000
     clearInterval(timerRef.current)
     timerRef.current = setInterval(() => {
-      setTimeLeft(t => (t <= 1 ? 0 : t - 1))
-    }, 1000)
+      const remain = Math.max(0, Math.round((deadlineRef.current - Date.now()) / 1000))
+      setTimeLeft(remain)
+    }, 250)
     return () => clearInterval(timerRef.current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, qIdx])
 
   useEffect(() => {

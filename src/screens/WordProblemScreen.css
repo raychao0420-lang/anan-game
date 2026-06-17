@@ -39,6 +39,16 @@
   padding-bottom: 6px;
 }
 
+/* 平板／桌機：把整個遊玩區鎖在一個畫面高度內、不出現整頁卷軸。
+   內層 .wp-card 本身 overflow:hidden + flex 收縮，算式區 (.wp-steps) 需要時自己內部捲動。 */
+@media (min-width: 640px) {
+  .wp-play {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
 /* 固定不可壓縮的區塊（header / timer / 數字鍵盤），
    讓中間 wp-card 拿剩餘空間並內部捲動 */
 .wp-play > .mt-play-header,
