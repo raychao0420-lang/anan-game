@@ -133,4 +133,137 @@ export const sfx = {
       })
     } catch(e) {}
   },
+  penguin: () => {
+    // 企鵝：兩聲鼻音喇叭般的 honk
+    if (muted) return
+    const c = ctx()
+    if (!c) return
+    try {
+      [[0, 520], [0.22, 560]].forEach(([delay, f1]) => {
+        const osc  = c.createOscillator()
+        const gain = c.createGain()
+        osc.connect(gain)
+        gain.connect(c.destination)
+        osc.type = 'sawtooth'
+        const t = c.currentTime + delay
+        osc.frequency.setValueAtTime(f1, t)
+        osc.frequency.linearRampToValueAtTime(f1 * 1.08, t + 0.05)
+        osc.frequency.linearRampToValueAtTime(f1 * 0.78, t + 0.16)
+        gain.gain.setValueAtTime(0, t)
+        gain.gain.linearRampToValueAtTime(0.17, t + 0.03)
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18)
+        osc.start(t)
+        osc.stop(t + 0.2)
+      })
+    } catch(e) {}
+  },
+  owl: () => {
+    // 貓頭鷹：兩聲低沉柔和的 hoo～hoo
+    if (muted) return
+    const c = ctx()
+    if (!c) return
+    try {
+      [0, 0.34].forEach((delay) => {
+        const osc  = c.createOscillator()
+        const gain = c.createGain()
+        osc.connect(gain)
+        gain.connect(c.destination)
+        osc.type = 'sine'
+        const t = c.currentTime + delay
+        osc.frequency.setValueAtTime(400, t)
+        osc.frequency.linearRampToValueAtTime(330, t + 0.06)
+        osc.frequency.linearRampToValueAtTime(360, t + 0.22)
+        gain.gain.setValueAtTime(0, t)
+        gain.gain.linearRampToValueAtTime(0.22, t + 0.05)
+        gain.gain.setValueAtTime(0.2, t + 0.16)
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28)
+        osc.start(t)
+        osc.stop(t + 0.3)
+      })
+    } catch(e) {}
+  },
+  seal: () => {
+    // 海豹：兩聲低沉的「arf」吠叫
+    if (muted) return
+    const c = ctx()
+    if (!c) return
+    try {
+      [0, 0.2].forEach((delay) => {
+        const osc  = c.createOscillator()
+        const gain = c.createGain()
+        osc.connect(gain)
+        gain.connect(c.destination)
+        osc.type = 'square'
+        const t = c.currentTime + delay
+        osc.frequency.setValueAtTime(300, t)
+        osc.frequency.linearRampToValueAtTime(175, t + 0.12)
+        gain.gain.setValueAtTime(0, t)
+        gain.gain.linearRampToValueAtTime(0.2, t + 0.02)
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15)
+        osc.start(t)
+        osc.stop(t + 0.17)
+      })
+    } catch(e) {}
+  },
+  beaver: () => {
+    // 河狸：一連串輕快的吱吱 chitter
+    if (muted) return
+    const c = ctx()
+    if (!c) return
+    try {
+      [0, 0.07, 0.14, 0.21, 0.28].forEach((delay, i) => {
+        const osc  = c.createOscillator()
+        const gain = c.createGain()
+        osc.connect(gain)
+        gain.connect(c.destination)
+        osc.type = 'square'
+        const t = c.currentTime + delay
+        const f = 1500 + (i % 2 === 0 ? 0 : 320)
+        osc.frequency.setValueAtTime(f, t)
+        osc.frequency.linearRampToValueAtTime(f * 1.15, t + 0.04)
+        gain.gain.setValueAtTime(0.11, t)
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05)
+        osc.start(t)
+        osc.stop(t + 0.06)
+      })
+    } catch(e) {}
+  },
+  hamster: () => {
+    // 倉鼠：兩三聲超高細小的吱吱
+    if (muted) return
+    const c = ctx()
+    if (!c) return
+    try {
+      [[0, 2800], [0.1, 3200], [0.2, 3000]].forEach(([delay, f]) => {
+        const osc  = c.createOscillator()
+        const gain = c.createGain()
+        osc.connect(gain)
+        gain.connect(c.destination)
+        osc.type = 'sine'
+        const t = c.currentTime + delay
+        osc.frequency.setValueAtTime(f, t)
+        osc.frequency.linearRampToValueAtTime(f * 1.2, t + 0.03)
+        osc.frequency.linearRampToValueAtTime(f * 0.95, t + 0.06)
+        gain.gain.setValueAtTime(0.13, t)
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.07)
+        osc.start(t)
+        osc.stop(t + 0.08)
+      })
+    } catch(e) {}
+  },
+  // 依寵物 id 播放專屬叫聲（集中管理，新增寵物只改這裡）
+  pet(petId) {
+    switch (petId) {
+      case 'lulu':    return this.beagle()
+      case 'jiji':    return this.cat()
+      case 'kitsune': return this.fox()
+      case 'mejiro':  return this.bird()
+      case 'penguin': return this.penguin()
+      case 'owl':     return this.owl()
+      case 'seal':    return this.seal()
+      case 'beaver':  return this.beaver()
+      case 'hamster': return this.hamster()
+      default:        return this.otter()  // hana / kotaro
+    }
+  },
 }

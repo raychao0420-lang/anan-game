@@ -344,11 +344,7 @@ export default function HomeRoomScreen({ onNavigate }) {
   }
 
   const handlePetClick = (petId) => {
-    if      (petId === 'lulu')    sfx.beagle()
-    else if (petId === 'jiji')    sfx.cat()
-    else if (petId === 'kitsune') sfx.fox()
-    else if (petId === 'mejiro')  sfx.bird()
-    else                          sfx.otter()  // hana / kotaro
+    sfx.pet(petId)
   }
 
   return (
