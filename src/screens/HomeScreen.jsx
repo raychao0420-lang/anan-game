@@ -11,7 +11,7 @@ import { sfx } from '../utils/sound'
 import './HomeScreen.css'
 
 export default function HomeScreen({ onNavigate }) {
-  const { coins, activePet, pets, petEquipment, dailyTasksDone, achievements, setActivePet } = useGameStore()
+  const { coins, activePet, pets, petEquipment, dailyTasksDone, achievements, setActivePet, petMoods } = useGameStore()
   const [showSave, setShowSave] = useState(false)
   const today = new Date().toISOString().slice(0, 10)
   const todayTasks = getTodayTasks(today)
@@ -53,6 +53,7 @@ export default function HomeScreen({ onNavigate }) {
             evolutionStage={petData.evolutionStage}
             equipped={equipped}
             size={130}
+            mood={petMoods?.[activePet] ?? 80}
           />
         </motion.div>
         <div className="home-pet-name">{pet.name} · {stage.label}</div>
@@ -74,7 +75,7 @@ export default function HomeScreen({ onNavigate }) {
                 whileTap={{ scale: 0.88 }}
                 onClick={() => { setActivePet(id); sfx.click() }}
               >
-                <PetAvatar petId={id} evolutionStage={pd.evolutionStage} equipped={eq} size={46} />
+                <PetAvatar petId={id} evolutionStage={pd.evolutionStage} equipped={eq} size={46} mood={petMoods?.[id] ?? 80} />
                 <span className="home-pet-switch-name">{p.name}</span>
               </motion.button>
             )

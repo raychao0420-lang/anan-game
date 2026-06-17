@@ -817,8 +817,50 @@ function LegendarySparkles() {
   )
 }
 
+// ── Mood expression overlay ───────────────────────────────────────────────────
+// 依心情數值(0-100)在臉上疊一層表情。白色描邊確保各種毛色(含黑貓)都看得到。
+//  >=80 開心(不疊)  60-79 沒很開心  40-59 不開心  1-39 很不滿  0 趴地上
+function MoodExpression({ mood = 100 }) {
+  if (mood >= 80) return null
+
+  const tier = mood <= 0 ? 'collapse'
+    : mood < 40 ? 'upset'
+    : mood < 60 ? 'unhappy'
+    : 'meh'
+
+  const mouthByTier = {
+    meh:      'M44,64 Q50,61.5 56,64',                  // 平嘴/微抿
+    unhappy:  'M43,66 Q50,59 57,66',                    // 嘴角下垂
+    upset:    'M42,67 Q46,61.5 50,64 Q54,61.5 58,67',   // 波浪不滿嘴
+    collapse: 'M43,66 Q50,60 57,66',                    // 趴下苦臉
+  }
+  const mouth = mouthByTier[tier]
+
+  const showBrows = tier !== 'meh'
+  const angryBrows = tier === 'upset'        // 不滿：內低外高(皺眉)；其餘：內高外低(擔憂)
+  const browL = angryBrows ? 'M32,29 L43,33' : 'M32,32 L43,29'
+  const browR = angryBrows ? 'M68,29 L57,33' : 'M68,32 L57,29'
+
+  return (
+    <g style={{ pointerEvents: 'none' }} strokeLinecap="round">
+      {showBrows && (
+        <g>
+          <path d={browL} stroke="white" strokeWidth="3.4" fill="none" opacity="0.85" />
+          <path d={browR} stroke="white" strokeWidth="3.4" fill="none" opacity="0.85" />
+          <path d={browL} stroke="#5A3A22" strokeWidth="2" fill="none" />
+          <path d={browR} stroke="#5A3A22" strokeWidth="2" fill="none" />
+        </g>
+      )}
+      <path d={mouth} fill="none" stroke="white"   strokeWidth="3.6" opacity="0.85" />
+      <path d={mouth} fill="none" stroke="#7A2E2E" strokeWidth="2.1" />
+      {tier === 'upset'    && <text x="76" y="31" fontSize="13" textAnchor="middle">💢</text>}
+      {tier === 'collapse' && <text x="79" y="64" fontSize="13" textAnchor="middle">💤</text>}
+    </g>
+  )
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
-export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped = [], size = 100 }) {
+export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped = [], size = 100, mood = 100 }) {
   const stage  = Math.max(1, Math.min(4, evolutionStage))
   const colors = EVO[petId]?.[stage] ?? EVO.lulu[1]
 
@@ -840,12 +882,17 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
     ? { filter: `drop-shadow(0 0 8px ${colors.glow})` }
     : {}
 
+  // 心情=0：整隻往下壓扁、微微側倒，像趴在地上
+  const collapsedStyle = mood <= 0
+    ? { transform: 'translateY(10px) scaleY(0.74) rotate(-3deg)', transformOrigin: '50% 100%' }
+    : {}
+
   return (
     <svg
       width={size}
       height={Math.round(size * 1.3)}
       viewBox="0 0 100 130"
-      style={{ overflow: 'visible', display: 'block', ...glowFilter }}
+      style={{ overflow: 'visible', display: 'block', ...glowFilter, ...collapsedStyle }}
     >
       {/* Stage-4 ambient glow */}
       {colors.glow && (
@@ -991,6 +1038,9 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
           ))}
         </g>
       )}
+
+      {/* Mood expression overlay (over face, under hats/clothes) */}
+      <MoodExpression mood={mood} />
 
       {/* Clothes (over body) */}
       {clothes?.id === 'sweater'   && <ClothesSweater />}

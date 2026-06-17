@@ -193,7 +193,7 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
 
 // ── Wandering pet ─────────────────────────────────────────────────────────────
 
-function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPetClick }) {
+function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPetClick, mood = 100 }) {
   const cfg     = PET_CONFIG[petId]
   const isOtter = petId === 'hana' || petId === 'kotaro'
 
@@ -283,6 +283,7 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
             evolutionStage={petData.evolutionStage}
             equipped={equippedPetItems}
             size={65}
+            mood={mood}
           />
         </motion.div>
       </motion.div>
@@ -315,7 +316,7 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
 // ── Main screen ───────────────────────────────────────────────────────────────
 
 export default function HomeRoomScreen({ onNavigate }) {
-  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco } = useGameStore()
+  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods } = useGameStore()
   const containerRef = useRef(null)
 
   const unlockedPets = Object.entries(pets).filter(([, data]) => data.unlocked)
@@ -387,6 +388,7 @@ export default function HomeRoomScreen({ onNavigate }) {
               .filter(Boolean)}
             poolPos={poolPos}
             onPetClick={handlePetClick}
+            mood={petMoods?.[petId] ?? 80}
           />
         ))}
 

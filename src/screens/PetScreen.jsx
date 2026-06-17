@@ -103,7 +103,7 @@ export default function PetScreen({ onNavigate }) {
             : { type: 'spring', stiffness: 250 }}
         >
           {petData.unlocked
-            ? <PetAvatar petId={selected} evolutionStage={petData.evolutionStage} equipped={equipped} size={150} />
+            ? <PetAvatar petId={selected} evolutionStage={petData.evolutionStage} equipped={equipped} size={150} mood={moodVal} />
             : <div className="pet-locked-bubble">🔒</div>
           }
         </motion.div>
