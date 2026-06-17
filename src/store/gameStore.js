@@ -44,10 +44,15 @@ export const useGameStore = create(
         jiji:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
         kitsune: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
         mejiro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        penguin: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        owl:     { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        seal:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        beaver:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        hamster: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
       },
       stages: makeStages(),
       ownedItems:        [],
-      petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [] },
+      petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [] },
       equippedHomeItems: [],
       homeDecoPositions: {},
 
@@ -81,7 +86,7 @@ export const useGameStore = create(
       perfectStages: 0,
 
       // M4: pet moods
-      petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80 },
+      petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80 },
       lastPlayedAt: null,
 
       // ── Core actions ──
@@ -148,6 +153,17 @@ export const useGameStore = create(
           }
         })
         get().checkAchievements()
+      },
+
+      // 免費直接解鎖寵物（闖關／扭蛋／遊樂場獎勵用）。已擁有則不變動。
+      grantPet: (petId) => {
+        const already = get().pets[petId]?.unlocked
+        if (already) return false
+        set((s) => ({
+          pets: { ...s.pets, [petId]: { ...s.pets[petId], unlocked: true } },
+        }))
+        get().checkAchievements()
+        return true
       },
 
       setActivePet: (petId) => set({ activePet: petId }),
@@ -362,6 +378,10 @@ export const useGameStore = create(
             ownedItems: s.ownedItems.includes('reading_glasses')
               ? s.ownedItems
               : [...s.ownedItems, 'reading_glasses'],
+            // 過關即贈送企鵝寶寶「波波」
+            pets: s.pets.penguin?.unlocked
+              ? s.pets
+              : { ...s.pets, penguin: { ...s.pets.penguin, unlocked: true } },
           }
         })
         get().checkAchievements()
@@ -422,10 +442,15 @@ export const useGameStore = create(
             jiji:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
             kitsune: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
             mejiro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            penguin: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            owl:     { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            seal:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            beaver:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            hamster: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
           },
           stages: makeStages(),
           ownedItems:        [],
-          petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [] },
+          petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [] },
           equippedHomeItems: [],
           homeDecoPositions: {},
           dailyDate: null,
@@ -447,7 +472,7 @@ export const useGameStore = create(
           totalCoinsEarned: 0,
           maxCombo: 0,
           perfectStages: 0,
-          petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80 },
+          petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80 },
           lastPlayedAt: null,
         }),
     }),
@@ -455,7 +480,7 @@ export const useGameStore = create(
       name: 'anan-game-v2',
       onRehydrateStorage: () => (state) => {
         if (!state) return
-        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro']
+        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster']
         allPets.forEach((id) => {
           if (!state.pets[id])
             state.pets[id] = { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] }

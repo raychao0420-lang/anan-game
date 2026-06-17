@@ -147,7 +147,7 @@ function GachaPrize({ item, tierId }) {
 }
 
 export default function GachaScreen({ onBack }) {
-  const { coins, ownedItems, addCoins, buyItem } = useGameStore()
+  const { coins, ownedItems, pets, addCoins, buyItem, grantPet } = useGameStore()
   const [phase, setPhase]   = useState('pick')
   const [tierId, setTierId] = useState(null)
   const [result, setResult] = useState(null)
@@ -158,7 +158,8 @@ export default function GachaScreen({ onBack }) {
     sfx.click()
     addCoins(-tier.cost)
     setTierId(tid)
-    const res = pullGacha(tid, ownedItems)
+    const ownedPetIds = Object.keys(pets).filter(id => pets[id].unlocked)
+    const res = pullGacha(tid, ownedItems, ownedPetIds)
     setResult(res)
     setPhase('pulling')
     setTimeout(() => { sfx.bossWin(); setPhase('reveal') }, 1800)
@@ -166,7 +167,10 @@ export default function GachaScreen({ onBack }) {
 
   const handleCollect = () => {
     if (!result) return
-    if (!result.isDup) {
+    if (result.item.isPet) {
+      if (!result.isDup) grantPet(result.item.petId)
+      else addCoins(result.dupBonus)
+    } else if (!result.isDup) {
       buyItem(result.item.id, 0)
     } else {
       addCoins(result.dupBonus)
@@ -294,7 +298,7 @@ export default function GachaScreen({ onBack }) {
                 style={{ borderColor: tier?.color, color: tier?.color }}
                 initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 }}
               >
-                ✨ 新道具入手！
+                {result.item.isPet ? '🎉 新夥伴入手！' : '✨ 新道具入手！'}
               </motion.div>
             )}
 

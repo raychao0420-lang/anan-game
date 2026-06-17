@@ -93,3 +93,19 @@ export const SHOP_ITEMS = [
   { id: 'crown_nature',  name: '自然皇冠', emoji: '🔬', category: 'rare', price: 0, desc: '自然科三次滿分獎勵', boss: true },
   { id: 'crown_chinese', name: '國語皇冠', emoji: '🖊️', category: 'rare', price: 0, desc: '國語科三次滿分獎勵', boss: true },
 ]
+
+// 新寵物（波波/嚕嚕/圓圓/阿丁/小麥）的食物偏好。原本食物 exp 只列了 6 隻，
+// 在此補上，避免餵食得到 undefined（會讓進化經驗變 NaN）。
+const NEW_PET_FOOD_EXP = {
+  penguin: { bone: 20, fish: 120, meat: 60,  apple: 30,  berry: 40,  nectar: 10, sushi: 100, cake: 70, shrimp: 110 }, // 企鵝愛魚
+  owl:     { bone: 60, fish: 90,  meat: 100, apple: 30,  berry: 50,  nectar: 15, sushi: 80,  cake: 60, shrimp: 70  }, // 貓頭鷹愛肉
+  seal:    { bone: 25, fish: 130, meat: 50,  apple: 30,  berry: 30,  nectar: 10, sushi: 90,  cake: 60, shrimp: 120 }, // 海豹愛魚蝦
+  beaver:  { bone: 40, fish: 20,  meat: 20,  apple: 110, berry: 90,  nectar: 70, sushi: 30,  cake: 70, shrimp: 20  }, // 河狸吃素
+  hamster: { bone: 30, fish: 30,  meat: 40,  apple: 100, berry: 100, nectar: 50, sushi: 30,  cake: 90, shrimp: 30  }, // 倉鼠愛果子
+}
+SHOP_ITEMS.forEach((item) => {
+  if (item.category !== 'food') return
+  Object.keys(NEW_PET_FOOD_EXP).forEach((petId) => {
+    if (item.exp[petId] === undefined) item.exp[petId] = NEW_PET_FOOD_EXP[petId][item.id] ?? 50
+  })
+})

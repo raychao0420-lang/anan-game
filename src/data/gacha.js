@@ -14,12 +14,26 @@ export const GACHA_POOLS = {
   legend: SHOP_ITEMS.filter(i => isGachable(i) && i.price > 250),
 }
 
-export function pullGacha(tierId, ownedItems) {
+// 特殊寵物獎品：只在傳說扭蛋出現的稀有夥伴「嚕嚕」（貓頭鷹）
+export const GACHA_PET_PRIZES = {
+  legend: { petId: 'owl', id: 'pet_owl', name: '嚕嚕', emoji: '🦉', desc: '神秘的魔法貓頭鷹，吉吉的好夥伴！', isPet: true },
+}
+const PET_PRIZE_CHANCE = 0.18
+
+export function pullGacha(tierId, ownedItems, ownedPetIds = []) {
+  const tier = GACHA_TIERS.find(t => t.id === tierId)
+
+  // 先擲骰看是否掉落寵物獎品
+  const petPrize = GACHA_PET_PRIZES[tierId]
+  if (petPrize && Math.random() < PET_PRIZE_CHANCE) {
+    const isDup = ownedPetIds.includes(petPrize.petId)
+    return { item: petPrize, isDup, dupBonus: isDup ? tier.dupBonus : 0 }
+  }
+
   const pool = GACHA_POOLS[tierId]
   if (!pool.length) return null
   const item    = pool[Math.floor(Math.random() * pool.length)]
   const isDup   = ownedItems.includes(item.id)
-  const tier    = GACHA_TIERS.find(t => t.id === tierId)
   const dupBonus = isDup ? tier.dupBonus : 0
   return { item, isDup, dupBonus }
 }

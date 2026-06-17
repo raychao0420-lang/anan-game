@@ -722,6 +722,26 @@ export default function WordProblemScreen({ onBack }) {
           )}
         </motion.div>
 
+        {wonFirst && (
+          <motion.div
+            initial={{ scale: 0, rotate: -8 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: 'spring', stiffness: 240, delay: 1.0 }}
+            style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              width: '100%', maxWidth: 260,
+              background: 'linear-gradient(135deg, #E1F5FE, #E0F2F1)',
+              border: '2px solid #4FC3F7', borderRadius: 14,
+              padding: '10px 14px', fontWeight: 800, color: '#0277BD',
+            }}
+          >
+            <motion.span style={{ fontSize: '1.9rem', lineHeight: 1 }}
+              animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 1.6 }}
+            >🐧</motion.span>
+            <span>新夥伴 <b>波波</b> 加入了！</span>
+          </motion.div>
+        )}
+
         <motion.button className="btn-primary" style={{ width: '100%', maxWidth: 260 }}
           whileTap={{ scale: 0.94 }}
           initial={{ opacity: 0 }}

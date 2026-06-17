@@ -1,5 +1,9 @@
 // SVG-based full-body pet avatar with layered accessories
 // viewBox 0 0 100 130 — head ~y44, body ~y92, hat above y14
+import { PETS } from '../data/pets'
+
+// 尚未手繪專屬造型的寵物：用 emoji 造型 fallback（主題色背景＋進化光暈＋依心情換表情）
+const EMOJI_PET_IDS = ['penguin', 'owl', 'seal', 'beaver', 'hamster']
 
 // ── Evolution color palettes ──────────────────────────────────────────────────
 const EVO = {
@@ -55,6 +59,42 @@ const EVO = {
     { body:'#5AAE68', belly:'#D8FFE0', ear:'#489858', nose:'#1A4A20' },
     { body:'#4A9E58', belly:'#D0FFD8', ear:'#388848', nose:'#0E3A18' },
     { body:'#3A8E48', belly:'#C8FFD0', ear:'#288038', nose:'#082A10', glow:'#90FF90' },
+  ],
+  // emoji 造型寵物：只需 body/belly 當背景色 + stage4 光暈
+  penguin: [
+    null,
+    { body:'#4FC3F7', belly:'#E1F5FE' },
+    { body:'#29B6F6', belly:'#C5EAFB' },
+    { body:'#0288D1', belly:'#A8DEF8' },
+    { body:'#01579B', belly:'#8BD2F5', glow:'#4FC3F7' },
+  ],
+  owl: [
+    null,
+    { body:'#9575CD', belly:'#EDE7F6' },
+    { body:'#7E57C2', belly:'#D9CEF0' },
+    { body:'#5E35B1', belly:'#C3B0E6' },
+    { body:'#4527A0', belly:'#2A1A4A', glow:'#B388FF' },
+  ],
+  seal: [
+    null,
+    { body:'#64B5F6', belly:'#E3F2FD' },
+    { body:'#42A5F5', belly:'#CDE7FB' },
+    { body:'#1E88E5', belly:'#B3DAF8' },
+    { body:'#1565C0', belly:'#9BCDF5', glow:'#64B5F6' },
+  ],
+  beaver: [
+    null,
+    { body:'#A1887F', belly:'#EFEBE9' },
+    { body:'#8D6E63', belly:'#E0D6CF' },
+    { body:'#6D4C41', belly:'#D2C2B5' },
+    { body:'#4E342E', belly:'#C4AE9C', glow:'#BCAAA4' },
+  ],
+  hamster: [
+    null,
+    { body:'#FFCA28', belly:'#FFF8E1' },
+    { body:'#FFB300', belly:'#FFEFC0' },
+    { body:'#FF8F00', belly:'#FFE49E' },
+    { body:'#E65100', belly:'#FFD877', glow:'#FFD54F' },
   ],
 }
 
@@ -383,6 +423,21 @@ function OtterBase({ c, isKotaro }) {
       {[61,66,71].map(x => <ellipse key={x} cx={x} cy="105" rx="2.5" ry="2" fill={c.belly} opacity="0.55" />)}
       {/* Tail */}
       <ellipse cx="75" cy="88" rx="10" ry="6" fill={c.body} transform="rotate(-20,75,88)" />
+    </g>
+  )
+}
+
+// emoji 造型 fallback：主題色圓形背景 + 大 emoji，並依心情換成難過表情
+function EmojiPetBase({ petId, c, stage, mood }) {
+  const def = PETS[petId]
+  let emoji = def?.stages?.[stage]?.emoji || '🐾'
+  if (mood < 40 && def?.sadEmoji) emoji = def.sadEmoji
+  return (
+    <g>
+      <ellipse cx="50" cy="74" rx="35" ry="35" fill={c.body} opacity="0.16" />
+      <ellipse cx="50" cy="74" rx="30" ry="30" fill={c.belly} opacity="0.55" />
+      <ellipse cx="50" cy="74" rx="30" ry="30" fill="none" stroke={c.body} strokeWidth="2" opacity="0.5" />
+      <text x="50" y="76" fontSize="56" textAnchor="middle" dominantBaseline="central">{emoji}</text>
     </g>
   )
 }
@@ -863,6 +918,7 @@ function MoodExpression({ mood = 100 }) {
 export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped = [], size = 100, mood = 100 }) {
   const stage  = Math.max(1, Math.min(4, evolutionStage))
   const colors = EVO[petId]?.[stage] ?? EVO.lulu[1]
+  const isEmojiPet = EMOJI_PET_IDS.includes(petId)
 
   const hat        = equipped.find(i => i?.category === 'hat')
   const clothes    = equipped.find(i => i?.category === 'clothes')
@@ -904,7 +960,8 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
       {backpack && <AccBackpack />}
 
       {/* Pet base */}
-      {petId === 'lulu'    ? <LuluBase    c={colors} />
+      {isEmojiPet           ? <EmojiPetBase petId={petId} c={colors} stage={stage} mood={mood} />
+       : petId === 'lulu'    ? <LuluBase    c={colors} />
        : petId === 'mejiro'  ? <MejiroBase  c={colors} />
        : petId === 'jiji'    ? <JijiBase    c={colors} />
        : petId === 'kitsune' ? <KitsuneBase c={colors} />
@@ -1039,8 +1096,8 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
         </g>
       )}
 
-      {/* Mood expression overlay (over face, under hats/clothes) */}
-      <MoodExpression mood={mood} />
+      {/* Mood expression overlay (over face, under hats/clothes) — emoji 造型寵物用自己的表情，不疊 */}
+      {!isEmojiPet && <MoodExpression mood={mood} />}
 
       {/* Clothes (over body) */}
       {clothes?.id === 'sweater'   && <ClothesSweater />}

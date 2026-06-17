@@ -92,7 +92,7 @@ function ArcadePad({ onInput, disabled }) {
 }
 
 export default function ArcadeScreen({ onBack }) {
-  const { coins, addCoins } = useGameStore()
+  const { coins, addCoins, grantPet } = useGameStore()
   const [screen, setScreen]   = useState('hub')
   const [gameId, setGameId]   = useState(null)
   const [input, setInput]     = useState('')
@@ -234,7 +234,11 @@ export default function ArcadeScreen({ onBack }) {
             if (next >= 10) {
               sfx.bossWin()
               addCoins(1200)
-              setResultData({ win: true, earned: 1200, cost: 500 })
+              const gotPet = grantPet('seal')
+              setResultData({
+                win: true, earned: 1200, cost: 500,
+                petReward: gotPet ? { emoji: '🦭', name: '圓圓' } : null,
+              })
               setScreen('result')
             } else {
               setQIdx(next)
@@ -255,7 +259,7 @@ export default function ArcadeScreen({ onBack }) {
       }
     }
     if (input.length < 3) setInput(i => i + v)
-  }, [input, feedback, currentQ, screen, qIdx, qList, addCoins])
+  }, [input, feedback, currentQ, screen, qIdx, qList, addCoins, grantPet])
 
   // ── Resume timer after lightning feedback ─────────────────────────────────
   useEffect(() => {
@@ -513,6 +517,16 @@ export default function ArcadeScreen({ onBack }) {
           <div className="arc-result-title" style={{ color: resultData.win ? game?.color : '#F44336' }}>
             {resultData.win ? '大贏家！' : '可惜了！'}
           </div>
+          {resultData.petReward && (
+            <motion.div className="arc-pet-reward"
+              initial={{ scale: 0, rotate: -8 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: 'spring', stiffness: 240, delay: 0.3 }}
+            >
+              <span className="arc-pet-reward-emoji">{resultData.petReward.emoji}</span>
+              <span>獲得新夥伴 <b>{resultData.petReward.name}</b>！</span>
+            </motion.div>
+          )}
           <div className="arc-coins-row">
             <div className="arc-coins-item"><span>入場費</span><span>-{resultData.cost} 💰</span></div>
             <div className="arc-coins-item">

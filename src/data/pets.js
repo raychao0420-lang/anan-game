@@ -3,6 +3,11 @@
 // 吉吉: 神秘隱藏黑貓，解鎖 Kotaro 後出現
 // 小北: 動物園來的北極狐，解鎖吉吉後出現
 // 小綠: 動物園的小綠繡眼，解鎖小北後出現
+// 波波: 企鵝，闖過「兩步驟應用題」三關後加入（也可金幣解鎖）
+// 嚕嚕: 貓頭鷹，吉吉的魔法夥伴，傳說扭蛋有機會抽到（也可金幣解鎖）
+// 圓圓: 海豹，遊樂場「傳說連十關」全過獲得（也可金幣解鎖）
+// 阿丁 / 小麥: 河狸與倉鼠，圖鑑金幣解鎖
+// 註：事件取得的寵物刻意不設 unlockRequires，確保拿到後一定看得到
 
 // exp needed to go from stage N to N+1 (index = current stage)
 export const EVOLVE_EXP = [0, 500, 2000, 5000]
@@ -108,6 +113,86 @@ export const PETS = {
     happyEmoji: '🥰',
     sadEmoji: '😔',
   },
+  penguin: {
+    id: 'penguin',
+    name: '波波',
+    breed: '企鵝',
+    personality: '搖搖擺擺、愛滑冰、超怕熱',
+    unlockCost: 1400,
+    stages: [
+      null,
+      { emoji: '🐧', label: '小企鵝',   size: '5rem', bg: '#E1F5FE', border: '#4FC3F7' },
+      { emoji: '🐧', label: '滑冰菜鳥', size: '5rem', bg: '#C5EAFB', border: '#29B6F6' },
+      { emoji: '🐧', label: '冰上舞者', size: '5rem', bg: '#A8DEF8', border: '#0288D1' },
+      { emoji: '🐧', label: '傳說企鵝', size: '5rem', bg: '#8BD2F5', border: '#01579B', glow: true },
+    ],
+    happyEmoji: '😆',
+    sadEmoji: '🥶',
+  },
+  owl: {
+    id: 'owl',
+    name: '嚕嚕',
+    breed: '貓頭鷹',
+    personality: '博學、晚上才有精神、會看星象',
+    unlockCost: 1600,
+    stages: [
+      null,
+      { emoji: '🦉', label: '小貓頭鷹',     size: '5rem', bg: '#EDE7F6', border: '#9575CD' },
+      { emoji: '🦉', label: '夜行貓頭鷹',   size: '5rem', bg: '#D9CEF0', border: '#7E57C2' },
+      { emoji: '🦉', label: '星空貓頭鷹',   size: '5rem', bg: '#C3B0E6', border: '#5E35B1' },
+      { emoji: '🦉', label: '傳說魔法貓頭鷹', size: '5rem', bg: '#2A1A4A', border: '#B388FF', glow: true },
+    ],
+    happyEmoji: '🤩',
+    sadEmoji: '😴',
+  },
+  seal: {
+    id: 'seal',
+    name: '圓圓',
+    breed: '海豹',
+    personality: '圓滾滾、愛曬太陽、會拍手',
+    unlockCost: 1800,
+    stages: [
+      null,
+      { emoji: '🦭', label: '小海豹',   size: '5rem', bg: '#E3F2FD', border: '#64B5F6' },
+      { emoji: '🦭', label: '圓潤海豹', size: '5rem', bg: '#CDE7FB', border: '#42A5F5' },
+      { emoji: '🦭', label: '陽光海豹', size: '5rem', bg: '#B3DAF8', border: '#1E88E5' },
+      { emoji: '🦭', label: '傳說海豹', size: '5rem', bg: '#9BCDF5', border: '#1565C0', glow: true },
+    ],
+    happyEmoji: '😄',
+    sadEmoji: '🥺',
+  },
+  beaver: {
+    id: 'beaver',
+    name: '阿丁',
+    breed: '河狸',
+    personality: '認真的小工程師、愛蓋水壩、有點固執',
+    unlockCost: 2000,
+    stages: [
+      null,
+      { emoji: '🦫', label: '小木匠',     size: '5rem', bg: '#EFEBE9', border: '#A1887F' },
+      { emoji: '🦫', label: '築壩高手',   size: '5rem', bg: '#E0D6CF', border: '#8D6E63' },
+      { emoji: '🦫', label: '河川工程師', size: '5rem', bg: '#D2C2B5', border: '#6D4C41' },
+      { emoji: '🦫', label: '傳說河狸',   size: '5rem', bg: '#C4AE9C', border: '#4E342E', glow: true },
+    ],
+    happyEmoji: '😁',
+    sadEmoji: '😟',
+  },
+  hamster: {
+    id: 'hamster',
+    name: '小麥',
+    breed: '倉鼠',
+    personality: '貪吃、愛塞滿頰袋、天不怕地不怕',
+    unlockCost: 2200,
+    stages: [
+      null,
+      { emoji: '🐹', label: '小不點',   size: '5rem', bg: '#FFF8E1', border: '#FFCA28' },
+      { emoji: '🐹', label: '圓滾頰袋', size: '5rem', bg: '#FFEFC0', border: '#FFB300' },
+      { emoji: '🐹', label: '黃金麥鼠', size: '5rem', bg: '#FFE49E', border: '#FF8F00' },
+      { emoji: '🐹', label: '傳說倉鼠', size: '5rem', bg: '#FFD877', border: '#E65100', glow: true },
+    ],
+    happyEmoji: '😋',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster']

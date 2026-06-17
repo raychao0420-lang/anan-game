@@ -23,7 +23,13 @@ const PET_CONFIG = {
   jiji:   { startPos: { x: 58, y: 48 }, bobDuration: 2.0, wanderInterval: 3200, burstEmoji: '✨' },
   kitsune:{ startPos: { x: 28, y: 52 }, bobDuration: 2.3, wanderInterval: 3800, burstEmoji: '❄️' },
   mejiro: { startPos: { x: 64, y: 45 }, bobDuration: 1.5, wanderInterval: 2500, burstEmoji: '🌸' },
+  penguin:{ startPos: { x: 20, y: 58 }, bobDuration: 1.7, wanderInterval: 3000, burstEmoji: '🐟' },
+  owl:    { startPos: { x: 50, y: 44 }, bobDuration: 2.6, wanderInterval: 4500, burstEmoji: '🌙' },
+  seal:   { startPos: { x: 36, y: 60 }, bobDuration: 2.2, wanderInterval: 3600, burstEmoji: '💧' },
+  beaver: { startPos: { x: 66, y: 56 }, bobDuration: 2.0, wanderInterval: 3400, burstEmoji: '🪵' },
+  hamster:{ startPos: { x: 40, y: 50 }, bobDuration: 1.4, wanderInterval: 2400, burstEmoji: '🌰' },
 }
+const DEFAULT_PET_CONFIG = { startPos: { x: 42, y: 52 }, bobDuration: 2.0, wanderInterval: 3200, burstEmoji: '🐾' }
 
 // Default decoration slots (% positions)
 const DECO_SLOTS = [
@@ -194,7 +200,7 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
 // ── Wandering pet ─────────────────────────────────────────────────────────────
 
 function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPetClick, mood = 100 }) {
-  const cfg     = PET_CONFIG[petId]
+  const cfg     = PET_CONFIG[petId] ?? DEFAULT_PET_CONFIG
   const isOtter = petId === 'hana' || petId === 'kotaro'
 
   const [pos, setPos]   = useState(cfg.startPos)

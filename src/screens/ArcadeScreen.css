@@ -338,6 +338,22 @@
   text-align: center;
 }
 
+.arc-pet-reward {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: linear-gradient(135deg, #E3F2FD, #E1F5FE);
+  border: 2px solid #64B5F6;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1565C0;
+}
+.arc-pet-reward-emoji { font-size: 1.8rem; line-height: 1; }
+
 .arc-result-score {
   font-size: 1.1rem;
   color: #555;
