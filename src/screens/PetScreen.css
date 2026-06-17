@@ -160,6 +160,25 @@
   font-weight: 600;
 }
 
+.pet-quest-lock {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #00897B;
+  background: #E0F2F1;
+  border: 2px dashed #4DB6AC;
+  border-radius: 14px;
+  padding: 10px 14px;
+}
+
+.pet-quest-hint {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #00695C;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
 .pet-evolve-preview {
   display: flex;
   align-items: center;

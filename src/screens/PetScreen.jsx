@@ -184,19 +184,26 @@ export default function PetScreen({ onNavigate }) {
       {/* Action area */}
       <div className="pet-actions">
         {!petData.unlocked ? (
-          <div className="pet-unlock-area">
-            <div className="pet-unlock-cost">解鎖費用：{petDef.unlockCost} 💰</div>
-            <motion.button
-              className={`btn-primary ${coins < petDef.unlockCost ? 'disabled' : ''}`}
-              whileTap={coins >= petDef.unlockCost ? { scale: 0.94 } : {}}
-              onClick={handleUnlock}
-              disabled={coins < petDef.unlockCost}
-            >
-              {coins >= petDef.unlockCost
-                ? `🔓 解鎖${petDef.unlockRequires ? '牠' : petDef.name}！`
-                : `💰 金幣不足（差 ${petDef.unlockCost - coins}）`}
-            </motion.button>
-          </div>
+          petDef.purchasable === false ? (
+            <div className="pet-unlock-area">
+              <div className="pet-quest-lock">🎯 闖關限定夥伴</div>
+              <div className="pet-quest-hint">{petDef.unlockHint || '完成指定關卡就能獲得！'}</div>
+            </div>
+          ) : (
+            <div className="pet-unlock-area">
+              <div className="pet-unlock-cost">解鎖費用：{petDef.unlockCost} 💰</div>
+              <motion.button
+                className={`btn-primary ${coins < petDef.unlockCost ? 'disabled' : ''}`}
+                whileTap={coins >= petDef.unlockCost ? { scale: 0.94 } : {}}
+                onClick={handleUnlock}
+                disabled={coins < petDef.unlockCost}
+              >
+                {coins >= petDef.unlockCost
+                  ? `🔓 解鎖${petDef.unlockRequires ? '牠' : petDef.name}！`
+                  : `💰 金幣不足（差 ${petDef.unlockCost - coins}）`}
+              </motion.button>
+            </div>
+          )
         ) : maxEvolved ? (
           <div className="pet-max-label">👑 已達最高進化！傳說等級！</div>
         ) : canEvolve ? (
