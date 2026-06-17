@@ -94,7 +94,7 @@
 }
 
 .wp-side-right {
-  width: 150px;
+  width: 190px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -102,15 +102,15 @@
 }
 
 @media (max-width: 360px) {
-  .wp-side-right { width: 130px; }
+  .wp-side-right { width: 160px; }
 }
 
 @media (min-width: 500px) {
-  .wp-side-right { width: 220px; }
+  .wp-side-right { width: 280px; }
 }
 
 @media (min-width: 700px) {
-  .wp-side-right { width: 300px; }
+  .wp-side-right { width: 380px; }
 }
 
 /* ─── 側邊布局時，左邊算式區縮小尺寸塞得下窄欄 ─── */
