@@ -32,7 +32,7 @@ function makeQuestions() {
 }
 
 export default function MakeTwentyScreen({ onBack }) {
-  const { activePet, pets, petEquipment, makeTwentyCleared, clearMakeTwenty } = useGameStore()
+  const { activePet, pets, petEquipment, makeTwentyCleared, clearMakeTwenty, updatePetMood } = useGameStore()
   const petData = pets[activePet]
   const equipped = (petEquipment[activePet] || [])
     .map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
@@ -102,6 +102,7 @@ export default function MakeTwentyScreen({ onBack }) {
       }
 
       sfx.correct()
+      updatePetMood(activePet, 4)
       setFeedback('correct')
       clearTimeout(fbRef.current)
       const nextIdx = qIdx + 1
@@ -129,7 +130,7 @@ export default function MakeTwentyScreen({ onBack }) {
       return
     }
     if (input.length < 2) setInput(i => i + v)
-  }, [phase, feedback, input, currentQ, qIdx, roundIdx, round, makeTwentyCleared, clearMakeTwenty])
+  }, [phase, feedback, input, currentQ, qIdx, roundIdx, round, makeTwentyCleared, clearMakeTwenty, activePet, updatePetMood])
 
   const timerPct   = round ? Math.max(0, (timeLeft / round.timeLimit) * 100) : 100
   const timerColor = timerPct > 50 ? '#4CAF50' : timerPct > 25 ? '#FF9800' : '#F44336'

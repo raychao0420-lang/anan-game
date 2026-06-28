@@ -69,6 +69,7 @@ export const useGameStore = create(
       examBossCleared: false,
       makeTenCleared: false,
       makeTwentyCleared: false,
+      makeHundredCleared: false,
       crossEqualsCleared: false,
       wordProblemCleared: false,
       multiplyCleared: false,
@@ -355,6 +356,20 @@ export const useGameStore = create(
         get().checkAchievements()
       },
 
+      clearMakeHundred: () => {
+        set((s) => {
+          const first = !s.makeHundredCleared
+          return {
+            makeHundredCleared: true,
+            ...(first ? { coins: s.coins + 800, totalCoinsEarned: s.totalCoinsEarned + 800 } : {}),
+            ownedItems: s.ownedItems.includes('century_crown')
+              ? s.ownedItems
+              : [...s.ownedItems, 'century_crown'],
+          }
+        })
+        get().checkAchievements()
+      },
+
       clearCrossEquals: () => {
         set((s) => {
           const first = !s.crossEqualsCleared
@@ -461,6 +476,7 @@ export const useGameStore = create(
           examBossCleared: false,
           makeTenCleared: false,
           makeTwentyCleared: false,
+          makeHundredCleared: false,
           crossEqualsCleared: false,
           wordProblemCleared: false,
           multiplyCleared: false,

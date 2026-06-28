@@ -147,7 +147,7 @@ function GachaPrize({ item, tierId }) {
 }
 
 export default function GachaScreen({ onBack }) {
-  const { coins, ownedItems, pets, addCoins, buyItem, grantPet } = useGameStore()
+  const { coins, ownedItems, pets, addCoins, buyItem, grantPet, activePet, updatePetMood } = useGameStore()
   const [phase, setPhase]   = useState('pick')
   const [tierId, setTierId] = useState(null)
   const [result, setResult] = useState(null)
@@ -176,6 +176,7 @@ export default function GachaScreen({ onBack }) {
       addCoins(result.dupBonus)
     }
     sfx.correct()
+    updatePetMood(activePet, 4)
     setPhase('pick')
     setResult(null)
     setTierId(null)

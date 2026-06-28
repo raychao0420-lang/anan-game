@@ -14,7 +14,7 @@ const BOSS_QUESTIONS = 15
 const BOSS_PASS = 10
 
 export default function BossScreen({ chapterId, onBack }) {
-  const { activePet, pets, petEquipment, clearBoss, bossCleared, updateMaxCombo, updateTotalCoins } = useGameStore()
+  const { activePet, pets, petEquipment, clearBoss, bossCleared, updateMaxCombo, updateTotalCoins, updatePetMood } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
@@ -101,10 +101,10 @@ export default function BossScreen({ chapterId, onBack }) {
     clearInterval(timerRef.current)
     const correct = parseInt(input) === currentQ.answer
     showFeedback(correct)
-    if (correct) sfx.bossHit()
+    if (correct) { sfx.bossHit(); updatePetMood(activePet, 4) }
     else sfx.wrong()
     setTimeout(() => nextQuestion(correct), 500)
-  }, [input, currentQ, phase, nextQuestion])
+  }, [input, currentQ, phase, nextQuestion, activePet, updatePetMood])
 
   const timerPct = (timeLeft / BOSS_TIME) * 100
   const timerColor = timeLeft > 5 ? '#6BCB77' : timeLeft > 2 ? '#FFB347' : '#FF6B6B'

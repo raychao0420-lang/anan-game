@@ -80,6 +80,7 @@ export const SHOP_ITEMS = [
   // ── 稀有（Boss 獎勵，不可購買） ──
   { id: 'golden_finger',  name: '金手指',  emoji: '🤞', category: 'rare', price: 0, desc: '湊10特訓三連勝！神速心算達人的象徵', boss: true },
   { id: 'double_v',       name: '雙指勝利', emoji: '✌️', category: 'rare', price: 0, desc: '湊20特訓三連勝！進位心算高手的象徵',  boss: true },
+  { id: 'century_crown',  name: '百分皇冠', emoji: '💯', category: 'rare', price: 0, desc: '湊100特訓三連勝！湊百心算大師的象徵',  boss: true },
   { id: 'equation_scale', name: '等號天秤', emoji: '⚖️', category: 'rare', price: 0, desc: '等號搬家三連勝！乘除互換邏輯大師',    boss: true },
   { id: 'reading_glasses',name: '智慧眼鏡', emoji: '🤓', category: 'rare', price: 0, desc: '兩步應用題三連勝！讀題理解小天才',    boss: true },
   { id: 'abacus_master', name: '算盤大師', emoji: '🧮', category: 'rare', price: 0, desc: '九九大作戰三連勝！乘除法天才的象徵',  boss: true },

@@ -21,7 +21,7 @@ const formatTime = (t) => t >= 60 ? `${Math.floor(t / 60)}:${String(t % 60).padS
 export default function ExamBossScreen({ onBack }) {
   const {
     activePet, pets, petEquipment, subjectStreaks, ownedItems,
-    addCoins, recordSubjectResult, popSubjectQuestions,
+    addCoins, recordSubjectResult, popSubjectQuestions, updatePetMood,
   } = useGameStore()
   const equipped = (petEquipment[activePet] || []).map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
   const pet      = PETS[activePet]
@@ -154,9 +154,9 @@ export default function ExamBossScreen({ onBack }) {
     const userVal   = parseFloat(input)
     const isCorrect = !isNaN(userVal) && Math.abs(userVal - currentQ.answer) < 0.01
     showFeedback(isCorrect ? 'correct' : 'wrong')
-    if (isCorrect) sfx.correct(); else sfx.wrong()
+    if (isCorrect) { sfx.correct(); updatePetMood(activePet, 4) } else sfx.wrong()
     setTimeout(() => nextQuestion(isCorrect), 700)
-  }, [input, currentQ, phase, nextQuestion])
+  }, [input, currentQ, phase, nextQuestion, activePet, updatePetMood])
 
   const handleChoiceSelect = useCallback((optionIndex) => {
     if (phase !== 'fight' || selectedChoice !== null) return
@@ -164,9 +164,9 @@ export default function ExamBossScreen({ onBack }) {
     const isCorrect = optionIndex === currentQ.answer
     setSelectedChoice(optionIndex)
     showFeedback(isCorrect ? 'correct' : 'wrong')
-    if (isCorrect) sfx.correct(); else sfx.wrong()
+    if (isCorrect) { sfx.correct(); updatePetMood(activePet, 4) } else sfx.wrong()
     setTimeout(() => nextQuestion(isCorrect), isCorrect ? 700 : 1500)
-  }, [currentQ, phase, nextQuestion, selectedChoice])
+  }, [currentQ, phase, nextQuestion, selectedChoice, activePet, updatePetMood])
 
   const startSubject = (subConf) => {
     prevStreakRef.current = subjectStreaks?.[subConf.id] ?? 0

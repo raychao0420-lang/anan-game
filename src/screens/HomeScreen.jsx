@@ -112,6 +112,15 @@ export default function HomeScreen({ onNavigate }) {
           </motion.button>
         </div>
 
+        <motion.button
+          className="btn-makehundred home-btn-new"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => nav('makehundred')}
+        >
+          💯 湊100特訓
+          <span className="home-badge home-badge-new">NEW</span>
+        </motion.button>
+
         <div className="home-row">
           <motion.button
             className="btn-crossequals"

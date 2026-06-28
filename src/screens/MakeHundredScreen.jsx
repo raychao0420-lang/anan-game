@@ -9,21 +9,22 @@ import { sfx } from '../utils/sound'
 import './MaketenScreen.css'
 
 const ROUNDS = [
-  { no: 1, timeLimit: 20, label: '練習', color: '#4CAF50', bg: '#F1F8E9' },
-  { no: 2, timeLimit: 12, label: '加速', color: '#FF9800', bg: '#FFF3E0' },
+  { no: 1, timeLimit: 22, label: '熱身', color: '#4CAF50', bg: '#F1F8E9' },
+  { no: 2, timeLimit: 14, label: '加速', color: '#FF9800', bg: '#FFF3E0' },
   { no: 3, timeLimit: 8,  label: '極速', color: '#F44336', bg: '#FFEBEE' },
 ]
 const Q_PER_ROUND = 10
 
 function makeQuestions() {
+  const pairs = [
+    [10,90],[20,80],[30,70],[40,60],[50,50],
+    [25,75],[35,65],[45,55],[15,85],[5,95],
+  ]
   const pool = []
-  for (let a = 2; a <= 9; a++) {
-    for (let b = 1; b <= 9; b++) {
-      const product = a * b
-      pool.push({ type: 'mult', a, b, product, answer: b })
-      pool.push({ type: 'div',  a, b, product, answer: b })
-    }
-  }
+  pairs.forEach(([a, b]) => {
+    pool.push({ shown: a, answer: b, leftBlank: false })
+    if (a !== b) pool.push({ shown: b, answer: a, leftBlank: true })
+  })
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[pool[i], pool[j]] = [pool[j], pool[i]]
@@ -31,8 +32,8 @@ function makeQuestions() {
   return pool.slice(0, Q_PER_ROUND)
 }
 
-export default function MultiplyScreen({ onBack }) {
-  const { activePet, pets, petEquipment, multiplyCleared, clearMultiply, updatePetMood } = useGameStore()
+export default function MakeHundredScreen({ onBack }) {
+  const { activePet, pets, petEquipment, makeHundredCleared, clearMakeHundred, updatePetMood } = useGameStore()
   const petData = pets[activePet]
   const equipped = (petEquipment[activePet] || [])
     .map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
@@ -42,7 +43,7 @@ export default function MultiplyScreen({ onBack }) {
   const [questions, setQuestions] = useState([])
   const [qIdx, setQIdx]         = useState(0)
   const [input, setInput]       = useState('')
-  const [timeLeft, setTimeLeft] = useState(20)
+  const [timeLeft, setTimeLeft] = useState(22)
   const [feedback, setFeedback] = useState(null)
   const [failInfo, setFailInfo] = useState(null)
   const [wonFirst, setWonFirst] = useState(false)
@@ -65,7 +66,6 @@ export default function MultiplyScreen({ onBack }) {
     setPhase('playing')
   }, [])
 
-  // ── Timer ─────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (phase !== 'playing') { clearInterval(timerRef.current); return }
     clearInterval(timerRef.current)
@@ -85,7 +85,6 @@ export default function MultiplyScreen({ onBack }) {
     fbRef.current = setTimeout(() => setPhase('fail'), 1100)
   }, [timeLeft, phase, currentQ])
 
-  // ── Input ─────────────────────────────────────────────────────────────────
   const handlePad = useCallback((v) => {
     if (phase !== 'playing' || feedback) return
     if (v === 'del') { setInput(i => i.slice(0, -1)); return }
@@ -115,8 +114,8 @@ export default function MultiplyScreen({ onBack }) {
         setFeedback(null)
         if (lastQ) {
           if (lastRnd) {
-            setWonFirst(!multiplyCleared)
-            clearMultiply()
+            setWonFirst(!makeHundredCleared)
+            clearMakeHundred()
             setPhase('victory')
             sfx.bossWin()
           } else {
@@ -132,14 +131,14 @@ export default function MultiplyScreen({ onBack }) {
       return
     }
     if (input.length < 2) setInput(i => i + v)
-  }, [phase, feedback, input, currentQ, qIdx, roundIdx, round, multiplyCleared, clearMultiply, activePet, updatePetMood])
+  }, [phase, feedback, input, currentQ, qIdx, roundIdx, round, makeHundredCleared, clearMakeHundred, activePet, updatePetMood])
 
   const timerPct   = round ? Math.max(0, (timeLeft / round.timeLimit) * 100) : 100
   const timerColor = timerPct > 50 ? '#4CAF50' : timerPct > 25 ? '#FF9800' : '#F44336'
 
   // ── Intro ─────────────────────────────────────────────────────────────────
   if (phase === 'intro') return (
-    <div className="mt-screen" style={{ background: '#E8EAF6' }}>
+    <div className="mt-screen" style={{ background: '#E8F5E9' }}>
       <div className="mt-top-bar">
         <button className="mt-back-btn" onClick={() => { sfx.click(); onBack() }}>← 返回</button>
       </div>
@@ -148,16 +147,16 @@ export default function MultiplyScreen({ onBack }) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 200 }}
       >
-        <div className="mt-main-title" style={{ color: '#3949AB' }}>🔢 九九大作戰</div>
+        <div className="mt-main-title">💯 湊100特訓</div>
 
         <motion.div animate={{ y: [0, -12, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
           <PetAvatar petId={activePet} evolutionStage={petData.evolutionStage} equipped={equipped} size={100} />
         </motion.div>
 
         <p className="mt-desc">
-          乘法除法混合出題！<br />
+          10題全對才能過關！<br />
           連過三關就能得到傳說道具<br />
-          <b style={{ color: '#3949AB', fontSize: '1.1rem' }}>🧮 算盤大師</b>！
+          <b style={{ color: '#1565C0', fontSize: '1.1rem' }}>💯 百分皇冠</b>！
         </p>
 
         <div className="mt-round-list">
@@ -172,8 +171,8 @@ export default function MultiplyScreen({ onBack }) {
 
         <p className="mt-warn">⚠️ 答錯或時間到，從第1關重新開始！</p>
 
-        {multiplyCleared && (
-          <div className="mt-cleared-badge">✅ 已獲得算盤大師！可再次挑戰</div>
+        {makeHundredCleared && (
+          <div className="mt-cleared-badge">✅ 已獲得百分皇冠！可再次挑戰</div>
         )}
 
         <motion.button className="btn-primary" style={{ width: '100%', maxWidth: 280 }}
@@ -244,27 +243,25 @@ export default function MultiplyScreen({ onBack }) {
             </motion.div>
           )}
           <div className="mt-equation">
-            {currentQ?.type === 'mult' ? (
+            {currentQ?.leftBlank ? (
               <>
-                <span className="mt-number">{currentQ.a}</span>
-                <span className="mt-plus">×</span>
                 <span className="mt-blank" style={{ borderColor: input ? round.color : '#CCC', color: input ? round.color : '#CCC' }}>
                   {input || '□'}
                 </span>
-                <span className="mt-eq">=</span>
-                <span className="mt-ten" style={{ color: '#3949AB' }}>{currentQ.product}</span>
+                <span className="mt-plus">+</span>
+                <span className="mt-number">{currentQ.shown}</span>
               </>
             ) : (
               <>
-                <span className="mt-number">{currentQ?.product}</span>
-                <span className="mt-plus">÷</span>
-                <span className="mt-number">{currentQ?.a}</span>
-                <span className="mt-eq">=</span>
+                <span className="mt-number">{currentQ?.shown}</span>
+                <span className="mt-plus">+</span>
                 <span className="mt-blank" style={{ borderColor: input ? round.color : '#CCC', color: input ? round.color : '#CCC' }}>
                   {input || '□'}
                 </span>
               </>
             )}
+            <span className="mt-eq">=</span>
+            <span className="mt-ten">100</span>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -277,7 +274,7 @@ export default function MultiplyScreen({ onBack }) {
 
   // ── Round pass ────────────────────────────────────────────────────────────
   if (phase === 'roundPass') return (
-    <div className="mt-screen" style={{ background: '#E8EAF6' }}>
+    <div className="mt-screen" style={{ background: '#F1F8E9' }}>
       <motion.div className="mt-card"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -287,7 +284,7 @@ export default function MultiplyScreen({ onBack }) {
           animate={{ rotate: [0, 15, -15, 8, 0], scale: [1, 1.3, 1] }}
           transition={{ duration: 0.7 }}
         >⭐</motion.div>
-        <div className="mt-pass-title" style={{ color: '#3949AB' }}>第 {roundIdx + 1} 關通過！</div>
+        <div className="mt-pass-title">第 {roundIdx + 1} 關通過！</div>
 
         <motion.div animate={{ y: [0, -16, 0] }} transition={{ repeat: Infinity, duration: 1.4 }}>
           <PetAvatar petId={activePet} evolutionStage={petData.evolutionStage} equipped={equipped} size={100} />
@@ -301,7 +298,7 @@ export default function MultiplyScreen({ onBack }) {
           <span style={{ color: '#666' }}>每題只有 {ROUNDS[roundIdx + 1].timeLimit} 秒！加油！</span>
         </div>
 
-        <motion.button className="btn-primary" style={{ width: '100%', maxWidth: 260, background: '#3949AB', borderColor: '#3949AB' }}
+        <motion.button className="btn-primary" style={{ width: '100%', maxWidth: 260 }}
           whileTap={{ scale: 0.94 }}
           onClick={() => { sfx.click(); startRound(roundIdx + 1) }}
         >
@@ -357,7 +354,7 @@ export default function MultiplyScreen({ onBack }) {
 
   // ── Victory ───────────────────────────────────────────────────────────────
   if (phase === 'victory') return (
-    <div className="mt-screen" style={{ background: 'linear-gradient(160deg, #E8EAF6, #C5CAE9)' }}>
+    <div className="mt-screen" style={{ background: 'linear-gradient(160deg, #E3F2FD, #BBDEFB)' }}>
       <motion.div className="mt-card mt-victory-card"
         initial={{ scale: 0.5, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -367,7 +364,7 @@ export default function MultiplyScreen({ onBack }) {
           animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 3.5, ease: 'linear' }}
         >✨</motion.div>
 
-        <div className="mt-victory-title" style={{ color: '#3949AB' }}>三關全過！</div>
+        <div className="mt-victory-title">三關全過！</div>
 
         <motion.div
           animate={{ y: [0, -22, 0], rotate: [0, 10, -10, 0] }}
@@ -377,25 +374,23 @@ export default function MultiplyScreen({ onBack }) {
         </motion.div>
 
         <motion.div className="mt-reward-box"
-          style={{ background: 'linear-gradient(135deg, #E8EAF6, #C5CAE9)' }}
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.55 }}
         >
-          <div style={{ fontSize: '3.2rem' }}>🧮</div>
-          <div className="mt-reward-name" style={{ color: '#3949AB' }}>算盤大師</div>
-          <div className="mt-reward-sub">乘除法天才！</div>
+          <div style={{ fontSize: '3.2rem' }}>💯</div>
+          <div className="mt-reward-name">百分皇冠</div>
+          <div className="mt-reward-sub">湊百心算大師！</div>
           {wonFirst && (
             <motion.div className="mt-reward-coins"
               initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.9 }}
             >
-              +500 💰 金幣
+              +800 💰 金幣
             </motion.div>
           )}
         </motion.div>
 
-        <motion.button className="btn-primary"
-          style={{ width: '100%', maxWidth: 260, background: '#3949AB', borderColor: '#3949AB' }}
+        <motion.button className="btn-primary" style={{ width: '100%', maxWidth: 260 }}
           whileTap={{ scale: 0.94 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

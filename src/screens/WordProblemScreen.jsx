@@ -216,7 +216,7 @@ function BuildPanel({ numbers, prevValue, onTapNum, onTapOp, color, disabled }) 
 }
 
 export default function WordProblemScreen({ onBack }) {
-  const { activePet, pets, petEquipment, wordProblemCleared, clearWordProblem } = useGameStore()
+  const { activePet, pets, petEquipment, wordProblemCleared, clearWordProblem, updatePetMood } = useGameStore()
   const petData = pets[activePet]
   const equipped = (petEquipment[activePet] || [])
     .map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
@@ -382,6 +382,7 @@ export default function WordProblemScreen({ onBack }) {
         return
       }
       sfx.correct()
+      updatePetMood(activePet, 4)
       setFeedback('correct')
       clearTimeout(fbRef.current)
       advanceAfterCorrect()
@@ -389,7 +390,7 @@ export default function WordProblemScreen({ onBack }) {
     }
     // 數字鍵：填到 result（如果還沒選完運算式也允許先輸入結果）
     if (input.length < 3) setInput(i => i + v)
-  }, [phase, feedback, input, currentQ, stepIdx, userA, userOp, userB, advanceAfterCorrect])
+  }, [phase, feedback, input, currentQ, stepIdx, userA, userOp, userB, advanceAfterCorrect, activePet, updatePetMood])
 
   const timerPct   = round ? Math.max(0, (timeLeft / round.timeLimit) * 100) : 100
   const timerColor = timerPct > 50 ? '#4CAF50' : timerPct > 25 ? '#FF9800' : '#F44336'

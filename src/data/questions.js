@@ -123,15 +123,15 @@ generators[40] = () => {
 generators[56] = () => makeMul(rand(11, 39), rand(2, 9))          // 2位數乘 小數
 generators[57] = () => makeMul(rand(40, 79), rand(2, 9))          // 2位數乘 大數
 generators[58] = () => makeMul(rand(12, 99), rand(2, 9))          // 2位數乘 全範圍
-generators[59] = () => { const a = rand(11, 49); const b = rand(2, 9); return makeDiv(a, b) }  // ÷1位 答案≤49
-generators[60] = () => { const a = rand(50, 99); const b = rand(2, 9); return makeDiv(a, b) }  // ÷1位 答案≥50
+generators[59] = () => generators[36]()  // 兩位數÷一位數，商一位
+generators[60] = () => generators[37]()  // 兩位數÷一位數，商兩位
 generators[61] = () => { const a = rand(100, 699); const b = rand(100, Math.min(899 - a, 400)); return makeAdd(a, b) } // 3位+3位
 generators[62] = () => { const a = rand(300, 999); const b = rand(100, a - 100); return makeSub(a, b) }               // 3位-3位
 generators[63] = () => (rand(0, 1) ? generators[61]() : generators[62]())  // 3位加減混合
 generators[64] = () => (rand(0, 1) ? generators[56]() : generators[59]())  // 乘÷ I
 generators[65] = () => (rand(0, 1) ? generators[57]() : generators[60]())  // 乘÷ II
 generators[66] = () => makeMul(rand(13, 79), rand(3, 9))           // 乘法衝刺
-generators[67] = () => { const a = rand(13, 99); const b = rand(3, 9); return makeDiv(a, b) }  // 除法衝刺
+generators[67] = () => generators[39]()  // 除法衝刺：兩位數÷一位數綜合
 generators[68] = () => {                                           // 乘除大混合
   const r = rand(0, 3)
   if (r === 0) return generators[58]()

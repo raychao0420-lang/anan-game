@@ -92,7 +92,7 @@ function ArcadePad({ onInput, disabled }) {
 }
 
 export default function ArcadeScreen({ onBack }) {
-  const { coins, addCoins, grantPet } = useGameStore()
+  const { coins, addCoins, grantPet, activePet, updatePetMood } = useGameStore()
   const [screen, setScreen]   = useState('hub')
   const [gameId, setGameId]   = useState(null)
   const [input, setInput]     = useState('')
@@ -185,6 +185,7 @@ export default function ArcadeScreen({ onBack }) {
       if (screen === 'l_play') {
         if (correct) {
           sfx.correct()
+          updatePetMood(activePet, 4)
           setScore(s => s + 1)
           setFeedback('correct')
           clearTimeout(fbRef.current)
@@ -211,6 +212,7 @@ export default function ArcadeScreen({ onBack }) {
       if (screen === 'a_play') {
         if (correct) {
           sfx.bossWin()
+          updatePetMood(activePet, 4)
           setResultData({ win: true, earned: 400, cost: 200 })
           addCoins(400)
           setScreen('result')
@@ -225,6 +227,7 @@ export default function ArcadeScreen({ onBack }) {
       if (screen === 'g_play') {
         if (correct) {
           sfx.correct()
+          updatePetMood(activePet, 4)
           setFeedback('correct')
           clearTimeout(fbRef.current)
           const next = qIdx + 1
@@ -259,7 +262,7 @@ export default function ArcadeScreen({ onBack }) {
       }
     }
     if (input.length < 3) setInput(i => i + v)
-  }, [input, feedback, currentQ, screen, qIdx, qList, addCoins, grantPet])
+  }, [input, feedback, currentQ, screen, qIdx, qList, addCoins, grantPet, activePet, updatePetMood])
 
   // ── Resume timer after lightning feedback ─────────────────────────────────
   useEffect(() => {
