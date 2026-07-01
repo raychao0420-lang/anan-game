@@ -117,7 +117,7 @@ export default function HomeScreen({ onNavigate }) {
           whileTap={{ scale: 0.94 }}
           onClick={() => nav('makehundred')}
         >
-          💯 湊100特訓
+          💯 湊100
           <span className="home-badge home-badge-new">NEW</span>
         </motion.button>
 

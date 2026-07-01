@@ -15,6 +15,21 @@ const ROUNDS = [
 ]
 const Q_PER_ROUND = 10
 
+// 練習模式：時間充足、題目多、答錯不重來
+const PRACTICE_TOTAL = 20
+const PRACTICE_TIME  = 30
+const PRACTICE_COIN  = 3   // 每答對一題送金幣
+const PRACTICE_CFG   = { timeLimit: PRACTICE_TIME, color: '#1976D2', bg: '#E3F2FD', label: '練習' }
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
+// 特訓：固定 10 組配對
 function makeQuestions() {
   const pairs = [
     [10,90],[20,80],[30,70],[40,60],[50,50],
@@ -25,20 +40,34 @@ function makeQuestions() {
     pool.push({ shown: a, answer: b, leftBlank: false })
     if (a !== b) pool.push({ shown: b, answer: a, leftBlank: true })
   })
-  for (let i = pool.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[pool[i], pool[j]] = [pool[j], pool[i]]
+  return shuffle(pool).slice(0, Q_PER_ROUND)
+}
+
+// 練習：5~95 所有整五配對，題庫大、抽 n 題連續練
+function makePracticeQuestions(n) {
+  const forms = []
+  for (let a = 5; a <= 95; a += 5) {
+    const b = 100 - a
+    forms.push({ shown: a, answer: b, leftBlank: false })
+    if (a !== b) forms.push({ shown: b, answer: a, leftBlank: true })
   }
-  return pool.slice(0, Q_PER_ROUND)
+  const out = []
+  let bag = []
+  while (out.length < n) {
+    if (bag.length === 0) bag = shuffle([...forms])
+    out.push(bag.pop())
+  }
+  return out
 }
 
 export default function MakeHundredScreen({ onBack }) {
-  const { activePet, pets, petEquipment, makeHundredCleared, clearMakeHundred, updatePetMood } = useGameStore()
+  const { activePet, pets, petEquipment, makeHundredCleared, clearMakeHundred, updatePetMood, addCoins } = useGameStore()
   const petData = pets[activePet]
   const equipped = (petEquipment[activePet] || [])
     .map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
 
   const [phase, setPhase]       = useState('intro')
+  const [mode, setMode]         = useState('challenge')  // 'challenge' | 'practice'
   const [roundIdx, setRoundIdx] = useState(0)
   const [questions, setQuestions] = useState([])
   const [qIdx, setQIdx]         = useState(0)
@@ -47,15 +76,21 @@ export default function MakeHundredScreen({ onBack }) {
   const [feedback, setFeedback] = useState(null)
   const [failInfo, setFailInfo] = useState(null)
   const [wonFirst, setWonFirst] = useState(false)
+  const [pracCorrect, setPracCorrect] = useState(0)
+  const [pracEarned, setPracEarned]   = useState(0)
   const timerRef = useRef(null)
   const fbRef    = useRef(null)
 
-  const round    = ROUNDS[roundIdx]
-  const currentQ = questions[qIdx]
+  const round      = ROUNDS[roundIdx]
+  const currentQ   = questions[qIdx]
+  const isPractice = mode === 'practice'
+  const cfg        = isPractice ? PRACTICE_CFG : round
+  const totalQ     = isPractice ? PRACTICE_TOTAL : Q_PER_ROUND
 
   const startRound = useCallback((rIdx) => {
     clearInterval(timerRef.current)
     clearTimeout(fbRef.current)
+    setMode('challenge')
     setRoundIdx(rIdx)
     setQuestions(makeQuestions())
     setQIdx(0)
@@ -65,6 +100,39 @@ export default function MakeHundredScreen({ onBack }) {
     setFailInfo(null)
     setPhase('playing')
   }, [])
+
+  const startPractice = useCallback(() => {
+    clearInterval(timerRef.current)
+    clearTimeout(fbRef.current)
+    setMode('practice')
+    setQuestions(makePracticeQuestions(PRACTICE_TOTAL))
+    setQIdx(0)
+    setInput('')
+    setTimeLeft(PRACTICE_TIME)
+    setFeedback(null)
+    setFailInfo(null)
+    setPracCorrect(0)
+    setPracEarned(0)
+    setPhase('playing')
+  }, [])
+
+  // 練習：答完一題後前進，或結算
+  const nextPractice = useCallback((correctSoFar) => {
+    const nextIdx = qIdx + 1
+    if (nextIdx >= PRACTICE_TOTAL) {
+      const earned = correctSoFar * PRACTICE_COIN
+      if (earned > 0) addCoins(earned)
+      setPracEarned(earned)
+      if (correctSoFar >= PRACTICE_TOTAL * 0.9) sfx.bossWin()
+      setPhase('pracDone')
+    } else {
+      setFeedback(null)
+      setFailInfo(null)
+      setQIdx(nextIdx)
+      setInput('')
+      setTimeLeft(PRACTICE_TIME)
+    }
+  }, [qIdx, addCoins])
 
   useEffect(() => {
     if (phase !== 'playing') { clearInterval(timerRef.current); return }
@@ -82,8 +150,12 @@ export default function MakeHundredScreen({ onBack }) {
     setFeedback('timeout')
     setFailInfo({ answer: currentQ?.answer, reason: 'timeout' })
     clearTimeout(fbRef.current)
-    fbRef.current = setTimeout(() => setPhase('fail'), 1100)
-  }, [timeLeft, phase, currentQ])
+    if (isPractice) {
+      fbRef.current = setTimeout(() => nextPractice(pracCorrect), 1300)
+    } else {
+      fbRef.current = setTimeout(() => setPhase('fail'), 1100)
+    }
+  }, [timeLeft, phase, currentQ, isPractice, pracCorrect, nextPractice])
 
   const handlePad = useCallback((v) => {
     if (phase !== 'playing' || feedback) return
@@ -93,6 +165,25 @@ export default function MakeHundredScreen({ onBack }) {
       clearInterval(timerRef.current)
       const correct = parseInt(input) === currentQ.answer
 
+      // ── 練習模式：答錯只看正解、不重來 ──
+      if (isPractice) {
+        const nextCorrect = pracCorrect + (correct ? 1 : 0)
+        if (correct) {
+          sfx.correct()
+          updatePetMood(activePet, 2)
+          setFeedback('correct')
+        } else {
+          sfx.wrong()
+          setFeedback('wrong')
+          setFailInfo({ answer: currentQ.answer, reason: 'wrong' })
+        }
+        setPracCorrect(nextCorrect)
+        clearTimeout(fbRef.current)
+        fbRef.current = setTimeout(() => nextPractice(nextCorrect), correct ? 480 : 1200)
+        return
+      }
+
+      // ── 特訓模式：答錯從頭來 ──
       if (!correct) {
         sfx.wrong()
         setFeedback('wrong')
@@ -131,12 +222,12 @@ export default function MakeHundredScreen({ onBack }) {
       return
     }
     if (input.length < 2) setInput(i => i + v)
-  }, [phase, feedback, input, currentQ, qIdx, roundIdx, round, makeHundredCleared, clearMakeHundred, activePet, updatePetMood])
+  }, [phase, feedback, input, currentQ, qIdx, roundIdx, round, isPractice, pracCorrect, nextPractice, makeHundredCleared, clearMakeHundred, activePet, updatePetMood])
 
-  const timerPct   = round ? Math.max(0, (timeLeft / round.timeLimit) * 100) : 100
+  const timerPct   = cfg ? Math.max(0, (timeLeft / cfg.timeLimit) * 100) : 100
   const timerColor = timerPct > 50 ? '#4CAF50' : timerPct > 25 ? '#FF9800' : '#F44336'
 
-  // ── Intro ─────────────────────────────────────────────────────────────────
+  // ── Intro：選模式 ───────────────────────────────────────────────────────────
   if (phase === 'intro') return (
     <div className="mt-screen" style={{ background: '#E8F5E9' }}>
       <div className="mt-top-bar">
@@ -147,68 +238,76 @@ export default function MakeHundredScreen({ onBack }) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 200 }}
       >
-        <div className="mt-main-title">💯 湊100特訓</div>
+        <div className="mt-main-title">💯 湊100</div>
 
         <motion.div animate={{ y: [0, -12, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
-          <PetAvatar petId={activePet} evolutionStage={petData.evolutionStage} equipped={equipped} size={100} />
+          <PetAvatar petId={activePet} evolutionStage={petData.evolutionStage} equipped={equipped} size={96} />
         </motion.div>
 
-        <p className="mt-desc">
-          10題全對才能過關！<br />
-          連過三關就能得到傳說道具<br />
-          <b style={{ color: '#1565C0', fontSize: '1.1rem' }}>💯 百分皇冠</b>！
-        </p>
+        <p className="mt-desc">兩個數字加起來剛好 <b style={{ color: '#1565C0' }}>100</b>！<br />選一個模式開始練習 👇</p>
 
         <div className="mt-round-list">
-          {ROUNDS.map(r => (
-            <div key={r.no} className="mt-round-row" style={{ borderLeftColor: r.color }}>
-              <span className="mt-round-no" style={{ color: r.color }}>第{r.no}關</span>
-              <span className="mt-round-lbl">{r.label}</span>
-              <span className="mt-round-time" style={{ color: r.color }}>⏱ {r.timeLimit}秒/題</span>
-            </div>
-          ))}
+          <motion.button className="btn-primary" style={{ width: '100%' }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => { sfx.click(); startPractice() }}
+          >
+            🎯 練習模式
+          </motion.button>
+          <p className="mt-desc" style={{ marginTop: -4, fontSize: '0.82rem' }}>
+            時間充足（{PRACTICE_TIME}秒）· 連續 {PRACTICE_TOTAL} 題 · 答錯看正解不重來
+          </p>
+
+          <motion.button className="btn-secondary" style={{ width: '100%', marginTop: 4 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => { sfx.click(); startRound(0) }}
+          >
+            ⚔️ 特訓挑戰
+          </motion.button>
+          <p className="mt-desc" style={{ marginTop: -4, fontSize: '0.82rem' }}>
+            限時三關越來越快 · 全對才過關 · 拿 💯 百分皇冠
+          </p>
         </div>
 
-        <p className="mt-warn">⚠️ 答錯或時間到，從第1關重新開始！</p>
-
         {makeHundredCleared && (
-          <div className="mt-cleared-badge">✅ 已獲得百分皇冠！可再次挑戰</div>
+          <div className="mt-cleared-badge">✅ 已獲得百分皇冠！</div>
         )}
-
-        <motion.button className="btn-primary" style={{ width: '100%', maxWidth: 280 }}
-          whileTap={{ scale: 0.94 }}
-          onClick={() => { sfx.click(); startRound(0) }}
-        >
-          ⚔️ 開始挑戰！
-        </motion.button>
       </motion.div>
     </div>
   )
 
-  // ── Playing ───────────────────────────────────────────────────────────────
+  // ── Playing（特訓＋練習共用）────────────────────────────────────────────────
   if (phase === 'playing') return (
-    <div className="mt-screen mt-play" style={{ background: round.bg }}>
+    <div className="mt-screen mt-play" style={{ background: cfg.bg }}>
       <div className="mt-play-header">
-        <div className="mt-pips">
-          {ROUNDS.map((r, i) => (
-            <span key={i} className="mt-pip"
-              style={{
-                background: i === roundIdx ? r.color : i < roundIdx ? '#4CAF50' : '#DDD',
-                color: i <= roundIdx ? 'white' : '#999',
-              }}
-            >第{r.no}關</span>
-          ))}
-        </div>
-        <div className="mt-q-counter">{qIdx + 1}<span style={{ color: '#BBB' }}>/10</span></div>
+        {isPractice ? (
+          <div className="mt-pips">
+            <span className="mt-pip" style={{ background: cfg.color, color: 'white' }}>🎯 練習</span>
+            <span className="mt-pip" style={{ background: '#E8F5E9', color: '#2E7D32' }}>✓ {pracCorrect}</span>
+          </div>
+        ) : (
+          <div className="mt-pips">
+            {ROUNDS.map((r, i) => (
+              <span key={i} className="mt-pip"
+                style={{
+                  background: i === roundIdx ? r.color : i < roundIdx ? '#4CAF50' : '#DDD',
+                  color: i <= roundIdx ? 'white' : '#999',
+                }}
+              >第{r.no}關</span>
+            ))}
+          </div>
+        )}
+        <div className="mt-q-counter">{qIdx + 1}<span style={{ color: '#BBB' }}>/{totalQ}</span></div>
       </div>
 
-      <div className="mt-dots">
-        {Array.from({ length: Q_PER_ROUND }, (_, i) => (
-          <span key={i} className="mt-dot"
-            style={{ background: i < qIdx ? '#4CAF50' : i === qIdx ? round.color : '#DDD' }}
-          />
-        ))}
-      </div>
+      {!isPractice && (
+        <div className="mt-dots">
+          {Array.from({ length: Q_PER_ROUND }, (_, i) => (
+            <span key={i} className="mt-dot"
+              style={{ background: i < qIdx ? '#4CAF50' : i === qIdx ? round.color : '#DDD' }}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="mt-timer-wrap">
         <div className="mt-timer-track">
@@ -245,7 +344,7 @@ export default function MakeHundredScreen({ onBack }) {
           <div className="mt-equation">
             {currentQ?.leftBlank ? (
               <>
-                <span className="mt-blank" style={{ borderColor: input ? round.color : '#CCC', color: input ? round.color : '#CCC' }}>
+                <span className="mt-blank" style={{ borderColor: input ? cfg.color : '#CCC', color: input ? cfg.color : '#CCC' }}>
                   {input || '□'}
                 </span>
                 <span className="mt-plus">+</span>
@@ -255,7 +354,7 @@ export default function MakeHundredScreen({ onBack }) {
               <>
                 <span className="mt-number">{currentQ?.shown}</span>
                 <span className="mt-plus">+</span>
-                <span className="mt-blank" style={{ borderColor: input ? round.color : '#CCC', color: input ? round.color : '#CCC' }}>
+                <span className="mt-blank" style={{ borderColor: input ? cfg.color : '#CCC', color: input ? cfg.color : '#CCC' }}>
                   {input || '□'}
                 </span>
               </>
@@ -266,11 +365,67 @@ export default function MakeHundredScreen({ onBack }) {
         </motion.div>
       </AnimatePresence>
 
+      {isPractice && feedback && feedback !== 'correct' && (
+        <div className="mt-ans-hint" style={{ marginBottom: 8 }}>
+          正確答案是 <b style={{ color: '#F44336', fontSize: '1.4rem' }}>{failInfo?.answer}</b> 喔！
+        </div>
+      )}
+
       <div className="mt-pad">
         <NumberPad value={input} onInput={handlePad} />
       </div>
     </div>
   )
+
+  // ── 練習結算 ────────────────────────────────────────────────────────────────
+  if (phase === 'pracDone') {
+    const pct = Math.round((pracCorrect / PRACTICE_TOTAL) * 100)
+    const tier = pct >= 90 ? { t: '太厲害了！🏆', c: '#E65100' }
+      : pct >= 70 ? { t: '很棒喔！🌟', c: '#2E7D32' }
+      : pct >= 50 ? { t: '不錯，繼續練！💪', c: '#1976D2' }
+      : { t: '多練幾次會更順！🔥', c: '#F57C00' }
+    return (
+      <div className="mt-screen" style={{ background: '#E3F2FD' }}>
+        <motion.div className="mt-card"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 200 }}
+        >
+          <div className="mt-pass-title" style={{ color: tier.c }}>{tier.t}</div>
+
+          <motion.div animate={{ y: [0, -16, 0] }} transition={{ repeat: Infinity, duration: 1.4 }}>
+            <PetAvatar petId={activePet} evolutionStage={petData.evolutionStage} equipped={equipped} size={100} />
+          </motion.div>
+
+          <div className="mt-reward-box">
+            <div style={{ fontSize: '2.6rem' }}>💯</div>
+            <div className="mt-reward-name" style={{ color: '#1565C0' }}>答對 {pracCorrect} / {PRACTICE_TOTAL} 題</div>
+            <div className="mt-reward-sub">正確率 {pct}%</div>
+            {pracEarned > 0 && (
+              <motion.div className="mt-reward-coins"
+                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3 }}
+              >
+                +{pracEarned} 💰 金幣
+              </motion.div>
+            )}
+          </div>
+
+          <motion.button className="btn-primary" style={{ width: '100%', maxWidth: 260 }}
+            whileTap={{ scale: 0.94 }}
+            onClick={() => { sfx.click(); startPractice() }}
+          >
+            🎯 再練一輪
+          </motion.button>
+          <motion.button className="btn-secondary" style={{ width: '100%', maxWidth: 260, marginTop: 8 }}
+            whileTap={{ scale: 0.94 }}
+            onClick={() => { sfx.click(); onBack() }}
+          >
+            回首頁
+          </motion.button>
+        </motion.div>
+      </div>
+    )
+  }
 
   // ── Round pass ────────────────────────────────────────────────────────────
   if (phase === 'roundPass') return (
@@ -308,7 +463,7 @@ export default function MakeHundredScreen({ onBack }) {
     </div>
   )
 
-  // ── Fail ──────────────────────────────────────────────────────────────────
+  // ── Fail（特訓）─────────────────────────────────────────────────────────────
   if (phase === 'fail') return (
     <div className="mt-screen" style={{ background: '#FFF8F8' }}>
       <motion.div className="mt-card"
@@ -352,7 +507,7 @@ export default function MakeHundredScreen({ onBack }) {
     </div>
   )
 
-  // ── Victory ───────────────────────────────────────────────────────────────
+  // ── Victory（特訓）──────────────────────────────────────────────────────────
   if (phase === 'victory') return (
     <div className="mt-screen" style={{ background: 'linear-gradient(160deg, #E3F2FD, #BBDEFB)' }}>
       <motion.div className="mt-card mt-victory-card"
