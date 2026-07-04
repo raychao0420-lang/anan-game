@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { ACHIEVEMENTS } from '../data/achievements'
 import { EVOLVE_EXP } from '../data/pets'
+import { pullLuckyEgg } from '../data/gacha'
 
 const makeStages = () => {
   const s = {}
@@ -89,6 +90,13 @@ export const useGameStore = create(
       // M4: pet moods
       petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80 },
       lastPlayedAt: null,
+
+      // M6: 幸運蛋 + 每日登入禮物
+      luckyEggs: 0,
+      lastGiftDate: null,
+      loginStreak: 0,
+      loginStreakBest: 0,
+      pendingLoginGift: null,   // 今天的登入禮物內容，領到後給 HomeScreen 顯示
 
       // ── Core actions ──
       addCoins: (amount) => set((s) => ({ coins: s.coins + amount })),
@@ -446,6 +454,45 @@ export const useGameStore = create(
         set({ petMoods: newMoods })
       },
 
+      // ── M6: 每日登入禮物 ──
+      // 每天第一次進遊戲領禮物：金幣 + 幸運蛋。連續登入（昨天有領）累積 streak，
+      // 每 3 天小獎、每 7 天大獎。已在今天領過則不重複。
+      claimDailyGift: (today, yesterday) => {
+        const s = get()
+        if (s.lastGiftDate === today) return
+        const streak = s.lastGiftDate === yesterday ? s.loginStreak + 1 : 1
+        const milestone = streak % 7 === 0 ? 7 : streak % 3 === 0 ? 3 : 0
+        const eggs = 1 + (milestone === 7 ? 3 : milestone === 3 ? 1 : 0)
+        const coins = 20 + milestone * 10
+        set((prev) => ({
+          lastGiftDate: today,
+          loginStreak: streak,
+          loginStreakBest: Math.max(prev.loginStreakBest, streak),
+          luckyEggs: prev.luckyEggs + eggs,
+          coins: prev.coins + coins,
+          totalCoinsEarned: prev.totalCoinsEarned + coins,
+          pendingLoginGift: { coins, eggs, streak, milestone },
+        }))
+      },
+
+      clearLoginGift: () => set({ pendingLoginGift: null }),
+
+      // 敲開一顆幸運蛋，抽一件可收集道具（重複換金幣）。回傳抽獎結果給 UI 播動畫。
+      openLuckyEgg: () => {
+        const s = get()
+        if (s.luckyEggs <= 0) return null
+        const result = pullLuckyEgg(s.ownedItems)
+        set((prev) => ({
+          luckyEggs: prev.luckyEggs - 1,
+          ownedItems: result.isDup ? prev.ownedItems : [...prev.ownedItems, result.item.id],
+          ...(result.isDup
+            ? { coins: prev.coins + result.dupBonus, totalCoinsEarned: prev.totalCoinsEarned + result.dupBonus }
+            : {}),
+        }))
+        get().checkAchievements()
+        return result
+      },
+
       resetGame: () =>
         set({
           coins: 0,
@@ -490,6 +537,11 @@ export const useGameStore = create(
           perfectStages: 0,
           petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80 },
           lastPlayedAt: null,
+          luckyEggs: 0,
+          lastGiftDate: null,
+          loginStreak: 0,
+          loginStreakBest: 0,
+          pendingLoginGift: null,
         }),
     }),
     {
@@ -527,6 +579,12 @@ export const useGameStore = create(
             if (state.petMoods[id] === undefined) state.petMoods[id] = 80
           })
         }
+        // M6: 幸運蛋 + 登入禮物
+        if (state.luckyEggs === undefined) state.luckyEggs = 0
+        if (state.lastGiftDate === undefined) state.lastGiftDate = null
+        if (state.loginStreak === undefined) state.loginStreak = 0
+        if (state.loginStreakBest === undefined) state.loginStreakBest = 0
+        state.pendingLoginGift = null
       },
     }
   )

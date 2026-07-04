@@ -20,6 +20,18 @@ export const GACHA_PET_PRIZES = {
 }
 const PET_PRIZE_CHANCE = 0.18
 
+// 幸運蛋：免費（登入禮物／連續登入獲得）敲開一顆，抽一件可收集道具。
+// 機率偏普通，偶爾稀有／傳說；重複則換金幣。
+export function pullLuckyEgg(ownedItems) {
+  const r = Math.random()
+  const tier = r < 0.08 ? 'legend' : r < 0.30 ? 'rare' : 'normal'
+  const pool = GACHA_POOLS[tier]
+  const item = pool[Math.floor(Math.random() * pool.length)]
+  const isDup = ownedItems.includes(item.id)
+  const dupBonus = isDup ? (tier === 'legend' ? 150 : tier === 'rare' ? 60 : 25) : 0
+  return { item, tier, isDup, dupBonus }
+}
+
 export function pullGacha(tierId, ownedItems, ownedPetIds = []) {
   const tier = GACHA_TIERS.find(t => t.id === tierId)
 

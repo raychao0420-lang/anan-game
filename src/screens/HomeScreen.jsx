@@ -6,13 +6,16 @@ import { SHOP_ITEMS } from '../data/shop'
 import { getTodayTasks } from '../data/dailyTasks'
 import MuteButton from '../components/MuteButton'
 import SaveModal from '../components/SaveModal'
+import LoginGiftModal from '../components/LoginGiftModal'
+import LuckyEggModal from '../components/LuckyEggModal'
 import PetAvatar from '../components/PetAvatar'
 import { sfx } from '../utils/sound'
 import './HomeScreen.css'
 
 export default function HomeScreen({ onNavigate }) {
-  const { coins, activePet, pets, petEquipment, dailyTasksDone, achievements, setActivePet, petMoods } = useGameStore()
+  const { coins, activePet, pets, petEquipment, dailyTasksDone, achievements, setActivePet, petMoods, luckyEggs, pendingLoginGift } = useGameStore()
   const [showSave, setShowSave] = useState(false)
+  const [showEggs, setShowEggs] = useState(false)
   const today = new Date().toISOString().slice(0, 10)
   const todayTasks = getTodayTasks(today)
   const dailyDoneCount = todayTasks.filter(t => dailyTasksDone.includes(t.id)).length
@@ -185,6 +188,15 @@ export default function HomeScreen({ onNavigate }) {
         {/* ── 玩耍時間 ── */}
         <div className="home-section-title">🎉 玩耍時間</div>
 
+        <motion.button
+          className="btn-gacha"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => { sfx.click(); setShowEggs(true) }}
+        >
+          🥚 敲幸運蛋
+          {luckyEggs > 0 && <span className="home-badge">{luckyEggs}</span>}
+        </motion.button>
+
         <div className="home-row">
           <motion.button
             className="btn-gacha"
@@ -237,6 +249,8 @@ export default function HomeScreen({ onNavigate }) {
 
       <AnimatePresence>
         {showSave && <SaveModal onClose={() => setShowSave(false)} />}
+        {showEggs && <LuckyEggModal onClose={() => setShowEggs(false)} />}
+        {pendingLoginGift && <LoginGiftModal onOpenEggs={() => setShowEggs(true)} />}
       </AnimatePresence>
     </div>
   )

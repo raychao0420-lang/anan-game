@@ -37,12 +37,15 @@ export default function App() {
 
   const initDaily = useGameStore(s => s.initDaily)
   const checkMoodDecay = useGameStore(s => s.checkMoodDecay)
+  const claimDailyGift = useGameStore(s => s.claimDailyGift)
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10)
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10)
     initDaily(today)
     checkMoodDecay()
-  }, [initDaily, checkMoodDecay])
+    claimDailyGift(today, yesterday)
+  }, [initDaily, checkMoodDecay, claimDailyGift])
 
   const handleStartStage = (id) => {
     setActiveStage(id)
