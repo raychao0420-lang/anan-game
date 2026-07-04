@@ -7,7 +7,24 @@ export default function SaveModal({ onClose }) {
   const [status, setStatus] = useState('idle') // idle | uploading | downloading | done | error
   const [msg, setMsg] = useState('')
   const [codeInput, setCodeInput] = useState('')
+  const [localText, setLocalText] = useState('')
   const savedCode = getSaveCode()
+
+  const handleExport = () => {
+    setLocalText(localStorage.getItem('anan-game-v2') || '')
+    setMsg('已匯出目前本機存檔，可全選複製保存')
+  }
+
+  const handleRestore = () => {
+    const t = localText.trim()
+    if (!t) { setMsg('❌ 請先貼上存檔內容'); return }
+    try {
+      JSON.parse(t)
+      localStorage.setItem('anan-game-v2', t)
+      setMsg('✅ 還原成功！即將重新整理…')
+      setTimeout(() => location.reload(), 1200)
+    } catch { setMsg('❌ 存檔內容格式錯誤') }
+  }
 
   const handleUpload = async () => {
     setStatus('uploading')
@@ -119,6 +136,23 @@ export default function SaveModal({ onClose }) {
         </div>
 
         {msg && <div className={`save-msg ${status === 'error' ? 'err' : ''}`}>{msg}</div>}
+
+        <div className="save-divider">── 本機備援（免 token）──</div>
+        <textarea
+          className="save-input"
+          style={{ width: '100%', minHeight: 70, resize: 'vertical' }}
+          placeholder="貼上存檔內容後按「還原」"
+          value={localText}
+          onChange={e => setLocalText(e.target.value)}
+        />
+        <div className="save-input-row">
+          <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }} onClick={handleExport}>
+            匯出本機存檔
+          </motion.button>
+          <motion.button className="btn-secondary" whileTap={{ scale: 0.94 }} onClick={handleRestore}>
+            貼上還原
+          </motion.button>
+        </div>
 
         <button className="save-close" onClick={onClose}>✕ 關閉</button>
       </motion.div>
