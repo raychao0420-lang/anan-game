@@ -15,6 +15,17 @@ export default function SaveModal({ onClose }) {
     setMsg('已匯出目前本機存檔，可全選複製保存')
   }
 
+  const handleRestoreAnan = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}anan_restore.json`)
+      const t = (await res.text()).trim()
+      JSON.parse(t)
+      localStorage.setItem('anan-game-v2', t)
+      setMsg('✅ 安安存檔已還原！即將重新整理…')
+      setTimeout(() => location.reload(), 1200)
+    } catch { setMsg('❌ 還原失敗，請重新整理再試一次') }
+  }
+
   const handleRestore = () => {
     const t = localText.trim()
     if (!t) { setMsg('❌ 請先貼上存檔內容'); return }
@@ -138,6 +149,9 @@ export default function SaveModal({ onClose }) {
         {msg && <div className={`save-msg ${status === 'error' ? 'err' : ''}`}>{msg}</div>}
 
         <div className="save-divider">── 本機備援（免 token）──</div>
+        <motion.button className="btn-primary" whileTap={{ scale: 0.94 }} onClick={handleRestoreAnan}>
+          🔧 一鍵還原安安存檔
+        </motion.button>
         <textarea
           className="save-input"
           style={{ width: '100%', minHeight: 70, resize: 'vertical' }}
