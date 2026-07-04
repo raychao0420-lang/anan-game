@@ -161,13 +161,20 @@ export default function HomeScreen({ onNavigate }) {
         {/* ── 我的小天地 ── */}
         <div className="home-section-title">🏡 我的小天地</div>
 
-        <div className="home-row home-row-3">
+        <div className="home-row">
           <motion.button
             className="btn-secondary home-trio-btn"
             whileTap={{ scale: 0.94 }}
             onClick={() => nav('pets')}
           >
             🐾<br/>寵物
+          </motion.button>
+          <motion.button
+            className="btn-secondary home-trio-btn"
+            whileTap={{ scale: 0.94 }}
+            onClick={() => nav('backpack')}
+          >
+            🎒<br/>背包
           </motion.button>
           <motion.button
             className="btn-home-room home-trio-btn"

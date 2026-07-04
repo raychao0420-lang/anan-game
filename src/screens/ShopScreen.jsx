@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
-import { PETS, PET_ORDER } from '../data/pets'
+import { PETS } from '../data/pets'
 import { SHOP_ITEMS, SHOP_CATEGORIES } from '../data/shop'
 import PetAvatar from '../components/PetAvatar'
 import './ShopScreen.css'
@@ -10,7 +10,7 @@ export default function ShopScreen({ onNavigate }) {
   const {
     coins, activePet, pets, ownedItems,
     petEquipment, equippedHomeItems,
-    buyItem, equipToPet, toggleHomeItem, feedPet,
+    buyItem, feedPet,
   } = useGameStore()
   const [category, setCategory] = useState('food')
   const [buyFeedback, setBuyFeedback] = useState(null)
@@ -18,7 +18,6 @@ export default function ShopScreen({ onNavigate }) {
 
   const petDef = PETS[activePet]
   const petData = pets[activePet]
-  const petStage = petDef.stages[petData.evolutionStage]
 
   const hasAnyRare = SHOP_ITEMS.filter(i => i.category === 'rare').some(i => ownedItems.includes(i.id))
   const visibleCategories = SHOP_CATEGORIES.filter(c => c.id !== 'rare' || hasAnyRare)
@@ -28,7 +27,6 @@ export default function ShopScreen({ onNavigate }) {
   const isAnyEquipped = (item) => item.category === 'home' ? isHomePlaced(item) : anyPetEquipped(item)
 
   const filtered = SHOP_ITEMS.filter((i) => i.category === category)
-  const unlockedPetIds = PET_ORDER.filter(id => pets[id]?.unlocked)
 
   const activePetEquipped = (petEquipment[activePet] || [])
     .map(id => SHOP_ITEMS.find(i => i.id === id))
@@ -79,7 +77,7 @@ export default function ShopScreen({ onNavigate }) {
           <div className="shop-equipped-row">
             {activePetEquipped.length === 0
               ? <span className="shop-equipped-empty">
-                  {category === 'home' ? '家具會出現在你的家！' : '購買道具後幫寵物裝備！'}
+                  {category === 'home' ? '買好的家具會收進🎒背包！' : '買好的道具會收進🎒背包！'}
                 </span>
               : activePetEquipped.map((item) => (
                   <motion.span
@@ -162,36 +160,13 @@ export default function ShopScreen({ onNavigate }) {
                   🍖 餵食 <span className="feed-exp-badge">+{petExpGain} exp</span>
                 </motion.button>
               ) : owned ? (
-                isHome ? (
-                  <motion.button
-                    className={`shop-equip-btn ${isHomePlaced(item) ? 'unequip' : ''}`}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => toggleHomeItem(item.id)}
-                  >
-                    {isHomePlaced(item) ? '✅ 已擺放' : '擺放'}
-                  </motion.button>
-                ) : (
-                  /* Pet accessories: one button per unlocked pet */
-                  <div className="shop-pet-btns">
-                    {unlockedPetIds.map(petId => {
-                      const pDef = PETS[petId]
-                      const pStage = pDef.stages[pets[petId].evolutionStage]
-                      const eq = petEquipment[petId]?.includes(item.id)
-                      return (
-                        <motion.button
-                          key={petId}
-                          className={`shop-pet-btn ${eq ? 'active' : ''}`}
-                          whileTap={{ scale: 0.82 }}
-                          onClick={() => equipToPet(petId, item.id)}
-                          title={pDef.name}
-                        >
-                          <span className="shop-pet-btn-emoji">{pStage.emoji}</span>
-                          {eq && <span className="shop-pet-btn-check">✓</span>}
-                        </motion.button>
-                      )
-                    })}
-                  </div>
-                )
+                <motion.button
+                  className="shop-owned-tag"
+                  whileTap={{ scale: 0.92 }}
+                  onClick={() => onNavigate('backpack')}
+                >
+                  ✅ 已擁有 · 🎒 去背包{isHome ? '擺放' : '穿戴'}
+                </motion.button>
               ) : item.boss ? (
                 <div className="shop-boss-locked">⚔️ Boss獎勵</div>
               ) : (

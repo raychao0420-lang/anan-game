@@ -255,6 +255,19 @@
 }
 .shop-boss-locked { font-size: 0.8rem; font-weight: 700; color: #9b30ff; padding: 6px 10px; background: #f5e6ff; border-radius: 10px; }
 
+.shop-owned-tag {
+  background: #F0FFFE;
+  color: #1FA89C;
+  border: 2px solid #4ECDC4;
+  border-radius: 12px;
+  padding: 7px 12px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+  margin-top: 4px;
+}
+
 .food-feed-btn {
   background: linear-gradient(135deg, #FF9A3C, #FF6B6B) !important;
   display: flex;

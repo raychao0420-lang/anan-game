@@ -1,0 +1,243 @@
+.bag-screen {
+  min-height: 100dvh;
+  background: linear-gradient(160deg, #FFF6E9 0%, #FDEEDD 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 32px;
+}
+
+.bag-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.bag-title {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #7A4A22;
+}
+
+.bag-coins {
+  background: #FFF3CD;
+  border: 2px solid #FFD700;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #996600;
+}
+
+/* Pet preview */
+.bag-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 22px 16px;
+}
+
+.bag-preview-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bag-preview-name {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #7A4A22;
+}
+
+.bag-preview-count {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #C08A4E;
+}
+
+.bag-preview-hint {
+  font-size: 0.78rem;
+  color: #B89A7A;
+}
+
+/* Category tabs */
+.bag-cats {
+  display: flex;
+  gap: 6px;
+  padding: 0 16px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.bag-cats::-webkit-scrollbar { display: none; }
+
+.bag-cat-btn {
+  position: relative;
+  flex: 0 0 auto;
+  background: white;
+  border: 2px solid #EAD9C4;
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #8A6A48;
+  cursor: pointer;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.bag-cat-btn.active {
+  border-color: #E8963E;
+  background: #FFF1E0;
+  color: #D8781E;
+}
+
+.bag-cat-count {
+  display: inline-block;
+  min-width: 16px;
+  margin-left: 4px;
+  padding: 0 5px;
+  background: #E8963E;
+  color: white;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  line-height: 16px;
+}
+
+/* Items grid */
+.bag-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 0 16px;
+}
+
+.bag-item {
+  background: white;
+  border-radius: 18px;
+  border: 2px solid #F0E4D4;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.bag-item.placed {
+  border-color: #6BCB77;
+  background: #F1FFF1;
+}
+
+.bag-item-art {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bag-item-name {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #5A4030;
+  text-align: center;
+}
+
+/* Home place button */
+.bag-place-btn {
+  background: #E8963E;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+  margin-top: 2px;
+}
+.bag-place-btn.unplace { background: #6BCB77; }
+
+/* Pet equip buttons */
+.bag-pet-btns {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.bag-pet-btn {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 2px solid #E6D6C2;
+  background: #FBF6EF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.bag-pet-btn.active {
+  border-color: #4CAF50;
+  background: #e8f5e9;
+}
+
+.bag-pet-btn-emoji { font-size: 1.45rem; line-height: 1; }
+
+.bag-pet-btn-check {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+/* Empty state */
+.bag-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 24px;
+  color: #B89A7A;
+}
+.bag-empty-icon { font-size: 3rem; }
+.bag-empty p { font-size: 1rem; font-weight: 700; }
+
+.bag-empty-btn {
+  background: linear-gradient(135deg, #FF9A3C, #FF6B6B);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #D86B2A;
+}
+
+@media (min-width: 640px) {
+  .bag-header { padding: 20px 28px; }
+  .bag-title  { font-size: 1.5rem; }
+  .bag-cats   { padding: 0 24px 16px; gap: 10px; flex-wrap: wrap; }
+  .bag-cat-btn { font-size: 1rem; padding: 12px 16px; }
+  .bag-grid   { grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 0 24px; }
+  .bag-item   { padding: 18px 14px; border-radius: 20px; }
+  .bag-item-art { width: 72px; height: 72px; }
+  .bag-item-name { font-size: 1.05rem; }
+  .bag-place-btn { font-size: 1.05rem; padding: 10px 22px; }
+}
