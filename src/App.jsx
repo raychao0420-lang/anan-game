@@ -11,6 +11,7 @@ import DailyScreen from './screens/DailyScreen'
 import BossScreen from './screens/BossScreen'
 import AchievementScreen from './screens/AchievementScreen'
 import HomeRoomScreen from './screens/HomeRoomScreen'
+import BackpackScreen from './screens/BackpackScreen'
 import ExamBossScreen from './screens/ExamBossScreen'
 import MaketenScreen from './screens/MaketenScreen'
 import MakeTwentyScreen from './screens/MakeTwentyScreen'
@@ -89,6 +90,7 @@ export default function App() {
         {screen === 'daily'        && wrap('daily', <DailyScreen onNavigate={setScreen} />)}
         {screen === 'achievements' && wrap('achievements', <AchievementScreen onNavigate={setScreen} />)}
         {screen === 'homeroom'     && wrap('homeroom', <HomeRoomScreen onNavigate={setScreen} />)}
+        {screen === 'backpack'     && wrap('backpack', <BackpackScreen onNavigate={setScreen} />)}
         {screen === 'examboss'    && wrap('examboss', <ExamBossScreen  onBack={() => setScreen('home')} />)}
         {screen === 'maketen'     && wrap('maketen',  <MaketenScreen    onBack={() => setScreen('home')} />)}
         {screen === 'maketwenty'  && wrap('maketwenty', <MakeTwentyScreen onBack={() => setScreen('home')} />)}

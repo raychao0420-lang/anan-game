@@ -5,6 +5,7 @@ import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import { sfx } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
+import DecoArt from '../components/DecoArt'
 import './HomeRoomScreen.css'
 
 const POOL_RADIUS = 18   // % distance threshold for pool interaction
@@ -187,7 +188,7 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
         </div>
       ) : (
         <>
-          <span style={{ fontSize: '2.4rem' }}>{item.emoji}</span>
+          <DecoArt id={item.id} size={62} emojiFallback={item.emoji} />
           <div className="room-deco-label">{item.name}</div>
         </>
       )}
