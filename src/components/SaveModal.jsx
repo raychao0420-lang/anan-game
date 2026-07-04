@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { uploadSave, downloadSave, getSaveCode } from '../utils/cloudSave'
+import { ensureSaveCode, pushSave, pullSaveByCode } from '../utils/cloudSync'
 import './SaveModal.css'
 
 export default function SaveModal({ onClose }) {
@@ -8,7 +8,7 @@ export default function SaveModal({ onClose }) {
   const [msg, setMsg] = useState('')
   const [codeInput, setCodeInput] = useState('')
   const [localText, setLocalText] = useState('')
-  const savedCode = getSaveCode()
+  const savedCode = ensureSaveCode()
 
   const handleExport = () => {
     setLocalText(localStorage.getItem('anan-game-v2') || '')
@@ -41,12 +41,12 @@ export default function SaveModal({ onClose }) {
     setStatus('uploading')
     setMsg('')
     try {
-      await uploadSave()
+      await pushSave()
       setStatus('done')
-      setMsg('✅ 存檔成功！')
+      setMsg('✅ 已同步到雲端！')
     } catch (e) {
       setStatus('error')
-      setMsg(e.message === 'NO_TOKEN' ? '❌ 尚未設定 VITE_GIST_TOKEN' : `❌ 上傳失敗：${e.message}`)
+      setMsg(`❌ 上傳失敗：${e.message}`)
     }
   }
 
@@ -56,13 +56,13 @@ export default function SaveModal({ onClose }) {
     setStatus('downloading')
     setMsg('')
     try {
-      await downloadSave(id)
+      await pullSaveByCode(id)
       setStatus('done')
       setMsg('✅ 載入成功！即將重新整理…')
       setTimeout(() => location.reload(), 1200)
-    } catch (e) {
+    } catch {
       setStatus('error')
-      setMsg(e.message === 'NO_TOKEN' ? '❌ 尚未設定 VITE_GIST_TOKEN' : `❌ 載入失敗：找不到存檔碼`)
+      setMsg('❌ 載入失敗：找不到這組存檔碼')
     }
   }
 
@@ -89,15 +89,15 @@ export default function SaveModal({ onClose }) {
           <div className="save-howto-row">
             <span className="save-howto-num">1</span>
             <div>
-              <b>第一次存檔</b><br />
-              按「⬆️ 立即同步到雲端」，系統會產生一組<b>存檔碼</b>。
+              <b>自動存檔</b><br />
+              金幣或道具一變動就會自動存到雲端，平常不用手動按。
             </div>
           </div>
           <div className="save-howto-row">
             <span className="save-howto-num">2</span>
             <div>
-              <b>記下存檔碼</b><br />
-              截圖或抄下那 8 個字母數字，換設備時會用到。
+              <b>抄下存檔碼</b><br />
+              把下面這組存檔碼截圖或抄下來保管，換設備／重灌時靠它救回。
             </div>
           </div>
           <div className="save-howto-row">
@@ -111,9 +111,9 @@ export default function SaveModal({ onClose }) {
 
         {savedCode && (
           <div className="save-code-box">
-            <div className="save-code-label">我的存檔碼</div>
-            <div className="save-code">{savedCode.slice(-8).toUpperCase()}</div>
-            <div className="save-code-hint">換設備時輸入此碼可還原進度</div>
+            <div className="save-code-label">我的存檔碼（請保管好）</div>
+            <div className="save-code" style={{ fontSize: 14, wordBreak: 'break-all', letterSpacing: 0 }}>{savedCode}</div>
+            <div className="save-code-hint">換設備／重灌時輸入此碼可還原進度</div>
           </div>
         )}
 
@@ -131,7 +131,7 @@ export default function SaveModal({ onClose }) {
         <div className="save-input-row">
           <input
             className="save-input"
-            placeholder="輸入存檔碼（8碼）"
+            placeholder="貼上存檔碼後按「載入」"
             value={codeInput}
             onChange={e => setCodeInput(e.target.value)}
             maxLength={40}
