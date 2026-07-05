@@ -1,0 +1,99 @@
+.skill-btn {
+  position: relative;
+  width: 100%;
+  border: 2px solid #d8c8f0;
+  border-radius: 16px;
+  background: #f3eefc;
+  padding: 0;
+  overflow: hidden;
+  cursor: not-allowed;
+  height: 52px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.skill-btn.ready {
+  cursor: pointer;
+  border-color: #a06fe0;
+  box-shadow: 0 3px 0 #b98ee8, 0 0 12px rgba(160, 111, 224, 0.35);
+}
+
+.skill-btn.ready .skill-name { color: #6a3fb0; }
+.skill-btn.used { opacity: 0.7; }
+
+/* 能量進度：由左往右填滿 */
+.skill-energy-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, #c9a8f5, #a06fe0);
+  transition: width 0.4s ease;
+  z-index: 0;
+}
+.skill-btn.ready .skill-energy-fill {
+  background: linear-gradient(90deg, #b98ee8, #8a4fd0);
+}
+
+.skill-btn-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  height: 100%;
+}
+
+.skill-icon { font-size: 1.5rem; line-height: 1; }
+
+.skill-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+
+.skill-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #7a6a95;
+}
+
+.skill-energy-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #8a7aa5;
+}
+
+/* 共用擺放容器（特訓/Boss 等畫面用），置中、寬度對齊數字鍵盤 */
+.skill-row {
+  width: 100%;
+  max-width: 340px;
+  margin: 8px auto 0;
+  flex-shrink: 0;
+}
+
+/* 發動技能的浮動提示（固定畫面上方置中，不受各畫面版面影響） */
+.skill-toast {
+  position: fixed;
+  left: 50%;
+  top: 22%;
+  transform: translateX(-50%);
+  background: #7a4fd0;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 22px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  box-shadow: 0 6px 20px rgba(122, 79, 208, 0.45);
+  z-index: 50;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* 待命發光呼吸 */
+.skill-btn.ready {
+  animation: skillPulse 1.6s ease-in-out infinite;
+}
+@keyframes skillPulse {
+  0%, 100% { box-shadow: 0 3px 0 #b98ee8, 0 0 8px rgba(160, 111, 224, 0.25); }
+  50%      { box-shadow: 0 3px 0 #b98ee8, 0 0 16px rgba(160, 111, 224, 0.55); }
+}

@@ -6,6 +6,8 @@ import { WORD_PROBLEMS, parseText } from '../data/wordProblems'
 import NumberPad from '../components/NumberPad'
 import PetAvatar from '../components/PetAvatar'
 import ScratchPad from '../components/ScratchPad'
+import { SkillBar } from '../components/PetSkillButton'
+import { usePetSkill } from '../hooks/usePetSkill'
 import { sfx } from '../utils/sound'
 import './MaketenScreen.css'
 import './WordProblemScreen.css'
@@ -216,7 +218,7 @@ function BuildPanel({ numbers, prevValue, onTapNum, onTapOp, color, disabled }) 
 }
 
 export default function WordProblemScreen({ onBack }) {
-  const { activePet, pets, petEquipment, wordProblemCleared, clearWordProblem, updatePetMood } = useGameStore()
+  const { activePet, pets, petEquipment, wordProblemCleared, clearWordProblem, updatePetMood, addCoins } = useGameStore()
   const petData = pets[activePet]
   const equipped = (petEquipment[activePet] || [])
     .map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
@@ -231,6 +233,7 @@ export default function WordProblemScreen({ onBack }) {
   const [userOp, setUserOp]     = useState(null)
   const [userB, setUserB]       = useState(null)
   const [timeLeft, setTimeLeft] = useState(120)
+  const [retryKey, setRetryKey] = useState(0)      // 護盾重試同一步驟時重啟計時器
   const [feedback, setFeedback] = useState(null)
   const [failInfo, setFailInfo] = useState(null)
   const [step1Value, setStep1Value] = useState(null)
@@ -249,6 +252,20 @@ export default function WordProblemScreen({ onBack }) {
     setUserA(null); setUserOp(null); setUserB(null); setInput('')
   }
 
+  // 寵物技能：加時（同時延後截止時間）/ 立即金幣 / 護盾（擋下一次答錯或逾時，這步驟重來）
+  const skill = usePetSkill({
+    onTime: (sec) => { if (deadlineRef.current) deadlineRef.current += sec * 1000; setTimeLeft(t => t + sec) },
+    onCoin: (n)   => addCoins(n),
+  })
+  const shieldRetry = () => {
+    clearInterval(timerRef.current)
+    clearTimeout(fbRef.current)
+    setFeedback(null)
+    resetEquation()
+    setTimeLeft(round.timeLimit)
+    setRetryKey(k => k + 1)
+  }
+
   const startRound = useCallback((rIdx) => {
     clearInterval(timerRef.current)
     clearTimeout(fbRef.current)
@@ -263,6 +280,7 @@ export default function WordProblemScreen({ onBack }) {
     setTimeLeft(r.timeLimit)
     setFeedback(null)
     setFailInfo(null)
+    skill.nextQuestion()
     setPhase('playing')
   }, [])
 
@@ -278,11 +296,13 @@ export default function WordProblemScreen({ onBack }) {
     }, 250)
     return () => clearInterval(timerRef.current)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, qIdx])
+  }, [phase, qIdx, retryKey])
 
   useEffect(() => {
     if (phase !== 'playing' || timeLeft !== 0) return
     clearInterval(timerRef.current)
+    skill.addEnergy()
+    if (skill.consumeShield()) { shieldRetry(); return } // 護盾擋下逾時，這步驟重來
     sfx.wrong()
     const failStep = currentQ?.steps[stepIdx]
     setFeedback('timeout')
@@ -320,6 +340,7 @@ export default function WordProblemScreen({ onBack }) {
         setStep1Value(v)
         setStepIdx(1)
         resetEquation()
+        skill.nextQuestion()
       }, 500)
       return
     }
@@ -340,6 +361,7 @@ export default function WordProblemScreen({ onBack }) {
           sfx.combo(3)
         }
       } else {
+        skill.nextQuestion()
         setQIdx(nextQ)
         setStepIdx(0)
         setStep1Value(null)
@@ -363,7 +385,9 @@ export default function WordProblemScreen({ onBack }) {
       }
       clearInterval(timerRef.current)
       const result = validateEquation(step, userA, userOp, userB, input)
+      skill.addEnergy()
       if (!result.ok) {
+        if (skill.consumeShield()) { shieldRetry(); return } // 護盾擋下答錯，這步驟重來
         sfx.wrong()
         setFeedback('wrong')
         setFailInfo({
@@ -565,6 +589,8 @@ export default function WordProblemScreen({ onBack }) {
         <div className="mt-pad wp-pad">
           <NumberPad value={input} onInput={handlePad} />
         </div>
+
+        <SkillBar skill={skill} disabled={!!feedback} />
       </div>
     )
   }

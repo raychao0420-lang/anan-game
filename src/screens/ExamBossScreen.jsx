@@ -7,6 +7,8 @@ import { SHOP_ITEMS } from '../data/shop'
 import { sfx } from '../utils/sound'
 import NumberPad from '../components/NumberPad'
 import PetAvatar from '../components/PetAvatar'
+import { SkillBar } from '../components/PetSkillButton'
+import { usePetSkill } from '../hooks/usePetSkill'
 import './ExamBossScreen.css'
 
 const CATEGORY_TIPS = {
@@ -52,6 +54,12 @@ export default function ExamBossScreen({ onBack }) {
 
   const currentQ = questions[qIndex]
 
+  // 寵物技能：加時 / 立即金幣 / 護盾（期末考＝把一次答錯算成過關）
+  const skill = usePetSkill({
+    onTime: (sec) => setTimeLeft(t => t + sec),
+    onCoin: (n)   => addCoins(n),
+  })
+
   const showFeedback = (type) => {
     clearTimeout(feedbackRef.current)
     setFeedback(type)
@@ -75,6 +83,7 @@ export default function ExamBossScreen({ onBack }) {
       setTimeout(() => passed ? sfx.bossWin() : sfx.bossLose(), 300)
       setPhase(passed ? 'win' : 'lose')
     } else {
+      skill.nextQuestion()
       setQIndex(i => i + 1)
       setInput('')
       setSelectedChoice(null)
@@ -88,9 +97,11 @@ export default function ExamBossScreen({ onBack }) {
       setTimeLeft(t => {
         if (t <= 1) {
           clearInterval(timerRef.current)
-          showFeedback('wrong')
-          sfx.wrong()
-          setTimeout(() => nextQuestion(false), 700)
+          skill.addEnergy()
+          const saved = skill.consumeShield() // 護盾：把逾時算成過關
+          showFeedback(saved ? 'correct' : 'wrong')
+          if (!saved) sfx.wrong()
+          setTimeout(() => nextQuestion(saved), 700)
           return 0
         }
         return t - 1
@@ -153,9 +164,11 @@ export default function ExamBossScreen({ onBack }) {
     clearInterval(timerRef.current)
     const userVal   = parseFloat(input)
     const isCorrect = !isNaN(userVal) && Math.abs(userVal - currentQ.answer) < 0.01
-    showFeedback(isCorrect ? 'correct' : 'wrong')
-    if (isCorrect) { sfx.correct(); updatePetMood(activePet, 4) } else sfx.wrong()
-    setTimeout(() => nextQuestion(isCorrect), 700)
+    skill.addEnergy()
+    const scored = isCorrect || skill.consumeShield() // 護盾：答錯也算過
+    showFeedback(scored ? 'correct' : 'wrong')
+    if (scored) { sfx.correct(); updatePetMood(activePet, 4) } else sfx.wrong()
+    setTimeout(() => nextQuestion(scored), 700)
   }, [input, currentQ, phase, nextQuestion, activePet, updatePetMood])
 
   const handleChoiceSelect = useCallback((optionIndex) => {
@@ -163,9 +176,11 @@ export default function ExamBossScreen({ onBack }) {
     clearInterval(timerRef.current)
     const isCorrect = optionIndex === currentQ.answer
     setSelectedChoice(optionIndex)
-    showFeedback(isCorrect ? 'correct' : 'wrong')
-    if (isCorrect) { sfx.correct(); updatePetMood(activePet, 4) } else sfx.wrong()
-    setTimeout(() => nextQuestion(isCorrect), isCorrect ? 700 : 1500)
+    skill.addEnergy()
+    const scored = isCorrect || skill.consumeShield() // 護盾：答錯也算過
+    showFeedback(scored ? 'correct' : 'wrong')
+    if (scored) { sfx.correct(); updatePetMood(activePet, 4) } else sfx.wrong()
+    setTimeout(() => nextQuestion(scored), scored ? 700 : 1500)
   }, [currentQ, phase, nextQuestion, selectedChoice, activePet, updatePetMood])
 
   const startSubject = (subConf) => {
@@ -180,6 +195,7 @@ export default function ExamBossScreen({ onBack }) {
     setCorrectCount(0); setWrongCount(0)
     setFeedback(null)
     setWasPerfect(false); setCoinsEarned(0)
+    skill.nextQuestion()
     setPhase('fight')
   }
 
@@ -469,6 +485,7 @@ export default function ExamBossScreen({ onBack }) {
         </div>
       )}
 
+      <SkillBar skill={skill} disabled={feedback !== null || selectedChoice !== null} />
     </div>
   )
 }

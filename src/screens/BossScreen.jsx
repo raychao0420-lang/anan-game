@@ -7,6 +7,8 @@ import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import NumberPad from '../components/NumberPad'
 import PetAvatar from '../components/PetAvatar'
+import { SkillBar } from '../components/PetSkillButton'
+import { usePetSkill } from '../hooks/usePetSkill'
 import { sfx } from '../utils/sound'
 import './BossScreen.css'
 
@@ -14,7 +16,7 @@ const BOSS_QUESTIONS = 15
 const BOSS_PASS = 10
 
 export default function BossScreen({ chapterId, onBack }) {
-  const { activePet, pets, petEquipment, clearBoss, bossCleared, updateMaxCombo, updateTotalCoins, updatePetMood } = useGameStore()
+  const { activePet, pets, petEquipment, clearBoss, bossCleared, updateMaxCombo, updateTotalCoins, updatePetMood, addCoins } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
@@ -48,15 +50,21 @@ export default function BossScreen({ chapterId, onBack }) {
   const currentQ = questions[qIndex]
   const dmgPerHit = 100 / BOSS_QUESTIONS
 
+  // 寵物技能：加時 / 立即金幣 / 護盾（Boss 戰＝答錯不斷連段）
+  const skill = usePetSkill({
+    onTime: (sec) => setTimeLeft(t => t + sec),
+    onCoin: (n)   => { addCoins(n); updateTotalCoins(n) },
+  })
+
   const showFeedback = (correct) => {
     clearTimeout(feedbackRef.current)
     setFeedback(correct)
     feedbackRef.current = setTimeout(() => setFeedback(null), 600)
   }
 
-  const nextQuestion = useCallback((correct) => {
+  const nextQuestion = useCallback((correct, keepCombo = false) => {
     const newCorrect = correctCount + (correct ? 1 : 0)
-    const newCombo = correct ? combo + 1 : 0
+    const newCombo = correct ? combo + 1 : (keepCombo ? combo : 0)
     setCorrectCount(newCorrect)
     setCombo(newCombo)
     if (correct) setBossHp(hp => Math.max(0, hp - dmgPerHit))
@@ -73,6 +81,7 @@ export default function BossScreen({ chapterId, onBack }) {
         setPhase('lose')
       }
     } else {
+      skill.nextQuestion()
       setQIndex(i => i + 1)
       setInput('')
       setTimeLeft(BOSS_TIME)
@@ -87,7 +96,8 @@ export default function BossScreen({ chapterId, onBack }) {
           clearInterval(timerRef.current)
           showFeedback(false)
           sfx.wrong()
-          nextQuestion(false)
+          skill.addEnergy()
+          nextQuestion(false, skill.consumeShield()) // 護盾：逾時不斷連段
           return BOSS_TIME
         }
         return t - 1
@@ -100,10 +110,12 @@ export default function BossScreen({ chapterId, onBack }) {
     if (!input || phase !== 'fight') return
     clearInterval(timerRef.current)
     const correct = parseInt(input) === currentQ.answer
+    skill.addEnergy()
+    const keepCombo = !correct && skill.consumeShield() // 護盾：答錯不斷連段
     showFeedback(correct)
     if (correct) { sfx.bossHit(); updatePetMood(activePet, 4) }
     else sfx.wrong()
-    setTimeout(() => nextQuestion(correct), 500)
+    setTimeout(() => nextQuestion(correct, keepCombo), 500)
   }, [input, currentQ, phase, nextQuestion, activePet, updatePetMood])
 
   const timerPct = (timeLeft / BOSS_TIME) * 100
@@ -335,6 +347,8 @@ export default function BossScreen({ chapterId, onBack }) {
       <div className="boss-numpad">
         <NumberPad value={input} onChange={setInput} onConfirm={handleConfirm} />
       </div>
+
+      <SkillBar skill={skill} disabled={feedback !== null} />
     </div>
   )
 }

@@ -196,6 +196,30 @@
   flex-shrink: 0;
 }
 
+/* 寵物技能鈕（數字鍵盤上方） */
+.game-skill {
+  width: 100%;
+  max-width: 340px;
+  flex-shrink: 0;
+}
+
+/* 發動技能瞬間的提示文字 */
+.skill-flash {
+  position: absolute;
+  top: -8px;
+  left: -12px;
+  background: #7a4fd0;
+  color: #fff;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 1rem;
+  font-weight: 800;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(122, 79, 208, 0.4);
+  z-index: 5;
+}
+
 /* ── Pause icon button ── */
 .pause-icon-btn {
   background: rgba(0,0,0,0.08);
@@ -317,7 +341,7 @@
     grid-template-areas:
       "header   header"
       "timer    timer"
-      "pet      numpad"
+      "pet      skill"
       "question numpad"
       "doodle   numpad";
     height: 100dvh;
@@ -333,6 +357,7 @@
   .question-card { grid-area: question; max-width: none; align-self: start; padding: 20px 36px 24px; }
   .doodle-area   { grid-area: doodle;   max-width: none; }
   .game-numpad   { grid-area: numpad;   max-width: none; margin: 0; align-self: center; }
+  .game-skill    { grid-area: skill;    max-width: none; align-self: end; }
 
   .game-pet-bubble { width: 110px; height: 143px; }
   .vq { font-size: 3rem; }

@@ -5,6 +5,8 @@ import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import NumberPad from '../components/NumberPad'
 import PetAvatar from '../components/PetAvatar'
+import { SkillBar } from '../components/PetSkillButton'
+import { usePetSkill } from '../hooks/usePetSkill'
 import { sfx } from '../utils/sound'
 import './MaketenScreen.css'
 
@@ -32,7 +34,7 @@ function makeQuestions() {
 }
 
 export default function MakeTwentyScreen({ onBack }) {
-  const { activePet, pets, petEquipment, makeTwentyCleared, clearMakeTwenty, updatePetMood } = useGameStore()
+  const { activePet, pets, petEquipment, makeTwentyCleared, clearMakeTwenty, updatePetMood, addCoins } = useGameStore()
   const petData = pets[activePet]
   const equipped = (petEquipment[activePet] || [])
     .map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
@@ -43,6 +45,7 @@ export default function MakeTwentyScreen({ onBack }) {
   const [qIdx, setQIdx]         = useState(0)
   const [input, setInput]       = useState('')
   const [timeLeft, setTimeLeft] = useState(20)
+  const [retryKey, setRetryKey] = useState(0)      // 護盾重試同一題時重啟計時器
   const [feedback, setFeedback] = useState(null)
   const [failInfo, setFailInfo] = useState(null)
   const [wonFirst, setWonFirst] = useState(false)
@@ -51,6 +54,20 @@ export default function MakeTwentyScreen({ onBack }) {
 
   const round    = ROUNDS[roundIdx]
   const currentQ = questions[qIdx]
+
+  // 寵物技能：加時 / 立即金幣 / 護盾（擋下一次答錯或逾時，這題重來）
+  const skill = usePetSkill({
+    onTime: (sec) => setTimeLeft(t => t + sec),
+    onCoin: (n)   => addCoins(n),
+  })
+  const shieldRetry = () => {
+    clearInterval(timerRef.current)
+    clearTimeout(fbRef.current)
+    setFeedback(null)
+    setInput('')
+    setTimeLeft(round.timeLimit)
+    setRetryKey(k => k + 1)
+  }
 
   const startRound = useCallback((rIdx) => {
     clearInterval(timerRef.current)
@@ -62,6 +79,7 @@ export default function MakeTwentyScreen({ onBack }) {
     setTimeLeft(ROUNDS[rIdx].timeLimit)
     setFeedback(null)
     setFailInfo(null)
+    skill.nextQuestion()
     setPhase('playing')
   }, [])
 
@@ -72,11 +90,13 @@ export default function MakeTwentyScreen({ onBack }) {
       setTimeLeft(t => (t <= 1 ? 0 : t - 1))
     }, 1000)
     return () => clearInterval(timerRef.current)
-  }, [phase, qIdx])
+  }, [phase, qIdx, retryKey])
 
   useEffect(() => {
     if (phase !== 'playing' || timeLeft !== 0) return
     clearInterval(timerRef.current)
+    skill.addEnergy()
+    if (skill.consumeShield()) { shieldRetry(); return }
     sfx.wrong()
     setFeedback('timeout')
     setFailInfo({ answer: currentQ?.answer, reason: 'timeout' })
@@ -91,8 +111,10 @@ export default function MakeTwentyScreen({ onBack }) {
       if (!input) return
       clearInterval(timerRef.current)
       const correct = parseInt(input) === currentQ.answer
+      skill.addEnergy()
 
       if (!correct) {
+        if (skill.consumeShield()) { shieldRetry(); return }
         sfx.wrong()
         setFeedback('wrong')
         setFailInfo({ answer: currentQ.answer, reason: 'wrong' })
@@ -122,6 +144,7 @@ export default function MakeTwentyScreen({ onBack }) {
             sfx.combo(3)
           }
         } else {
+          skill.nextQuestion()
           setQIdx(nextIdx)
           setInput('')
           setTimeLeft(round.timeLimit)
@@ -268,6 +291,8 @@ export default function MakeTwentyScreen({ onBack }) {
       <div className="mt-pad">
         <NumberPad value={input} onInput={handlePad} />
       </div>
+
+      <SkillBar skill={skill} disabled={!!feedback} />
     </div>
   )
 

@@ -2,10 +2,11 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { generateStageQuestions, STAGE_NAMES } from '../data/questions'
-import { PETS } from '../data/pets'
+import { PETS, ENERGY_PER_QUESTION, SKILL_COST } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import NumberPad from '../components/NumberPad'
 import PetAvatar from '../components/PetAvatar'
+import PetSkillButton from '../components/PetSkillButton'
 import { sfx } from '../utils/sound'
 import './GameScreen.css'
 
@@ -158,7 +159,7 @@ function DoodleCanvas() {
 }
 
 export default function GameScreen({ stageId, onFinish, onExit }) {
-  const { activePet, pets, petEquipment, updateDailyProgress, updateMaxCombo, updateTotalCoins, updatePetMood } = useGameStore()
+  const { activePet, pets, petEquipment, petEnergy, gainEnergy, spendEnergy, updateDailyProgress, updateMaxCombo, updateTotalCoins, updatePetMood } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
@@ -177,6 +178,11 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
   const [feedback, setFeedback] = useState(null) // { correct, points }
   const [paused, setPaused] = useState(false)
   const [heartTrigger, setHeartTrigger] = useState(0)
+  // ── 寵物技能（只作用在當下這一題）──
+  const [skillUsedThisQ, setSkillUsedThisQ] = useState(false) // 一題只能發動一次
+  const [coinBoost, setCoinBoost] = useState(null)            // { mult?, add? } 當題答對金幣加碼
+  const [skillFlash, setSkillFlash] = useState(null)          // 發動技能時的提示文字
+  const shieldRef = useRef(false)                             // 當題護盾：答錯/逾時不斷連段
   const timerRef = useRef(null)
   const feedbackRef = useRef(null)
   const comboRef = useRef(0)
@@ -193,6 +199,10 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
 
   const nextQuestion = useCallback((result) => {
     setResults(prev => [...prev, result])
+    // 技能效果只作用於當題，換題全部歸零
+    setSkillUsedThisQ(false)
+    setCoinBoost(null)
+    shieldRef.current = false
     if (qIndex < QUESTIONS_PER_STAGE - 1) {
       setQIndex(i => i + 1)
       setInput('')
@@ -208,6 +218,24 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
   const handleResume = () => { pausedRef.current = false; setPaused(false) }
   const handleExit = () => { if (onExit) onExit() }
 
+  // 手動發動出戰寵物的技能，只作用在當下這一題。能量不足或本題已用則不動作。
+  const activateSkill = (skill) => {
+    if (skillUsedThisQ) return
+    if (!spendEnergy(activePet, SKILL_COST)) return
+    setSkillUsedThisQ(true)
+    const eff = skill.effect
+    if (eff.type === 'time') {
+      setTimeLeft(t => t + eff.value)
+    } else if (eff.type === 'coin') {
+      setCoinBoost({ mult: eff.mult, add: eff.add })
+    } else if (eff.type === 'shield') {
+      shieldRef.current = true
+    }
+    sfx.pet(activePet)
+    setSkillFlash(`${skill.icon} ${skill.name}！`)
+    setTimeout(() => setSkillFlash(null), 900)
+  }
+
   // Timer
   useEffect(() => {
     if (qIndex >= QUESTIONS_PER_STAGE) return
@@ -218,9 +246,11 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
           clearInterval(timerRef.current)
           setMood('sad')
           showFeedback(false, 0)
-          setCombo(0)
+          // 護盾：逾時不斷連段
+          if (!shieldRef.current) setCombo(0)
           sfx.wrong()
           updatePetMood(activePet, 1)
+          gainEnergy(activePet, ENERGY_PER_QUESTION) // 答題回復能量
           nextQuestion({ correct: false, coins: 0, time: TIME_LIMIT })
           return TIME_LIMIT
         }
@@ -241,12 +271,18 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
     if (!input) return
     clearInterval(timerRef.current)
     const correct = parseInt(input) === currentQ.answer
-    const timeTaken = TIME_LIMIT - timeLeft
+    const timeTaken = Math.max(0, TIME_LIMIT - timeLeft) // 加時技能可能讓 timeLeft > 上限
     const speedBonus = timeTaken <= 5 ? 5 : 0
-    const newCombo = correct ? combo + 1 : 0
+    const shielded = !correct && shieldRef.current        // 護盾：答錯不斷連段
+    const newCombo = correct ? combo + 1 : (shielded ? combo : 0)
     const baseCoins = correct ? 10 : 0
     const comboBonus = correct && newCombo >= 3 ? Math.floor(baseCoins * 0.5) : 0
-    const earned = baseCoins + speedBonus + comboBonus
+    let earned = baseCoins + speedBonus + comboBonus
+    if (correct && coinBoost) {                            // 金幣技能加碼
+      if (coinBoost.mult) earned *= coinBoost.mult
+      if (coinBoost.add)  earned += coinBoost.add
+    }
+    gainEnergy(activePet, ENERGY_PER_QUESTION)             // 答題回復能量
 
     setCombo(newCombo)
     comboRef.current = newCombo
@@ -270,11 +306,11 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
     setTimeout(() => {
       nextQuestion({ correct, coins: earned, time: timeTaken })
     }, 600)
-  }, [input, currentQ, timeLeft, combo, nextQuestion])
+  }, [input, currentQ, timeLeft, combo, coinBoost, nextQuestion])
 
   if (qIndex >= QUESTIONS_PER_STAGE) return null
 
-  const timerPct = (timeLeft / TIME_LIMIT) * 100
+  const timerPct = Math.min(100, (timeLeft / TIME_LIMIT) * 100)
   const timerColor = timeLeft > 8 ? '#6BCB77' : timeLeft > 4 ? '#FFB347' : '#FF6B6B'
 
   const heartCount = combo >= 5 ? 3 : combo >= 2 ? 2 : 1
@@ -363,6 +399,20 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
             </motion.div>
           )}
         </AnimatePresence>
+
+        <AnimatePresence>
+          {skillFlash && (
+            <motion.div
+              className="skill-flash"
+              initial={{ scale: 0.5, opacity: 0, y: 0 }}
+              animate={{ scale: 1, opacity: 1, y: -46 }}
+              exit={{ opacity: 0, y: -70 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              {skillFlash}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Question (vertical) */}
@@ -381,6 +431,17 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
 
       {/* Scratch pad – key clears canvas on each new question */}
       <DoodleCanvas key={qIndex} />
+
+      {/* 寵物技能鈕 */}
+      <div className="game-skill">
+        <PetSkillButton
+          petId={activePet}
+          energy={petEnergy?.[activePet] ?? 0}
+          used={skillUsedThisQ}
+          disabled={paused || !!feedback}
+          onActivate={activateSkill}
+        />
+      </div>
 
       {/* Number pad */}
       <div className="game-numpad">

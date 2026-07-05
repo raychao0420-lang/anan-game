@@ -255,3 +255,30 @@ export const PETS = {
 }
 
 export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon']
+
+// ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
+// 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
+// 一次發動只作用在「當下這一題」，換題就失效。滿能量 100 = 可連用 5 次。
+// LULU 是最強寵物：所有題型 +10 秒（成本跟大家一樣，靠效果取勝）。
+export const ENERGY_MAX = 100
+export const ENERGY_START = 20            // 初次遊玩就有一次技能可用
+export const ENERGY_PER_QUESTION = 5      // 每答一題回復
+export const SKILL_COST = 20              // 每次發動消耗（統一）
+
+// effect.type: 'time'(當題加秒) | 'coin'(當題答對金幣加碼 mult/add) | 'shield'(當題答錯不斷連段)
+export const PET_SKILLS = {
+  lulu:    { name: '勇氣時光', icon: '⏳', effect: { type: 'time',  value: 10 }, desc: '這一題 +10 秒（最強！）' },
+  hana:    { name: '歡樂加倍', icon: '💞', effect: { type: 'coin',  mult: 2 },   desc: '這一題答對金幣 ×2' },
+  kotaro:  { name: '沉穩加時', icon: '🍃', effect: { type: 'time',  value: 6 },  desc: '這一題 +6 秒' },
+  jiji:    { name: '魔法護盾', icon: '🛡️', effect: { type: 'shield' },           desc: '這一題答錯不斷連段' },
+  kitsune: { name: '冰霜凝結', icon: '❄️', effect: { type: 'time',  value: 7 },  desc: '這一題 +7 秒' },
+  mejiro:  { name: '花蜜金幣', icon: '🌼', effect: { type: 'coin',  add: 15 },   desc: '這一題答對 +15 金幣' },
+  penguin: { name: '滑冰加速', icon: '⛸️', effect: { type: 'time',  value: 5 },  desc: '這一題 +5 秒' },
+  owl:     { name: '智慧之光', icon: '✨', effect: { type: 'coin',  mult: 2 },   desc: '這一題答對金幣 ×2' },
+  seal:    { name: '陽光護盾', icon: '🌞', effect: { type: 'shield' },           desc: '這一題答錯不斷連段' },
+  beaver:  { name: '築壩加時', icon: '🪵', effect: { type: 'time',  value: 6 },  desc: '這一題 +6 秒' },
+  hamster: { name: '囤積金幣', icon: '🌰', effect: { type: 'coin',  add: 12 },   desc: '這一題答對 +12 金幣' },
+  dino:    { name: '恐龍護盾', icon: '🥚', effect: { type: 'shield' },           desc: '這一題答錯不斷連段' },
+  monkey:  { name: '雜耍金幣', icon: '🎪', effect: { type: 'coin',  mult: 2 },   desc: '這一題答對金幣 ×2' },
+  raccoon: { name: '夜行加時', icon: '🌙', effect: { type: 'time',  value: 7 },  desc: '這一題 +7 秒' },
+}

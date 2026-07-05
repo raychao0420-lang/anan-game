@@ -5,6 +5,8 @@ import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import NumberPad from '../components/NumberPad'
 import PetAvatar from '../components/PetAvatar'
+import { SkillBar } from '../components/PetSkillButton'
+import { usePetSkill } from '../hooks/usePetSkill'
 import { sfx } from '../utils/sound'
 import './MaketenScreen.css'
 
@@ -73,6 +75,7 @@ export default function MakeHundredScreen({ onBack }) {
   const [qIdx, setQIdx]         = useState(0)
   const [input, setInput]       = useState('')
   const [timeLeft, setTimeLeft] = useState(22)
+  const [retryKey, setRetryKey] = useState(0)      // 護盾重試同一題時重啟計時器
   const [feedback, setFeedback] = useState(null)
   const [failInfo, setFailInfo] = useState(null)
   const [wonFirst, setWonFirst] = useState(false)
@@ -87,6 +90,20 @@ export default function MakeHundredScreen({ onBack }) {
   const cfg        = isPractice ? PRACTICE_CFG : round
   const totalQ     = isPractice ? PRACTICE_TOTAL : Q_PER_ROUND
 
+  // 寵物技能：加時 / 立即金幣 / 護盾（擋下一次答錯或逾時，這題重來）
+  const skill = usePetSkill({
+    onTime: (sec) => setTimeLeft(t => t + sec),
+    onCoin: (n)   => addCoins(n),
+  })
+  const shieldRetry = () => {
+    clearInterval(timerRef.current)
+    clearTimeout(fbRef.current)
+    setFeedback(null)
+    setInput('')
+    setTimeLeft(cfg.timeLimit)
+    setRetryKey(k => k + 1)
+  }
+
   const startRound = useCallback((rIdx) => {
     clearInterval(timerRef.current)
     clearTimeout(fbRef.current)
@@ -98,6 +115,7 @@ export default function MakeHundredScreen({ onBack }) {
     setTimeLeft(ROUNDS[rIdx].timeLimit)
     setFeedback(null)
     setFailInfo(null)
+    skill.nextQuestion()
     setPhase('playing')
   }, [])
 
@@ -113,6 +131,7 @@ export default function MakeHundredScreen({ onBack }) {
     setFailInfo(null)
     setPracCorrect(0)
     setPracEarned(0)
+    skill.nextQuestion()
     setPhase('playing')
   }, [])
 
@@ -128,6 +147,7 @@ export default function MakeHundredScreen({ onBack }) {
     } else {
       setFeedback(null)
       setFailInfo(null)
+      skill.nextQuestion()
       setQIdx(nextIdx)
       setInput('')
       setTimeLeft(PRACTICE_TIME)
@@ -141,11 +161,13 @@ export default function MakeHundredScreen({ onBack }) {
       setTimeLeft(t => (t <= 1 ? 0 : t - 1))
     }, 1000)
     return () => clearInterval(timerRef.current)
-  }, [phase, qIdx])
+  }, [phase, qIdx, retryKey])
 
   useEffect(() => {
     if (phase !== 'playing' || timeLeft !== 0) return
     clearInterval(timerRef.current)
+    skill.addEnergy()
+    if (skill.consumeShield()) { shieldRetry(); return } // 護盾擋下逾時，這題重來
     sfx.wrong()
     setFeedback('timeout')
     setFailInfo({ answer: currentQ?.answer, reason: 'timeout' })
@@ -164,9 +186,11 @@ export default function MakeHundredScreen({ onBack }) {
       if (!input) return
       clearInterval(timerRef.current)
       const correct = parseInt(input) === currentQ.answer
+      skill.addEnergy()
 
       // ── 練習模式：答錯只看正解、不重來 ──
       if (isPractice) {
+        if (!correct && skill.consumeShield()) { shieldRetry(); return }
         const nextCorrect = pracCorrect + (correct ? 1 : 0)
         if (correct) {
           sfx.correct()
@@ -185,6 +209,7 @@ export default function MakeHundredScreen({ onBack }) {
 
       // ── 特訓模式：答錯從頭來 ──
       if (!correct) {
+        if (skill.consumeShield()) { shieldRetry(); return } // 護盾擋下答錯，這題重來
         sfx.wrong()
         setFeedback('wrong')
         setFailInfo({ answer: currentQ.answer, reason: 'wrong' })
@@ -214,6 +239,7 @@ export default function MakeHundredScreen({ onBack }) {
             sfx.combo(3)
           }
         } else {
+          skill.nextQuestion()
           setQIdx(nextIdx)
           setInput('')
           setTimeLeft(round.timeLimit)
@@ -374,6 +400,8 @@ export default function MakeHundredScreen({ onBack }) {
       <div className="mt-pad">
         <NumberPad value={input} onInput={handlePad} />
       </div>
+
+      <SkillBar skill={skill} disabled={!!feedback} />
     </div>
   )
 

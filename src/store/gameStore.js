@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { ACHIEVEMENTS } from '../data/achievements'
-import { EVOLVE_EXP } from '../data/pets'
+import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
 
 const makeStages = () => {
@@ -93,6 +93,9 @@ export const useGameStore = create(
       // M4: pet moods
       petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80, dino: 80, monkey: 80, raccoon: 80 },
       lastPlayedAt: null,
+
+      // M9: 寵物技能能量（每隻獨立，答題 +5 回復、發動 -20）
+      petEnergy: { lulu: ENERGY_START, hana: ENERGY_START, kotaro: ENERGY_START, jiji: ENERGY_START, kitsune: ENERGY_START, mejiro: ENERGY_START, penguin: ENERGY_START, owl: ENERGY_START, seal: ENERGY_START, beaver: ENERGY_START, hamster: ENERGY_START, dino: ENERGY_START, monkey: ENERGY_START, raccoon: ENERGY_START },
 
       // M6: 幸運蛋 + 每日登入禮物
       luckyEggs: 0,
@@ -486,6 +489,22 @@ export const useGameStore = create(
           return { petMoods: { ...s.petMoods, [petId]: Math.min(100, Math.max(0, current + delta)) } }
         }),
 
+      // ── M9: 寵物技能能量 ──
+      // 答一題回復能量（答對答錯都給），上限 100。
+      gainEnergy: (petId, amount) =>
+        set((s) => {
+          const cur = s.petEnergy?.[petId] ?? ENERGY_START
+          return { petEnergy: { ...s.petEnergy, [petId]: Math.min(ENERGY_MAX, cur + amount) } }
+        }),
+
+      // 發動技能：能量足夠才扣除並回傳 true，不夠回傳 false（畫面據此判斷可否發動）。
+      spendEnergy: (petId, cost) => {
+        const cur = get().petEnergy?.[petId] ?? 0
+        if (cur < cost) return false
+        set((s) => ({ petEnergy: { ...s.petEnergy, [petId]: cur - cost } }))
+        return true
+      },
+
       stampPlayTime: () => set({ lastPlayedAt: Date.now() }),
 
       checkMoodDecay: () => {
@@ -586,6 +605,7 @@ export const useGameStore = create(
           maxCombo: 0,
           perfectStages: 0,
           petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80, dino: 80, monkey: 80, raccoon: 80 },
+          petEnergy: { lulu: ENERGY_START, hana: ENERGY_START, kotaro: ENERGY_START, jiji: ENERGY_START, kitsune: ENERGY_START, mejiro: ENERGY_START, penguin: ENERGY_START, owl: ENERGY_START, seal: ENERGY_START, beaver: ENERGY_START, hamster: ENERGY_START, dino: ENERGY_START, monkey: ENERGY_START, raccoon: ENERGY_START },
           lastPlayedAt: null,
           luckyEggs: 0,
           lastGiftDate: null,
@@ -632,6 +652,11 @@ export const useGameStore = create(
             if (state.petMoods[id] === undefined) state.petMoods[id] = 80
           })
         }
+        // M9: 寵物技能能量
+        if (!state.petEnergy) state.petEnergy = {}
+        allPets.forEach((id) => {
+          if (state.petEnergy[id] === undefined) state.petEnergy[id] = ENERGY_START
+        })
         // M6: 幸運蛋 + 登入禮物
         if (state.luckyEggs === undefined) state.luckyEggs = 0
         if (state.lastGiftDate === undefined) state.lastGiftDate = null
