@@ -93,6 +93,8 @@ export const SHOP_ITEMS = [
   { id: 'crown_social',  name: '社會皇冠', emoji: '🌏', category: 'rare', price: 0, desc: '社會科三次滿分獎勵', boss: true },
   { id: 'crown_nature',  name: '自然皇冠', emoji: '🔬', category: 'rare', price: 0, desc: '自然科三次滿分獎勵', boss: true },
   { id: 'crown_chinese', name: '國語皇冠', emoji: '🖊️', category: 'rare', price: 0, desc: '國語科三次滿分獎勵', boss: true },
+  // ── 連載劇《七色星願》信物（劇情獎勵，不可購買）──
+  { id: 'star_pendant', name: '星形墜子', emoji: '🌟', category: 'rare', price: 0, desc: '雨夜裡斗篷客掉下的星形墜子，刻著滿滿小星星，冰冰的卻會在手心慢慢變暖…', boss: true },
 ]
 
 // 新寵物（波波/嚕嚕/圓圓/阿丁/小麥）的食物偏好。原本食物 exp 只列了 6 隻，
