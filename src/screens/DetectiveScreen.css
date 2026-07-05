@@ -1,13 +1,28 @@
 .dtv-screen {
   --accent: #7c9cff;
-  /* body 是 overflow:hidden 的固定視窗，內容太長時這裡要能自己捲動，
-     否則最底下的綠色確認鍵會被擠出畫面按不到 */
-  height: 100dvh;
+  /* body 是 overflow:hidden 的固定視窗。這裡填滿外層 wrap（剛好一個視窗高）並自己捲動；
+     用 100% 而非 100dvh，確保和外層 wrap 完全等高，不會兩層捲動互相打架。 */
+  height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 16px 18px 48px;
+  padding: 16px 18px 12px;
   background: linear-gradient(160deg, #FFF5E6 0%, #EEF2FF 55%, #F4ECFF 100%);
   position: relative;
+}
+
+/* 數字鍵盤固定在畫面底部（sticky），題目文字在上方捲動，
+   綠色確認鍵永遠看得到、按得到，不會被長內容擠出畫面 */
+.dtv-numpad-dock {
+  position: sticky;
+  bottom: 0;
+  z-index: 6;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 2px;
+  margin-top: 2px;
+  /* 讓捲動的內容不會透到數字鍵盤縫隙後面 */
+  background: linear-gradient(to top, #f4ecff 80%, rgba(244, 236, 255, 0));
 }
 
 .dtv-back {

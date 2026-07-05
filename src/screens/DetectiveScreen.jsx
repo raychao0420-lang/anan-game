@@ -180,7 +180,9 @@ export default function DetectiveScreen({ onBack }) {
                   <p className="dtv-clue-text">{renderClue(scene.puzzle.text)}</p>
                 </div>
                 {hint && <div className="dtv-hint">💡 {hint}</div>}
-                <NumberPad value={value} onChange={setValue} onConfirm={checkAnswer} />
+                <div className="dtv-numpad-dock">
+                  <NumberPad value={value} onChange={setValue} onConfirm={checkAnswer} />
+                </div>
               </>
             ) : (
               <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>

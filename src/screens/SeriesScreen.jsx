@@ -242,7 +242,9 @@ export default function SeriesScreen({ onBack }) {
                     💡 {scene.puzzle.hint.zh}<br /><span className="srs-en">{scene.puzzle.hint.en}</span>
                   </div>
                 )}
-                <NumberPad value={value} onChange={setValue} onConfirm={checkAnswer} />
+                <div className="dtv-numpad-dock">
+                  <NumberPad value={value} onChange={setValue} onConfirm={checkAnswer} />
+                </div>
               </>
             ) : (
               <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
