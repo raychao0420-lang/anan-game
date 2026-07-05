@@ -127,7 +127,7 @@ export default function SeriesScreen({ onBack }) {
   }
 
   return (
-    <div className="dtv-screen" style={{ '--accent': ep?.accent ?? '#b06bd6' }}>
+    <div className={`dtv-screen ${phase === 'scene' ? 'dtv-screen-scene' : ''}`} style={{ '--accent': ep?.accent ?? '#b06bd6' }}>
       <button className="dtv-back"
         onClick={phase === 'select' ? () => { stopSpeaking(); sfx.click(); onBack() } : backToList}>
         {phase === 'select' ? '← 回首頁 Home' : '← 回劇場 Episodes'}
@@ -221,38 +221,45 @@ export default function SeriesScreen({ onBack }) {
 
         {/* ── 現場調查 ── */}
         {phase === 'scene' && (
-          <motion.div key={`scene-${sceneIdx}`} className="dtv-panel"
+          <motion.div key={`scene-${sceneIdx}`} className="dtv-panel dtv-scene-panel"
             initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}>
-            <div className="dtv-progress">現場 Scene {sceneIdx + 1} / {ep.scenes.length}</div>
-            <div className="dtv-place">
-              <span className="dtv-place-emoji">{scene.emoji}</span>
-              <span className="dtv-place-name">{scene.place.zh} · {scene.place.en}</span>
-            </div>
-            <div className="dtv-partner-row">{partner(56)}<Bi t={scene.story} /></div>
+            {/* 上方內容可捲動 */}
+            <div className="dtv-scene-scroll">
+              <div className="dtv-progress">現場 Scene {sceneIdx + 1} / {ep.scenes.length}</div>
+              <div className="dtv-place">
+                <span className="dtv-place-emoji">{scene.emoji}</span>
+                <span className="dtv-place-name">{scene.place.zh} · {scene.place.en}</span>
+              </div>
+              <div className="dtv-partner-row">{partner(56)}<Bi t={scene.story} /></div>
 
-            {!solvedClue ? (
-              <>
-                <div className="dtv-clue-card">
-                  <div className="dtv-clue-label">🔍 現場謎題 Puzzle</div>
-                  <p className="dtv-clue-text">{renderClue(scene.puzzle.text.zh)}</p>
-                  <p className="dtv-clue-text srs-en">{renderClue(scene.puzzle.text.en)}<SpeakBtn text={scene.puzzle.text.en} /></p>
-                </div>
-                {hint && (
-                  <div className="dtv-hint">
-                    💡 {scene.puzzle.hint.zh}<br /><span className="srs-en">{scene.puzzle.hint.en}</span>
+              {!solvedClue ? (
+                <>
+                  <div className="dtv-clue-card">
+                    <div className="dtv-clue-label">🔍 現場謎題 Puzzle</div>
+                    <p className="dtv-clue-text">{renderClue(scene.puzzle.text.zh)}</p>
+                    <p className="dtv-clue-text srs-en">{renderClue(scene.puzzle.text.en)}<SpeakBtn text={scene.puzzle.text.en} /></p>
                   </div>
-                )}
-                <div className="dtv-numpad-dock">
-                  <NumberPad value={value} onChange={setValue} onConfirm={checkAnswer} />
-                </div>
-              </>
-            ) : (
-              <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-                <div className="dtv-reward"><Bi t={scene.puzzle.reward} /></div>
-                <button className="dtv-btn" onClick={nextScene}>
-                  {sceneIdx < ep.scenes.length - 1 ? '下一個現場 Next →' : '整理線索，指認真相 🕵️'}
-                </button>
-              </motion.div>
+                  {hint && (
+                    <div className="dtv-hint">
+                      💡 {scene.puzzle.hint.zh}<br /><span className="srs-en">{scene.puzzle.hint.en}</span>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                  <div className="dtv-reward"><Bi t={scene.puzzle.reward} /></div>
+                  <button className="dtv-btn" onClick={nextScene}>
+                    {sceneIdx < ep.scenes.length - 1 ? '下一個現場 Next →' : '整理線索，指認真相 🕵️'}
+                  </button>
+                </motion.div>
+              )}
+            </div>
+
+            {/* 數字鍵盤固定在底部欄，綠色確認鍵永遠按得到 */}
+            {!solvedClue && (
+              <div className="dtv-numpad-dock">
+                <NumberPad value={value} onChange={setValue} onConfirm={checkAnswer} />
+              </div>
             )}
           </motion.div>
         )}

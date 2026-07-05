@@ -1,8 +1,8 @@
 .dtv-screen {
   --accent: #7c9cff;
-  /* body 是 overflow:hidden 的固定視窗。這裡填滿外層 wrap（剛好一個視窗高）並自己捲動；
-     用 100% 而非 100dvh，確保和外層 wrap 完全等高，不會兩層捲動互相打架。 */
-  height: 100%;
+  /* body 是 overflow:hidden 的固定視窗。這裡固定一個視窗高。
+     一般頁面（選單/開場/指認/破案）內容較長時整頁捲動。 */
+  height: 100dvh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 16px 18px 12px;
@@ -10,19 +10,49 @@
   position: relative;
 }
 
-/* 數字鍵盤固定在畫面底部（sticky），題目文字在上方捲動，
-   綠色確認鍵永遠看得到、按得到，不會被長內容擠出畫面 */
+/* 現場答題頁：改成「返回鍵＋內容捲動區＋數字鍵盤底部欄」的固定版面，
+   數字鍵盤永遠釘在底部、綠色確認鍵一定按得到，不吃整頁捲動 */
+.dtv-screen-scene {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.dtv-scene-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  gap: 0;
+  padding-top: 0;
+}
+.dtv-scene-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 2px 2px 10px;
+}
 .dtv-numpad-dock {
-  position: sticky;
-  bottom: 0;
-  z-index: 6;
+  flex-shrink: 0;
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 10px 0 2px;
-  margin-top: 2px;
-  /* 讓捲動的內容不會透到數字鍵盤縫隙後面 */
-  background: linear-gradient(to top, #f4ecff 80%, rgba(244, 236, 255, 0));
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* 桌機/平板：把預設過大的數字鍵盤縮小，固定底欄才不會吃掉整個畫面 */
+@media (min-width: 640px) {
+  .dtv-numpad-dock .numpad-wrap    { max-width: 360px; gap: 8px; }
+  .dtv-numpad-dock .numpad-display { min-height: 50px; font-size: 2rem; padding: 6px 0; border-width: 3px; border-radius: 14px; }
+  .dtv-numpad-dock .numpad-grid    { gap: 8px; }
+  .dtv-numpad-dock .numpad-btn     { height: 54px; font-size: 1.6rem; border-radius: 12px; box-shadow: 0 3px 0 #CCC; }
+  .dtv-numpad-dock .numpad-btn.delete { font-size: 1.3rem; }
+  .dtv-numpad-dock .numpad-confirm { height: 48px; font-size: 1.3rem; border-radius: 12px; }
 }
 
 .dtv-back {
