@@ -166,7 +166,7 @@ export default function HomeScreen({ onNavigate }) {
           whileTap={{ scale: 0.94 }}
           onClick={() => nav('detective')}
         >
-          🔍 消失的畢業證書之謎
+          🔍 推理事件簿
           <span className="home-badge home-badge-new">NEW</span>
         </motion.button>
 

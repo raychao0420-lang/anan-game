@@ -23,10 +23,10 @@ export default function DetectiveScreen({ onBack }) {
   const { activePet, pets, petEquipment, petMoods, mysterySolved,
           solveMystery, updatePetMood } = useGameStore()
 
-  // 目前只有一章，之後可做選單。先直接開第一章。
-  const chapter = MYSTERIES[MYSTERY_ORDER[0]]
+  const [chapterId, setChapterId] = useState(null)
+  const chapter = chapterId ? MYSTERIES[chapterId] : null
 
-  const [phase, setPhase]     = useState('intro')   // intro | scene | accuse | solved
+  const [phase, setPhase]     = useState('select')  // select | intro | scene | accuse | solved
   const [sceneIdx, setSceneIdx] = useState(0)
   const [solvedClue, setSolvedClue] = useState(false) // 本現場謎題是否已解開
   const [value, setValue]     = useState('')
@@ -42,8 +42,8 @@ export default function DetectiveScreen({ onBack }) {
       equipped={equipped} size={size} mood={petMoods?.[activePet] ?? 80} />
   )
 
-  const scene = chapter.scenes[sceneIdx]
-  const alreadySolved = !!mysterySolved?.[chapter.id]
+  const scene = chapter ? chapter.scenes[sceneIdx] : null
+  const alreadySolved = chapter ? !!mysterySolved?.[chapter.id] : false
 
   const checkAnswer = () => {
     if (Number(value) === scene.puzzle.answer) {
@@ -80,17 +80,58 @@ export default function DetectiveScreen({ onBack }) {
     }
   }
 
-  const restart = () => {
-    sfx.click()
-    setPhase('intro'); setSceneIdx(0); setSolvedClue(false)
+  const resetCaseState = () => {
+    setSceneIdx(0); setSolvedClue(false)
     setValue(''); setHint(''); setClues([]); setAccuseHint('')
   }
 
+  const openCase = (id) => {
+    sfx.click(); setChapterId(id); setPhase('intro'); resetCaseState()
+  }
+
+  const backToList = () => {
+    sfx.click(); setChapterId(null); setPhase('select')
+  }
+
+  const restart = () => {
+    sfx.click(); setPhase('intro'); resetCaseState()
+  }
+
   return (
-    <div className="dtv-screen" style={{ '--accent': chapter.accent }}>
-      <button className="dtv-back" onClick={() => { sfx.click(); onBack() }}>← 回首頁</button>
+    <div className="dtv-screen" style={{ '--accent': chapter?.accent ?? '#7c9cff' }}>
+      <button className="dtv-back"
+        onClick={phase === 'select' ? () => { sfx.click(); onBack() } : backToList}>
+        {phase === 'select' ? '← 回首頁' : '← 回事件簿'}
+      </button>
 
       <AnimatePresence mode="wait">
+        {/* ── 案件選單 ── */}
+        {phase === 'select' && (
+          <motion.div key="select" className="dtv-panel"
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+            <div className="dtv-case-emoji">🕵️</div>
+            <h1 className="dtv-title">推理事件簿</h1>
+            <p className="dtv-story">選一個案子，帶著搭檔去查案吧！</p>
+            <div className="dtv-case-list">
+              {MYSTERY_ORDER.map((id) => {
+                const c = MYSTERIES[id]
+                const done = !!mysterySolved?.[id]
+                return (
+                  <motion.button key={id} className="dtv-case-card" whileTap={{ scale: 0.96 }}
+                    style={{ '--accent': c.accent }} onClick={() => openCase(id)}>
+                    <span className="dtv-case-card-emoji">{c.emoji}</span>
+                    <span className="dtv-case-card-info">
+                      <span className="dtv-case-card-tone">{c.toneLabel}</span>
+                      <span className="dtv-case-card-title">{c.title}</span>
+                    </span>
+                    {done && <span className="dtv-case-done">✓ 已破案</span>}
+                  </motion.button>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
+
         {/* ── 開場 ── */}
         {phase === 'intro' && (
           <motion.div key="intro" className="dtv-panel"
@@ -182,7 +223,7 @@ export default function DetectiveScreen({ onBack }) {
             {!alreadySolved && <div className="dtv-reward dtv-coins">💰 獲得 {chapter.reward} 金幣！</div>}
             <div className="dtv-btn-row">
               <button className="dtv-btn dtv-btn-ghost" onClick={restart}>再玩一次 🔁</button>
-              <button className="dtv-btn" onClick={() => { sfx.click(); onBack() }}>回首頁 🏠</button>
+              <button className="dtv-btn" onClick={backToList}>回事件簿 📓</button>
             </div>
           </motion.div>
         )}
