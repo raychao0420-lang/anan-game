@@ -21,7 +21,7 @@ function renderClue(text) {
 
 export default function DetectiveScreen({ onBack }) {
   const { activePet, pets, petEquipment, petMoods, mysterySolved,
-          solveMystery, updatePetMood, grantPet } = useGameStore()
+          solveMystery, updatePetMood, grantPet, grantItem } = useGameStore()
 
   const [chapterId, setChapterId] = useState(null)
   const chapter = chapterId ? MYSTERIES[chapterId] : null
@@ -34,6 +34,7 @@ export default function DetectiveScreen({ onBack }) {
   const [clues, setClues]     = useState([])          // 偵探筆記
   const [accuseHint, setAccuseHint] = useState('')
   const [newPet, setNewPet]   = useState(null)        // 本次破案帶回的新同伴（首次才有）
+  const [newItem, setNewItem] = useState(null)        // 本次破案獲得的道具／裝飾（首次才有）
 
   const petData  = pets[activePet]
   const equipped = (petEquipment[activePet] || [])
@@ -77,6 +78,9 @@ export default function DetectiveScreen({ onBack }) {
       // 帶回新同伴：grantPet 首次解鎖回傳 true，已擁有回傳 false
       const gotNew = chapter.petReward ? grantPet(chapter.petReward) : false
       setNewPet(gotNew ? chapter.petReward : null)
+      // 帶回新裝飾：grantItem 首次獲得回傳 true，已擁有回傳 false
+      const gotItem = chapter.itemReward ? grantItem(chapter.itemReward) : false
+      setNewItem(gotItem ? SHOP_ITEMS.find((i) => i.id === chapter.itemReward) : null)
       setPhase('solved')
     } else {
       sfx.wrong()
@@ -86,7 +90,7 @@ export default function DetectiveScreen({ onBack }) {
 
   const resetCaseState = () => {
     setSceneIdx(0); setSolvedClue(false)
-    setValue(''); setHint(''); setClues([]); setAccuseHint(''); setNewPet(null)
+    setValue(''); setHint(''); setClues([]); setAccuseHint(''); setNewPet(null); setNewItem(null)
   }
 
   const openCase = (id) => {
@@ -235,6 +239,16 @@ export default function DetectiveScreen({ onBack }) {
                 </motion.div>
                 <div className="dtv-newpet-name">{PETS[newPet].name} · {PETS[newPet].breed}</div>
                 <div className="dtv-newpet-hint">牠決定跟著你回家，快去寵物頁看看牠吧！</div>
+              </motion.div>
+            )}
+            {newItem && (
+              <motion.div className="dtv-newpet"
+                initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 220, delay: 0.35 }}>
+                <div className="dtv-newpet-title">🎁 獲得新裝飾！</div>
+                <div className="dtv-newitem-emoji">{newItem.emoji}</div>
+                <div className="dtv-newpet-name">{newItem.name}</div>
+                <div className="dtv-newpet-hint">快去🎒背包把它擺進寵物的家吧！</div>
               </motion.div>
             )}
             {!alreadySolved && <div className="dtv-reward dtv-coins">💰 獲得 {chapter.reward} 金幣！</div>}

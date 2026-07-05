@@ -181,6 +181,14 @@ export const useGameStore = create(
         return true
       },
 
+      // 免費直接贈送道具／裝飾（闖關／破案獎勵用）。已擁有則不變動，回傳是否為首次獲得。
+      grantItem: (itemId) => {
+        if (!itemId || get().ownedItems.includes(itemId)) return false
+        set((s) => ({ ownedItems: [...s.ownedItems, itemId] }))
+        get().checkAchievements()
+        return true
+      },
+
       setActivePet: (petId) => set({ activePet: petId }),
 
       buyItem: (itemId, price, moodBoost = 0) => {
