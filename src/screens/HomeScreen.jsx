@@ -158,6 +158,18 @@ export default function HomeScreen({ onNavigate }) {
           📚 期末考大魔王
         </motion.button>
 
+        {/* ── 推理事件簿 ── */}
+        <div className="home-section-title">🕵️ 推理事件簿</div>
+
+        <motion.button
+          className="btn-detective home-btn-new"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => nav('detective')}
+        >
+          🔍 消失的畢業證書之謎
+          <span className="home-badge home-badge-new">NEW</span>
+        </motion.button>
+
         {/* ── 我的小天地 ── */}
         <div className="home-section-title">🏡 我的小天地</div>
 

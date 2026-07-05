@@ -98,6 +98,9 @@ export const useGameStore = create(
       loginStreakBest: 0,
       pendingLoginGift: null,   // 今天的登入禮物內容，領到後給 HomeScreen 顯示
 
+      // M7: 推理事件簿 — 每個章節破案後標記 true
+      mysterySolved: {},
+
       // ── Core actions ──
       addCoins: (amount) => set((s) => ({ coins: s.coins + amount })),
 
@@ -424,6 +427,20 @@ export const useGameStore = create(
         get().checkAchievements()
       },
 
+      // ── M7: 推理事件簿 ──
+      // 破案：首次破案給金幣獎勵，重玩不重複發。
+      solveMystery: (chapterId, coinsReward) => {
+        set((s) => {
+          if (s.mysterySolved?.[chapterId]) return s
+          return {
+            mysterySolved: { ...s.mysterySolved, [chapterId]: true },
+            coins: s.coins + coinsReward,
+            totalCoinsEarned: s.totalCoinsEarned + coinsReward,
+          }
+        })
+        get().checkAchievements()
+      },
+
       clearPendingAchievement: () => set({ pendingAchievement: null }),
 
       updateMaxCombo: (combo) =>
@@ -542,6 +559,7 @@ export const useGameStore = create(
           loginStreak: 0,
           loginStreakBest: 0,
           pendingLoginGift: null,
+          mysterySolved: {},
         }),
     }),
     {
@@ -585,6 +603,8 @@ export const useGameStore = create(
         if (state.loginStreak === undefined) state.loginStreak = 0
         if (state.loginStreakBest === undefined) state.loginStreakBest = 0
         state.pendingLoginGift = null
+        // M7: 推理事件簿
+        if (!state.mysterySolved) state.mysterySolved = {}
       },
     }
   )
