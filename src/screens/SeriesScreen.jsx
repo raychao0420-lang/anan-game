@@ -8,8 +8,30 @@ import { SHOP_ITEMS } from '../data/shop'
 import PetAvatar from '../components/PetAvatar'
 import NumberPad from '../components/NumberPad'
 import { sfx } from '../utils/sound'
+import { speakEnglish, stopSpeaking, isSpeechSupported } from '../utils/speech'
 import './DetectiveScreen.css'
 import './SeriesScreen.css'
+
+// 「讀給我聽」朗讀鈕：唸出英文。裝置不支援就不顯示。
+function SpeakBtn({ text }) {
+  const [on, setOn] = useState(false)
+  if (!isSpeechSupported() || !text) return null
+  return (
+    <button
+      type="button"
+      className={`srs-speak ${on ? 'on' : ''}`}
+      title="讀給我聽 Read aloud"
+      aria-label="讀給我聽 Read aloud"
+      onClick={(e) => {
+        e.stopPropagation()
+        setOn(true)
+        speakEnglish(text, { onEnd: () => setOn(false) })
+      }}
+    >
+      🔊
+    </button>
+  )
+}
 
 // 高亮題目：{數字} → dtv-num、[關鍵詞] → dtv-topic
 function renderClue(text) {
@@ -25,7 +47,7 @@ function Bi({ t, className = '' }) {
   return (
     <div className={`srs-bi ${className}`}>
       <p className="srs-zh">{t.zh}</p>
-      <p className="srs-en">{t.en}</p>
+      <p className="srs-en">{t.en}<SpeakBtn text={t.en} /></p>
     </div>
   )
 }
@@ -69,11 +91,11 @@ export default function SeriesScreen({ onBack }) {
 
   const openEpisode = (id) => {
     if (isLocked(id)) { sfx.wrong(); return }
-    sfx.click(); setEpId(id); setPhase('intro'); resetCase()
+    stopSpeaking(); sfx.click(); setEpId(id); setPhase('intro'); resetCase()
   }
 
-  const backToList = () => { sfx.click(); setEpId(null); setPhase('select') }
-  const restart    = () => { sfx.click(); setPhase('intro'); resetCase() }
+  const backToList = () => { stopSpeaking(); sfx.click(); setEpId(null); setPhase('select') }
+  const restart    = () => { stopSpeaking(); sfx.click(); setPhase('intro'); resetCase() }
 
   const checkAnswer = () => {
     if (Number(value) === scene.puzzle.answer) {
@@ -84,7 +106,7 @@ export default function SeriesScreen({ onBack }) {
   }
 
   const nextScene = () => {
-    sfx.click(); setValue(''); setHint(false); setSolvedClue(false)
+    stopSpeaking(); sfx.click(); setValue(''); setHint(false); setSolvedClue(false)
     if (sceneIdx < ep.scenes.length - 1) setSceneIdx(sceneIdx + 1)
     else setPhase('accuse')
   }
@@ -107,7 +129,7 @@ export default function SeriesScreen({ onBack }) {
   return (
     <div className="dtv-screen" style={{ '--accent': ep?.accent ?? '#b06bd6' }}>
       <button className="dtv-back"
-        onClick={phase === 'select' ? () => { sfx.click(); onBack() } : backToList}>
+        onClick={phase === 'select' ? () => { stopSpeaking(); sfx.click(); onBack() } : backToList}>
         {phase === 'select' ? '← 回首頁 Home' : '← 回劇場 Episodes'}
       </button>
 
@@ -213,7 +235,7 @@ export default function SeriesScreen({ onBack }) {
                 <div className="dtv-clue-card">
                   <div className="dtv-clue-label">🔍 現場謎題 Puzzle</div>
                   <p className="dtv-clue-text">{renderClue(scene.puzzle.text.zh)}</p>
-                  <p className="dtv-clue-text srs-en">{renderClue(scene.puzzle.text.en)}</p>
+                  <p className="dtv-clue-text srs-en">{renderClue(scene.puzzle.text.en)}<SpeakBtn text={scene.puzzle.text.en} /></p>
                 </div>
                 {hint && (
                   <div className="dtv-hint">
