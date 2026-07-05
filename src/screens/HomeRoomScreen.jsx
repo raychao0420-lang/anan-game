@@ -32,6 +32,49 @@ const PET_CONFIG = {
 }
 const DEFAULT_PET_CONFIG = { startPos: { x: 42, y: 52 }, bobDuration: 2.0, wanderInterval: 3200, burstEmoji: '🐾' }
 
+// ── 寵物 ↔ 家具互動 ──────────────────────────────────────────────────────────
+// 每個家具：哪些寵物會被吸引(依個性)、靠近時的動作(motion)與冒出的表情(emoji)。
+// pets: '*' 代表所有寵物都愛。要新增家具互動，往這裡加一筆即可。
+const DECO_ACTIVITIES = {
+  trampoline:  { pets: ['lulu', 'monkey', 'hamster', 'dino'],            motion: 'bounce', emoji: '🤸' },
+  disco:       { pets: ['monkey', 'hamster', 'lulu', 'mejiro'],          motion: 'bounce', emoji: '🕺' },
+  castle:      { pets: ['monkey', 'dino', 'hamster', 'lulu'],            motion: 'play',   emoji: '👑' },
+  pool:        { pets: ['hana', 'kotaro', 'seal', 'penguin', 'beaver'],  motion: 'splash', emoji: '💦' },
+  hot_spring:  { pets: ['hana', 'kotaro', 'seal', 'monkey'],             motion: 'soak',   emoji: '♨️' },
+  fish_tank:   { pets: ['jiji', 'hana', 'kotaro', 'seal', 'penguin'],    motion: 'gaze',   emoji: '😻' },
+  piano:       { pets: ['mejiro', 'owl', 'jiji'],                        motion: 'play',   emoji: '🎵' },
+  art_studio:  { pets: ['monkey', 'mejiro', 'dino'],                     motion: 'play',   emoji: '🎨' },
+  pet_bed:     { pets: '*',                                             motion: 'sleep',  emoji: '💤' },
+  sofa:        { pets: '*',                                             motion: 'sleep',  emoji: '😌' },
+  fireplace:   { pets: ['jiji', 'lulu', 'kitsune', 'seal'],              motion: 'sleep',  emoji: '😌' },
+  tent:        { pets: ['raccoon', 'dino', 'hamster', 'lulu'],           motion: 'hide',   emoji: '⛺' },
+  igloo:       { pets: ['kitsune', 'penguin', 'seal'],                   motion: 'hide',   emoji: '❄️' },
+  snow_globe:  { pets: ['kitsune', 'penguin', 'seal'],                   motion: 'gaze',   emoji: '😍' },
+  telescope:   { pets: ['owl', 'mejiro', 'jiji', 'raccoon'],             motion: 'gaze',   emoji: '🌟' },
+  library:     { pets: ['owl', 'jiji'],                                  motion: 'gaze',   emoji: '📖' },
+  painting:    { pets: ['jiji', 'owl', 'mejiro'],                        motion: 'gaze',   emoji: '🖼️' },
+  fairy_light: { pets: ['raccoon', 'monkey', 'mejiro', 'jiji'],          motion: 'gaze',   emoji: '✨' },
+  mushroom_lamp:{ pets: ['raccoon', 'jiji', 'owl'],                      motion: 'gaze',   emoji: '🍄' },
+  rainbow:     { pets: ['mejiro', 'penguin', 'seal'],                    motion: 'gaze',   emoji: '🌈' },
+  bamboo:      { pets: ['hamster', 'beaver', 'dino', 'mejiro'],          motion: 'gaze',   emoji: '😋' },
+  plant:       { pets: ['mejiro', 'hamster', 'beaver'],                  motion: 'gaze',   emoji: '🌿' },
+  bird_perch:  { pets: ['mejiro', 'owl'],                                motion: 'gaze',   emoji: '🐤' },
+}
+
+// 動作 → 上下擺動的幅度(px)與速度(秒)。讓不同活動看起來不一樣。
+const MOTION = {
+  walk:   { amp: 10, dur: null },  // 一般遊走用寵物自己的 bobDuration
+  bounce: { amp: 26, dur: 0.5 },
+  splash: { amp: 5,  dur: 0.7 },
+  soak:   { amp: 3,  dur: 1.5 },
+  gaze:   { amp: 2,  dur: 1.7 },
+  play:   { amp: 15, dur: 0.6 },
+  sleep:  { amp: 3,  dur: 2.6 },
+  hide:   { amp: 4,  dur: 1.2 },
+}
+
+const ACTIVITY_RADIUS = 24  // 距家具多近算「正在使用」
+
 // Default decoration slots (% positions)
 const DECO_SLOTS = [
   { x: 5,  y: 7  },
@@ -200,48 +243,69 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
 
 // ── Wandering pet ─────────────────────────────────────────────────────────────
 
-function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPetClick, mood = 100 }) {
-  const cfg     = PET_CONFIG[petId] ?? DEFAULT_PET_CONFIG
-  const isOtter = petId === 'hana' || petId === 'kotaro'
+function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100 }) {
+  const cfg = PET_CONFIG[petId] ?? DEFAULT_PET_CONFIG
+
+  // 這隻寵物會被吸引的家具（依個性）
+  const myDecos = placedDecos.filter((d) => {
+    const a = DECO_ACTIVITIES[d.id]
+    return a && (a.pets === '*' || a.pets.includes(petId))
+  })
+  const myDecosRef = useRef(myDecos)
+  useEffect(() => { myDecosRef.current = myDecos })
 
   const [pos, setPos]   = useState(cfg.startPos)
   const [facing, setFacing] = useState(1)
   const [burst, setBurst]   = useState(false)
+  const targetRef = useRef(null)  // 目前想去玩的家具 id
 
   const poolPosRef = useRef(poolPos)
   useEffect(() => { poolPosRef.current = poolPos }, [poolPos])
 
-  // Distance to pool
-  const distToPool = poolPos
-    ? Math.sqrt((pos.x - poolPos.x) ** 2 + (pos.y - poolPos.y) ** 2)
-    : Infinity
-  const isNearPool = distToPool < POOL_RADIUS
-  const isInPool   = isNearPool && isOtter
-  const isScared   = isNearPool && petId === 'lulu'
+  // 現在正在「使用中」的家具（在附近就算）
+  const activeDeco = myDecos.find((d) => Math.hypot(pos.x - d.x, pos.y - d.y) < ACTIVITY_RADIUS)
+  const activity   = activeDeco ? DECO_ACTIVITIES[activeDeco.id] : null
+
+  // 怕水的 LULU 靠近水池會嚇到
+  const isScared = petId === 'lulu' && poolPos &&
+    Math.hypot(pos.x - poolPos.x, pos.y - poolPos.y) < POOL_RADIUS
 
   useEffect(() => {
     const timer = setInterval(() => {
       setPos(prev => {
-        const pool = poolPosRef.current
-        let dx = (Math.random() - 0.5) * 26
-        let dy = (Math.random() - 0.5) * 12
+        const decos = myDecosRef.current
+        const pool  = poolPosRef.current
+        let target  = targetRef.current && decos.find(d => d.id === targetRef.current)
 
-        if (pool && isOtter && Math.random() < 0.45) {
-          // Otters drift toward pool
-          dx = pool.x - prev.x + (Math.random() - 0.5) * 8
-          dy = pool.y - prev.y + (Math.random() - 0.5) * 5
+        // 挑一個家具去玩 / 玩夠了就離開
+        if (!target && decos.length && Math.random() < 0.6) {
+          target = decos[Math.floor(Math.random() * decos.length)]
+          targetRef.current = target.id
+        } else if (target && Math.random() < 0.25) {
+          targetRef.current = null; target = null
+        }
+
+        let dx, dy
+        if (target) {
+          const near = Math.hypot(prev.x - target.x, prev.y - target.y) < ACTIVITY_RADIUS
+          if (near) { dx = (Math.random() - 0.5) * 6; dy = (Math.random() - 0.5) * 4 }        // 在旁邊玩，小幅晃動
+          else { dx = (target.x - prev.x) * 0.6 + (Math.random() - 0.5) * 6                    // 朝家具走過去
+                 dy = (target.y - prev.y) * 0.6 + (Math.random() - 0.5) * 4 }
+        } else {
+          dx = (Math.random() - 0.5) * 26; dy = (Math.random() - 0.5) * 12                     // 隨意亂晃
         }
 
         let newX = Math.max(BOUNDS.xMin, Math.min(BOUNDS.xMax, prev.x + dx))
         let newY = Math.max(BOUNDS.yMin, Math.min(BOUNDS.yMax, prev.y + dy))
 
-        // LULU flees pool
+        // 怕水的 LULU 逃離水池
         if (petId === 'lulu' && pool) {
-          const dist = Math.sqrt((newX - pool.x) ** 2 + (newY - pool.y) ** 2)
+          const dist = Math.hypot(newX - pool.x, newY - pool.y)
           if (dist < POOL_RADIUS) {
             const angle = Math.atan2(newY - pool.y, newX - pool.x)
             newX = Math.max(BOUNDS.xMin, Math.min(BOUNDS.xMax, pool.x + Math.cos(angle) * POOL_RADIUS * 1.7))
             newY = Math.max(BOUNDS.yMin, Math.min(BOUNDS.yMax, pool.y + Math.sin(angle) * POOL_RADIUS * 1.7))
+            targetRef.current = null
           }
         }
 
@@ -250,7 +314,7 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
       })
     }, cfg.wanderInterval + Math.random() * 1500)
     return () => clearInterval(timer)
-  }, [cfg.wanderInterval, isOtter, petId])
+  }, [cfg.wanderInterval, petId])
 
   const handleClick = () => {
     setBurst(true)
@@ -259,10 +323,12 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
   }
 
   const depthScale = getDepthScale(pos.y)
+  const bob = activity ? MOTION[activity.motion] : MOTION.walk
+  const bobDur = bob.dur ?? cfg.bobDuration
 
   return (
     <div
-      className={`room-pet ${isInPool ? 'in-pool' : ''} ${isScared ? 'scared-pool' : ''}`}
+      className={`room-pet ${activity ? 'busy' : ''} ${isScared ? 'scared-pool' : ''}`}
       style={{
         left: `${pos.x}%`,
         top: `${pos.y}%`,
@@ -275,8 +341,8 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
       <div className="room-pet-shadow" />
       {/* Bob layer */}
       <motion.div
-        animate={{ y: isInPool ? [0, -4, 0] : [0, -10, 0] }}
-        transition={{ repeat: Infinity, duration: isInPool ? 0.7 : cfg.bobDuration, ease: 'easeInOut' }}
+        animate={{ y: [0, -bob.amp, 0] }}
+        transition={{ repeat: Infinity, duration: bobDur, ease: 'easeInOut' }}
         whileTap={{ scale: 1.3 }}
       >
         {/* Flip layer */}
@@ -297,8 +363,14 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
 
       <div className="room-pet-name">{petDef.name}</div>
 
-      {/* Splash when in pool */}
-      {isInPool && <div className="room-pet-splash">💦</div>}
+      {/* 正在玩家具時冒出的表情 */}
+      {activity && (
+        <motion.div className="room-pet-activity"
+          animate={{ y: [0, -6, 0], opacity: [0.7, 1, 0.7] }}
+          transition={{ repeat: Infinity, duration: 1.4 }}>
+          {activity.emoji}
+        </motion.div>
+      )}
 
       {/* Scared when near pool */}
       {isScared && <div className="room-pet-scared">😱</div>}
@@ -312,7 +384,7 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, poolPos, onPet
             animate={{ opacity: 0, y: -50, scale: 1.4 }}
             transition={{ duration: 0.8 }}
           >
-            {isInPool ? '💦' : cfg.burstEmoji}
+            {activity ? activity.emoji : cfg.burstEmoji}
           </motion.div>
         )}
       </AnimatePresence>
@@ -343,6 +415,11 @@ export default function HomeRoomScreen({ onNavigate }) {
     if (item.id === 'pool') return { x: 45, y: 71, scale: 1 }
     return { ...DECO_SLOTS[idx % DECO_SLOTS.length], scale: 1 }
   }
+
+  // 已擺放、且有互動的家具座標，給寵物尋路用
+  const placedDecos = homeDecos
+    .map((item, idx) => ({ id: item.id, ...getDecoPos(item, idx) }))
+    .filter((d) => DECO_ACTIVITIES[d.id])
 
   const handlePetClick = (petId) => {
     sfx.pet(petId)
@@ -389,6 +466,7 @@ export default function HomeRoomScreen({ onNavigate }) {
             equippedPetItems={(petEquipment[petId] || [])
               .map(id => SHOP_ITEMS.find(i => i.id === id))
               .filter(Boolean)}
+            placedDecos={placedDecos}
             poolPos={poolPos}
             onPetClick={handlePetClick}
             mood={petMoods?.[petId] ?? 80}
