@@ -55,6 +55,33 @@
   .dtv-numpad-dock .numpad-confirm { height: 48px; font-size: 1.3rem; border-radius: 12px; }
 }
 
+/* 橫向電腦螢幕（寬、相對矮）：現場答題改「左右兩欄」——
+   左邊題目可捲動，右邊數字鍵盤固定，不管視窗多矮，右邊綠色確認鍵永遠看得到、按得到 */
+@media (min-width: 820px) and (min-aspect-ratio: 1/1) {
+  .dtv-scene-panel {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 28px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .dtv-scene-scroll {
+    flex: 1 1 auto;
+    padding-right: 8px;
+  }
+  .dtv-numpad-dock {
+    flex: 0 0 auto;
+    width: 340px;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 0;
+    padding-left: 28px;
+    border-top: none;
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+
 .dtv-back {
   background: none;
   border: none;
