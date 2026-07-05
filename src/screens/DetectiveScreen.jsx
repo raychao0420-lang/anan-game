@@ -21,7 +21,7 @@ function renderClue(text) {
 
 export default function DetectiveScreen({ onBack }) {
   const { activePet, pets, petEquipment, petMoods, mysterySolved,
-          solveMystery, updatePetMood } = useGameStore()
+          solveMystery, updatePetMood, grantPet } = useGameStore()
 
   const [chapterId, setChapterId] = useState(null)
   const chapter = chapterId ? MYSTERIES[chapterId] : null
@@ -33,6 +33,7 @@ export default function DetectiveScreen({ onBack }) {
   const [hint, setHint]       = useState('')
   const [clues, setClues]     = useState([])          // 偵探筆記
   const [accuseHint, setAccuseHint] = useState('')
+  const [newPet, setNewPet]   = useState(null)        // 本次破案帶回的新同伴（首次才有）
 
   const petData  = pets[activePet]
   const equipped = (petEquipment[activePet] || [])
@@ -73,6 +74,9 @@ export default function DetectiveScreen({ onBack }) {
       sfx.unlock()
       solveMystery(chapter.id, chapter.reward)
       updatePetMood(activePet, 15)
+      // 帶回新同伴：grantPet 首次解鎖回傳 true，已擁有回傳 false
+      const gotNew = chapter.petReward ? grantPet(chapter.petReward) : false
+      setNewPet(gotNew ? chapter.petReward : null)
       setPhase('solved')
     } else {
       sfx.wrong()
@@ -82,7 +86,7 @@ export default function DetectiveScreen({ onBack }) {
 
   const resetCaseState = () => {
     setSceneIdx(0); setSolvedClue(false)
-    setValue(''); setHint(''); setClues([]); setAccuseHint('')
+    setValue(''); setHint(''); setClues([]); setAccuseHint(''); setNewPet(null)
   }
 
   const openCase = (id) => {
@@ -220,6 +224,19 @@ export default function DetectiveScreen({ onBack }) {
               </motion.div>
             </div>
             {chapter.solve.map((line, i) => <p key={i} className="dtv-story">{line}</p>)}
+            {newPet && (
+              <motion.div className="dtv-newpet"
+                initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 220, delay: 0.2 }}>
+                <div className="dtv-newpet-title">🎊 新同伴加入！</div>
+                <motion.div animate={{ y: [0, -8, 0] }}
+                  transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}>
+                  <PetAvatar petId={newPet} evolutionStage={1} equipped={[]} size={110} mood={100} />
+                </motion.div>
+                <div className="dtv-newpet-name">{PETS[newPet].name} · {PETS[newPet].breed}</div>
+                <div className="dtv-newpet-hint">牠決定跟著你回家，快去寵物頁看看牠吧！</div>
+              </motion.div>
+            )}
             {!alreadySolved && <div className="dtv-reward dtv-coins">💰 獲得 {chapter.reward} 金幣！</div>}
             <div className="dtv-btn-row">
               <button className="dtv-btn dtv-btn-ghost" onClick={restart}>再玩一次 🔁</button>

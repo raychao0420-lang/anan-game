@@ -50,10 +50,11 @@ export const useGameStore = create(
         seal:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
         beaver:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
         hamster: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        dino:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
       },
       stages: makeStages(),
       ownedItems:        [],
-      petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [] },
+      petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [], dino: [] },
       equippedHomeItems: [],
       homeDecoPositions: {},
 
@@ -88,7 +89,7 @@ export const useGameStore = create(
       perfectStages: 0,
 
       // M4: pet moods
-      petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80 },
+      petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80, dino: 80 },
       lastPlayedAt: null,
 
       // M6: 幸運蛋 + 每日登入禮物
@@ -526,10 +527,11 @@ export const useGameStore = create(
             seal:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
             beaver:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
             hamster: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            dino:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
           },
           stages: makeStages(),
           ownedItems:        [],
-          petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [] },
+          petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [], dino: [] },
           equippedHomeItems: [],
           homeDecoPositions: {},
           dailyDate: null,
@@ -552,7 +554,7 @@ export const useGameStore = create(
           totalCoinsEarned: 0,
           maxCombo: 0,
           perfectStages: 0,
-          petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80 },
+          petMoods: { lulu: 80, hana: 80, kotaro: 80, jiji: 80, kitsune: 80, mejiro: 80, penguin: 80, owl: 80, seal: 80, beaver: 80, hamster: 80, dino: 80 },
           lastPlayedAt: null,
           luckyEggs: 0,
           lastGiftDate: null,
@@ -566,7 +568,7 @@ export const useGameStore = create(
       name: 'anan-game-v2',
       onRehydrateStorage: () => (state) => {
         if (!state) return
-        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster']
+        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino']
         allPets.forEach((id) => {
           if (!state.pets[id])
             state.pets[id] = { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] }

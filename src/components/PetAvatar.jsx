@@ -96,6 +96,14 @@ const EVO = {
     { body:'#E89A2E', belly:'#FFE9BC', ear:'#C67E1C', nose:'#4E331A' },
     { body:'#DE7A18', belly:'#FFDD9C', ear:'#B8650E', nose:'#3E2712', glow:'#FFD54F' },
   ],
+  // 豆豆：小恐龍（嫩綠→翡翠→青碧，stage4 藍綠光暈），ear=背板色
+  dino: [
+    null,
+    { body:'#7CC96B', belly:'#EAFBE4', ear:'#5EA84F', nose:'#2E5E24' },
+    { body:'#6BBF5A', belly:'#E2F8D9', ear:'#4E9840', nose:'#245018' },
+    { body:'#57B58A', belly:'#DAF6EC', ear:'#3E9870', nose:'#154838' },
+    { body:'#48C4B0', belly:'#DFFCF6', ear:'#2E9E8A', nose:'#0D4A40', glow:'#7CF0DA' },
+  ],
 }
 
 // ── Pet bases ─────────────────────────────────────────────────────────────────
@@ -626,6 +634,54 @@ function HamsterBase({ c }) {
   )
 }
 
+// 豆豆：小恐龍（圓潤綠、背上小三角板、長尾巴、大眼睛、小門牙）
+function DinoBase({ c }) {
+  return (
+    <g>
+      {/* Tail */}
+      <path d="M73,99 Q92,97 96,84 Q98,93 90,101 Q83,107 71,104 Z" fill={c.body} />
+      <path d="M74,100 Q88,98 93,88" fill="none" stroke={c.ear} strokeWidth="1" opacity="0.4" />
+      {/* Back plates (spikes) */}
+      <path d="M50,15 l6.5,11 h-13 Z" fill={c.ear} />
+      <path d="M37,20 l5.5,9.5 h-11 Z" fill={c.ear} opacity="0.9" />
+      <path d="M63,20 l5.5,9.5 h-11 Z" fill={c.ear} opacity="0.9" />
+      {/* Tiny arms */}
+      <ellipse cx="29" cy="88" rx="5" ry="7.5" fill={c.body} transform="rotate(22,29,88)" />
+      <ellipse cx="71" cy="88" rx="5" ry="7.5" fill={c.body} transform="rotate(-22,71,88)" />
+      {/* Body */}
+      <ellipse cx="50" cy="92" rx="25" ry="20" fill={c.body} />
+      <ellipse cx="50" cy="96" rx="15" ry="13" fill={c.belly} />
+      {/* Belly scale lines */}
+      <path d="M42,94 h16 M43.5,99 h13 M46,104 h8" stroke={c.ear} strokeWidth="0.7" opacity="0.3" fill="none" />
+      {/* Feet */}
+      <ellipse cx="40" cy="111" rx="8" ry="5" fill={c.body} />
+      <ellipse cx="60" cy="111" rx="8" ry="5" fill={c.body} />
+      <ellipse cx="40" cy="113" rx="5.5" ry="2.6" fill={c.belly} opacity="0.6" />
+      <ellipse cx="60" cy="113" rx="5.5" ry="2.6" fill={c.belly} opacity="0.6" />
+      {/* Head */}
+      <circle cx="50" cy="46" r="26" fill={c.body} />
+      {/* Snout patch */}
+      <ellipse cx="50" cy="54" rx="15" ry="11" fill={c.belly} opacity="0.5" />
+      {/* Eyes (big shiny) */}
+      <circle cx="40" cy="42" r="6.4" fill="#12240E" />
+      <circle cx="60" cy="42" r="6.4" fill="#12240E" />
+      <circle cx="42.4" cy="39.4" r="2.3" fill="white" />
+      <circle cx="62.4" cy="39.4" r="2.3" fill="white" />
+      <circle cx="38" cy="44.4" r="1.3" fill="rgba(255,255,255,0.5)" />
+      <circle cx="58" cy="44.4" r="1.3" fill="rgba(255,255,255,0.5)" />
+      {/* Nostrils */}
+      <ellipse cx="46" cy="51.5" rx="1.3" ry="1" fill={c.nose} />
+      <ellipse cx="54" cy="51.5" rx="1.3" ry="1" fill={c.nose} />
+      {/* Smile with tiny tooth */}
+      <path d="M42,57 Q50,63 58,57" fill="none" stroke={c.nose} strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M47,60.4 l0,3 l2.2,-1.6 Z" fill="white" stroke="#D8E8D0" strokeWidth="0.4" />
+      {/* Cheek blush */}
+      <ellipse cx="32" cy="50" rx="5.5" ry="3.5" fill="rgba(255,170,120,0.28)" />
+      <ellipse cx="68" cy="50" rx="5.5" ry="3.5" fill="rgba(255,170,120,0.28)" />
+    </g>
+  )
+}
+
 // ── Extra clothes ─────────────────────────────────────────────────────────────
 
 function ClothesKimono() {
@@ -1152,6 +1208,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'seal'    ? <SealBase    c={colors} />
        : petId === 'beaver'  ? <BeaverBase  c={colors} />
        : petId === 'hamster' ? <HamsterBase c={colors} />
+       : petId === 'dino'    ? <DinoBase    c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 
@@ -1363,6 +1420,22 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
         <g fill="#FFC107" opacity="0.92">
           <polygon points="27,50 28,52.4 30.4,52.4 28.5,54 29.2,56.4 27,55 24.8,56.4 25.5,54 23.6,52.4 26,52.4" />
           <polygon points="73,50 74,52.4 76.4,52.4 74.5,54 75.2,56.4 73,55 70.8,56.4 71.5,54 69.6,52.4 72,52.4" />
+        </g>
+      )}
+
+      {/* Dino stage markings */}
+      {petId === 'dino' && stage === 2 && (
+        /* 額頭小嫩芽 */
+        <g transform="translate(50,33)">
+          <path d="M0,4 C4,1 5,-4 0,-7 C-5,-4 -4,1 0,4 Z" fill="#8FD86F" />
+          <line x1="0" y1="4" x2="0" y2="-5" stroke="#4E9840" strokeWidth="0.8" />
+        </g>
+      )}
+      {petId === 'dino' && stage === 3 && (
+        /* 臉頰金星 */
+        <g fill="#FFD700" opacity="0.9">
+          <polygon points="29,49 30.2,51.4 32.8,51.8 30.9,53.6 31.4,56.2 29,55 26.6,56.2 27.1,53.6 25.2,51.8 27.8,51.4" />
+          <polygon points="71,49 72.2,51.4 74.8,51.8 72.9,53.6 73.4,56.2 71,55 68.6,56.2 69.1,53.6 67.2,51.8 69.8,51.4" />
         </g>
       )}
 

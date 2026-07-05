@@ -195,6 +195,25 @@ export const PETS = {
     happyEmoji: '😋',
     sadEmoji: '🥺',
   },
+  // 豆豆：推理事件簿「恐龍樂園」破案帶回的小恐龍（事件限定，不可金幣購買）
+  dino: {
+    id: 'dino',
+    name: '豆豆',
+    breed: '小恐龍',
+    personality: '好奇、把恐龍蛋當家人、走到哪跟到哪',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '破解推理事件簿「不見的恐龍蛋」就能帶牠回家！',
+    stages: [
+      null,
+      { emoji: '🦕', label: '恐龍寶寶',   size: '5rem', bg: '#EAFBE4', border: '#7CC96B' },
+      { emoji: '🦕', label: '嫩葉小龍',   size: '5rem', bg: '#DFF6D6', border: '#5EA84F' },
+      { emoji: '🦕', label: '翡翠幼龍',   size: '5rem', bg: '#D6F5EC', border: '#3E9870' },
+      { emoji: '🦕', label: '傳說小恐龍', size: '5rem', bg: '#CFF7F0', border: '#2E9E8A' },
+    ],
+    happyEmoji: '🥰',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino']
