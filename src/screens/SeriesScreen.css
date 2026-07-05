@@ -1,0 +1,138 @@
+/* 連載劇場專屬樣式（其餘沿用 DetectiveScreen.css 的 dtv-*） */
+
+/* ── 中英雙語 ── */
+.srs-bi { width: 100%; }
+.srs-zh { margin: 0; }
+.srs-en {
+  color: #7b6fa0;
+  font-style: italic;
+  font-size: 0.9em;
+}
+.srs-bi .srs-en { margin: 2px 0 0; }
+.srs-title-en {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #8a7ab0;
+  font-weight: 700;
+  margin: -4px 0 8px;
+}
+
+/* ── 推理牆 ── */
+.srs-wall {
+  width: 100%;
+  background: rgba(255,255,255,0.6);
+  border: 2px dashed var(--accent, #b06bd6);
+  border-radius: 16px;
+  padding: 10px 12px;
+  margin: 8px 0;
+}
+.srs-wall-label {
+  font-weight: 900;
+  font-size: 0.95rem;
+  color: #5a4a7a;
+  margin-bottom: 8px;
+}
+.srs-shards {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.srs-shard {
+  font-size: 1.8rem;
+  filter: grayscale(1) opacity(0.4);
+  transition: transform 0.2s;
+}
+.srs-shard.got {
+  filter: none;
+  transform: scale(1.1);
+  text-shadow: 0 0 8px rgba(255,215,90,0.7);
+}
+.srs-clue {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  text-align: left;
+  padding: 6px 0;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  font-size: 0.9rem;
+}
+.srs-clue:first-of-type { border-top: none; }
+.srs-clue-no {
+  flex-shrink: 0;
+  font-weight: 900;
+  color: var(--accent, #b06bd6);
+  font-size: 0.85rem;
+  margin-top: 2px;
+}
+
+/* ── 集數列表 ── */
+.srs-ep-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.srs-ep-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(120deg, #fff, #f6f0ff);
+  border-left: 6px solid var(--accent, #b06bd6);
+  box-shadow: 0 3px 10px rgba(120,90,180,0.12);
+  cursor: pointer;
+  text-align: left;
+}
+.srs-ep-card.locked {
+  filter: grayscale(0.7);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.srs-ep-emoji { font-size: 2rem; flex-shrink: 0; }
+.srs-ep-info { display: flex; flex-direction: column; flex: 1; }
+.srs-ep-no {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--accent, #b06bd6);
+}
+.srs-ep-title { font-size: 1.05rem; font-weight: 900; color: #3a3a55; }
+.srs-ep-title-en { font-size: 0.8rem; font-style: italic; color: #8a7ab0; }
+.srs-coming {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #9a8ac0;
+  padding: 6px;
+  font-style: italic;
+}
+
+/* ── 破案：碎片入手 ── */
+.srs-got-shard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(160deg, #FFFDF5, #FFF3D6);
+  border: 3px solid #ffd76b;
+  border-radius: 16px;
+  padding: 12px;
+  margin: 8px 0;
+  font-weight: 800;
+  color: #3a3a55;
+}
+.srs-got-shard-emoji { font-size: 2.4rem; text-shadow: 0 0 10px rgba(255,215,90,0.8); }
+
+/* ── 下集預告 ── */
+.srs-next {
+  width: 100%;
+  background: rgba(60,40,90,0.06);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin: 10px 0;
+  text-align: left;
+}
+.srs-next-label { font-weight: 900; color: var(--accent, #b06bd6); margin-bottom: 4px; }

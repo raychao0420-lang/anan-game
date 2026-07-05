@@ -104,6 +104,10 @@ export const useGameStore = create(
       // M7: 推理事件簿 — 每個章節破案後標記 true
       mysterySolved: {},
 
+      // M8: 長篇連續劇《七色星願之謎》— 破案集數 + 收集到的碎片顏色（依序）
+      seriesSolved: {},
+      seriesShards: [],
+
       // ── Core actions ──
       addCoins: (amount) => set((s) => ({ coins: s.coins + amount })),
 
@@ -452,6 +456,21 @@ export const useGameStore = create(
         get().checkAchievements()
       },
 
+      // ── M8: 長篇連續劇 ──
+      // 破案一集：首次破案給金幣＋收集碎片，重玩不重複發。終章的寵物／擺飾另由畫面呼叫 grantPet/grantItem。
+      solveEpisode: (episodeId, coinsReward, shard) => {
+        set((s) => {
+          if (s.seriesSolved?.[episodeId]) return s
+          return {
+            seriesSolved: { ...s.seriesSolved, [episodeId]: true },
+            seriesShards: (shard && !s.seriesShards.includes(shard)) ? [...s.seriesShards, shard] : s.seriesShards,
+            coins: s.coins + coinsReward,
+            totalCoinsEarned: s.totalCoinsEarned + coinsReward,
+          }
+        })
+        get().checkAchievements()
+      },
+
       clearPendingAchievement: () => set({ pendingAchievement: null }),
 
       updateMaxCombo: (combo) =>
@@ -574,6 +593,8 @@ export const useGameStore = create(
           loginStreakBest: 0,
           pendingLoginGift: null,
           mysterySolved: {},
+          seriesSolved: {},
+          seriesShards: [],
         }),
     }),
     {
@@ -619,6 +640,9 @@ export const useGameStore = create(
         state.pendingLoginGift = null
         // M7: 推理事件簿
         if (!state.mysterySolved) state.mysterySolved = {}
+        // M8: 長篇連續劇
+        if (!state.seriesSolved) state.seriesSolved = {}
+        if (!state.seriesShards) state.seriesShards = []
       },
     }
   )

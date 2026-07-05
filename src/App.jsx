@@ -22,6 +22,7 @@ import MultiplyScreen from './screens/MultiplyScreen'
 import GachaScreen from './screens/GachaScreen'
 import ArcadeScreen from './screens/ArcadeScreen'
 import DetectiveScreen from './screens/DetectiveScreen'
+import SeriesScreen from './screens/SeriesScreen'
 import AchievementToast from './components/AchievementToast'
 import './index.css'
 
@@ -102,6 +103,7 @@ export default function App() {
         {screen === 'gacha'       && wrap('gacha',    <GachaScreen     onBack={() => setScreen('home')} />)}
         {screen === 'arcade'      && wrap('arcade',   <ArcadeScreen    onBack={() => setScreen('home')} />)}
         {screen === 'detective'   && wrap('detective', <DetectiveScreen onBack={() => setScreen('home')} />)}
+        {screen === 'series'      && wrap('series', <SeriesScreen onBack={() => setScreen('home')} />)}
 
         {screen === 'game' && activeStage && wrapFixed(`game-${activeStage}`,
           <GameScreen

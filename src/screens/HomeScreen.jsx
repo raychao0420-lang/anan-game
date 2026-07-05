@@ -167,6 +167,14 @@ export default function HomeScreen({ onNavigate }) {
           onClick={() => nav('detective')}
         >
           🔍 推理事件簿
+        </motion.button>
+
+        <motion.button
+          className="btn-detective home-btn-new"
+          whileTap={{ scale: 0.94 }}
+          onClick={() => nav('series')}
+        >
+          📺 連載劇場：七色星願
           <span className="home-badge home-badge-new">NEW</span>
         </motion.button>
 
