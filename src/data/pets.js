@@ -214,6 +214,44 @@ export const PETS = {
     happyEmoji: '🥰',
     sadEmoji: '🥺',
   },
+  // 皮皮：推理事件簿「馬戲團」破案帶回的小猴子（事件限定）
+  monkey: {
+    id: 'monkey',
+    name: '皮皮',
+    breed: '小猴子',
+    personality: '愛雜耍、調皮、看到亮亮的東西就想玩',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '破解推理事件簿「消失的魔術道具」就能帶牠回家！',
+    stages: [
+      null,
+      { emoji: '🐵', label: '猴寶寶',   size: '5rem', bg: '#F5E6D0', border: '#B07A4E' },
+      { emoji: '🐵', label: '頑皮小猴', size: '5rem', bg: '#EFDCC0', border: '#A66E42' },
+      { emoji: '🐒', label: '雜耍高手', size: '5rem', bg: '#E8CFA8', border: '#9A5E34' },
+      { emoji: '🐒', label: '傳說金猴', size: '5rem', bg: '#F5E0B0', border: '#C98A2E' },
+    ],
+    happyEmoji: '🤩',
+    sadEmoji: '🙈',
+  },
+  // 麻吉：推理事件簿「午夜列車」破案帶回的小浣熊（事件限定）
+  raccoon: {
+    id: 'raccoon',
+    name: '麻吉',
+    breed: '小浣熊',
+    personality: '夜貓子、好奇、愛收集亮晶晶的小東西',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '破解推理事件簿「午夜列車的失物」就能帶牠回家！',
+    stages: [
+      null,
+      { emoji: '🦝', label: '浣熊寶寶',   size: '5rem', bg: '#EDF0F2', border: '#9AA6B0' },
+      { emoji: '🦝', label: '夜行小浣熊', size: '5rem', bg: '#E4E8EB', border: '#8A97A2' },
+      { emoji: '🦝', label: '尋寶浣熊',   size: '5rem', bg: '#DAE0E4', border: '#78868F' },
+      { emoji: '🦝', label: '傳說夜浣熊', size: '5rem', bg: '#EAE4FA', border: '#8A7EC8' },
+    ],
+    happyEmoji: '🤩',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon']

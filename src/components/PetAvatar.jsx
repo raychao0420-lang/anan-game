@@ -104,6 +104,22 @@ const EVO = {
     { body:'#57B58A', belly:'#DAF6EC', ear:'#3E9870', nose:'#154838' },
     { body:'#48C4B0', belly:'#DFFCF6', ear:'#2E9E8A', nose:'#0D4A40', glow:'#7CF0DA' },
   ],
+  // 皮皮：小猴子（暖棕＋奶油臉，stage4 金光），ear=手腳/深色
+  monkey: [
+    null,
+    { body:'#B07A4E', belly:'#F0D8B8', ear:'#8A5E38', nose:'#4E301A' },
+    { body:'#A66E42', belly:'#EDD0AC', ear:'#7C5230', nose:'#452A16' },
+    { body:'#9A5E34', belly:'#E8C8A0', ear:'#6C4426', nose:'#3A2212' },
+    { body:'#C98A2E', belly:'#F5E0B0', ear:'#A06C18', nose:'#3E2410', glow:'#FFD86B' },
+  ],
+  // 麻吉：小浣熊（灰＋白臉＋黑眼罩，stage4 夜紫光），nose=眼罩/深色
+  raccoon: [
+    null,
+    { body:'#9AA6B0', belly:'#EDF0F2', ear:'#6E7A86', nose:'#2A2E33' },
+    { body:'#8A97A2', belly:'#E4E8EB', ear:'#5E6A76', nose:'#22262B' },
+    { body:'#78868F', belly:'#DAE0E4', ear:'#4E5A66', nose:'#1A1E22' },
+    { body:'#8A7EC8', belly:'#EAE4FA', ear:'#5E52A0', nose:'#1A1428', glow:'#B0A0FF' },
+  ],
 }
 
 // ── Pet bases ─────────────────────────────────────────────────────────────────
@@ -682,6 +698,94 @@ function DinoBase({ c }) {
   )
 }
 
+// 皮皮：小猴子（圓耳、奶油愛心臉、捲尾、大眼）
+function MonkeyBase({ c }) {
+  return (
+    <g>
+      {/* Curly tail */}
+      <path d="M74,100 Q94,99 93,83 Q92,74 85,76 Q91,80 87,89 Q83,97 72,103 Z" fill={c.body} />
+      {/* Big round ears */}
+      <circle cx="22" cy="44" r="10" fill={c.body} />
+      <circle cx="78" cy="44" r="10" fill={c.body} />
+      <circle cx="22" cy="44" r="5.5" fill={c.belly} opacity="0.85" />
+      <circle cx="78" cy="44" r="5.5" fill={c.belly} opacity="0.85" />
+      {/* Body */}
+      <ellipse cx="50" cy="92" rx="24" ry="20" fill={c.body} />
+      <ellipse cx="50" cy="96" rx="15" ry="13" fill={c.belly} />
+      {/* Feet */}
+      <ellipse cx="40" cy="110" rx="7.5" ry="4.5" fill={c.ear} />
+      <ellipse cx="60" cy="110" rx="7.5" ry="4.5" fill={c.ear} />
+      {/* Hands */}
+      <ellipse cx="28" cy="86" rx="5.5" ry="6.5" fill={c.ear} transform="rotate(20,28,86)" />
+      <ellipse cx="72" cy="86" rx="5.5" ry="6.5" fill={c.ear} transform="rotate(-20,72,86)" />
+      {/* Head */}
+      <circle cx="50" cy="46" r="25" fill={c.body} />
+      {/* Cream heart-shaped face patch */}
+      <ellipse cx="50" cy="40" rx="16" ry="10" fill={c.belly} />
+      <ellipse cx="50" cy="53" rx="17" ry="16" fill={c.belly} />
+      {/* Eyes */}
+      <circle cx="42" cy="45" r="5.6" fill="#231307" />
+      <circle cx="58" cy="45" r="5.6" fill="#231307" />
+      <circle cx="43.8" cy="43" r="2" fill="white" />
+      <circle cx="59.8" cy="43" r="2" fill="white" />
+      {/* Nostrils */}
+      <ellipse cx="46.6" cy="55" rx="1.3" ry="1.8" fill={c.nose} />
+      <ellipse cx="53.4" cy="55" rx="1.3" ry="1.8" fill={c.nose} />
+      {/* Mouth */}
+      <path d="M44,60 Q50,64.5 56,60" fill="none" stroke={c.nose} strokeWidth="1.6" strokeLinecap="round" />
+      {/* Cheek blush */}
+      <ellipse cx="35" cy="55" rx="4.5" ry="3" fill="rgba(255,150,120,0.25)" />
+      <ellipse cx="65" cy="55" rx="4.5" ry="3" fill="rgba(255,150,120,0.25)" />
+    </g>
+  )
+}
+
+// 麻吉：小浣熊（尖耳、黑眼罩、白臉、環紋大尾）
+function RaccoonBase({ c }) {
+  return (
+    <g>
+      {/* Ringed tail */}
+      <path d="M72,101 Q93,99 94,82 Q95,73 87,74 Q92,80 88,90 Q83,99 71,103 Z" fill={c.body} />
+      <path d="M89,79 Q82,85 79,94" stroke={c.nose} strokeWidth="4" fill="none" opacity="0.65" strokeLinecap="round" />
+      <path d="M93,85 Q87,91 83,99" stroke={c.nose} strokeWidth="4" fill="none" opacity="0.55" strokeLinecap="round" />
+      {/* Pointy ears */}
+      <path d="M31,25 L24,9 L41,21 Z" fill={c.body} />
+      <path d="M69,25 L76,9 L59,21 Z" fill={c.body} />
+      <path d="M32,23 L28,14 L38,21 Z" fill={c.nose} opacity="0.3" />
+      <path d="M68,23 L72,14 L62,21 Z" fill={c.nose} opacity="0.3" />
+      {/* Body */}
+      <ellipse cx="50" cy="92" rx="24" ry="20" fill={c.body} />
+      <ellipse cx="50" cy="96" rx="15" ry="13" fill={c.belly} />
+      {/* Feet */}
+      <ellipse cx="40" cy="110" rx="7.5" ry="4.5" fill={c.nose} opacity="0.75" />
+      <ellipse cx="60" cy="110" rx="7.5" ry="4.5" fill={c.nose} opacity="0.75" />
+      {/* Hands */}
+      <ellipse cx="28" cy="86" rx="5.5" ry="6.5" fill={c.nose} opacity="0.75" transform="rotate(20,28,86)" />
+      <ellipse cx="72" cy="86" rx="5.5" ry="6.5" fill={c.nose} opacity="0.75" transform="rotate(-20,72,86)" />
+      {/* Head */}
+      <circle cx="50" cy="46" r="25" fill={c.body} />
+      {/* White brow + muzzle */}
+      <ellipse cx="50" cy="38" rx="20" ry="9" fill={c.belly} />
+      <ellipse cx="50" cy="56" rx="13" ry="11" fill={c.belly} />
+      {/* Black eye mask */}
+      <path d="M30,44 Q38,37 47,43 Q43,51 34,51 Q28,50 30,44 Z" fill={c.nose} />
+      <path d="M70,44 Q62,37 53,43 Q57,51 66,51 Q72,50 70,44 Z" fill={c.nose} />
+      {/* Eyes (on mask) */}
+      <circle cx="40" cy="45" r="4.6" fill="#0E1013" />
+      <circle cx="60" cy="45" r="4.6" fill="#0E1013" />
+      <circle cx="41.6" cy="43.4" r="1.7" fill="white" />
+      <circle cx="61.6" cy="43.4" r="1.7" fill="white" />
+      {/* Nose + mouth */}
+      <ellipse cx="50" cy="55" rx="3.4" ry="2.6" fill={c.nose} />
+      <line x1="50" y1="57.4" x2="50" y2="60" stroke={c.nose} strokeWidth="1.2" />
+      <path d="M45,61 Q50,64 55,61" fill="none" stroke={c.nose} strokeWidth="1.4" strokeLinecap="round" />
+      {/* Cheek blush */}
+      <ellipse cx="33" cy="55" rx="4.2" ry="2.8" fill="rgba(255,150,150,0.22)" />
+      <ellipse cx="67" cy="55" rx="4.2" ry="2.8" fill="rgba(255,150,150,0.22)" />
+    </g>
+  )
+}
+
 // ── Extra clothes ─────────────────────────────────────────────────────────────
 
 function ClothesKimono() {
@@ -1209,6 +1313,8 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'beaver'  ? <BeaverBase  c={colors} />
        : petId === 'hamster' ? <HamsterBase c={colors} />
        : petId === 'dino'    ? <DinoBase    c={colors} />
+       : petId === 'monkey'  ? <MonkeyBase  c={colors} />
+       : petId === 'raccoon' ? <RaccoonBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 
@@ -1436,6 +1542,32 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
         <g fill="#FFD700" opacity="0.9">
           <polygon points="29,49 30.2,51.4 32.8,51.8 30.9,53.6 31.4,56.2 29,55 26.6,56.2 27.1,53.6 25.2,51.8 27.8,51.4" />
           <polygon points="71,49 72.2,51.4 74.8,51.8 72.9,53.6 73.4,56.2 71,55 68.6,56.2 69.1,53.6 67.2,51.8 69.8,51.4" />
+        </g>
+      )}
+
+      {/* Monkey stage markings */}
+      {petId === 'monkey' && stage === 2 && (
+        /* 額頭小呆毛 */
+        <path d="M50,24 q-4,-6 2,-8 q-1,4 4,3" fill="none" stroke={colors.ear} strokeWidth="2" strokeLinecap="round" />
+      )}
+      {petId === 'monkey' && stage === 3 && (
+        /* 臉頰金星 */
+        <g fill="#FFD700" opacity="0.9">
+          <polygon points="30,50 31.2,52.4 33.8,52.8 31.9,54.6 32.4,57.2 30,56 27.6,57.2 28.1,54.6 26.2,52.8 28.8,52.4" />
+          <polygon points="70,50 71.2,52.4 73.8,52.8 71.9,54.6 72.4,57.2 70,56 67.6,57.2 68.1,54.6 66.2,52.8 68.8,52.4" />
+        </g>
+      )}
+
+      {/* Raccoon stage markings */}
+      {petId === 'raccoon' && stage === 2 && (
+        /* 額頭白鑽 */
+        <polygon points="50,26 53,31 50,36 47,31" fill={colors.belly} opacity="0.95" />
+      )}
+      {petId === 'raccoon' && stage === 3 && (
+        /* 尾巴多一圈金環 */
+        <g fill="#FFD700" opacity="0.85">
+          <polygon points="30,50 31,52.2 33.4,52.4 31.6,54 32.2,56.4 30,55.2 27.8,56.4 28.4,54 26.6,52.4 29,52.2" />
+          <polygon points="70,50 71,52.2 73.4,52.4 71.6,54 72.2,56.4 70,55.2 67.8,56.4 68.4,54 66.6,52.4 69,52.2" />
         </g>
       )}
 
