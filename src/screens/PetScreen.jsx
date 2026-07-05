@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
-import { PETS, PET_ORDER, EVOLVE_EXP } from '../data/pets'
+import { PETS, PET_ORDER, EVOLVE_EXP, PET_SKILLS, SKILL_COST, ENERGY_PER_QUESTION } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import PetAvatar from '../components/PetAvatar'
 import EvolveModal from '../components/EvolveModal'
@@ -136,6 +136,22 @@ export default function PetScreen({ onNavigate }) {
                   animate={{ width: `${moodVal}%` }}
                   transition={{ duration: 0.5, ease: 'easeOut' }}
                 />
+              </div>
+            </div>
+          )}
+
+          {/* 專屬技能說明 */}
+          {petData.unlocked && PET_SKILLS[selected] && (
+            <div className="pet-skill-card">
+              <div className="pet-skill-title">✨ 專屬技能</div>
+              <div className="pet-skill-row">
+                <span className="pet-skill-icon">{PET_SKILLS[selected].icon}</span>
+                <span className="pet-skill-name">{PET_SKILLS[selected].name}</span>
+                <span className="pet-skill-cost">耗能 ⚡{SKILL_COST}</span>
+              </div>
+              <div className="pet-skill-desc">{PET_SKILLS[selected].desc}</div>
+              <div className="pet-skill-note">
+                答題每題回復 ⚡{ENERGY_PER_QUESTION}，闖關或特訓時按下方技能鈕就能發動（一次只作用當下這一題）。
               </div>
             </div>
           )}

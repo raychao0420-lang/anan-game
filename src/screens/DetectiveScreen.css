@@ -1,7 +1,11 @@
 .dtv-screen {
   --accent: #7c9cff;
-  min-height: 100dvh;
-  padding: 16px 18px 40px;
+  /* body 是 overflow:hidden 的固定視窗，內容太長時這裡要能自己捲動，
+     否則最底下的綠色確認鍵會被擠出畫面按不到 */
+  height: 100dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 18px 48px;
   background: linear-gradient(160deg, #FFF5E6 0%, #EEF2FF 55%, #F4ECFF 100%);
   position: relative;
 }

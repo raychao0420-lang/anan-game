@@ -286,6 +286,58 @@
   margin-top: 4px;
 }
 
+/* 專屬技能說明卡 */
+.pet-skill-card {
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f3eefc, #efe6fb);
+  border: 2px solid #d8c8f0;
+  text-align: left;
+}
+.pet-skill-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #8a4fd0;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.pet-skill-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pet-skill-icon { font-size: 1.4rem; line-height: 1; }
+.pet-skill-name {
+  font-size: 1.02rem;
+  font-weight: 900;
+  color: #5a2fa0;
+  flex: 1;
+}
+.pet-skill-cost {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #8a7aa5;
+  background: rgba(138, 79, 208, 0.12);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pet-skill-desc {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #4a3a6a;
+}
+.pet-skill-note {
+  margin-top: 6px;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: #8a7aa5;
+}
+
 .pet-mood-label {
   display: flex;
   align-items: center;
