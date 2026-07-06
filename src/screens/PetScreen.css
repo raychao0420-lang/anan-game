@@ -434,8 +434,9 @@
   }
   .pet-header  { grid-area: header; }
   .pet-tabs    { grid-area: tabs; padding: 0 32px; margin-bottom: 0; }
-  .pet-main    { grid-area: main; padding: 16px 32px; align-self: center; }
-  .pet-actions { grid-area: actions; padding: 40px 32px; justify-content: center; align-self: center; }
+  /* 內容填滿 main 格並可內捲，避免寵物/技能卡/經驗條被裁掉（同 Shop/Daily 做法） */
+  .pet-main    { grid-area: main; padding: 16px 32px; align-self: stretch; min-height: 0; overflow-y: auto; }
+  .pet-actions { grid-area: actions; padding: 40px 32px; justify-content: center; align-self: center; min-height: 0; overflow-y: auto; }
 
   .pet-big-bubble { width: 240px; height: 240px; }
   .pet-info-name  { font-size: 2.2rem; }
