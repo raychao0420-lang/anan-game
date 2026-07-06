@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { SEASONS } from '../data/seasons'
 import { parseText } from '../data/wordProblems'
-import { PETS } from '../data/pets'
+import { PETS, TUTOR_PETS, SOS_COST, SOS_REGEN } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import PetAvatar from '../components/PetAvatar'
 import NumberPad from '../components/NumberPad'
@@ -54,6 +54,7 @@ function Bi({ t, className = '' }) {
 
 export default function SeriesScreen({ onBack }) {
   const { activePet, pets, petEquipment, petMoods, seriesSolved, seriesShards, seriesBadges,
+          petEnergy, gainEnergy, spendEnergy,
           solveEpisode, updatePetMood, grantPet, grantItem } = useGameStore()
 
   const [season, setSeason] = useState(null)          // 選定的季（物件）
@@ -66,6 +67,12 @@ export default function SeriesScreen({ onBack }) {
   const [accuseHint, setAccuseHint] = useState(false)
   const [newPet, setNewPet]     = useState(null)
   const [newItem, setNewItem]   = useState(null)
+  const [showTutor, setShowTutor] = useState(false)   // 家教求救面板
+  const [sosMsg, setSosMsg]       = useState('')       // 能量不足提示
+
+  // 家教寵物：擁有清單中任一隻即可求救（依序優先，不限出戰寵物）
+  const activeTutor  = TUTOR_PETS.find((id) => pets[id]?.unlocked) || null
+  const tutorEnergy  = activeTutor ? (petEnergy?.[activeTutor] ?? 0) : 0
 
   const episodes = season?.episodes ?? []
   const order    = season?.order ?? []
@@ -93,6 +100,18 @@ export default function SeriesScreen({ onBack }) {
   const resetCase = () => {
     setSceneIdx(0); setSolvedClue(false); setValue('')
     setHint(false); setAccuseHint(false); setNewPet(null); setNewItem(null)
+    setShowTutor(false); setSosMsg('')
+  }
+
+  // 家教求救：扣能量、打開教學面板（給方法、不給答案）
+  const callTutor = () => {
+    if (!activeTutor) return
+    if ((petEnergy?.[activeTutor] ?? 0) < SOS_COST) {
+      sfx.wrong()
+      setSosMsg(`${PETS[activeTutor].name}老師的能量不夠了，先答對幾題幫牠充電，再來求救喔！ (Solve a few to recharge!)`)
+      return
+    }
+    if (spendEnergy(activeTutor, SOS_COST)) { sfx.click(); setShowTutor(true); setSosMsg('') }
   }
 
   const openSeason = (s) => { stopSpeaking(); sfx.click(); setSeason(s); setPhase('select') }
@@ -109,6 +128,8 @@ export default function SeriesScreen({ onBack }) {
   const checkAnswer = () => {
     if (Number(value) === scene.puzzle.answer) {
       sfx.correct(); setSolvedClue(true); setHint(false)
+      // 答對就幫家教充電，讓求救能持續使用
+      if (activeTutor) gainEnergy(activeTutor, SOS_REGEN)
     } else {
       sfx.wrong(); setHint(true); setValue('')
     }
@@ -116,6 +137,7 @@ export default function SeriesScreen({ onBack }) {
 
   const nextScene = () => {
     stopSpeaking(); sfx.click(); setValue(''); setHint(false); setSolvedClue(false)
+    setShowTutor(false); setSosMsg('')
     if (sceneIdx < ep.scenes.length - 1) setSceneIdx(sceneIdx + 1)
     else setPhase('accuse')
   }
@@ -290,7 +312,36 @@ export default function SeriesScreen({ onBack }) {
                     <p className="dtv-clue-text">{renderClue(scene.puzzle.text.zh)}</p>
                     <p className="dtv-clue-text srs-en">{renderClue(scene.puzzle.text.en)}<SpeakBtn text={scene.puzzle.text.en} /></p>
                   </div>
-                  {hint && (
+
+                  {/* 家教求救：擁有智慧寵物就能按，用教學方式帶著想（不給答案），消耗能量 */}
+                  {activeTutor && !showTutor && (
+                    <button className="srs-sos-btn" onClick={callTutor} disabled={tutorEnergy < SOS_COST}>
+                      <PetAvatar petId={activeTutor} evolutionStage={1} equipped={[]} size={34} mood={100} />
+                      <span className="srs-sos-txt">
+                        🔔 求救！問問{PETS[activeTutor].name}老師
+                        <span className="srs-sos-en">Ask {PETS[activeTutor].name} for a hint</span>
+                      </span>
+                      <span className="srs-sos-cost">⚡{Math.round(tutorEnergy)}/{SOS_COST}</span>
+                    </button>
+                  )}
+                  {sosMsg && <div className="dtv-hint">🔋 {sosMsg}</div>}
+
+                  {showTutor && (
+                    <motion.div className="srs-tutor"
+                      initial={{ scale: 0.92, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                      <div className="srs-tutor-head">
+                        <PetAvatar petId={activeTutor} evolutionStage={1} equipped={[]} size={48} mood={100} />
+                        <span className="srs-tutor-name">🎓 {PETS[activeTutor].name}老師</span>
+                      </div>
+                      <div className="srs-tutor-bubble">
+                        <p className="srs-tutor-lead">別急，我們一步一步想～（老師只教方法，答案要你自己算出來喔！）</p>
+                        <p className="srs-tutor-lead srs-en">Let’s think step by step — I’ll teach the method, you find the answer!</p>
+                        <div className="srs-tutor-steps"><Bi t={scene.puzzle.hint} /></div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {hint && !showTutor && (
                     <div className="dtv-hint">
                       💡 {scene.puzzle.hint.zh}<br /><span className="srs-en">{scene.puzzle.hint.en}</span>
                     </div>

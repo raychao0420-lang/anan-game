@@ -172,6 +172,58 @@
   color: var(--accent, #b06bd6);
 }
 
+/* ── 家教求救 ── */
+.srs-sos-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin: 10px 0 2px;
+  padding: 8px 12px;
+  border: 2px dashed #6bb8e0;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #f2fbff, #e6f4ff);
+  cursor: pointer;
+  text-align: left;
+}
+.srs-sos-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(0.4); }
+.srs-sos-txt { display: flex; flex-direction: column; flex: 1; font-weight: 900; color: #2b6f95; font-size: 0.98rem; }
+.srs-sos-en { font-size: 0.72rem; font-style: italic; font-weight: 600; color: #7aa6bf; }
+.srs-sos-cost {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #e08a2b;
+  background: #fff5e5;
+  border-radius: 10px;
+  padding: 3px 8px;
+}
+
+.srs-tutor {
+  width: 100%;
+  margin: 10px 0 2px;
+  border: 3px solid #7cc6ec;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #f6fcff, #e8f5ff);
+  padding: 12px 14px;
+  box-shadow: 0 4px 16px rgba(90,150,200,0.18);
+}
+.srs-tutor-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.srs-tutor-name { font-size: 1.05rem; font-weight: 900; color: #2b6f95; }
+.srs-tutor-bubble {
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+.srs-tutor-lead { font-size: 0.9rem; font-weight: 800; color: #3a6b85; margin: 0 0 4px; }
+.srs-tutor-lead.srs-en { font-weight: 600; font-style: italic; color: #8aacbf; }
+.srs-tutor-steps {
+  margin-top: 6px;
+  border-top: 1px dashed #cfe6f2;
+  padding-top: 6px;
+}
+.srs-tutor-steps .srs-zh { font-size: 1.02rem; font-weight: 800; color: #2b5568; }
+
 /* ── 破案：碎片入手 ── */
 .srs-got-shard {
   display: flex;
