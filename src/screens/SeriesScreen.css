@@ -224,6 +224,31 @@
 }
 .srs-tutor-steps .srs-zh { font-size: 1.02rem; font-weight: 800; color: #2b5568; }
 
+/* 分步驟教學：每一步一個編號圓圈 */
+.srs-tutor-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+}
+.srs-tutor-step + .srs-tutor-step { border-top: 1px dashed #e3f1f8; }
+.srs-tutor-step-no {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: #7cc6ec;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.srs-tutor-step .srs-bi { flex: 1 1 auto; }
+.srs-tutor-step .srs-zh { font-size: 0.98rem; line-height: 1.5; }
+
 /* ── 破案：碎片入手 ── */
 .srs-got-shard {
   display: flex;

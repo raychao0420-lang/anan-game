@@ -334,9 +334,18 @@ export default function SeriesScreen({ onBack }) {
                         <span className="srs-tutor-name">🎓 {PETS[activeTutor].name}老師</span>
                       </div>
                       <div className="srs-tutor-bubble">
-                        <p className="srs-tutor-lead">別急，我們一步一步想～（老師只教方法，答案要你自己算出來喔！）</p>
+                        <p className="srs-tutor-lead">別急，我們一步一步想～（老師只教方法，最後的答案要你自己算出來喔！）</p>
                         <p className="srs-tutor-lead srs-en">Let’s think step by step — I’ll teach the method, you find the answer!</p>
-                        <div className="srs-tutor-steps"><Bi t={scene.puzzle.hint} /></div>
+                        <div className="srs-tutor-steps">
+                          {scene.puzzle.teach
+                            ? scene.puzzle.teach.map((step, i) => (
+                                <div key={i} className="srs-tutor-step">
+                                  <span className="srs-tutor-step-no">{i + 1}</span>
+                                  <Bi t={step} />
+                                </div>
+                              ))
+                            : <Bi t={scene.puzzle.hint} />}
+                        </div>
                       </div>
                     </motion.div>
                   )}
