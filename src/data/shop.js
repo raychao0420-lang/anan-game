@@ -106,6 +106,10 @@ const NEW_PET_FOOD_EXP = {
   seal:    { bone: 25, fish: 130, meat: 50,  apple: 30,  berry: 30,  nectar: 10, sushi: 90,  cake: 60, shrimp: 120 }, // 海豹愛魚蝦
   beaver:  { bone: 40, fish: 20,  meat: 20,  apple: 110, berry: 90,  nectar: 70, sushi: 30,  cake: 70, shrimp: 20  }, // 河狸吃素
   hamster: { bone: 30, fish: 30,  meat: 40,  apple: 100, berry: 100, nectar: 50, sushi: 30,  cake: 90, shrimp: 30  }, // 倉鼠愛果子
+  dino:    { bone: 20, fish: 30,  meat: 20,  apple: 110, berry: 100, nectar: 90, sushi: 30,  cake: 80, shrimp: 20  }, // 小恐龍吃素愛嫩葉果子
+  monkey:  { bone: 20, fish: 40,  meat: 40,  apple: 120, berry: 110, nectar: 80, sushi: 40,  cake: 90, shrimp: 30  }, // 猴子愛水果
+  raccoon: { bone: 40, fish: 110, meat: 70,  apple: 60,  berry: 60,  nectar: 30, sushi: 100, cake: 70, shrimp: 90  }, // 浣熊雜食愛魚
+  twinkle: { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 100, nectar: 120,sushi: 30,  cake: 110,shrimp: 20  }, // 星星精靈愛甜甜的花蜜與蛋糕
 }
 SHOP_ITEMS.forEach((item) => {
   if (item.category !== 'food') return
