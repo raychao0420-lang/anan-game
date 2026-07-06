@@ -1,0 +1,35 @@
+// 連載劇「多季」聚合層：把每季正規化成 SeriesScreen 可通吃的結構。
+// 新增一季只要在此加一筆（帶入該季的碎片/徽章板與收集型別）。
+import { SEASON1, SHARD_BOARD } from './series'
+import { SEASON2, BADGE_BOARD } from './series2'
+
+function normalize(season, extra) {
+  return {
+    ...season,
+    order: season.episodes.map((e) => e.id), // 循序解鎖用
+    ...extra,
+  }
+}
+
+export const SEASONS = [
+  normalize(SEASON1, {
+    key: 'season1',
+    board: SHARD_BOARD,
+    collType: 'shard',                                   // 每集 ep.shard.color 收進 store.seriesShards
+    collLabel: { zh: '星願石碎片', en: 'Shards' },
+    clueLabel: { zh: '斗篷客線索', en: 'Clues' },
+    clueIcon: '🧙',
+    subtitle: { zh: '第一季 · 已完結', en: 'Season 1 · Complete' },
+    done: true,
+  }),
+  normalize(SEASON2, {
+    key: 'season2',
+    board: BADGE_BOARD,
+    collType: 'badge',                                   // 每集 ep.badge.id 收進 store.seriesBadges
+    collLabel: { zh: '星座徽章', en: 'Zodiac Badges' },
+    clueLabel: { zh: '星空線索', en: 'Sky Clues' },
+    clueIcon: '☄️',
+    subtitle: { zh: '第二季 · 連載中', en: 'Season 2 · Ongoing' },
+    done: false,
+  }),
+]

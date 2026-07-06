@@ -142,6 +142,36 @@
   font-style: italic;
 }
 
+/* ── 季選單 ── */
+.srs-season-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-top: 8px;
+}
+.srs-season-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 16px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(120deg, #fff, #f2ecff);
+  border-left: 8px solid var(--accent, #b06bd6);
+  box-shadow: 0 4px 16px rgba(120,90,180,0.16);
+  cursor: pointer;
+  text-align: left;
+}
+.srs-season-emoji { font-size: 3rem; flex-shrink: 0; }
+.srs-season-prog {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--accent, #b06bd6);
+}
+
 /* ── 破案：碎片入手 ── */
 .srs-got-shard {
   display: flex;

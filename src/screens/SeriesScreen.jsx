@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
-import { SEASON1, EPISODE_ORDER, SHARD_BOARD } from '../data/series'
+import { SEASONS } from '../data/seasons'
 import { parseText } from '../data/wordProblems'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
@@ -53,13 +53,12 @@ function Bi({ t, className = '' }) {
 }
 
 export default function SeriesScreen({ onBack }) {
-  const { activePet, pets, petEquipment, petMoods, seriesSolved, seriesShards,
+  const { activePet, pets, petEquipment, petMoods, seriesSolved, seriesShards, seriesBadges,
           solveEpisode, updatePetMood, grantPet, grantItem } = useGameStore()
 
-  const [epId, setEpId]   = useState(null)
-  const ep = epId ? SEASON1.episodes.find((e) => e.id === epId) : null
-
-  const [phase, setPhase]       = useState('select') // select | intro | scene | accuse | solved
+  const [season, setSeason] = useState(null)          // 選定的季（物件）
+  const [epId, setEpId]     = useState(null)
+  const [phase, setPhase]   = useState('seasons')     // seasons | select | intro | scene | accuse | solved
   const [sceneIdx, setSceneIdx] = useState(0)
   const [solvedClue, setSolvedClue] = useState(false)
   const [value, setValue]       = useState('')
@@ -67,6 +66,13 @@ export default function SeriesScreen({ onBack }) {
   const [accuseHint, setAccuseHint] = useState(false)
   const [newPet, setNewPet]     = useState(null)
   const [newItem, setNewItem]   = useState(null)
+
+  const episodes = season?.episodes ?? []
+  const order    = season?.order ?? []
+  const collected = season?.collType === 'badge' ? (seriesBadges ?? []) : (seriesShards ?? [])
+  const boardKey = (item) => (season?.collType === 'badge' ? item.id : item.color)
+
+  const ep = epId ? episodes.find((e) => e.id === epId) : null
 
   const petData  = pets[activePet]
   const equipped = (petEquipment[activePet] || [])
@@ -80,14 +86,17 @@ export default function SeriesScreen({ onBack }) {
   const alreadySolved = ep ? !!seriesSolved?.[ep.id] : false
 
   const isLocked = (id) => {
-    const idx = EPISODE_ORDER.indexOf(id)
-    return idx > 0 && !seriesSolved?.[EPISODE_ORDER[idx - 1]]
+    const idx = order.indexOf(id)
+    return idx > 0 && !seriesSolved?.[order[idx - 1]]
   }
 
   const resetCase = () => {
     setSceneIdx(0); setSolvedClue(false); setValue('')
     setHint(false); setAccuseHint(false); setNewPet(null); setNewItem(null)
   }
+
+  const openSeason = (s) => { stopSpeaking(); sfx.click(); setSeason(s); setPhase('select') }
+  const backToSeasons = () => { stopSpeaking(); sfx.click(); setSeason(null); setEpId(null); setPhase('seasons') }
 
   const openEpisode = (id) => {
     if (isLocked(id)) { sfx.wrong(); return }
@@ -114,7 +123,8 @@ export default function SeriesScreen({ onBack }) {
   const accuse = (id) => {
     if (id === ep.culprit) {
       sfx.unlock()
-      solveEpisode(ep.id, ep.reward, ep.shard?.color)
+      // 第三參數收 S1 碎片色、第四參數收 S2 星座徽章 id（一集只會有其一）
+      solveEpisode(ep.id, ep.reward, ep.shard?.color, ep.badge?.id)
       updatePetMood(activePet, 15)
       const gotPet = ep.petReward ? grantPet(ep.petReward) : false
       setNewPet(gotPet ? ep.petReward : null)
@@ -126,43 +136,84 @@ export default function SeriesScreen({ onBack }) {
     }
   }
 
+  // 破案收集物（S1 碎片 / S2 徽章）通用取用
+  const gotCollectible = ep?.shard || ep?.badge
+
+  const backBtn = () => {
+    if (phase === 'seasons') { stopSpeaking(); sfx.click(); onBack() }
+    else if (phase === 'select') backToSeasons()
+    else backToList()
+  }
+  const backLabel = phase === 'seasons' ? '← 回首頁 Home'
+    : phase === 'select' ? '← 選季 Seasons'
+    : '← 回劇場 Episodes'
+
   return (
-    <div className={`dtv-screen ${phase === 'scene' ? 'dtv-screen-scene' : ''}`} style={{ '--accent': ep?.accent ?? '#b06bd6' }}>
-      <button className="dtv-back"
-        onClick={phase === 'select' ? () => { stopSpeaking(); sfx.click(); onBack() } : backToList}>
-        {phase === 'select' ? '← 回首頁 Home' : '← 回劇場 Episodes'}
-      </button>
+    <div className={`dtv-screen ${phase === 'scene' ? 'dtv-screen-scene' : ''}`} style={{ '--accent': ep?.accent ?? season?.accent ?? '#b06bd6' }}>
+      <button className="dtv-back" onClick={backBtn}>{backLabel}</button>
 
       <AnimatePresence mode="wait">
-        {/* ── 劇場選單 ＋ 推理牆 ── */}
-        {phase === 'select' && (
-          <motion.div key="select" className="dtv-panel"
+        {/* ── 季選單 ── */}
+        {phase === 'seasons' && (
+          <motion.div key="seasons" className="dtv-panel"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
             <div className="dtv-case-emoji">📺</div>
-            <h1 className="dtv-title">{SEASON1.title.zh}</h1>
-            <div className="srs-title-en">{SEASON1.title.en}</div>
+            <h1 className="dtv-title">連載劇場</h1>
+            <div className="srs-title-en">The Detective Serials</div>
+            <div className="srs-season-list">
+              {SEASONS.map((s, i) => {
+                const solvedCount = s.episodes.filter((e) => seriesSolved?.[e.id]).length
+                return (
+                  <motion.button key={s.key} className="srs-season-card"
+                    whileTap={{ scale: 0.96 }} style={{ '--accent': s.episodes[0]?.accent || '#b06bd6' }}
+                    onClick={() => openSeason(s)}>
+                    <span className="srs-season-emoji">{s.emoji}</span>
+                    <span className="srs-ep-info">
+                      <span className="srs-ep-no">{s.subtitle.zh} · {s.subtitle.en}</span>
+                      <span className="srs-ep-title">第 {i + 1} 季：{s.title.zh}</span>
+                      <span className="srs-ep-title-en">{s.title.en}</span>
+                      <span className="srs-season-prog">
+                        {s.done && solvedCount === s.episodes.length ? '🏆 全破 Complete' : `進度 ${solvedCount}/${s.episodes.length}`}
+                      </span>
+                    </span>
+                  </motion.button>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
 
-            {/* 推理牆：碎片收集 */}
+        {/* ── 劇場選單 ＋ 收集牆 ── */}
+        {phase === 'select' && season && (
+          <motion.div key="select" className="dtv-panel"
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+            <div className="dtv-case-emoji">{season.emoji}</div>
+            <h1 className="dtv-title">{season.title.zh}</h1>
+            <div className="srs-title-en">{season.title.en}</div>
+
+            {/* 收集牆：碎片 / 星座徽章 */}
             <div className="srs-wall">
-              <div className="srs-wall-label">🧩 星願石碎片 Shards ({seriesShards.length}/7)</div>
+              <div className="srs-wall-label">
+                {season.collType === 'badge' ? '⭐' : '🧩'} {season.collLabel.zh} {season.collLabel.en} ({collected.length}/{season.board.length})
+              </div>
               <div className="srs-shards">
-                {SHARD_BOARD.map((s) => {
-                  const got = seriesShards.includes(s.color)
+                {season.board.map((item) => {
+                  const got = collected.includes(boardKey(item))
                   return (
-                    <div key={s.color} className={`srs-shard ${got ? 'got' : ''}`}
-                      title={`${s.name.zh} ${s.name.en}`}>
-                      {got ? s.emoji : '⬜'}
+                    <div key={boardKey(item)} className={`srs-shard ${got ? 'got' : ''}`}
+                      title={`${item.name.zh} ${item.name.en}`}>
+                      {got ? item.emoji : '⬜'}
                     </div>
                   )
                 })}
               </div>
             </div>
 
-            {/* 推理牆：斗篷客線索卡（已破集數累積） */}
-            {SEASON1.episodes.some((e) => seriesSolved?.[e.id] && e.arcClue) && (
+            {/* 收集牆：主線線索卡（已破集數累積） */}
+            {season.episodes.some((e) => seriesSolved?.[e.id] && e.arcClue) && (
               <div className="srs-wall">
-                <div className="srs-wall-label">🧙 斗篷客線索 Clues</div>
-                {SEASON1.episodes.filter((e) => seriesSolved?.[e.id] && e.arcClue).map((e) => (
+                <div className="srs-wall-label">{season.clueIcon} {season.clueLabel.zh} {season.clueLabel.en}</div>
+                {season.episodes.filter((e) => seriesSolved?.[e.id] && e.arcClue).map((e) => (
                   <div key={e.id} className="srs-clue">
                     <span className="srs-clue-no">EP{e.no}</span>
                     <Bi t={e.arcClue} />
@@ -173,7 +224,7 @@ export default function SeriesScreen({ onBack }) {
 
             {/* 集數列表 */}
             <div className="srs-ep-list">
-              {SEASON1.episodes.map((e) => {
+              {season.episodes.map((e) => {
                 const done   = !!seriesSolved?.[e.id]
                 const locked = isLocked(e.id)
                 return (
@@ -190,13 +241,13 @@ export default function SeriesScreen({ onBack }) {
                   </motion.button>
                 )
               })}
-              <div className="srs-coming">更多集數陸續上線… More episodes coming soon…</div>
+              {!season.done && <div className="srs-coming">更多集數陸續上線… More episodes coming soon…</div>}
             </div>
           </motion.div>
         )}
 
         {/* ── 開場 ── */}
-        {phase === 'intro' && (
+        {phase === 'intro' && ep && (
           <motion.div key="intro" className="dtv-panel"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
             <div className="dtv-case-emoji">{ep.emoji}</div>
@@ -210,7 +261,7 @@ export default function SeriesScreen({ onBack }) {
               </motion.div>
               <div className="dtv-partner-tag">🕵️ {PETS[activePet].name} 偵探出動！</div>
             </div>
-            {ep.no === 1 && SEASON1.seasonIntro.map((line, i) => <Bi key={`s${i}`} t={line} />)}
+            {ep.no === 1 && season.seasonIntro?.map((line, i) => <Bi key={`s${i}`} t={line} />)}
             {ep.intro.map((line, i) => <Bi key={i} t={line} />)}
             {alreadySolved && <div className="dtv-replay-note">（這集破過囉，重玩不會再拿獎勵～ Replay: no new rewards）</div>}
             <button className="dtv-btn" onClick={() => { sfx.click(); setPhase('scene') }}>
@@ -220,7 +271,7 @@ export default function SeriesScreen({ onBack }) {
         )}
 
         {/* ── 現場調查 ── */}
-        {phase === 'scene' && (
+        {phase === 'scene' && ep && (
           <motion.div key={`scene-${sceneIdx}`} className="dtv-panel dtv-scene-panel"
             initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}>
             {/* 上方內容可捲動 */}
@@ -265,7 +316,7 @@ export default function SeriesScreen({ onBack }) {
         )}
 
         {/* ── 指認 ── */}
-        {phase === 'accuse' && (
+        {phase === 'accuse' && ep && (
           <motion.div key="accuse" className="dtv-panel"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
             <h2 className="dtv-subtitle">📓 指認真相 Who did it?</h2>
@@ -285,7 +336,7 @@ export default function SeriesScreen({ onBack }) {
         )}
 
         {/* ── 破案 ── */}
-        {phase === 'solved' && (
+        {phase === 'solved' && ep && (
           <motion.div key="solved" className="dtv-panel"
             initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}>
             <div className="dtv-case-emoji">🎉</div>
@@ -298,10 +349,10 @@ export default function SeriesScreen({ onBack }) {
             </div>
             {ep.solve.map((line, i) => <Bi key={i} t={line} />)}
 
-            {ep.shard && (
+            {gotCollectible && (
               <div className="srs-got-shard">
-                <span className="srs-got-shard-emoji">{ep.shard.emoji}</span>
-                <span>收集到 {ep.shard.name.zh}！<br /><span className="srs-en">Got the {ep.shard.name.en}!</span></span>
+                <span className="srs-got-shard-emoji">{gotCollectible.emoji}</span>
+                <span>收集到 {gotCollectible.name.zh}！<br /><span className="srs-en">Got the {gotCollectible.name.en}!</span></span>
               </div>
             )}
 

@@ -108,9 +108,11 @@ export const useGameStore = create(
       // M7: 推理事件簿 — 每個章節破案後標記 true
       mysterySolved: {},
 
-      // M8: 長篇連續劇《七色星願之謎》— 破案集數 + 收集到的碎片顏色（依序）
+      // M8: 長篇連續劇 — 破案集數（seriesSolved 跨季共用，episode id 不重複）
+      // S1《七色星願》收碎片顏色；S2《星空亂了套》收星座徽章 id
       seriesSolved: {},
       seriesShards: [],
+      seriesBadges: [],
 
       // ── Core actions ──
       addCoins: (amount) => set((s) => ({ coins: s.coins + amount })),
@@ -461,13 +463,16 @@ export const useGameStore = create(
       },
 
       // ── M8: 長篇連續劇 ──
-      // 破案一集：首次破案給金幣＋收集碎片，重玩不重複發。終章的寵物／擺飾另由畫面呼叫 grantPet/grantItem。
-      solveEpisode: (episodeId, coinsReward, shard) => {
+      // 破案一集：首次破案給金幣＋收集碎片(S1)/星座徽章(S2)，重玩不重複發。
+      // 終章的寵物／擺飾另由畫面呼叫 grantPet/grantItem。shard=S1碎片色、badge=S2星座id。
+      solveEpisode: (episodeId, coinsReward, shard, badge) => {
         set((s) => {
           if (s.seriesSolved?.[episodeId]) return s
+          const badges = s.seriesBadges || []
           return {
             seriesSolved: { ...s.seriesSolved, [episodeId]: true },
             seriesShards: (shard && !s.seriesShards.includes(shard)) ? [...s.seriesShards, shard] : s.seriesShards,
+            seriesBadges: (badge && !badges.includes(badge)) ? [...badges, badge] : badges,
             coins: s.coins + coinsReward,
             totalCoinsEarned: s.totalCoinsEarned + coinsReward,
           }
@@ -616,6 +621,7 @@ export const useGameStore = create(
           mysterySolved: {},
           seriesSolved: {},
           seriesShards: [],
+          seriesBadges: [],
         }),
     }),
     {
@@ -669,6 +675,7 @@ export const useGameStore = create(
         // M8: 長篇連續劇
         if (!state.seriesSolved) state.seriesSolved = {}
         if (!state.seriesShards) state.seriesShards = []
+        if (!state.seriesBadges) state.seriesBadges = []
       },
     }
   )

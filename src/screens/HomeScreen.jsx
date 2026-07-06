@@ -174,7 +174,7 @@ export default function HomeScreen({ onNavigate }) {
           whileTap={{ scale: 0.94 }}
           onClick={() => nav('series')}
         >
-          📺 連載劇場：七色星願
+          📺 連載劇場：星星偵探
           <span className="home-badge home-badge-new">NEW</span>
         </motion.button>
 
