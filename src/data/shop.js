@@ -95,6 +95,7 @@ export const SHOP_ITEMS = [
   { id: 'crown_chinese', name: '國語皇冠', emoji: '🖊️', category: 'rare', price: 0, desc: '國語科三次滿分獎勵', boss: true },
   // ── 連載劇《七色星願》信物（劇情獎勵，不可購買）──
   { id: 'star_pendant', name: '星形墜子', emoji: '🌟', category: 'rare', price: 0, desc: '雨夜裡斗篷客掉下的星形墜子，刻著滿滿小星星，冰冰的卻會在手心慢慢變暖…', boss: true },
+  { id: 'star_wish_stone', name: '星願石', emoji: '💫', category: 'rare', price: 0, desc: '《七色星願》終章，七色碎片重新拼成的星願石。安安沒有用它許願，而是把它變成永遠的紀念——聽說對著它輕輕說願望，小星會在夜裡眨眨眼。', boss: true },
 ]
 
 // 新寵物（波波/嚕嚕/圓圓/阿丁/小麥）的食物偏好。原本食物 exp 只列了 6 隻，

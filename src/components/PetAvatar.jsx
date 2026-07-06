@@ -120,6 +120,14 @@ const EVO = {
     { body:'#78868F', belly:'#DAE0E4', ear:'#4E5A66', nose:'#1A1E22' },
     { body:'#8A7EC8', belly:'#EAE4FA', ear:'#5E52A0', nose:'#1A1428', glow:'#B0A0FF' },
   ],
+  // 小星：星星精靈（暖金五角星，stage4 星願金光），belly=內層亮光、ear=星角描邊、nose=五官
+  twinkle: [
+    null,
+    { body:'#FFE08A', belly:'#FFF6D0', ear:'#F0C24E', nose:'#7A5A12' },
+    { body:'#FFD86B', belly:'#FFF2C0', ear:'#EBB43A', nose:'#6E5010' },
+    { body:'#FFCE4A', belly:'#FFEEA8', ear:'#E6A828', nose:'#5E440E' },
+    { body:'#FFD54A', belly:'#FFF6C0', ear:'#F0B020', nose:'#5A400C', glow:'#FFE87A' },
+  ],
 }
 
 // ── Pet bases ─────────────────────────────────────────────────────────────────
@@ -786,6 +794,39 @@ function RaccoonBase({ c }) {
   )
 }
 
+// 小星：星星精靈（暖金五角星身體＋亮亮大眼＋周圍小閃光）
+function TwinkleBase({ c }) {
+  return (
+    <g>
+      {/* Soft halo */}
+      <circle cx="50" cy="64" r="35" fill={c.glow || c.belly} opacity="0.16" />
+      {/* Star body */}
+      <path
+        d="M50,30 L59,55 L85,56 L64,72 L72,98 L50,83 L28,98 L36,72 L15,56 L41,55 Z"
+        fill={c.body} stroke={c.ear} strokeWidth="1.6" strokeLinejoin="round"
+      />
+      {/* Inner shine */}
+      <ellipse cx="50" cy="62" rx="17" ry="13" fill={c.belly} opacity="0.5" />
+      <path d="M46,40 L50,50 L54,40 L50,37 Z" fill={c.belly} opacity="0.75" />
+      {/* Eyes (big shiny) */}
+      <circle cx="42" cy="58" r="5.6" fill={c.nose} />
+      <circle cx="58" cy="58" r="5.6" fill={c.nose} />
+      <circle cx="43.9" cy="55.6" r="2" fill="white" />
+      <circle cx="59.9" cy="55.6" r="2" fill="white" />
+      <circle cx="40" cy="60" r="1.1" fill="rgba(255,255,255,0.55)" />
+      <circle cx="56" cy="60" r="1.1" fill="rgba(255,255,255,0.55)" />
+      {/* Smile */}
+      <path d="M45,65 Q50,69.5 55,65" fill="none" stroke={c.nose} strokeWidth="1.7" strokeLinecap="round" />
+      {/* Cheek blush */}
+      <ellipse cx="35.5" cy="63.5" rx="4" ry="2.7" fill="rgba(255,150,120,0.30)" />
+      <ellipse cx="64.5" cy="63.5" rx="4" ry="2.7" fill="rgba(255,150,120,0.30)" />
+      {/* Twinkle sparkles */}
+      <path d="M19,33 l1.4,3.1 l3.1,1.4 l-3.1,1.4 l-1.4,3.1 l-1.4,-3.1 l-3.1,-1.4 l3.1,-1.4 Z" fill={c.glow || c.ear} opacity="0.85" />
+      <path d="M83,29 l1.1,2.5 l2.5,1.1 l-2.5,1.1 l-1.1,2.5 l-1.1,-2.5 l-2.5,-1.1 l2.5,-1.1 Z" fill={c.glow || c.ear} opacity="0.75" />
+    </g>
+  )
+}
+
 // ── Extra clothes ─────────────────────────────────────────────────────────────
 
 function ClothesKimono() {
@@ -1315,6 +1356,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'dino'    ? <DinoBase    c={colors} />
        : petId === 'monkey'  ? <MonkeyBase  c={colors} />
        : petId === 'raccoon' ? <RaccoonBase c={colors} />
+       : petId === 'twinkle' ? <TwinkleBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 

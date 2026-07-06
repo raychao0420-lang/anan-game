@@ -252,9 +252,28 @@ export const PETS = {
     happyEmoji: '🤩',
     sadEmoji: '🥺',
   },
+  // 小星：連載劇《七色星願》終章送回家的走失星星精靈（事件限定，不可金幣購買）
+  twinkle: {
+    id: 'twinkle',
+    name: '小星',
+    breed: '星星精靈',
+    personality: '害羞、想家、夜裡會發出溫暖的光',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '完成《七色星願之謎》終章，送小星回家就能永遠當好朋友！',
+    stages: [
+      null,
+      { emoji: '🌟', label: '迷路小星',   size: '5rem', bg: '#FFF6D0', border: '#F0C24E' },
+      { emoji: '🌟', label: '微光小星',   size: '5rem', bg: '#FFF2C0', border: '#EBB43A' },
+      { emoji: '🌟', label: '閃亮小星',   size: '5rem', bg: '#FFEEA8', border: '#E6A828' },
+      { emoji: '🌟', label: '傳說星願精靈', size: '5rem', bg: '#FFF6C0', border: '#FFD54A', glow: true },
+    ],
+    happyEmoji: '🤩',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle']
 
 // ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
 // 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
@@ -281,4 +300,5 @@ export const PET_SKILLS = {
   dino:    { name: '恐龍護盾', icon: '🥚', effect: { type: 'shield' },           desc: '這一題答錯不斷連段' },
   monkey:  { name: '雜耍金幣', icon: '🎪', effect: { type: 'coin',  mult: 2 },   desc: '這一題答對金幣 ×2' },
   raccoon: { name: '夜行加時', icon: '🌙', effect: { type: 'time',  value: 7 },  desc: '這一題 +7 秒' },
+  twinkle: { name: '星願之光', icon: '🌠', effect: { type: 'coin',  add: 20 },   desc: '這一題答對 +20 金幣' },
 }
