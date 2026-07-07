@@ -2,15 +2,16 @@
 // 新增一季只要在此加一筆（帶入該季的碎片/徽章板與收集型別）。
 import { SEASON1, SHARD_BOARD } from './series'
 import { SEASON2, BADGE_BOARD } from './series2'
+import { SEASON3, GEM_BOARD } from './series3'
 import { SERIES_TEACH } from './seriesTeach'
 
 function normalize(season, extra) {
   return {
     ...season,
-    // 合併集中教學檔（scene 自帶 teach 者優先，如 S2 EP2+ 寫在 series2.js 內）
+    // 合併集中教學檔（scene 自帶 teach 者優先，如 S2 EP2+ 寫在 series2.js 內；choice 節點跳過）
     episodes: season.episodes.map((ep) => ({
       ...ep,
-      scenes: ep.scenes.map((sc, i) => sc.puzzle.teach || !SERIES_TEACH[ep.id]?.[i]
+      scenes: ep.scenes.map((sc, i) => sc.kind === 'choice' || sc.puzzle.teach || !SERIES_TEACH[ep.id]?.[i]
         ? sc
         : { ...sc, puzzle: { ...sc.puzzle, teach: SERIES_TEACH[ep.id][i] } }),
     })),
@@ -39,5 +40,15 @@ export const SEASONS = [
     clueIcon: '☄️',
     subtitle: { zh: '第二季 · 已完結', en: 'Season 2 · Complete' },
     done: true,
+  }),
+  normalize(SEASON3, {
+    key: 'season3',
+    board: GEM_BOARD,
+    collType: 'gem',                                     // 每集 ep.gem.id 收進 store.seriesGems
+    collLabel: { zh: '軌道寶石', en: 'Orbit Gems' },
+    clueLabel: { zh: '冰冰腳印', en: 'Icy Footprints' },
+    clueIcon: '❄️',
+    subtitle: { zh: '第三季 · 連載中', en: 'Season 3 · Ongoing' },
+    done: false,
   }),
 ]

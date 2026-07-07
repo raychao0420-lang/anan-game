@@ -224,6 +224,42 @@
 }
 .srs-tutor-steps .srs-zh { font-size: 1.02rem; font-weight: 800; color: #2b5568; }
 
+/* 分支選擇：你來決定走哪條路 */
+.srs-choice-card {
+  width: 100%;
+  margin: 12px 0;
+  border: 3px dashed #b48ae0;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #fbf7ff, #f3eaff);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.srs-choice-q .srs-zh {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #6a3fa8;
+}
+.srs-choice-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #9c6ade 0%, #6a3fa8 100%);
+  color: white;
+  font-size: 1.05rem;
+  font-weight: 800;
+  padding: 14px 16px;
+  font-family: inherit;
+  box-shadow: 0 3px 12px rgba(106, 63, 168, 0.35);
+}
+.srs-choice-btn .srs-en { color: rgba(255,255,255,0.75); }
+.srs-choice-label { font-size: 1.1rem; }
+
 /* 偵探筆記：答對後的破解過程解說（重用 srs-tutor-step 步驟樣式） */
 .srs-notes {
   width: 100%;

@@ -114,6 +114,7 @@ export const useGameStore = create(
       seriesSolved: {},
       seriesShards: [],
       seriesBadges: [],
+      seriesGems: [],
 
       // ── Core actions ──
       addCoins: (amount) => set((s) => ({ coins: s.coins + amount })),
@@ -466,14 +467,16 @@ export const useGameStore = create(
       // ── M8: 長篇連續劇 ──
       // 破案一集：首次破案給金幣＋收集碎片(S1)/星座徽章(S2)，重玩不重複發。
       // 終章的寵物／擺飾另由畫面呼叫 grantPet/grantItem。shard=S1碎片色、badge=S2星座id。
-      solveEpisode: (episodeId, coinsReward, shard, badge) => {
+      solveEpisode: (episodeId, coinsReward, shard, badge, gem) => {
         set((s) => {
           if (s.seriesSolved?.[episodeId]) return s
           const badges = s.seriesBadges || []
+          const gems = s.seriesGems || []
           return {
             seriesSolved: { ...s.seriesSolved, [episodeId]: true },
             seriesShards: (shard && !s.seriesShards.includes(shard)) ? [...s.seriesShards, shard] : s.seriesShards,
             seriesBadges: (badge && !badges.includes(badge)) ? [...badges, badge] : badges,
+            seriesGems: (gem && !gems.includes(gem)) ? [...gems, gem] : gems,
             coins: s.coins + coinsReward,
             totalCoinsEarned: s.totalCoinsEarned + coinsReward,
           }
@@ -625,6 +628,7 @@ export const useGameStore = create(
           seriesSolved: {},
           seriesShards: [],
           seriesBadges: [],
+          seriesGems: [],
         }),
     }),
     {
@@ -679,6 +683,7 @@ export const useGameStore = create(
         if (!state.seriesSolved) state.seriesSolved = {}
         if (!state.seriesShards) state.seriesShards = []
         if (!state.seriesBadges) state.seriesBadges = []
+        if (!state.seriesGems) state.seriesGems = []
       },
     }
   )

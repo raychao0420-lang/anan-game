@@ -53,7 +53,7 @@ function Bi({ t, className = '' }) {
 }
 
 export default function SeriesScreen({ onBack }) {
-  const { activePet, pets, petEquipment, petMoods, seriesSolved, seriesShards, seriesBadges,
+  const { activePet, pets, petEquipment, petMoods, seriesSolved, seriesShards, seriesBadges, seriesGems,
           petEnergy, gainEnergy, spendEnergy,
           solveEpisode, updatePetMood, grantPet, grantItem } = useGameStore()
 
@@ -70,6 +70,7 @@ export default function SeriesScreen({ onBack }) {
   const [showTutor, setShowTutor] = useState(false)   // 家教求救面板
   const [sosMsg, setSosMsg]       = useState('')       // 能量不足提示
   const [showNotes, setShowNotes] = useState(false)   // 答對後的偵探筆記解說
+  const [choices, setChoices]     = useState({})       // 分支選擇：sceneIdx → 選項 id
 
   // 家教寵物：擁有清單中任一隻即可求救（依序優先，不限出戰寵物）
   const activeTutor  = TUTOR_PETS.find((id) => pets[id]?.unlocked) || null
@@ -77,8 +78,10 @@ export default function SeriesScreen({ onBack }) {
 
   const episodes = season?.episodes ?? []
   const order    = season?.order ?? []
-  const collected = season?.collType === 'badge' ? (seriesBadges ?? []) : (seriesShards ?? [])
-  const boardKey = (item) => (season?.collType === 'badge' ? item.id : item.color)
+  const collected = season?.collType === 'badge' ? (seriesBadges ?? [])
+                  : season?.collType === 'gem'   ? (seriesGems ?? [])
+                  : (seriesShards ?? [])
+  const boardKey = (item) => (season?.collType === 'shard' ? item.color : item.id)
 
   const ep = epId ? episodes.find((e) => e.id === epId) : null
 
@@ -90,7 +93,11 @@ export default function SeriesScreen({ onBack }) {
       equipped={equipped} size={size} mood={petMoods?.[activePet] ?? 80} />
   )
 
-  const scene = ep ? ep.scenes[sceneIdx] : null
+  // 分支選擇：choice 節點還沒選時 scene 為 null（先顯示選擇畫面），選好後換成該分支的小現場
+  const rawScene = ep ? ep.scenes[sceneIdx] : null
+  const scene = rawScene?.kind === 'choice'
+    ? (choices[sceneIdx] ? rawScene.options.find((o) => o.id === choices[sceneIdx])?.scene : null)
+    : rawScene
   const alreadySolved = ep ? !!seriesSolved?.[ep.id] : false
 
   const isLocked = (id) => {
@@ -101,7 +108,7 @@ export default function SeriesScreen({ onBack }) {
   const resetCase = () => {
     setSceneIdx(0); setSolvedClue(false); setValue('')
     setHint(false); setAccuseHint(false); setNewPet(null); setNewItem(null)
-    setShowTutor(false); setSosMsg(''); setShowNotes(false)
+    setShowTutor(false); setSosMsg(''); setShowNotes(false); setChoices({})
   }
 
   // 家教求救：扣能量、打開教學面板（給方法、不給答案）
@@ -146,8 +153,8 @@ export default function SeriesScreen({ onBack }) {
   const accuse = (id) => {
     if (id === ep.culprit) {
       sfx.unlock()
-      // 第三參數收 S1 碎片色、第四參數收 S2 星座徽章 id（一集只會有其一）
-      solveEpisode(ep.id, ep.reward, ep.shard?.color, ep.badge?.id)
+      // 第三參數收 S1 碎片色、第四參數收 S2 星座徽章 id、第五參數收 S3 軌道寶石 id（一集只會有其一）
+      solveEpisode(ep.id, ep.reward, ep.shard?.color, ep.badge?.id, ep.gem?.id)
       updatePetMood(activePet, 15)
       const gotPet = ep.petReward ? grantPet(ep.petReward) : false
       setNewPet(gotPet ? ep.petReward : null)
@@ -159,8 +166,8 @@ export default function SeriesScreen({ onBack }) {
     }
   }
 
-  // 破案收集物（S1 碎片 / S2 徽章）通用取用
-  const gotCollectible = ep?.shard || ep?.badge
+  // 破案收集物（S1 碎片 / S2 徽章 / S3 寶石）通用取用
+  const gotCollectible = ep?.shard || ep?.badge || ep?.gem
 
   const backBtn = () => {
     if (phase === 'seasons') { stopSpeaking(); sfx.click(); onBack() }
@@ -293,9 +300,35 @@ export default function SeriesScreen({ onBack }) {
           </motion.div>
         )}
 
+        {/* ── 分支選擇：你來決定走哪條路 ── */}
+        {phase === 'scene' && ep && !scene && rawScene?.kind === 'choice' && (
+          <motion.div key={`choice-${sceneIdx}`} className="dtv-panel dtv-scene-panel"
+            initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}>
+            <div className="dtv-scene-scroll">
+              <div className="dtv-progress">現場 Scene {sceneIdx + 1} / {ep.scenes.length}</div>
+              <div className="dtv-place">
+                <span className="dtv-place-emoji">{rawScene.emoji}</span>
+                <span className="dtv-place-name">{rawScene.place.zh} · {rawScene.place.en}</span>
+              </div>
+              <div className="dtv-partner-row">{partner(56)}<Bi t={rawScene.story} /></div>
+
+              <div className="srs-choice-card">
+                <div className="srs-choice-q"><Bi t={rawScene.question} /></div>
+                {rawScene.options.map((o) => (
+                  <motion.button key={o.id} className="srs-choice-btn" whileTap={{ scale: 0.94 }}
+                    onClick={() => { sfx.click(); setChoices({ ...choices, [sceneIdx]: o.id }) }}>
+                    <span className="srs-choice-label">{o.label.zh}</span>
+                    <span className="srs-en">{o.label.en}</span>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* ── 現場調查 ── */}
-        {phase === 'scene' && ep && (
-          <motion.div key={`scene-${sceneIdx}`} className="dtv-panel dtv-scene-panel"
+        {phase === 'scene' && ep && scene && (
+          <motion.div key={`scene-${sceneIdx}-${choices[sceneIdx] || 'main'}`} className="dtv-panel dtv-scene-panel"
             initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}>
             {/* 上方內容可捲動 */}
             <div className="dtv-scene-scroll">
