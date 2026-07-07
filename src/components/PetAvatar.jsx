@@ -128,6 +128,14 @@ const EVO = {
     { body:'#FFCE4A', belly:'#FFEEA8', ear:'#E6A828', nose:'#5E440E' },
     { body:'#FFD54A', belly:'#FFF6C0', ear:'#F0B020', nose:'#5A400C', glow:'#FFE87A' },
   ],
+  // 小月：月亮精靈（銀藍圓月，stage4 月光銀暈），belly=內層亮光、ear=描邊/月紋、nose=五官
+  luna: [
+    null,
+    { body:'#D8E2F5', belly:'#F2F6FF', ear:'#9FB4DC', nose:'#4A5578' },
+    { body:'#CBD9F2', belly:'#ECF2FF', ear:'#8DA6D6', nose:'#3F4A6E' },
+    { body:'#BFCFEF', belly:'#E6EEFF', ear:'#7B98D0', nose:'#354064' },
+    { body:'#CFDCFA', belly:'#F0F5FF', ear:'#8FA8E8', nose:'#303A60', glow:'#AFC4FF' },
+  ],
 }
 
 // ── Pet bases ─────────────────────────────────────────────────────────────────
@@ -827,6 +835,42 @@ function TwinkleBase({ c }) {
   )
 }
 
+// 小月：月亮精靈（銀藍圓月身體＋額頭彎月印記＋月球紋＋大眼睛，周圍小星光）
+function LunaBase({ c }) {
+  return (
+    <g>
+      {/* Soft moonlight halo */}
+      <circle cx="50" cy="64" r="38" fill={c.glow || c.belly} opacity="0.18" />
+      {/* Round moon body */}
+      <circle cx="50" cy="64" r="33" fill={c.body} stroke={c.ear} strokeWidth="1.6" />
+      {/* Inner shine */}
+      <ellipse cx="46" cy="58" rx="18" ry="14" fill={c.belly} opacity="0.55" />
+      {/* Moon craters (subtle) */}
+      <circle cx="70" cy="52" r="4" fill={c.ear} opacity="0.22" />
+      <circle cx="66" cy="82" r="5.5" fill={c.ear} opacity="0.18" />
+      <circle cx="30" cy="80" r="3.5" fill={c.ear} opacity="0.20" />
+      {/* Crescent mark on forehead */}
+      <path d="M50,38 A6.5,6.5 0 1,0 55,48 A5,5 0 1,1 50,38 Z" fill={c.glow || c.ear} opacity="0.9" />
+      {/* Eyes (big shiny) */}
+      <circle cx="42" cy="62" r="5.6" fill={c.nose} />
+      <circle cx="58" cy="62" r="5.6" fill={c.nose} />
+      <circle cx="43.9" cy="59.6" r="2" fill="white" />
+      <circle cx="59.9" cy="59.6" r="2" fill="white" />
+      <circle cx="40" cy="64" r="1.1" fill="rgba(255,255,255,0.55)" />
+      <circle cx="56" cy="64" r="1.1" fill="rgba(255,255,255,0.55)" />
+      {/* Smile */}
+      <path d="M45,70 Q50,74.5 55,70" fill="none" stroke={c.nose} strokeWidth="1.7" strokeLinecap="round" />
+      {/* Cheek blush */}
+      <ellipse cx="34.5" cy="68.5" rx="4" ry="2.7" fill="rgba(255,150,150,0.30)" />
+      <ellipse cx="65.5" cy="68.5" rx="4" ry="2.7" fill="rgba(255,150,150,0.30)" />
+      {/* Little stars around */}
+      <path d="M17,40 l1.3,2.9 l2.9,1.3 l-2.9,1.3 l-1.3,2.9 l-1.3,-2.9 l-2.9,-1.3 l2.9,-1.3 Z" fill={c.glow || c.ear} opacity="0.8" />
+      <path d="M84,36 l1.1,2.5 l2.5,1.1 l-2.5,1.1 l-1.1,2.5 l-1.1,-2.5 l-2.5,-1.1 l2.5,-1.1 Z" fill={c.glow || c.ear} opacity="0.7" />
+      <circle cx="79" cy="92" r="1.6" fill={c.glow || c.ear} opacity="0.6" />
+    </g>
+  )
+}
+
 // ── Extra clothes ─────────────────────────────────────────────────────────────
 
 function ClothesKimono() {
@@ -1357,6 +1401,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'monkey'  ? <MonkeyBase  c={colors} />
        : petId === 'raccoon' ? <RaccoonBase c={colors} />
        : petId === 'twinkle' ? <TwinkleBase c={colors} />
+       : petId === 'luna' ? <LunaBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 

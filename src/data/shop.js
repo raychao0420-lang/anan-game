@@ -96,6 +96,8 @@ export const SHOP_ITEMS = [
   // ── 連載劇《七色星願》信物（劇情獎勵，不可購買）──
   { id: 'star_pendant', name: '星形墜子', emoji: '🌟', category: 'rare', price: 0, desc: '雨夜裡斗篷客掉下的星形墜子，刻著滿滿小星星，冰冰的卻會在手心慢慢變暖…', boss: true },
   { id: 'star_wish_stone', name: '星願石', emoji: '💫', category: 'rare', price: 0, desc: '《七色星願》終章，七色碎片重新拼成的星願石。安安沒有用它許願，而是把它變成永遠的紀念——聽說對著它輕輕說願望，小星會在夜裡眨眨眼。', boss: true },
+  // ── 連載劇《星空亂了套》信物（劇情獎勵，不可購買）──
+  { id: 'moonlight_stone', name: '月光石', emoji: '🌕', category: 'rare', price: 0, desc: '《星空亂了套》終章，小月回家前留下的一小塊月光，凝成了溫潤的月光石。十二星座的圖案繞著它慢慢轉——夜裡放在枕邊，會做見得到月亮的夢。', boss: true },
 ]
 
 // 新寵物（波波/嚕嚕/圓圓/阿丁/小麥）的食物偏好。原本食物 exp 只列了 6 隻，
@@ -110,6 +112,7 @@ const NEW_PET_FOOD_EXP = {
   monkey:  { bone: 20, fish: 40,  meat: 40,  apple: 120, berry: 110, nectar: 80, sushi: 40,  cake: 90, shrimp: 30  }, // 猴子愛水果
   raccoon: { bone: 40, fish: 110, meat: 70,  apple: 60,  berry: 60,  nectar: 30, sushi: 100, cake: 70, shrimp: 90  }, // 浣熊雜食愛魚
   twinkle: { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 100, nectar: 120,sushi: 30,  cake: 110,shrimp: 20  }, // 星星精靈愛甜甜的花蜜與蛋糕
+  luna:    { bone: 20, fish: 30,  meat: 20,  apple: 50,  berry: 120, nectar: 100,sushi: 30,  cake: 110,shrimp: 20  }, // 月亮精靈愛莓果和蛋糕（像夜空裡的小星星）
 }
 SHOP_ITEMS.forEach((item) => {
   if (item.category !== 'food') return

@@ -271,9 +271,28 @@ export const PETS = {
     happyEmoji: '🤩',
     sadEmoji: '🥺',
   },
+  // 小月：連載劇《星空亂了套》終章陪回家的月亮精靈（事件限定，不可金幣購買）
+  luna: {
+    id: 'luna',
+    name: '小月',
+    breed: '月亮精靈',
+    personality: '愛哭又勇敢、怕孤單、夜裡會發出溫柔的月光',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '完成《星空亂了套》終章，陪小月回家就能永遠當好朋友！',
+    stages: [
+      null,
+      { emoji: '🌙', label: '迷路小月',   size: '5rem', bg: '#EFF4FF', border: '#9FB4DC' },
+      { emoji: '🌙', label: '安心小月',   size: '5rem', bg: '#E8EFFF', border: '#8DA6D6' },
+      { emoji: '🌙', label: '亮亮小月',   size: '5rem', bg: '#E0EAFF', border: '#7B98D0' },
+      { emoji: '🌙', label: '傳說月光精靈', size: '5rem', bg: '#EAF1FF', border: '#8FA8E8', glow: true },
+    ],
+    happyEmoji: '🤩',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna']
 
 // ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
 // 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
@@ -308,4 +327,5 @@ export const PET_SKILLS = {
   monkey:  { name: '雜耍金幣', icon: '🎪', effect: { type: 'coin',  mult: 2 },   desc: '這一題答對金幣 ×2' },
   raccoon: { name: '夜行加時', icon: '🌙', effect: { type: 'time',  value: 7 },  desc: '這一題 +7 秒' },
   twinkle: { name: '星願之光', icon: '🌠', effect: { type: 'coin',  add: 20 },   desc: '這一題答對 +20 金幣' },
+  luna:    { name: '月光搖籃', icon: '🌙', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒' },
 }

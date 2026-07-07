@@ -37,7 +37,7 @@ export const SEASONS = [
     collLabel: { zh: '星座徽章', en: 'Zodiac Badges' },
     clueLabel: { zh: '星空線索', en: 'Sky Clues' },
     clueIcon: '☄️',
-    subtitle: { zh: '第二季 · 連載中', en: 'Season 2 · Ongoing' },
-    done: false,
+    subtitle: { zh: '第二季 · 已完結', en: 'Season 2 · Complete' },
+    done: true,
   }),
 ]
