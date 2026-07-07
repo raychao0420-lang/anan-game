@@ -21,10 +21,20 @@
   align-items: center;
 }
 
+.home-title > span:first-child {
+  background: linear-gradient(135deg, #FF6B6B 20%, #FF9F43 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .home-title-sub {
   display: block;
   font-size: 1.5rem;
-  color: #4ECDC4;
+  background: linear-gradient(135deg, #4ECDC4 20%, #6C63FF 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .home-mute {
@@ -143,17 +153,130 @@
   gap: 8px;
 }
 
-/* 區塊標題：細小、不搶眼，分隔不同功能群 */
-.home-section-title {
-  font-size: 0.78rem;
+/* ── 主打劇場：星空 hero 卡片 ── */
+.home-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: linear-gradient(150deg, #1a1a3e 0%, #2d1b69 55%, #4a2a8a 100%);
+  border-radius: 22px;
+  padding: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(45, 27, 105, 0.45);
+}
+
+/* 閃爍星星 */
+.home-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 18% 25%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 72% 15%, #ffd76b, transparent),
+    radial-gradient(2px 2px at 88% 55%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 38% 70%, #9ad0ff, transparent),
+    radial-gradient(1px 1px at 55% 40%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 8% 82%, #ffd76b, transparent),
+    radial-gradient(1px 1px at 62% 88%, #9ad0ff, transparent);
+  animation: hero-twinkle 2.8s ease-in-out infinite alternate;
+}
+
+/* 流光掃過 */
+.home-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.16), transparent);
+  animation: hero-sweep 3.6s linear infinite;
+}
+
+@keyframes hero-twinkle {
+  from { opacity: 0.35; }
+  to   { opacity: 1; }
+}
+
+@keyframes hero-sweep {
+  from { left: -25%; }
+  to   { left: 125%; }
+}
+
+.home-hero-label {
+  position: relative;
+  text-align: center;
+  color: #ffd76b;
+  font-size: 0.8rem;
   font-weight: 800;
-  color: #999;
+  letter-spacing: 3px;
+  text-shadow: 0 0 8px rgba(255, 215, 107, 0.6);
+}
+
+.btn-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  border: none;
+  border-radius: 16px;
+  padding: 13px 16px;
+  color: white;
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-family: inherit;
+}
+
+.btn-hero-series {
+  background: linear-gradient(135deg, #7c4dff 0%, #d500f9 100%);
+  border: 2px solid #ffd76b;
+  animation: hero-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes hero-glow {
+  0%, 100% { box-shadow: 0 0 10px rgba(213, 0, 249, 0.4); }
+  50%      { box-shadow: 0 0 22px rgba(255, 215, 107, 0.65); }
+}
+
+.btn-hero-detective {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+}
+
+.home-hero-sub {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 1px;
+}
+
+/* ── 區塊卡片：玻璃感白卡 ── */
+.home-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 12px;
+  box-shadow: 0 4px 14px rgba(120, 110, 180, 0.13);
+  backdrop-filter: blur(6px);
+}
+
+/* 區塊標題：pill 樣式 */
+.home-section-title {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #7a6ea8;
   letter-spacing: 1.5px;
-  padding: 4px 4px 0;
-  margin-top: 4px;
-  text-align: left;
-  border-bottom: 1.5px dashed #E0E0E0;
-  padding-bottom: 4px;
+  background: rgba(122, 110, 168, 0.12);
+  border-radius: 999px;
+  padding: 4px 12px;
 }
 
 /* 三欄按鈕：圖示在上、文字在下 */
@@ -328,22 +451,6 @@
   font-family: inherit;
 }
 
-.btn-detective {
-  background: linear-gradient(135deg, #7c9cff 0%, #5a3fa0 100%);
-  color: white;
-  border: 2px solid #ffd76b;
-  border-radius: 16px;
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 12px 16px;
-  cursor: pointer;
-  width: 100%;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  box-shadow: 0 3px 12px rgba(90, 63, 160, 0.4);
-  font-family: inherit;
-}
-
 .btn-multiply {
   background: linear-gradient(135deg, #3949AB 0%, #1A237E 100%);
   color: white;
@@ -361,6 +468,7 @@
 }
 
 .btn-gacha {
+  position: relative;
   background: linear-gradient(135deg, #AB47BC 0%, #6A1B9A 100%);
   color: white;
   border: none;
@@ -415,6 +523,10 @@
   .home-pet-name { font-size: 1.2rem; }
   .home-equipped-badge { width: 52px; height: 52px; font-size: 2rem; }
   .home-buttons { max-width: 480px; gap: 16px; }
+  .home-hero { padding: 18px; gap: 12px; }
+  .btn-hero { font-size: 1.2rem; padding: 16px 20px; }
+  .home-hero-sub { font-size: 0.82rem; }
+  .home-card { padding: 16px; gap: 12px; }
 }
 
 @media (min-width: 900px) {

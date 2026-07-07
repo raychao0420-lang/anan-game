@@ -87,6 +87,28 @@ export default function HomeScreen({ onNavigate }) {
       )}
 
       <div className="home-buttons">
+        {/* ── 推理系列：主打劇場 ── */}
+        <div className="home-hero">
+          <div className="home-hero-label">✨ 推理劇場 ✨</div>
+          <motion.button
+            className="btn-hero btn-hero-series"
+            whileTap={{ scale: 0.96 }}
+            onClick={() => nav('series')}
+          >
+            📺 連載劇場：星星偵探
+            <span className="home-hero-sub">七色星願之謎 · 全 12 集</span>
+            <span className="home-badge home-badge-new">NEW</span>
+          </motion.button>
+          <motion.button
+            className="btn-hero btn-hero-detective"
+            whileTap={{ scale: 0.96 }}
+            onClick={() => nav('detective')}
+          >
+            🔍 推理事件簿
+            <span className="home-hero-sub">18 個案件等你破解</span>
+          </motion.button>
+        </div>
+
         <motion.button
           className="btn-primary btn-lg"
           whileTap={{ scale: 0.94 }}
@@ -96,6 +118,7 @@ export default function HomeScreen({ onNavigate }) {
         </motion.button>
 
         {/* ── 數學特訓 ── */}
+        <div className="home-card">
         <div className="home-section-title">🧠 數學特訓</div>
 
         <div className="home-row">
@@ -157,28 +180,10 @@ export default function HomeScreen({ onNavigate }) {
         >
           📚 期末考大魔王
         </motion.button>
-
-        {/* ── 推理事件簿 ── */}
-        <div className="home-section-title">🕵️ 推理事件簿</div>
-
-        <motion.button
-          className="btn-detective home-btn-new"
-          whileTap={{ scale: 0.94 }}
-          onClick={() => nav('detective')}
-        >
-          🔍 推理事件簿
-        </motion.button>
-
-        <motion.button
-          className="btn-detective home-btn-new"
-          whileTap={{ scale: 0.94 }}
-          onClick={() => nav('series')}
-        >
-          📺 連載劇場：星星偵探
-          <span className="home-badge home-badge-new">NEW</span>
-        </motion.button>
+        </div>
 
         {/* ── 我的小天地 ── */}
+        <div className="home-card">
         <div className="home-section-title">🏡 我的小天地</div>
 
         <div className="home-row">
@@ -211,8 +216,10 @@ export default function HomeScreen({ onNavigate }) {
             🛍️<br/>商店
           </motion.button>
         </div>
+        </div>
 
         {/* ── 玩耍時間 ── */}
+        <div className="home-card">
         <div className="home-section-title">🎉 玩耍時間</div>
 
         <motion.button
@@ -263,6 +270,7 @@ export default function HomeScreen({ onNavigate }) {
               <span className="home-badge achieve">{achieveCount}</span>
             )}
           </motion.button>
+        </div>
         </div>
 
         <motion.button
