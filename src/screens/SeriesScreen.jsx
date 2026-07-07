@@ -69,6 +69,7 @@ export default function SeriesScreen({ onBack }) {
   const [newItem, setNewItem]   = useState(null)
   const [showTutor, setShowTutor] = useState(false)   // 家教求救面板
   const [sosMsg, setSosMsg]       = useState('')       // 能量不足提示
+  const [showNotes, setShowNotes] = useState(false)   // 答對後的偵探筆記解說
 
   // 家教寵物：擁有清單中任一隻即可求救（依序優先，不限出戰寵物）
   const activeTutor  = TUTOR_PETS.find((id) => pets[id]?.unlocked) || null
@@ -100,7 +101,7 @@ export default function SeriesScreen({ onBack }) {
   const resetCase = () => {
     setSceneIdx(0); setSolvedClue(false); setValue('')
     setHint(false); setAccuseHint(false); setNewPet(null); setNewItem(null)
-    setShowTutor(false); setSosMsg('')
+    setShowTutor(false); setSosMsg(''); setShowNotes(false)
   }
 
   // 家教求救：扣能量、打開教學面板（給方法、不給答案）
@@ -137,7 +138,7 @@ export default function SeriesScreen({ onBack }) {
 
   const nextScene = () => {
     stopSpeaking(); sfx.click(); setValue(''); setHint(false); setSolvedClue(false)
-    setShowTutor(false); setSosMsg('')
+    setShowTutor(false); setSosMsg(''); setShowNotes(false)
     if (sceneIdx < ep.scenes.length - 1) setSceneIdx(sceneIdx + 1)
     else setPhase('accuse')
   }
@@ -359,6 +360,28 @@ export default function SeriesScreen({ onBack }) {
               ) : (
                 <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
                   <div className="dtv-reward"><Bi t={scene.puzzle.reward} /></div>
+
+                  {/* 偵探筆記：答對後可展開完整解說（柯南式破解過程），答對也學得到方法 */}
+                  {scene.puzzle.teach && (showNotes ? (
+                    <div className="srs-notes">
+                      <div className="srs-notes-title">🕵️ 偵探筆記 · 這題是怎麼破解的 Detective Notes</div>
+                      {scene.puzzle.teach.map((step, i) => (
+                        <div key={i} className="srs-tutor-step">
+                          <span className="srs-tutor-step-no">{i + 1}</span>
+                          <Bi t={step} />
+                        </div>
+                      ))}
+                      <div className="srs-notes-ans">
+                        ✨ 所以答案就是 {scene.puzzle.answer} {scene.puzzle.unit.zh}！
+                        <span className="srs-en"> So the answer is {scene.puzzle.answer} {scene.puzzle.unit.en}!</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <button className="srs-notes-btn" onClick={() => { sfx.click(); setShowNotes(true) }}>
+                      🕵️ 翻開偵探筆記，學會這一招！ <span className="srs-en">See how it was solved</span>
+                    </button>
+                  ))}
+
                   <button className="dtv-btn" onClick={nextScene}>
                     {sceneIdx < ep.scenes.length - 1 ? '下一個現場 Next →' : '整理線索，指認真相 🕵️'}
                   </button>

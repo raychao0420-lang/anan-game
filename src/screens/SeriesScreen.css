@@ -224,6 +224,44 @@
 }
 .srs-tutor-steps .srs-zh { font-size: 1.02rem; font-weight: 800; color: #2b5568; }
 
+/* 偵探筆記：答對後的破解過程解說（重用 srs-tutor-step 步驟樣式） */
+.srs-notes {
+  width: 100%;
+  margin: 10px 0 12px;
+  border: 3px solid #c9a86a;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #fffdf5, #fff4dd);
+  padding: 12px 14px;
+  box-shadow: 0 4px 16px rgba(180,140,60,0.18);
+  text-align: left;
+}
+.srs-notes-title {
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #8a6320;
+  margin-bottom: 4px;
+}
+.srs-notes-ans {
+  margin-top: 8px;
+  border-top: 1.5px dashed #e5d3a8;
+  padding-top: 8px;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #b5731f;
+}
+.srs-notes-btn {
+  width: 100%;
+  margin: 10px 0 12px;
+  border: 2.5px dashed #c9a86a;
+  border-radius: 16px;
+  background: #fffaf0;
+  color: #8a6320;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 10px 14px;
+  font-family: inherit;
+}
+
 /* 分步驟教學：每一步一個編號圓圈 */
 .srs-tutor-step {
   display: flex;

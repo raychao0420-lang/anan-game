@@ -2,10 +2,18 @@
 // 新增一季只要在此加一筆（帶入該季的碎片/徽章板與收集型別）。
 import { SEASON1, SHARD_BOARD } from './series'
 import { SEASON2, BADGE_BOARD } from './series2'
+import { SERIES_TEACH } from './seriesTeach'
 
 function normalize(season, extra) {
   return {
     ...season,
+    // 合併集中教學檔（scene 自帶 teach 者優先，如 S2 EP2+ 寫在 series2.js 內）
+    episodes: season.episodes.map((ep) => ({
+      ...ep,
+      scenes: ep.scenes.map((sc, i) => sc.puzzle.teach || !SERIES_TEACH[ep.id]?.[i]
+        ? sc
+        : { ...sc, puzzle: { ...sc.puzzle, teach: SERIES_TEACH[ep.id][i] } }),
+    })),
     order: season.episodes.map((e) => e.id), // 循序解鎖用
     ...extra,
   }
