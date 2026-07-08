@@ -323,6 +323,20 @@
 .srs-tutor-step .srs-bi { flex: 1 1 auto; }
 .srs-tutor-step .srs-zh { font-size: 0.98rem; line-height: 1.5; }
 
+/* ── 推理指認：偵探筆記證據板＋嫌疑人說詞（S3 EP2 起） ── */
+.srs-case-notes { margin: 12px 0; }
+.dtv-suspect.srs-has-say { flex-wrap: wrap; text-align: left; }
+.srs-say {
+  flex-basis: 100%;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #f5f5fc;
+  border: 1.5px dashed #d8d8ea;
+  font-weight: 500;
+}
+.srs-say .srs-zh { font-size: 0.95rem; line-height: 1.5; }
+
 /* ── 破案：碎片入手 ── */
 .srs-got-shard {
   display: flex;

@@ -437,14 +437,35 @@ export default function SeriesScreen({ onBack }) {
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
             <h2 className="dtv-subtitle">📓 指認真相 Who did it?</h2>
             <Bi t={ep.accuse} className="dtv-accuse-prompt" />
+
+            {/* 偵探筆記證據板：查案時抄下的關鍵數字（scene 帶 clueNote 者），指認前先比對證據 */}
+            {(() => {
+              const notes = ep.scenes
+                .map((s, i) => (s.kind === 'choice' ? s.options.find((o) => o.id === choices[i])?.scene : s))
+                .map((s) => s?.clueNote).filter(Boolean)
+              return notes.length > 0 && (
+                <div className="srs-notes srs-case-notes">
+                  <div className="srs-notes-title">🗒️ 偵探筆記 · 查到的證據 Case Notes</div>
+                  {notes.map((n, i) => (
+                    <div key={i} className="srs-tutor-step">
+                      <span className="srs-tutor-step-no">{i + 1}</span>
+                      <Bi t={n} />
+                    </div>
+                  ))}
+                </div>
+              )
+            })()}
+
             {accuseHint && <div className="dtv-hint">{ep.wrongAccuse.zh}<br /><span className="srs-en">{ep.wrongAccuse.en}</span></div>}
             <div className="dtv-suspects">
               {ep.suspects.map((s) => (
-                <motion.button key={s.id} className="dtv-suspect" whileTap={{ scale: 0.92 }}
+                <motion.button key={s.id} className={`dtv-suspect ${s.say ? 'srs-has-say' : ''}`} whileTap={{ scale: 0.92 }}
                   onClick={() => accuse(s.id)}>
                   <span className="dtv-suspect-emoji">{s.emoji}</span>
                   <span>{s.name.zh}</span>
                   <span className="srs-en">{s.name.en}</span>
+                  {/* 嫌疑人說詞：話裡藏數字，跟偵探筆記對不上的就是說謊的人 */}
+                  {s.say && <div className="srs-say">🗨️ <Bi t={s.say} /></div>}
                 </motion.button>
               ))}
             </div>
