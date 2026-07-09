@@ -19,6 +19,8 @@ export const SHOP_ITEMS = [
   { id: 'sushi',  name: '壽司拼盤', emoji: '🍣', category: 'food', price: 120, desc: '高級美食！吉吉超愛魚料理',   exp: { lulu: 60,  hana: 90,  kotaro: 90,  jiji: 150, kitsune: 70,  mejiro: 50  } },
   { id: 'cake',   name: '生日蛋糕', emoji: '🎂', category: 'food', price: 100, desc: '甜甜的慶生蛋糕，大家都開心', exp: { lulu: 70,  hana: 70,  kotaro: 70,  jiji: 70,  kitsune: 70,  mejiro: 70  } },
   { id: 'shrimp', name: '大明蝦',   emoji: '🦐', category: 'food', price: 90,  desc: '水獺跟水獺最喜歡了！',       exp: { lulu: 20,  hana: 130, kotaro: 130, jiji: 40,  kitsune: 30,  mejiro: 20  } },
+  { id: 'stardust_candy', name: '星星糖', emoji: '🍬', category: 'food', price: 110, desc: '會在嘴裡閃一下的甜甜糖果，小星的最愛！', exp: { lulu: 30, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 70 } },
+  { id: 'moon_mochi',     name: '月光麻糬', emoji: '🍡', category: 'food', price: 110, desc: '像月亮一樣圓潤軟Q的麻糬，小月的最愛！', exp: { lulu: 30, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 65 } },
   // ── 帽子 ──
   { id: 'bow',        name: '蝴蝶結',   emoji: '🎀', category: 'hat',  price: 100, desc: '可愛滿分' },
   { id: 'cap',        name: '棒球帽',   emoji: '🧢', category: 'hat',  price: 120, desc: '運動風' },
@@ -77,6 +79,8 @@ export const SHOP_ITEMS = [
   { id: 'art_studio',   name: '畫板架',     emoji: '🎨', category: 'home', price: 190, desc: '小藝術家的創作角' },
   { id: 'library',      name: '小書架',     emoji: '📚', category: 'home', price: 260, desc: '充滿智慧的角落' },
   { id: 'trampoline',   name: '彈跳床',     emoji: '🎪', category: 'home', price: 380, desc: 'LULU 跳跳停不下來！' },
+  { id: 'star_swing',   name: '星願鞦韆',   emoji: '🌠', category: 'home', price: 240, desc: '掛在星空下的鞦韆，小星最愛盪上去，盪得越高離星星越近～' },
+  { id: 'moon_hammock', name: '月光吊床',   emoji: '🌛', category: 'home', price: 240, desc: '月牙形的柔軟吊床，小月窩進去輕輕搖，像被月光抱著入睡。' },
   // ── 稀有（Boss 獎勵，不可購買） ──
   { id: 'golden_finger',  name: '金手指',  emoji: '🤞', category: 'rare', price: 0, desc: '湊10特訓三連勝！神速心算達人的象徵', boss: true },
   { id: 'double_v',       name: '雙指勝利', emoji: '✌️', category: 'rare', price: 0, desc: '湊20特訓三連勝！進位心算高手的象徵',  boss: true },
@@ -103,16 +107,16 @@ export const SHOP_ITEMS = [
 // 新寵物（波波/嚕嚕/圓圓/阿丁/小麥）的食物偏好。原本食物 exp 只列了 6 隻，
 // 在此補上，避免餵食得到 undefined（會讓進化經驗變 NaN）。
 const NEW_PET_FOOD_EXP = {
-  penguin: { bone: 20, fish: 120, meat: 60,  apple: 30,  berry: 40,  nectar: 10, sushi: 100, cake: 70, shrimp: 110 }, // 企鵝愛魚
-  owl:     { bone: 60, fish: 90,  meat: 100, apple: 30,  berry: 50,  nectar: 15, sushi: 80,  cake: 60, shrimp: 70  }, // 貓頭鷹愛肉
-  seal:    { bone: 25, fish: 130, meat: 50,  apple: 30,  berry: 30,  nectar: 10, sushi: 90,  cake: 60, shrimp: 120 }, // 海豹愛魚蝦
-  beaver:  { bone: 40, fish: 20,  meat: 20,  apple: 110, berry: 90,  nectar: 70, sushi: 30,  cake: 70, shrimp: 20  }, // 河狸吃素
-  hamster: { bone: 30, fish: 30,  meat: 40,  apple: 100, berry: 100, nectar: 50, sushi: 30,  cake: 90, shrimp: 30  }, // 倉鼠愛果子
-  dino:    { bone: 20, fish: 30,  meat: 20,  apple: 110, berry: 100, nectar: 90, sushi: 30,  cake: 80, shrimp: 20  }, // 小恐龍吃素愛嫩葉果子
-  monkey:  { bone: 20, fish: 40,  meat: 40,  apple: 120, berry: 110, nectar: 80, sushi: 40,  cake: 90, shrimp: 30  }, // 猴子愛水果
-  raccoon: { bone: 40, fish: 110, meat: 70,  apple: 60,  berry: 60,  nectar: 30, sushi: 100, cake: 70, shrimp: 90  }, // 浣熊雜食愛魚
-  twinkle: { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 100, nectar: 120,sushi: 30,  cake: 110,shrimp: 20  }, // 星星精靈愛甜甜的花蜜與蛋糕
-  luna:    { bone: 20, fish: 30,  meat: 20,  apple: 50,  berry: 120, nectar: 100,sushi: 30,  cake: 110,shrimp: 20  }, // 月亮精靈愛莓果和蛋糕（像夜空裡的小星星）
+  penguin: { bone: 20, fish: 120, meat: 60,  apple: 30,  berry: 40,  nectar: 10, sushi: 100, cake: 70, shrimp: 110, stardust_candy: 40, moon_mochi: 40 }, // 企鵝愛魚
+  owl:     { bone: 60, fish: 90,  meat: 100, apple: 30,  berry: 50,  nectar: 15, sushi: 80,  cake: 60, shrimp: 70,  stardust_candy: 35, moon_mochi: 35 }, // 貓頭鷹愛肉
+  seal:    { bone: 25, fish: 130, meat: 50,  apple: 30,  berry: 30,  nectar: 10, sushi: 90,  cake: 60, shrimp: 120, stardust_candy: 40, moon_mochi: 40 }, // 海豹愛魚蝦
+  beaver:  { bone: 40, fish: 20,  meat: 20,  apple: 110, berry: 90,  nectar: 70, sushi: 30,  cake: 70, shrimp: 20,  stardust_candy: 60, moon_mochi: 55 }, // 河狸吃素
+  hamster: { bone: 30, fish: 30,  meat: 40,  apple: 100, berry: 100, nectar: 50, sushi: 30,  cake: 90, shrimp: 30,  stardust_candy: 90, moon_mochi: 85 }, // 倉鼠愛果子甜食
+  dino:    { bone: 20, fish: 30,  meat: 20,  apple: 110, berry: 100, nectar: 90, sushi: 30,  cake: 80, shrimp: 20,  stardust_candy: 70, moon_mochi: 65 }, // 小恐龍吃素愛嫩葉果子
+  monkey:  { bone: 20, fish: 40,  meat: 40,  apple: 120, berry: 110, nectar: 80, sushi: 40,  cake: 90, shrimp: 30,  stardust_candy: 80, moon_mochi: 75 }, // 猴子愛水果甜食
+  raccoon: { bone: 40, fish: 110, meat: 70,  apple: 60,  berry: 60,  nectar: 30, sushi: 100, cake: 70, shrimp: 90,  stardust_candy: 55, moon_mochi: 55 }, // 浣熊雜食愛魚
+  twinkle: { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 100, nectar: 120,sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 150,moon_mochi: 100 }, // 星星精靈：星星糖是專屬最愛，也愛花蜜蛋糕
+  luna:    { bone: 20, fish: 30,  meat: 20,  apple: 50,  berry: 120, nectar: 100,sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 100,moon_mochi: 150 }, // 月亮精靈：月光麻糬是專屬最愛，也愛莓果蛋糕
 }
 SHOP_ITEMS.forEach((item) => {
   if (item.category !== 'food') return
