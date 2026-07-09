@@ -31,14 +31,15 @@
 
 /* Tabs */
 .pet-tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   padding: 0 16px;
   margin-bottom: 16px;
 }
 
 .pet-tab {
-  flex: 1;
+  min-width: 0;
   background: white;
   border: 2px solid #E0E0E0;
   border-radius: 14px;
@@ -433,7 +434,7 @@
     overflow: hidden;
   }
   .pet-header  { grid-area: header; }
-  .pet-tabs    { grid-area: tabs; padding: 0 32px; margin-bottom: 0; }
+  .pet-tabs    { grid-area: tabs; padding: 0 32px; margin-bottom: 0; min-height: 0; max-height: 40vh; overflow-y: auto; }
   /* 內容填滿 main 格並可內捲，避免寵物/技能卡/經驗條被裁掉（同 Shop/Daily 做法） */
   .pet-main    { grid-area: main; padding: 16px 32px; align-self: stretch; min-height: 0; overflow-y: auto; }
   .pet-actions { grid-area: actions; padding: 40px 32px; justify-content: center; align-self: center; min-height: 0; overflow-y: auto; }
