@@ -290,9 +290,28 @@ export const PETS = {
     happyEmoji: '🤩',
     sadEmoji: '🥺',
   },
+  // 小冥：連載劇《太陽系大冒險》終章接回家的冥王星矮行星精靈（事件限定，不可金幣購買）
+  pluto: {
+    id: 'pluto',
+    name: '小冥',
+    breed: '矮行星精靈',
+    personality: '怕被忘記、想家、胸口有一片心形冰原，被接住後會發出暖暖的光',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '完成《太陽系大冒險》終章，把小冥接回家就能永遠當一家人！',
+    stages: [
+      null,
+      { emoji: '🌑', label: '迷路小冥',   size: '5rem', bg: '#EEF0F6', border: '#9AA6BE' },
+      { emoji: '🌑', label: '微光小冥',   size: '5rem', bg: '#EDEFF7', border: '#8E9AC0' },
+      { emoji: '🌑', label: '暖暖小冥',   size: '5rem', bg: '#F0ECF7', border: '#A98FD0' },
+      { emoji: '🌑', label: '傳說冥王星精靈', size: '5rem', bg: '#F2ECFA', border: '#B49AE0', glow: true },
+    ],
+    happyEmoji: '🥰',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto']
 
 // ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
 // 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
@@ -328,4 +347,5 @@ export const PET_SKILLS = {
   raccoon: { name: '夜行加時', icon: '🌙', effect: { type: 'time',  value: 7 },  desc: '這一題 +7 秒' },
   twinkle: { name: '星願之光', icon: '🌠', effect: { type: 'coin',  add: 20 },   desc: '這一題答對 +20 金幣' },
   luna:    { name: '月光搖籃', icon: '🌙', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒' },
+  pluto:   { name: '團圓之心', icon: '💗', effect: { type: 'coin',  add: 25 },   desc: '這一題答對 +25 金幣（全家福的祝福！）' },
 }

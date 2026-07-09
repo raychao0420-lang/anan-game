@@ -136,6 +136,14 @@ const EVO = {
     { body:'#BFCFEF', belly:'#E6EEFF', ear:'#7B98D0', nose:'#354064' },
     { body:'#CFDCFA', belly:'#F0F5FF', ear:'#8FA8E8', nose:'#303A60', glow:'#AFC4FF' },
   ],
+  // 小冥：冥王星矮行星精靈（冰藍圓球＋胸口心形冰原），heart=心形冰原色，隨進化由冷轉暖、stage4 團圓紫光
+  pluto: [
+    null,
+    { body:'#C7D0E2', belly:'#EEF2FA', ear:'#9AA6BE', nose:'#4A5468', heart:'#AEB8CE' },
+    { body:'#C9CEE6', belly:'#EEF0FA', ear:'#9691C4', nose:'#45496A', heart:'#CDB6D6' },
+    { body:'#CDC6E8', belly:'#F0ECF8', ear:'#A98FD0', nose:'#443A66', heart:'#F0B0C6' },
+    { body:'#D2C6F0', belly:'#F3ECFC', ear:'#B49AE0', nose:'#40386A', heart:'#FFB6C1', glow:'#C9A8F0' },
+  ],
 }
 
 // ── Pet bases ─────────────────────────────────────────────────────────────────
@@ -871,6 +879,44 @@ function LunaBase({ c }) {
   )
 }
 
+// 小冥：冥王星矮行星精靈（冰藍圓球身體＋胸口心形冰原＋大眼睛，周圍小雪光）
+function PlutoBase({ c }) {
+  const heart = c.heart || c.belly
+  return (
+    <g>
+      {/* Soft icy halo */}
+      <circle cx="50" cy="66" r="38" fill={c.glow || c.belly} opacity="0.16" />
+      {/* Round dwarf-planet body */}
+      <circle cx="50" cy="66" r="32" fill={c.body} stroke={c.ear} strokeWidth="1.6" />
+      {/* Inner shine */}
+      <ellipse cx="45" cy="58" rx="17" ry="13" fill={c.belly} opacity="0.5" />
+      {/* Subtle icy craters */}
+      <circle cx="72" cy="60" r="3.5" fill={c.ear} opacity="0.20" />
+      <circle cx="30" cy="76" r="3" fill={c.ear} opacity="0.18" />
+      {/* ── Heart-shaped ice plain (Tombaugh Regio) — 招牌！ ── */}
+      <path d="M50,90 C45,84 38,80 38,74 C38,70 42,68 45,69 C47.5,70 49,72 50,73.5 C51,72 52.5,70 55,69 C58,68 62,70 62,74 C62,80 55,84 50,90 Z"
+        fill={heart} stroke={c.glow || heart} strokeWidth="0.8" opacity="0.92" />
+      <path d="M46,73 C45,71 43,71 43,73" fill="none" stroke="white" strokeWidth="1" opacity="0.35" strokeLinecap="round" />
+      {/* Eyes (big shiny, shy) */}
+      <circle cx="42" cy="54" r="5.6" fill={c.nose} />
+      <circle cx="58" cy="54" r="5.6" fill={c.nose} />
+      <circle cx="43.9" cy="51.6" r="2" fill="white" />
+      <circle cx="59.9" cy="51.6" r="2" fill="white" />
+      <circle cx="40" cy="56" r="1.1" fill="rgba(255,255,255,0.55)" />
+      <circle cx="56" cy="56" r="1.1" fill="rgba(255,255,255,0.55)" />
+      {/* Small shy smile */}
+      <path d="M46,61 Q50,64.5 54,61" fill="none" stroke={c.nose} strokeWidth="1.6" strokeLinecap="round" />
+      {/* Cheek blush */}
+      <ellipse cx="35" cy="59" rx="4" ry="2.7" fill="rgba(255,150,150,0.28)" />
+      <ellipse cx="65" cy="59" rx="4" ry="2.7" fill="rgba(255,150,150,0.28)" />
+      {/* Little snow-sparkles around */}
+      <path d="M18,44 l1.2,2.7 l2.7,1.2 l-2.7,1.2 l-1.2,2.7 l-1.2,-2.7 l-2.7,-1.2 l2.7,-1.2 Z" fill={c.glow || c.ear} opacity="0.75" />
+      <path d="M84,40 l1,2.3 l2.3,1 l-2.3,1 l-1,2.3 l-1,-2.3 l-2.3,-1 l2.3,-1 Z" fill={c.glow || c.ear} opacity="0.65" />
+      <circle cx="80" cy="90" r="1.5" fill={c.glow || c.ear} opacity="0.55" />
+    </g>
+  )
+}
+
 // ── Extra clothes ─────────────────────────────────────────────────────────────
 
 function ClothesKimono() {
@@ -1402,6 +1448,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'raccoon' ? <RaccoonBase c={colors} />
        : petId === 'twinkle' ? <TwinkleBase c={colors} />
        : petId === 'luna' ? <LunaBase c={colors} />
+       : petId === 'pluto' ? <PlutoBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 

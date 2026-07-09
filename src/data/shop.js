@@ -21,6 +21,7 @@ export const SHOP_ITEMS = [
   { id: 'shrimp', name: '大明蝦',   emoji: '🦐', category: 'food', price: 90,  desc: '水獺跟水獺最喜歡了！',       exp: { lulu: 20,  hana: 130, kotaro: 130, jiji: 40,  kitsune: 30,  mejiro: 20  } },
   { id: 'stardust_candy', name: '星星糖', emoji: '🍬', category: 'food', price: 110, desc: '會在嘴裡閃一下的甜甜糖果，小星的最愛！', exp: { lulu: 30, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 70 } },
   { id: 'moon_mochi',     name: '月光麻糬', emoji: '🍡', category: 'food', price: 110, desc: '像月亮一樣圓潤軟Q的麻糬，小月的最愛！', exp: { lulu: 30, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 65 } },
+  { id: 'reunion_candy',  name: '團圓糖', emoji: '🍭', category: 'food', price: 120, desc: '圓圓一顆、暖暖甜甜的團圓糖，小冥的最愛！大家一起吃更甜～', exp: { lulu: 35, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 65 } },
   // ── 帽子 ──
   { id: 'bow',        name: '蝴蝶結',   emoji: '🎀', category: 'hat',  price: 100, desc: '可愛滿分' },
   { id: 'cap',        name: '棒球帽',   emoji: '🧢', category: 'hat',  price: 120, desc: '運動風' },
@@ -81,6 +82,7 @@ export const SHOP_ITEMS = [
   { id: 'trampoline',   name: '彈跳床',     emoji: '🎪', category: 'home', price: 380, desc: 'LULU 跳跳停不下來！' },
   { id: 'star_swing',   name: '星願鞦韆',   emoji: '🌠', category: 'home', price: 240, desc: '掛在星空下的鞦韆，小星最愛盪上去，盪得越高離星星越近～' },
   { id: 'moon_hammock', name: '月光吊床',   emoji: '🌛', category: 'home', price: 240, desc: '月牙形的柔軟吊床，小月窩進去輕輕搖，像被月光抱著入睡。' },
+  { id: 'reunion_lamp', name: '團圓星燈',   emoji: '💗', category: 'home', price: 260, desc: '心形的暖暖星燈，小冥最愛窩在旁邊；燈一亮，大家就會湊過來擠成一團，誰都不孤單。' },
   // ── 稀有（Boss 獎勵，不可購買） ──
   { id: 'golden_finger',  name: '金手指',  emoji: '🤞', category: 'rare', price: 0, desc: '湊10特訓三連勝！神速心算達人的象徵', boss: true },
   { id: 'double_v',       name: '雙指勝利', emoji: '✌️', category: 'rare', price: 0, desc: '湊20特訓三連勝！進位心算高手的象徵',  boss: true },
@@ -102,21 +104,24 @@ export const SHOP_ITEMS = [
   { id: 'star_wish_stone', name: '星願石', emoji: '💫', category: 'rare', price: 0, desc: '《七色星願》終章，七色碎片重新拼成的星願石。安安沒有用它許願，而是把它變成永遠的紀念——聽說對著它輕輕說願望，小星會在夜裡眨眨眼。', boss: true },
   // ── 連載劇《星空亂了套》信物（劇情獎勵，不可購買）──
   { id: 'moonlight_stone', name: '月光石', emoji: '🌕', category: 'rare', price: 0, desc: '《星空亂了套》終章，小月回家前留下的一小塊月光，凝成了溫潤的月光石。十二星座的圖案繞著它慢慢轉——夜裡放在枕邊，會做見得到月亮的夢。', boss: true },
+  // ── 連載劇《太陽系大冒險》信物（劇情獎勵，不可購買）──
+  { id: 'family_star_map', name: '全家福星圖', emoji: '🗺️', category: 'rare', price: 0, desc: '《太陽系大冒險》終章，小冥親手拼好的全家福星圖。上面每一顆星星，都是一路陪牠回家的人——太陽、八大行星、彗星，還有安安、小星、小月。星圖正中央，是一片小小的、暖暖發亮的心形冰原。它輕輕告訴你：是不是行星不重要，你一直都是這一家的。', boss: true },
 ]
 
 // 新寵物（波波/嚕嚕/圓圓/阿丁/小麥）的食物偏好。原本食物 exp 只列了 6 隻，
 // 在此補上，避免餵食得到 undefined（會讓進化經驗變 NaN）。
 const NEW_PET_FOOD_EXP = {
-  penguin: { bone: 20, fish: 120, meat: 60,  apple: 30,  berry: 40,  nectar: 10, sushi: 100, cake: 70, shrimp: 110, stardust_candy: 40, moon_mochi: 40 }, // 企鵝愛魚
-  owl:     { bone: 60, fish: 90,  meat: 100, apple: 30,  berry: 50,  nectar: 15, sushi: 80,  cake: 60, shrimp: 70,  stardust_candy: 35, moon_mochi: 35 }, // 貓頭鷹愛肉
-  seal:    { bone: 25, fish: 130, meat: 50,  apple: 30,  berry: 30,  nectar: 10, sushi: 90,  cake: 60, shrimp: 120, stardust_candy: 40, moon_mochi: 40 }, // 海豹愛魚蝦
-  beaver:  { bone: 40, fish: 20,  meat: 20,  apple: 110, berry: 90,  nectar: 70, sushi: 30,  cake: 70, shrimp: 20,  stardust_candy: 60, moon_mochi: 55 }, // 河狸吃素
-  hamster: { bone: 30, fish: 30,  meat: 40,  apple: 100, berry: 100, nectar: 50, sushi: 30,  cake: 90, shrimp: 30,  stardust_candy: 90, moon_mochi: 85 }, // 倉鼠愛果子甜食
-  dino:    { bone: 20, fish: 30,  meat: 20,  apple: 110, berry: 100, nectar: 90, sushi: 30,  cake: 80, shrimp: 20,  stardust_candy: 70, moon_mochi: 65 }, // 小恐龍吃素愛嫩葉果子
-  monkey:  { bone: 20, fish: 40,  meat: 40,  apple: 120, berry: 110, nectar: 80, sushi: 40,  cake: 90, shrimp: 30,  stardust_candy: 80, moon_mochi: 75 }, // 猴子愛水果甜食
-  raccoon: { bone: 40, fish: 110, meat: 70,  apple: 60,  berry: 60,  nectar: 30, sushi: 100, cake: 70, shrimp: 90,  stardust_candy: 55, moon_mochi: 55 }, // 浣熊雜食愛魚
-  twinkle: { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 100, nectar: 120,sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 150,moon_mochi: 100 }, // 星星精靈：星星糖是專屬最愛，也愛花蜜蛋糕
-  luna:    { bone: 20, fish: 30,  meat: 20,  apple: 50,  berry: 120, nectar: 100,sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 100,moon_mochi: 150 }, // 月亮精靈：月光麻糬是專屬最愛，也愛莓果蛋糕
+  penguin: { bone: 20, fish: 120, meat: 60,  apple: 30,  berry: 40,  nectar: 10, sushi: 100, cake: 70, shrimp: 110, stardust_candy: 40, moon_mochi: 40, reunion_candy: 40 }, // 企鵝愛魚
+  owl:     { bone: 60, fish: 90,  meat: 100, apple: 30,  berry: 50,  nectar: 15, sushi: 80,  cake: 60, shrimp: 70,  stardust_candy: 35, moon_mochi: 35, reunion_candy: 35 }, // 貓頭鷹愛肉
+  seal:    { bone: 25, fish: 130, meat: 50,  apple: 30,  berry: 30,  nectar: 10, sushi: 90,  cake: 60, shrimp: 120, stardust_candy: 40, moon_mochi: 40, reunion_candy: 40 }, // 海豹愛魚蝦
+  beaver:  { bone: 40, fish: 20,  meat: 20,  apple: 110, berry: 90,  nectar: 70, sushi: 30,  cake: 70, shrimp: 20,  stardust_candy: 60, moon_mochi: 55, reunion_candy: 60 }, // 河狸吃素
+  hamster: { bone: 30, fish: 30,  meat: 40,  apple: 100, berry: 100, nectar: 50, sushi: 30,  cake: 90, shrimp: 30,  stardust_candy: 90, moon_mochi: 85, reunion_candy: 90 }, // 倉鼠愛果子甜食
+  dino:    { bone: 20, fish: 30,  meat: 20,  apple: 110, berry: 100, nectar: 90, sushi: 30,  cake: 80, shrimp: 20,  stardust_candy: 70, moon_mochi: 65, reunion_candy: 70 }, // 小恐龍吃素愛嫩葉果子
+  monkey:  { bone: 20, fish: 40,  meat: 40,  apple: 120, berry: 110, nectar: 80, sushi: 40,  cake: 90, shrimp: 30,  stardust_candy: 80, moon_mochi: 75, reunion_candy: 80 }, // 猴子愛水果甜食
+  raccoon: { bone: 40, fish: 110, meat: 70,  apple: 60,  berry: 60,  nectar: 30, sushi: 100, cake: 70, shrimp: 90,  stardust_candy: 55, moon_mochi: 55, reunion_candy: 55 }, // 浣熊雜食愛魚
+  twinkle: { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 100, nectar: 120,sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 150,moon_mochi: 100, reunion_candy: 100 }, // 星星精靈：星星糖是專屬最愛，也愛花蜜蛋糕與團圓糖
+  luna:    { bone: 20, fish: 30,  meat: 20,  apple: 50,  berry: 120, nectar: 100,sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 100,moon_mochi: 150, reunion_candy: 100 }, // 月亮精靈：月光麻糬是專屬最愛，也愛莓果蛋糕與團圓糖
+  pluto:   { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 90,  nectar: 80, sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 100,moon_mochi: 100, reunion_candy: 150 }, // 冥王星精靈：團圓糖是專屬最愛，也愛蛋糕與姊妹的星星糖月光麻糬
 }
 SHOP_ITEMS.forEach((item) => {
   if (item.category !== 'food') return
