@@ -3,6 +3,7 @@
 import { SEASON1, SHARD_BOARD } from './series'
 import { SEASON2, BADGE_BOARD } from './series2'
 import { SEASON3, GEM_BOARD } from './series3'
+import { SEASON4, LICENSE_BOARD } from './series4'
 import { SERIES_TEACH } from './seriesTeach'
 
 function normalize(season, extra) {
@@ -48,7 +49,17 @@ export const SEASONS = [
     collLabel: { zh: '軌道寶石', en: 'Orbit Gems' },
     clueLabel: { zh: '冰冰腳印', en: 'Icy Footprints' },
     clueIcon: '❄️',
-    subtitle: { zh: '第三季 · 連載中', en: 'Season 3 · Ongoing' },
+    subtitle: { zh: '第三季 · 已完結', en: 'Season 3 · Complete' },
+    done: true,
+  }),
+  normalize(SEASON4, {
+    key: 'season4',
+    board: LICENSE_BOARD,
+    collType: 'seal',                                    // 每集 ep.seal.id 收進 store.seriesSeals
+    collLabel: { zh: '級別金印', en: 'License Seals' },
+    clueLabel: { zh: '灰白羽毛', en: 'Grey Feathers' },
+    clueIcon: '🪶',
+    subtitle: { zh: '第四季 · 連載中', en: 'Season 4 · Ongoing' },
     done: false,
   }),
 ]
