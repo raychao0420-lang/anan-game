@@ -293,6 +293,21 @@ const ART = {
       <line x1="66" y1="66" x2="70" y2="90" stroke="#3E4A6E" strokeWidth="4" />
     </g>
   ),
+  // 解謎小黑板：小Q 的出題黑板，粉筆寫著費波那契和問號
+  puzzle_board: (
+    <g>
+      <rect x="16" y="20" width="68" height="52" rx="5" fill="#B98A5E" />
+      <rect x="22" y="26" width="56" height="40" rx="2" fill="#2F5D50" />
+      <text x="30" y="42" fontSize="10" fill="#FDF6E3" fontFamily="monospace">1 1 2 3</text>
+      <text x="30" y="56" fontSize="10" fill="#FDF6E3" fontFamily="monospace">5 8 ...</text>
+      <text x="62" y="52" fontSize="16" fill="#FFD166" fontFamily="monospace" fontWeight="bold">?</text>
+      <path d="M64,32 q3,-4 6,0" stroke="#FF9EAA" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <rect x="24" y="72" width="52" height="5" rx="2.5" fill="#A0764C" />
+      <rect x="30" y="69" width="9" height="3.4" rx="1.7" fill="#FDF6E3" />
+      <rect x="43" y="69" width="9" height="3.4" rx="1.7" fill="#FF9EAA" />
+      <rect x="56" y="69" width="9" height="3.4" rx="1.7" fill="#FFD166" />
+    </g>
+  ),
 }
 
 // Renders furniture art as SVG, or falls back to the item's emoji.
