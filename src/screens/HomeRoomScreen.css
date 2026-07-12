@@ -342,3 +342,160 @@
 }
 
 .room-empty-hint p { margin: 0; }
+
+/* ══ 仿3D 升級：視差 / 晝夜光影 / 窗戶 / 倒影 / 景深 ══════════════ */
+.room-scene { --par-x: 0; --par-y: 0; }
+
+/* 視差：背景反向、前景同向，位移量=深度 */
+.room-wall {
+  transform: translate(calc(var(--par-x) * -10px), calc(var(--par-y) * -6px)) scale(1.06);
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+.room-window {
+  transform: translate(calc(var(--par-x) * -13px), calc(var(--par-y) * -8px));
+  transition: transform 0.25s ease-out, background 1.2s;
+  will-change: transform;
+}
+.room-floor-wrap {
+  transform: translate(calc(var(--par-x) * -5px), calc(var(--par-y) * -3px)) scale(1.04);
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+.room-actors {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  transform: translate(calc(var(--par-x) * 6px), calc(var(--par-y) * 3px));
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+.room-fore {
+  position: absolute;
+  inset: -24px;
+  pointer-events: none;
+  z-index: 130;
+  background: radial-gradient(ellipse at 50% 42%, transparent 60%, rgba(70, 40, 10, 0.18) 100%);
+  transform: translate(calc(var(--par-x) * 15px), calc(var(--par-y) * 9px));
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+
+/* ── 牆上的窗戶：白天藍天流雲 / 黃昏橘霞 / 夜晚星空 ── */
+.room-window {
+  position: absolute;
+  top: 5%;
+  left: 39%;
+  width: 96px;
+  height: 72px;
+  border: 5px solid #a8763e;
+  border-radius: 12px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18), inset 0 0 12px rgba(255, 255, 255, 0.35);
+  background: linear-gradient(180deg, #7ec8f7 0%, #b3e3ff 65%, #e2f5ff 100%);
+}
+.room-window::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: calc(50% - 2px);
+  width: 4px;
+  background: #a8763e;
+}
+.phase-dusk .room-window {
+  background: linear-gradient(180deg, #ff9e6d 0%, #ffc37e 60%, #ffe3a8 100%);
+}
+.phase-night .room-window {
+  background:
+    radial-gradient(1.6px 1.6px at 22% 30%, #fff 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 68% 22%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 44% 58%, #fff 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 84% 62%, #fff 50%, transparent 51%),
+    linear-gradient(180deg, #1b2a5a 0%, #2e3f7a 100%);
+}
+.room-window-orb {
+  position: absolute;
+  top: 7px;
+  right: 11px;
+  font-size: 1.25rem;
+  filter: drop-shadow(0 0 6px rgba(255, 240, 160, 0.9));
+}
+.room-window-cloud {
+  position: absolute;
+  top: 30px;
+  left: -32px;
+  font-size: 1.05rem;
+  opacity: 0.9;
+  animation: cloud-drift 26s linear infinite;
+}
+.phase-night .room-window-cloud { opacity: 0.22; }
+@keyframes cloud-drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(160px); }
+}
+
+/* ── 晝夜色調層（multiply 讓整室變色，夜晚偏藍、黃昏偏橘） ── */
+.room-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 120;
+  opacity: 0;
+  transition: opacity 1.2s ease, background 1.2s ease;
+  mix-blend-mode: multiply;
+}
+.phase-dusk .room-tint {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(255, 158, 90, 0.16) 0%, rgba(255, 120, 70, 0.12) 100%);
+}
+.phase-night .room-tint {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(30, 42, 100, 0.34) 0%, rgba(18, 24, 68, 0.26) 100%);
+}
+
+/* ── 夜晚燈具發光（fairy_light / mushroom_lamp / reunion_lamp / fireplace） ── */
+.phase-night .room-deco[data-glow='true']::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  width: 140px;
+  height: 140px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(circle,
+    rgba(255, 216, 130, 0.55) 0%,
+    rgba(255, 216, 130, 0.20) 45%,
+    transparent 72%);
+  animation: lamp-flicker 3.2s ease-in-out infinite;
+}
+@keyframes lamp-flicker {
+  0%, 100% { opacity: 0.8; }
+  50%      { opacity: 1; }
+}
+
+/* ── 拋光地板倒影（WebKit/Blink；Firefox 自動略過） ── */
+.room-pet-body {
+  -webkit-box-reflect: below -16px linear-gradient(transparent 64%, rgba(0, 0, 0, 0.16));
+}
+
+/* ── iPad 體感授權鈕 ── */
+.room-gyro-btn {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  z-index: 140;
+  border: none;
+  border-radius: 18px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #6b3f1e;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+}

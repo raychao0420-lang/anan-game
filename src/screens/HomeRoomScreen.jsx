@@ -17,6 +17,24 @@ function getDepthScale(y) {
   return 0.68 + t * 0.32
 }
 
+// 仿3D：寵物依 y 產生景深（越靠牆越遠、越模糊一點點）
+function getDepthBlur(y) {
+  const t = Math.min(1, Math.max(0, (y - 42) / 24))
+  const blur = (1 - t) * 0.7
+  return blur > 0.1 ? `blur(${blur.toFixed(2)}px) saturate(${(0.9 + t * 0.1).toFixed(2)})` : 'none'
+}
+
+// 夜晚會發光的家具
+const GLOW_DECOS = new Set(['fairy_light', 'mushroom_lamp', 'reunion_lamp', 'fireplace'])
+
+// 依真實時間決定房間光線：白天 / 黃昏 / 夜晚
+function getDayPhase() {
+  const h = new Date().getHours()
+  if (h >= 6 && h < 16) return 'day'
+  if (h >= 16 && h < 19) return 'dusk'
+  return 'night'
+}
+
 const PET_CONFIG = {
   lulu:   { startPos: { x: 12, y: 50 }, bobDuration: 1.8, wanderInterval: 2800, burstEmoji: '🐾' },
   hana:   { startPos: { x: 44, y: 54 }, bobDuration: 2.1, wanderInterval: 3500, burstEmoji: '💙' },
@@ -219,6 +237,7 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
       animate={{ scale: pinching ? finalScale : activeScale, opacity: 1 }}
       initial={{ scale: 0, opacity: 0 }}
       transition={pinching ? { duration: 0 } : { type: 'spring', stiffness: 280 }}
+      data-glow={GLOW_DECOS.has(item.id) ? 'true' : undefined}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -339,12 +358,14 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
         transform: `translateX(-50%) scale(${depthScale})`,
         transformOrigin: 'bottom center',
         zIndex: Math.round(pos.y),
+        filter: getDepthBlur(pos.y),
       }}
       onClick={handleClick}
     >
       <div className="room-pet-shadow" />
-      {/* Bob layer */}
+      {/* Bob layer（room-pet-body 帶拋光地板倒影） */}
       <motion.div
+        className="room-pet-body"
         animate={{ y: [0, -bob.amp, 0] }}
         transition={{ repeat: Infinity, duration: bobDur, ease: 'easeInOut' }}
         whileTap={{ scale: 1.3 }}
@@ -402,6 +423,56 @@ export default function HomeRoomScreen({ onNavigate }) {
   const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods } = useGameStore()
   const containerRef = useRef(null)
 
+  // 晝夜光線（每分鐘檢查一次）
+  const [phase, setPhase] = useState(getDayPhase)
+  useEffect(() => {
+    const t = setInterval(() => setPhase(getDayPhase()), 60000)
+    return () => clearInterval(t)
+  }, [])
+
+  // iOS 13+ 陀螺儀需要使用者手勢授權，顯示一顆「體感」按鈕
+  const [gyroNeed, setGyroNeed] = useState(false)
+  useEffect(() => {
+    if (typeof window.DeviceOrientationEvent !== 'undefined' &&
+        typeof window.DeviceOrientationEvent.requestPermission === 'function') setGyroNeed(true)
+  }, [])
+  const enableGyro = () => {
+    window.DeviceOrientationEvent.requestPermission()
+      .then((r) => { if (r === 'granted') setGyroNeed(false) })
+      .catch(() => {})
+  }
+
+  // 仿3D 視差：把傾斜/滑鼠位置寫進 CSS 變數，各圖層用不同倍率位移
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    let raf = 0
+    const clamp = (v) => Math.max(-1, Math.min(1, v))
+    const apply = (nx, ny) => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        el.style.setProperty('--par-x', String(nx))
+        el.style.setProperty('--par-y', String(ny))
+      })
+    }
+    const onPointer = (e) => {
+      const r = el.getBoundingClientRect()
+      apply(clamp(((e.clientX - r.left) / r.width - 0.5) * 2),
+            clamp(((e.clientY - r.top) / r.height - 0.5) * 2))
+    }
+    const onTilt = (e) => {
+      if (e.gamma == null || e.beta == null) return
+      apply(clamp(e.gamma / 22), clamp((e.beta - 40) / 30))
+    }
+    el.addEventListener('pointermove', onPointer)
+    window.addEventListener('deviceorientation', onTilt)
+    return () => {
+      el.removeEventListener('pointermove', onPointer)
+      window.removeEventListener('deviceorientation', onTilt)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+
   const unlockedPets = Object.entries(pets).filter(([, data]) => data.unlocked)
 
   const homeDecos = equippedHomeItems
@@ -441,55 +512,80 @@ export default function HomeRoomScreen({ onNavigate }) {
         </motion.button>
       </div>
 
-      <div className="room-scene" ref={containerRef}>
-        {/* Isometric room background layers */}
+      {/* 進場運鏡：鏡頭從遠處緩緩推進 */}
+      <motion.div
+        className={`room-scene phase-${phase}`}
+        ref={containerRef}
+        initial={{ scale: 1.16, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Isometric room background layers（視差：背景反向微移） */}
         <div className="room-wall" />
+        <div className="room-window">
+          <span className="room-window-orb">{phase === 'night' ? '🌙' : '☀️'}</span>
+          <span className="room-window-cloud">☁️</span>
+        </div>
         <div className="room-floor-wrap">
           <div className="room-floor-grid" />
         </div>
         <div className="room-side-shade" />
 
-        {/* Decorations (draggable) */}
-        {homeDecos.map((item, idx) => (
-          <DraggableDeco
-            key={item.id}
-            item={item}
-            pos={getDecoPos(item, idx)}
-            onMove={moveHomeDeco}
-            containerRef={containerRef}
-          />
-        ))}
+        {/* 互動層（家具+寵物）：視差正向微移 */}
+        <div className="room-actors">
+          {/* Decorations (draggable) */}
+          {homeDecos.map((item, idx) => (
+            <DraggableDeco
+              key={item.id}
+              item={item}
+              pos={getDecoPos(item, idx)}
+              onMove={moveHomeDeco}
+              containerRef={containerRef}
+            />
+          ))}
 
-        {/* Pets */}
-        {unlockedPets.map(([petId, petData]) => (
-          <WanderingPet
-            key={petId}
-            petId={petId}
-            petDef={PETS[petId]}
-            petData={petData}
-            equippedPetItems={(petEquipment[petId] || [])
-              .map(id => SHOP_ITEMS.find(i => i.id === id))
-              .filter(Boolean)}
-            placedDecos={placedDecos}
-            poolPos={poolPos}
-            onPetClick={handlePetClick}
-            mood={petMoods?.[petId] ?? 80}
-          />
-        ))}
+          {/* Pets */}
+          {unlockedPets.map(([petId, petData]) => (
+            <WanderingPet
+              key={petId}
+              petId={petId}
+              petDef={PETS[petId]}
+              petData={petData}
+              equippedPetItems={(petEquipment[petId] || [])
+                .map(id => SHOP_ITEMS.find(i => i.id === id))
+                .filter(Boolean)}
+              placedDecos={placedDecos}
+              poolPos={poolPos}
+              onPetClick={handlePetClick}
+              mood={petMoods?.[petId] ?? 80}
+            />
+          ))}
 
-        {/* Hint */}
-        {homeDecos.length === 0 && (
-          <motion.div
-            className="room-empty-hint"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <span>💡</span>
-            <p>去商店的「家居」分類購買家具來佈置吧！</p>
-          </motion.div>
+          {/* Hint */}
+          {homeDecos.length === 0 && (
+            <motion.div
+              className="room-empty-hint"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <span>💡</span>
+              <p>去商店的「家居」分類購買家具來佈置吧！</p>
+            </motion.div>
+          )}
+        </div>
+
+        {/* 晝夜色調 + 前景暗角（最上層，不吃點擊） */}
+        <div className="room-tint" />
+        <div className="room-fore" />
+
+        {/* iPad 體感視差授權鈕 */}
+        {gyroNeed && (
+          <motion.button className="room-gyro-btn" whileTap={{ scale: 0.9 }} onClick={enableGyro}>
+            📱 開啟體感
+          </motion.button>
         )}
-      </div>
+      </motion.div>
     </div>
   )
 }
