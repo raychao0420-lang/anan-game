@@ -59,7 +59,7 @@ export const SEASONS = [
     collLabel: { zh: '級別金印', en: 'License Seals' },
     clueLabel: { zh: '灰白羽毛', en: 'Grey Feathers' },
     clueIcon: '🪶',
-    subtitle: { zh: '第四季 · 連載中', en: 'Season 4 · Ongoing' },
-    done: false,
+    subtitle: { zh: '第四季 · 已完結', en: 'Season 4 · Complete' },
+    done: true,
   }),
 ]

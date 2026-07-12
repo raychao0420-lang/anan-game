@@ -144,6 +144,14 @@ const EVO = {
     { body:'#CDC6E8', belly:'#F0ECF8', ear:'#A98FD0', nose:'#443A66', heart:'#F0B0C6' },
     { body:'#D2C6F0', belly:'#F3ECFC', ear:'#B49AE0', nose:'#40386A', heart:'#FFB6C1', glow:'#C9A8F0' },
   ],
+  // 小Q：灰白邏輯貓頭鷹精靈（胸前問號羽毛 mark，stage4 問號翻成驚嘆號 excl＋迷你偵探帽 hat＋金光）
+  xiaoq: [
+    null,
+    { body:'#C9CFD8', belly:'#F2F4F7', ear:'#A9B0BE', nose:'#4A505E', mark:'#8A93A6' },
+    { body:'#C2CAD6', belly:'#EFF2F6', ear:'#93A0B4', nose:'#454C5C', mark:'#6E7A92' },
+    { body:'#CFCDC2', belly:'#F5F3EA', ear:'#B49A54', nose:'#4E4838', mark:'#A8863A', excl:true },
+    { body:'#D8D4C4', belly:'#FAF7EA', ear:'#C4A94E', nose:'#4A4430', mark:'#D4AF37', excl:true, hat:true, glow:'#F0D878' },
+  ],
 }
 
 // ── Pet bases ─────────────────────────────────────────────────────────────────
@@ -546,6 +554,67 @@ function OwlBase({ c }) {
       <path d="M50,47 L45.5,51 Q50,53 54.5,51 Z" fill="#FFC04D" />
       {/* Feet */}
       <g stroke="#F0A020" strokeWidth="1.8" strokeLinecap="round">
+        <path d="M42,110 l-3,6 M42,110 l0,6.5 M42,110 l3,6" />
+        <path d="M58,110 l-3,6 M58,110 l0,6.5 M58,110 l3,6" />
+      </g>
+    </g>
+  )
+}
+
+// 小Q：邏輯貓頭鷹精靈（灰白羽、胸前問號羽毛；進化後問號翻成驚嘆號、戴迷你偵探帽）
+function XiaoQBase({ c }) {
+  return (
+    <g>
+      {/* Body */}
+      <ellipse cx="50" cy="90" rx="25" ry="22" fill={c.body} />
+      <ellipse cx="50" cy="94" rx="16" ry="15" fill={c.belly} opacity="0.9" />
+      {/* Folded wings */}
+      <path d="M27,80 C19,90 21,105 30,109 L33,100 C29,94 30,86 33,82 Z" fill={c.ear} />
+      <path d="M73,80 C81,90 79,105 70,109 L67,100 C71,94 70,86 67,82 Z" fill={c.ear} />
+      {/* Chest mark: question-mark tuft (or exclamation after evolving!) */}
+      {c.excl ? (
+        <g stroke={c.mark} strokeWidth="3" strokeLinecap="round" fill="none">
+          <path d="M50,85 L50,95" />
+          <circle cx="50" cy="101" r="1.8" fill={c.mark} stroke="none" />
+        </g>
+      ) : (
+        <g stroke={c.mark} strokeWidth="2.6" strokeLinecap="round" fill="none">
+          <path d="M45,89 q0,-5 5,-5 q5,0 5,5 q0,4 -5,6 l0,3" />
+          <circle cx="50" cy="101" r="1.7" fill={c.mark} stroke="none" />
+        </g>
+      )}
+      {/* Ear tufts */}
+      <path d="M31,21 L25,5 L41,19 Z" fill={c.body} />
+      <path d="M69,21 L75,5 L59,19 Z" fill={c.body} />
+      {/* Head */}
+      <circle cx="50" cy="42" r="26" fill={c.body} />
+      {/* Eye discs */}
+      <circle cx="38" cy="42" r="13" fill={c.belly} />
+      <circle cx="62" cy="42" r="13" fill={c.belly} />
+      <circle cx="38" cy="42" r="13" fill="none" stroke={c.ear} strokeWidth="1.4" opacity="0.55" />
+      <circle cx="62" cy="42" r="13" fill="none" stroke={c.ear} strokeWidth="1.4" opacity="0.55" />
+      {/* Big bright eyes（等到搭檔之後，眼睛特別亮） */}
+      <circle cx="38" cy="42" r="8"   fill="#8A6FD0" />
+      <circle cx="62" cy="42" r="8"   fill="#8A6FD0" />
+      <circle cx="38" cy="42" r="4.6" fill="#141020" />
+      <circle cx="62" cy="42" r="4.6" fill="#141020" />
+      <circle cx="40" cy="39.5" r="2.2" fill="white" />
+      <circle cx="64" cy="39.5" r="2.2" fill="white" />
+      <circle cx="36.5" cy="44.5" r="1" fill="white" opacity="0.8" />
+      <circle cx="60.5" cy="44.5" r="1" fill="white" opacity="0.8" />
+      {/* Beak */}
+      <path d="M50,47 L45.5,51 Q50,58 54.5,51 Z" fill="#E8A23C" />
+      <path d="M50,47 L45.5,51 Q50,53 54.5,51 Z" fill="#FFC97A" />
+      {/* Mini detective hat (stage 4) */}
+      {c.hat && (
+        <g>
+          <ellipse cx="50" cy="18.5" rx="16" ry="3.6" fill="#6D4C33" />
+          <path d="M38,18 Q38,7 50,7 Q62,7 62,18 Z" fill="#7D5A3C" />
+          <rect x="38" y="14.5" width="24" height="3" rx="1.5" fill="#5A3E28" />
+        </g>
+      )}
+      {/* Feet */}
+      <g stroke="#E8A23C" strokeWidth="1.8" strokeLinecap="round">
         <path d="M42,110 l-3,6 M42,110 l0,6.5 M42,110 l3,6" />
         <path d="M58,110 l-3,6 M58,110 l0,6.5 M58,110 l3,6" />
       </g>
@@ -1449,6 +1518,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'twinkle' ? <TwinkleBase c={colors} />
        : petId === 'luna' ? <LunaBase c={colors} />
        : petId === 'pluto' ? <PlutoBase c={colors} />
+       : petId === 'xiaoq' ? <XiaoQBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 

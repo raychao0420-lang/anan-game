@@ -96,7 +96,7 @@ export default function HomeScreen({ onNavigate }) {
             onClick={() => nav('series')}
           >
             📺 連載劇場：星星偵探
-            <span className="home-hero-sub">第四季 邏輯偵探學院 · 開學囉！</span>
+            <span className="home-hero-sub">第四季 邏輯偵探學院 · 畢業大考完結篇！</span>
             <span className="home-badge home-badge-new">NEW</span>
           </motion.button>
           <motion.button

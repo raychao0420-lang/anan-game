@@ -22,6 +22,7 @@ export const SHOP_ITEMS = [
   { id: 'stardust_candy', name: '星星糖', emoji: '🍬', category: 'food', price: 110, desc: '會在嘴裡閃一下的甜甜糖果，小星的最愛！', exp: { lulu: 30, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 70 } },
   { id: 'moon_mochi',     name: '月光麻糬', emoji: '🍡', category: 'food', price: 110, desc: '像月亮一樣圓潤軟Q的麻糬，小月的最愛！', exp: { lulu: 30, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 65 } },
   { id: 'reunion_candy',  name: '團圓糖', emoji: '🍭', category: 'food', price: 120, desc: '圓圓一顆、暖暖甜甜的團圓糖，小冥的最愛！大家一起吃更甜～', exp: { lulu: 35, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 65 } },
+  { id: 'wisdom_cookie',  name: '智慧餅乾', emoji: '🍪', category: 'food', price: 120, desc: '烤成問號形狀的酥脆餅乾，小Q的最愛！吃一口，靈光一閃「尤里卡！」', exp: { lulu: 40, hana: 35, kotaro: 35, jiji: 60, kitsune: 40, mejiro: 45 } },
   // ── 帽子 ──
   { id: 'bow',        name: '蝴蝶結',   emoji: '🎀', category: 'hat',  price: 100, desc: '可愛滿分' },
   { id: 'cap',        name: '棒球帽',   emoji: '🧢', category: 'hat',  price: 120, desc: '運動風' },
@@ -83,6 +84,7 @@ export const SHOP_ITEMS = [
   { id: 'star_swing',   name: '星願鞦韆',   emoji: '🌠', category: 'home', price: 240, desc: '掛在星空下的鞦韆，小星最愛盪上去，盪得越高離星星越近～' },
   { id: 'moon_hammock', name: '月光吊床',   emoji: '🌛', category: 'home', price: 240, desc: '月牙形的柔軟吊床，小月窩進去輕輕搖，像被月光抱著入睡。' },
   { id: 'reunion_lamp', name: '團圓星燈',   emoji: '💗', category: 'home', price: 260, desc: '心形的暖暖星燈，小冥最愛窩在旁邊；燈一亮，大家就會湊過來擠成一團，誰都不孤單。' },
+  { id: 'puzzle_board', name: '解謎小黑板', emoji: '🖍️', category: 'home', price: 260, desc: '掛在牆上的迷你黑板，畫滿數列跟問號。小Q最愛站在前面出題考大家，聰明的孩子們都搶著來解！' },
   // ── 稀有（Boss 獎勵，不可購買） ──
   { id: 'golden_finger',  name: '金手指',  emoji: '🤞', category: 'rare', price: 0, desc: '湊10特訓三連勝！神速心算達人的象徵', boss: true },
   { id: 'double_v',       name: '雙指勝利', emoji: '✌️', category: 'rare', price: 0, desc: '湊20特訓三連勝！進位心算高手的象徵',  boss: true },
@@ -106,13 +108,15 @@ export const SHOP_ITEMS = [
   { id: 'moonlight_stone', name: '月光石', emoji: '🌕', category: 'rare', price: 0, desc: '《星空亂了套》終章，小月回家前留下的一小塊月光，凝成了溫潤的月光石。十二星座的圖案繞著它慢慢轉——夜裡放在枕邊，會做見得到月亮的夢。', boss: true },
   // ── 連載劇《太陽系大冒險》信物（劇情獎勵，不可購買）──
   { id: 'family_star_map', name: '全家福星圖', emoji: '🗺️', category: 'rare', price: 0, desc: '《太陽系大冒險》終章，小冥親手拼好的全家福星圖。上面每一顆星星，都是一路陪牠回家的人——太陽、八大行星、彗星，還有安安、小星、小月。星圖正中央，是一片小小的、暖暖發亮的心形冰原。它輕輕告訴你：是不是行星不重要，你一直都是這一家的。', boss: true },
+  // ── 連載劇《邏輯偵探學院》信物（劇情獎勵，不可購買）──
+  { id: 'master_license', name: '名偵探執照', emoji: '📜', category: 'rare', price: 0, desc: '《邏輯偵探學院》終章，阿基教授親手頒發的名偵探執照，十二枚級別金印在陽光下閃閃發亮。最下面一行是教授的親筆：「執照不是證明你多聰明，是提醒你——把想不通的事想通，把難過的人變笑。」旁邊還有一個小小的爪印，是副署人：名偵探貓頭鷹，小Q。', boss: true },
 ]
 
 // 新寵物（波波/嚕嚕/圓圓/阿丁/小麥）的食物偏好。原本食物 exp 只列了 6 隻，
 // 在此補上，避免餵食得到 undefined（會讓進化經驗變 NaN）。
 const NEW_PET_FOOD_EXP = {
   penguin: { bone: 20, fish: 120, meat: 60,  apple: 30,  berry: 40,  nectar: 10, sushi: 100, cake: 70, shrimp: 110, stardust_candy: 40, moon_mochi: 40, reunion_candy: 40 }, // 企鵝愛魚
-  owl:     { bone: 60, fish: 90,  meat: 100, apple: 30,  berry: 50,  nectar: 15, sushi: 80,  cake: 60, shrimp: 70,  stardust_candy: 35, moon_mochi: 35, reunion_candy: 35 }, // 貓頭鷹愛肉
+  owl:     { bone: 60, fish: 90,  meat: 100, apple: 30,  berry: 50,  nectar: 15, sushi: 80,  cake: 60, shrimp: 70,  stardust_candy: 35, moon_mochi: 35, reunion_candy: 35, wisdom_cookie: 110 }, // 貓頭鷹愛肉，博學的嚕嚕也愛智慧餅乾
   seal:    { bone: 25, fish: 130, meat: 50,  apple: 30,  berry: 30,  nectar: 10, sushi: 90,  cake: 60, shrimp: 120, stardust_candy: 40, moon_mochi: 40, reunion_candy: 40 }, // 海豹愛魚蝦
   beaver:  { bone: 40, fish: 20,  meat: 20,  apple: 110, berry: 90,  nectar: 70, sushi: 30,  cake: 70, shrimp: 20,  stardust_candy: 60, moon_mochi: 55, reunion_candy: 60 }, // 河狸吃素
   hamster: { bone: 30, fish: 30,  meat: 40,  apple: 100, berry: 100, nectar: 50, sushi: 30,  cake: 90, shrimp: 30,  stardust_candy: 90, moon_mochi: 85, reunion_candy: 90 }, // 倉鼠愛果子甜食
@@ -122,6 +126,7 @@ const NEW_PET_FOOD_EXP = {
   twinkle: { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 100, nectar: 120,sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 150,moon_mochi: 100, reunion_candy: 100 }, // 星星精靈：星星糖是專屬最愛，也愛花蜜蛋糕與團圓糖
   luna:    { bone: 20, fish: 30,  meat: 20,  apple: 50,  berry: 120, nectar: 100,sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 100,moon_mochi: 150, reunion_candy: 100 }, // 月亮精靈：月光麻糬是專屬最愛，也愛莓果蛋糕與團圓糖
   pluto:   { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 90,  nectar: 80, sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 100,moon_mochi: 100, reunion_candy: 150 }, // 冥王星精靈：團圓糖是專屬最愛，也愛蛋糕與姊妹的星星糖月光麻糬
+  xiaoq:   { bone: 30, fish: 80,  meat: 90,  apple: 40,  berry: 50,  nectar: 20, sushi: 70,  cake: 90, shrimp: 60,  stardust_candy: 60, moon_mochi: 60,  reunion_candy: 60, wisdom_cookie: 150 }, // 邏輯貓頭鷹精靈：智慧餅乾是專屬最愛，貓頭鷹本色也愛肉跟魚
 }
 SHOP_ITEMS.forEach((item) => {
   if (item.category !== 'food') return

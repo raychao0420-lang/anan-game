@@ -309,9 +309,28 @@ export const PETS = {
     happyEmoji: '🥰',
     sadEmoji: '🥺',
   },
+  // 小Q：連載劇《邏輯偵探學院》終章畢業大考後成為安安搭檔的邏輯貓頭鷹精靈（事件限定，不可金幣購買）
+  xiaoq: {
+    id: 'xiaoq',
+    name: '小Q',
+    breed: '邏輯貓頭鷹精靈',
+    personality: '傲嬌又聰明、口頭禪「尤里卡！」、胸前有一撮問號形羽毛，等了四十年終於找到新搭檔',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '完成《邏輯偵探學院》終章畢業大考，小Q 就會站上你的肩膀，成為永遠的搭檔！',
+    stages: [
+      null,
+      { emoji: '🦉', label: '問號雛鳥',     size: '5rem', bg: '#F0F1F5', border: '#A9B0BE' },
+      { emoji: '🦉', label: '見習貓頭鷹',   size: '5rem', bg: '#EDEFF4', border: '#93A0B4' },
+      { emoji: '🦉', label: '驚嘆號貓頭鷹', size: '5rem', bg: '#F2F0EA', border: '#B49A54' },
+      { emoji: '🦉', label: '名偵探貓頭鷹', size: '5rem', bg: '#F7F3E4', border: '#D4AF37', glow: true },
+    ],
+    happyEmoji: '🤩',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq']
 
 // ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
 // 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
@@ -325,7 +344,7 @@ export const SKILL_COST = 20              // 每次發動消耗（統一）
 // ── 連載劇場「家教求救」──────────────────────────────────────────────
 // 智慧型寵物可在連載劇場當家教：按求救鈕，用教學方式帶著想（給方法、不給答案）。
 // 消耗能量（比技能便宜），每答對一題回復。擁有清單中任一隻即可求救（依序優先）。
-export const TUTOR_PETS = ['owl', 'jiji', 'beaver']  // 嚕嚕🦉 / 吉吉🐈‍⬛ / 阿丁🦫
+export const TUTOR_PETS = ['xiaoq', 'owl', 'jiji', 'beaver']  // 小Q🦉(名偵探前輩,優先) / 嚕嚕🦉 / 吉吉🐈‍⬛ / 阿丁🦫
 export const SOS_COST = 15                // 求救一次消耗能量
 export const SOS_REGEN = 10               // 連載劇場每答對一題，家教回復能量
 
@@ -348,4 +367,5 @@ export const PET_SKILLS = {
   twinkle: { name: '星願之光', icon: '🌠', effect: { type: 'coin',  add: 20 },   desc: '這一題答對 +20 金幣' },
   luna:    { name: '月光搖籃', icon: '🌙', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒' },
   pluto:   { name: '團圓之心', icon: '💗', effect: { type: 'coin',  add: 25 },   desc: '這一題答對 +25 金幣（全家福的祝福！）' },
+  xiaoq:   { name: '靈光一閃', icon: '💡', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒（尤里卡的瞬間！）' },
 }
