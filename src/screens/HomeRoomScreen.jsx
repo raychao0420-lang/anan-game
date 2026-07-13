@@ -70,6 +70,16 @@ function pickVisitor(list) {
   return list[0]
 }
 
+// ── 第3彈：天氣聯動室內＋寵物相遇 ─────────────────────────────────────────
+// 窗外天氣 → 寵物頭上冒心情泡泡；下雨時怕水的 LULU 會衝去帳篷躲雨（有擺的話）
+const WEATHER_MOODS = {
+  rain:    { lulu: '☔' },
+  snow:    { kitsune: '⛄', penguin: '⛄', seal: '❄️' },
+  rainbow: { mejiro: '🌈', twinkle: '🌈', luna: '🌈', penguin: '🌈' },
+}
+const MEET_DIST   = 13                    // 兩隻寵物多近算「相遇」(%)
+const MEET_EMOJIS = ['💕', '🎶', '✨']    // 相遇互動表情（好朋友水獺檔專屬 💞）
+
 const PET_CONFIG = {
   lulu:   { startPos: { x: 12, y: 50 }, bobDuration: 1.8, wanderInterval: 2800, burstEmoji: '🐾' },
   hana:   { startPos: { x: 44, y: 54 }, bobDuration: 2.1, wanderInterval: 3500, burstEmoji: '💙' },
@@ -301,7 +311,7 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
 
 // ── Wandering pet ─────────────────────────────────────────────────────────────
 
-function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100 }) {
+function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100, weather = 'clear', reportPos, meetX = null }) {
   const cfg = PET_CONFIG[petId] ?? DEFAULT_PET_CONFIG
 
   // 這隻寵物會被吸引的家具（依個性）
@@ -319,6 +329,12 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
 
   const poolPosRef = useRef(poolPos)
   useEffect(() => { poolPosRef.current = poolPos }, [poolPos])
+
+  const weatherRef = useRef(weather)
+  useEffect(() => { weatherRef.current = weather }, [weather])
+
+  // 位置回報給父層做「寵物相遇」偵測
+  useEffect(() => { reportPos?.(petId, pos) }, [petId, pos, reportPos])
 
   // 現在正在「使用中」的家具（在附近就算）
   const activeDeco = myDecos.find((d) => Math.hypot(pos.x - d.x, pos.y - d.y) < ACTIVITY_RADIUS)
@@ -343,9 +359,17 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
           targetRef.current = null; target = null
         }
 
+        // 窗外下雨：怕水的 LULU 一路衝去帳篷躲雨
+        if (petId === 'lulu' && weatherRef.current === 'rain') {
+          const tent = decos.find((d) => d.id === 'tent')
+          if (tent) { targetRef.current = 'tent'; target = tent }
+        }
+
         let dx, dy
         if (target) {
-          const near = Math.hypot(prev.x - target.x, prev.y - target.y) < ACTIVITY_RADIUS
+          // 雨天躲帳篷要真的鑽進去（抵達半徑收緊），平常在家具旁玩就好
+          const arriveR = (petId === 'lulu' && weatherRef.current === 'rain' && target.id === 'tent') ? 7 : ACTIVITY_RADIUS
+          const near = Math.hypot(prev.x - target.x, prev.y - target.y) < arriveR
           if (near) { dx = (Math.random() - 0.5) * 6; dy = (Math.random() - 0.5) * 4 }        // 在旁邊玩，小幅晃動
           else { dx = (target.x - prev.x) * 0.6 + (Math.random() - 0.5) * 6                    // 朝家具走過去
                  dy = (target.y - prev.y) * 0.6 + (Math.random() - 0.5) * 4 }
@@ -405,9 +429,9 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
         transition={{ repeat: Infinity, duration: bobDur, ease: 'easeInOut' }}
         whileTap={{ scale: 1.3 }}
       >
-        {/* Flip layer */}
+        {/* Flip layer（相遇時轉頭面向對方） */}
         <motion.div
-          animate={{ scaleX: facing }}
+          animate={{ scaleX: meetX != null ? (meetX >= pos.x ? 1 : -1) : facing }}
           transition={{ duration: 0.28, ease: 'easeInOut' }}
           style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center' }}
         >
@@ -429,6 +453,15 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
           animate={{ y: [0, -6, 0], opacity: [0.7, 1, 0.7] }}
           transition={{ repeat: Infinity, duration: 1.4 }}>
           {activity.emoji}
+        </motion.div>
+      )}
+
+      {/* 窗外天氣的心情泡泡（沒在玩家具時才冒） */}
+      {!activity && WEATHER_MOODS[weather]?.[petId] && (
+        <motion.div className="room-pet-weather"
+          animate={{ y: [0, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 1.6 }}>
+          {WEATHER_MOODS[weather][petId]}
         </motion.div>
       )}
 
@@ -493,6 +526,12 @@ export default function HomeRoomScreen({ onNavigate }) {
     const opts = phase === 'night' ? ['clear', 'rain', 'snow'] : ['clear', 'rain', 'snow', 'rainbow']
     setWeather((w) => opts[(opts.indexOf(w) + 1) % opts.length])
   }
+
+  // 寵物位置回報 → 相遇偵測（兩隻靠近就冒互動表情、面對面）
+  const [petPositions, setPetPositions] = useState({})
+  const reportPos = useCallback((id, p) => {
+    setPetPositions((prev) => (prev[id]?.x === p.x && prev[id]?.y === p.y ? prev : { ...prev, [id]: p }))
+  }, [])
 
   // iOS 13+ 陀螺儀需要使用者手勢授權，顯示一顆「體感」按鈕
   const [gyroNeed, setGyroNeed] = useState(false)
@@ -562,6 +601,24 @@ export default function HomeRoomScreen({ onNavigate }) {
 
   const handlePetClick = (petId) => {
     sfx.pet(petId)
+  }
+
+  // 相遇配對：任兩隻已解鎖寵物距離 < MEET_DIST
+  const meetings = []
+  const meetPartner = {}
+  const posIds = unlockedPets.map(([id]) => id).filter((id) => petPositions[id])
+  for (let i = 0; i < posIds.length; i++) {
+    for (let j = i + 1; j < posIds.length; j++) {
+      const a = posIds[i], b = posIds[j]
+      const pa = petPositions[a], pb = petPositions[b]
+      if (Math.hypot(pa.x - pb.x, pa.y - pb.y) < MEET_DIST) {
+        const pair = [a, b].sort().join('-')
+        const emoji = pair === 'hana-kotaro' ? '💞' : MEET_EMOJIS[pair.length % MEET_EMOJIS.length]
+        meetings.push({ key: pair, x: (pa.x + pb.x) / 2, y: Math.min(pa.y, pb.y), emoji })
+        meetPartner[a] = pb.x
+        meetPartner[b] = pa.x
+      }
+    }
   }
 
   return (
@@ -651,7 +708,24 @@ export default function HomeRoomScreen({ onNavigate }) {
               poolPos={poolPos}
               onPetClick={handlePetClick}
               mood={petMoods?.[petId] ?? 80}
+              weather={weather}
+              reportPos={reportPos}
+              meetX={meetPartner[petId] ?? null}
             />
+          ))}
+
+          {/* 寵物相遇：兩隻靠近時中間冒互動表情 */}
+          {meetings.map((m) => (
+            <div key={m.key} className="room-meet"
+              style={{ left: `${m.x}%`, top: `${m.y}%`, zIndex: Math.round(m.y) + 1 }}>
+              <motion.span
+                style={{ display: 'inline-block' }}
+                initial={{ scale: 0 }}
+                animate={{ scale: [1, 1.3, 1], y: [0, -6, 0] }}
+                transition={{ repeat: Infinity, duration: 1.3 }}>
+                {m.emoji}
+              </motion.span>
+            </div>
           ))}
 
           {/* Hint */}
