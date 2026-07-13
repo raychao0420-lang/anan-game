@@ -267,3 +267,86 @@ export const sfx = {
     }
   },
 }
+
+// ── 環境音（我的家第4彈）：rain 雨聲 / wind 風雪 / birds 白天鳥叫 / crickets 夜晚蟲鳴 ──
+// WebAudio 合成，不用音檔；startAmbient 會自動停掉上一個，離開畫面記得 stopAmbient()
+let _amb = null
+
+export function stopAmbient() {
+  if (!_amb) return
+  _amb.cancelled = true
+  clearTimeout(_amb.timer)
+  _amb.nodes.forEach((n) => { try { n.stop?.() } catch { /* 已停 */ } try { n.disconnect() } catch { /* 已斷 */ } })
+  _amb = null
+}
+
+export function startAmbient(kind) {
+  stopAmbient()
+  if (muted) return
+  const c = ctx()
+  if (!c) return
+  try {
+    const g = c.createGain()
+    g.gain.value = 0
+    g.connect(c.destination)
+    const amb = { nodes: [g], timer: null, cancelled: false }
+
+    if (kind === 'rain' || kind === 'wind') {
+      // 白噪音 buffer 循環 + 低通濾波：rain 沙沙聲、wind 呼呼低鳴
+      const len = c.sampleRate * 2
+      const buf = c.createBuffer(1, len, c.sampleRate)
+      const d = buf.getChannelData(0)
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1
+      const src = c.createBufferSource()
+      src.buffer = buf
+      src.loop = true
+      const filt = c.createBiquadFilter()
+      filt.type = 'lowpass'
+      filt.frequency.value = kind === 'rain' ? 2200 : 480
+      src.connect(filt)
+      filt.connect(g)
+      src.start()
+      g.gain.linearRampToValueAtTime(kind === 'rain' ? 0.045 : 0.035, c.currentTime + 1.2)
+      amb.nodes.push(src, filt)
+    } else if (kind === 'birds') {
+      // 每 5~12 秒一串上滑短鳴
+      g.gain.value = 1
+      const chirp = () => {
+        if (amb.cancelled || muted) return
+        const n = 2 + Math.floor(Math.random() * 3)
+        for (let i = 0; i < n; i++) {
+          const t = c.currentTime + i * 0.18 + Math.random() * 0.05
+          const o = c.createOscillator(), og = c.createGain()
+          o.connect(og); og.connect(g)
+          const f = 2200 + Math.random() * 1200
+          o.frequency.setValueAtTime(f, t)
+          o.frequency.exponentialRampToValueAtTime(f * 1.4, t + 0.08)
+          og.gain.setValueAtTime(0.05, t)
+          og.gain.exponentialRampToValueAtTime(0.001, t + 0.12)
+          o.start(t); o.stop(t + 0.15)
+        }
+        amb.timer = setTimeout(chirp, 5000 + Math.random() * 7000)
+      }
+      amb.timer = setTimeout(chirp, 1500)
+    } else if (kind === 'crickets') {
+      // 每 2~5 秒三連微弱蟲鳴
+      g.gain.value = 1
+      const chirp = () => {
+        if (amb.cancelled || muted) return
+        for (let i = 0; i < 3; i++) {
+          const t = c.currentTime + i * 0.09
+          const o = c.createOscillator(), og = c.createGain()
+          o.type = 'triangle'
+          o.connect(og); og.connect(g)
+          o.frequency.setValueAtTime(4200, t)
+          og.gain.setValueAtTime(0.028, t)
+          og.gain.exponentialRampToValueAtTime(0.001, t + 0.06)
+          o.start(t); o.stop(t + 0.08)
+        }
+        amb.timer = setTimeout(chirp, 2200 + Math.random() * 2800)
+      }
+      amb.timer = setTimeout(chirp, 1000)
+    }
+    _amb = amb
+  } catch { /* WebAudio 不可用就安靜跳過 */ }
+}

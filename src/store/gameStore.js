@@ -239,7 +239,11 @@ export const useGameStore = create(
           if (s.equippedHomeItems.includes(itemId)) {
             return { equippedHomeItems: s.equippedHomeItems.filter((id) => id !== itemId) }
           }
-          return { equippedHomeItems: [...s.equippedHomeItems, itemId] }
+          // 主題壁紙一次只能貼一款：貼新的自動收起舊的
+          const base = itemId.startsWith('theme_')
+            ? s.equippedHomeItems.filter((id) => !id.startsWith('theme_'))
+            : s.equippedHomeItems
+          return { equippedHomeItems: [...base, itemId] }
         }),
 
       moveHomeDeco: (itemId, x, y, scale) =>

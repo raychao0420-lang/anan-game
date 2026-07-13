@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import html2canvas from 'html2canvas'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
-import { sfx } from '../utils/sound'
+import { sfx, startAmbient, stopAmbient } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
 import './HomeRoomScreen.css'
@@ -79,6 +80,15 @@ const WEATHER_MOODS = {
 }
 const MEET_DIST   = 13                    // 兩隻寵物多近算「相遇」(%)
 const MEET_EMOJIS = ['💕', '🎶', '✨']    // 相遇互動表情（好朋友水獺檔專屬 💞）
+
+// ── 第4彈：主題壁紙＋拍照＋環境音 ─────────────────────────────────────────
+// 主題壁紙（shop theme_* 擺放後整室換裝，一次一款）；各主題有「覺得像家」的寵物冒泡泡
+const THEME_IDS = { theme_forest: 'forest', theme_ocean: 'ocean', theme_space: 'space' }
+const THEME_MOODS = {
+  forest: { lulu: '🌿', kitsune: '🍄', beaver: '🪵', hamster: '🌰', mejiro: '🌸' },
+  ocean:  { hana: '🫧', kotaro: '🫧', seal: '🐟', penguin: '🐠' },
+  space:  { twinkle: '⭐', luna: '🌙', pluto: '🪐', xiaoq: '🔭', owl: '✨' },
+}
 
 const PET_CONFIG = {
   lulu:   { startPos: { x: 12, y: 50 }, bobDuration: 1.8, wanderInterval: 2800, burstEmoji: '🐾' },
@@ -311,7 +321,7 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
 
 // ── Wandering pet ─────────────────────────────────────────────────────────────
 
-function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100, weather = 'clear', reportPos, meetX = null }) {
+function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100, weather = 'clear', theme = null, reportPos, meetX = null }) {
   const cfg = PET_CONFIG[petId] ?? DEFAULT_PET_CONFIG
 
   // 這隻寵物會被吸引的家具（依個性）
@@ -456,12 +466,12 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
         </motion.div>
       )}
 
-      {/* 窗外天氣的心情泡泡（沒在玩家具時才冒） */}
-      {!activity && WEATHER_MOODS[weather]?.[petId] && (
+      {/* 窗外天氣／主題壁紙的心情泡泡（沒在玩家具時才冒；天氣優先） */}
+      {!activity && (WEATHER_MOODS[weather]?.[petId] || THEME_MOODS[theme]?.[petId]) && (
         <motion.div className="room-pet-weather"
           animate={{ y: [0, -5, 0] }}
           transition={{ repeat: Infinity, duration: 1.6 }}>
-          {WEATHER_MOODS[weather][petId]}
+          {WEATHER_MOODS[weather]?.[petId] || THEME_MOODS[theme]?.[petId]}
         </motion.div>
       )}
 
@@ -533,6 +543,38 @@ export default function HomeRoomScreen({ onNavigate }) {
     setPetPositions((prev) => (prev[id]?.x === p.x && prev[id]?.y === p.y ? prev : { ...prev, [id]: p }))
   }, [])
 
+  // 環境音：雨聲 / 風雪 / 白天鳥叫 / 夜晚蟲鳴（離開房間自動停）
+  useEffect(() => {
+    const kind = weather === 'rain' ? 'rain'
+      : weather === 'snow' ? 'wind'
+      : phase === 'night' ? 'crickets' : 'birds'
+    startAmbient(kind)
+    return stopAmbient
+  }, [weather, phase])
+
+  // 拍照模式：隱藏 UI → html2canvas 拍下房間 → 拍立得預覽
+  const [snapping, setSnapping] = useState(false)
+  const [photo, setPhoto] = useState(null)
+  const takePhoto = async () => {
+    sfx.click()
+    setSnapping(true)
+    await new Promise((r) => setTimeout(r, 120))   // 等 UI 隱藏
+    try {
+      const canvas = await html2canvas(containerRef.current, { backgroundColor: null, scale: 2, logging: false })
+      setPhoto(canvas.toDataURL('image/png'))
+      sfx.coins()
+    } catch (e) {
+      void e
+    }
+    setSnapping(false)
+  }
+  const downloadPhoto = () => {
+    const a = document.createElement('a')
+    a.href = photo
+    a.download = `anan-home-${new Date().toISOString().slice(0, 10)}.png`
+    a.click()
+  }
+
   // iOS 13+ 陀螺儀需要使用者手勢授權，顯示一顆「體感」按鈕
   const [gyroNeed, setGyroNeed] = useState(false)
   useEffect(() => {
@@ -578,7 +620,11 @@ export default function HomeRoomScreen({ onNavigate }) {
 
   const unlockedPets = Object.entries(pets).filter(([, data]) => data.unlocked)
 
+  // 主題壁紙不當家具擺、改成整室換裝
+  const activeTheme = equippedHomeItems.map((id) => THEME_IDS[id]).find(Boolean) ?? null
+
   const homeDecos = equippedHomeItems
+    .filter(id => !THEME_IDS[id])
     .map(id => SHOP_ITEMS.find(i => i.id === id))
     .filter(Boolean)
 
@@ -635,7 +681,7 @@ export default function HomeRoomScreen({ onNavigate }) {
 
       {/* 進場運鏡：鏡頭從遠處緩緩推進 */}
       <motion.div
-        className={`room-scene phase-${phase} weather-${weather}`}
+        className={`room-scene phase-${phase} weather-${weather}${activeTheme ? ` theme-${activeTheme}` : ''}${snapping ? ' snapping' : ''}`}
         ref={containerRef}
         initial={{ scale: 1.16, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -709,6 +755,7 @@ export default function HomeRoomScreen({ onNavigate }) {
               onPetClick={handlePetClick}
               mood={petMoods?.[petId] ?? 80}
               weather={weather}
+              theme={activeTheme}
               reportPos={reportPos}
               meetX={meetPartner[petId] ?? null}
             />
@@ -752,7 +799,43 @@ export default function HomeRoomScreen({ onNavigate }) {
             📱 開啟體感
           </motion.button>
         )}
+
+        {/* 拍照按鈕＋快門閃光 */}
+        {!snapping && !photo && (
+          <motion.button className="room-photo-btn" whileTap={{ scale: 0.85 }} onClick={takePhoto} aria-label="拍照">
+            📸
+          </motion.button>
+        )}
+        <AnimatePresence>
+          {snapping && (
+            <motion.div className="room-photo-flash"
+              initial={{ opacity: 0 }} animate={{ opacity: [0, 1, 0] }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.45 }} />
+          )}
+        </AnimatePresence>
       </motion.div>
+
+      {/* 拍立得預覽 */}
+      <AnimatePresence>
+        {photo && (
+          <motion.div className="room-photo-modal" onClick={() => setPhoto(null)}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="room-polaroid" onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.6, rotate: -8, y: 60 }} animate={{ scale: 1, rotate: -2, y: 0 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 18 }}>
+              <img src={photo} alt="我的家紀念照" />
+              <div className="room-polaroid-caption">
+                🏠 安安的家 · {new Date().toLocaleDateString('zh-TW')}
+              </div>
+              <div className="room-polaroid-btns">
+                <button onClick={downloadPhoto}>💾 儲存照片</button>
+                <button onClick={() => { sfx.click(); setPhoto(null) }}>✕ 關閉</button>
+              </div>
+              <div className="room-polaroid-hint">平板可以長按照片存到相簿喔</div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

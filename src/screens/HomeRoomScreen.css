@@ -668,6 +668,161 @@
   -webkit-box-reflect: below -16px linear-gradient(transparent 64%, rgba(0, 0, 0, 0.16));
 }
 
+/* ══ 第4彈：主題壁紙（森林/海底/太空整室換裝） ══════════════════ */
+/* 🌲 森林小屋 */
+.theme-forest .room-wall {
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 54px,
+      rgba(90, 140, 60, 0.12) 54px, rgba(90, 140, 60, 0.12) 55px),
+    linear-gradient(180deg, #ecf7d9 0%, #cde6a5 100%);
+  border-bottom-color: #5e8c3e;
+}
+.theme-forest .room-floor-wrap {
+  background: linear-gradient(180deg, #79a24e 0%, #8ab35e 35%, #9cc470 100%);
+}
+.theme-forest .room-floor-grid {
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 39px,
+      rgba(40, 72, 18, 0.14) 39px, rgba(40, 72, 18, 0.14) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px,
+      rgba(40, 72, 18, 0.09) 39px, rgba(40, 72, 18, 0.09) 40px);
+}
+.theme-forest .room-window,
+.theme-forest .room-window-sill { border-color: #6d8f42; }
+
+/* 🐚 海底世界 */
+.theme-ocean .room-wall {
+  background:
+    radial-gradient(9px 9px at 16% 34%, rgba(255, 255, 255, 0.3) 40%, transparent 42%),
+    radial-gradient(6px 6px at 78% 22%, rgba(255, 255, 255, 0.28) 40%, transparent 42%),
+    radial-gradient(5px 5px at 60% 62%, rgba(255, 255, 255, 0.25) 40%, transparent 42%),
+    radial-gradient(7px 7px at 90% 70%, rgba(255, 255, 255, 0.22) 40%, transparent 42%),
+    linear-gradient(180deg, #cdf2f7 0%, #8fd4e4 100%);
+  border-bottom-color: #3f8ea6;
+}
+.theme-ocean .room-floor-wrap {
+  background: linear-gradient(180deg, #ddc084 0%, #e6cd96 35%, #efdaab 100%);
+}
+.theme-ocean .room-floor-grid {
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 39px,
+      rgba(120, 90, 30, 0.13) 39px, rgba(120, 90, 30, 0.13) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px,
+      rgba(120, 90, 30, 0.08) 39px, rgba(120, 90, 30, 0.08) 40px);
+}
+
+/* 🚀 太空艙 */
+.theme-space .room-wall {
+  background:
+    radial-gradient(1.6px 1.6px at 12% 28%, #fff 50%, transparent 52%),
+    radial-gradient(1.3px 1.3px at 34% 60%, #fff 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 58% 22%, #fff 50%, transparent 52%),
+    radial-gradient(1.2px 1.2px at 82% 48%, #fff 50%, transparent 52%),
+    radial-gradient(1.4px 1.4px at 92% 18%, #fff 50%, transparent 52%),
+    linear-gradient(180deg, #141b3f 0%, #26336c 100%);
+  border-bottom-color: #4a5a9c;
+}
+.theme-space .room-floor-wrap {
+  background: linear-gradient(180deg, #49547a 0%, #576390 35%, #6673a3 100%);
+}
+.theme-space .room-floor-grid {
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 39px,
+      rgba(150, 190, 255, 0.13) 39px, rgba(150, 190, 255, 0.13) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px,
+      rgba(150, 190, 255, 0.08) 39px, rgba(150, 190, 255, 0.08) 40px);
+}
+.theme-space .room-window { border-color: #8a93b8; }
+.theme-space .rw-bars::before, .theme-space .rw-bars::after { background: #8a93b8; }
+.theme-space .room-window-sill { background: linear-gradient(180deg, #9aa3c4 0%, #6d7799 100%); }
+.theme-space .room-pet-name, .theme-space .room-deco-label { background: rgba(255, 255, 255, 0.85); }
+
+/* ══ 第4彈：拍照模式 ══════════════════════════════════════════ */
+.room-photo-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 14px;
+  z-index: 140;
+  border: none;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  font-size: 1.35rem;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+
+.room-photo-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  z-index: 150;
+  pointer-events: none;
+}
+
+/* 拍照瞬間隱藏 UI（名牌/標籤/按鈕都不入鏡） */
+.room-scene.snapping .room-pet-name,
+.room-scene.snapping .room-deco-label,
+.room-scene.snapping .room-empty-hint,
+.room-scene.snapping .room-gyro-btn,
+.room-scene.snapping .room-photo-btn { display: none; }
+
+.room-photo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(40, 25, 10, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.room-polaroid {
+  background: #fff;
+  padding: 14px 14px 10px;
+  border-radius: 6px;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.4);
+  max-width: min(78vw, 460px);
+  text-align: center;
+}
+.room-polaroid img {
+  width: 100%;
+  display: block;
+  border-radius: 3px;
+  background: #f4ede2;
+}
+.room-polaroid-caption {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #6b5335;
+  padding: 10px 0 6px;
+}
+.room-polaroid-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding-bottom: 6px;
+}
+.room-polaroid-btns button {
+  border: none;
+  border-radius: 14px;
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  background: #ffb45c;
+  color: #5c3a10;
+}
+.room-polaroid-btns button:last-child { background: #eee0cc; }
+.room-polaroid-hint {
+  font-size: 0.68rem;
+  color: #a08560;
+  padding-bottom: 4px;
+}
+
 /* ── iPad 體感授權鈕 ── */
 .room-gyro-btn {
   position: absolute;
