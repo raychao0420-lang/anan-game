@@ -35,6 +35,41 @@ function getDayPhase() {
   return 'night'
 }
 
+// ── 第2彈：窗外的世界（天氣＋飛過的訪客） ──────────────────────────────────
+// 每次進房間隨機一種天氣；點窗戶可以手動換天氣（彩虹只在白天/黃昏出現）
+function pickWeather(phase) {
+  const r = Math.random()
+  if (phase === 'night') return r < 0.62 ? 'clear' : r < 0.84 ? 'rain' : 'snow'
+  return r < 0.5 ? 'clear' : r < 0.7 ? 'rain' : r < 0.85 ? 'snow' : 'rainbow'
+}
+
+// 窗外訪客：依時段輪替；🕊️ 白色信天翁＝S5 飛飛彩蛋（壞天氣只有牠敢飛）
+const WINDOW_VISITORS = {
+  day: [
+    { e: '🐦', dur: 7,   w: 34, size: '1.05rem', flip: true },
+    { e: '🦋', dur: 12,  w: 18, size: '0.95rem' },
+    { e: '🎈', dur: 26,  w: 9,  size: '1.5rem' },
+    { e: '🕊️', dur: 10,  w: 7,  size: '1.35rem', flip: true, feifei: true },
+  ],
+  dusk: [
+    { e: '🐦', dur: 7,   w: 26, size: '1.05rem', flip: true },
+    { e: '🎈', dur: 26,  w: 10, size: '1.5rem' },
+    { e: '🕊️', dur: 10,  w: 8,  size: '1.35rem', flip: true, feifei: true },
+  ],
+  night: [
+    { e: '🌠', dur: 1.5, w: 30, size: '1.2rem',  shoot: true },
+    { e: '🦉', dur: 9,   w: 12, size: '1.15rem', flip: true },
+    { e: '🕊️', dur: 11,  w: 6,  size: '1.35rem', flip: true, feifei: true },
+  ],
+}
+
+function pickVisitor(list) {
+  const total = list.reduce((s, v) => s + v.w, 0)
+  let r = Math.random() * total
+  for (const v of list) { r -= v.w; if (r < 0) return v }
+  return list[0]
+}
+
 const PET_CONFIG = {
   lulu:   { startPos: { x: 12, y: 50 }, bobDuration: 1.8, wanderInterval: 2800, burstEmoji: '🐾' },
   hana:   { startPos: { x: 44, y: 54 }, bobDuration: 2.1, wanderInterval: 3500, burstEmoji: '💙' },
@@ -430,6 +465,35 @@ export default function HomeRoomScreen({ onNavigate }) {
     return () => clearInterval(t)
   }, [])
 
+  // 窗外天氣（進房隨機，點窗戶手動切換）＋不定時飛過的訪客
+  const [weather, setWeather] = useState(() => pickWeather(getDayPhase()))
+  const [visitor, setVisitor] = useState(null)
+  const visitorRef = useRef(null)
+  useEffect(() => { visitorRef.current = visitor }, [visitor])
+
+  useEffect(() => {
+    const spawn = () => {
+      if (visitorRef.current) return
+      const stormy = weather === 'rain' || weather === 'snow'
+      if (Math.random() > (stormy ? 0.22 : 0.55)) return
+      const list = stormy
+        ? WINDOW_VISITORS[phase].filter((v) => v.feifei)   // 壞天氣只有信天翁敢飛（S5 飛飛彩蛋）
+        : WINDOW_VISITORS[phase]
+      if (!list.length) return
+      const v = pickVisitor(list)
+      setVisitor({ ...v, key: Date.now(), top: 10 + Math.random() * 32 })
+    }
+    spawn()
+    const t = setInterval(spawn, 8000)
+    return () => clearInterval(t)
+  }, [phase, weather])
+
+  const cycleWeather = () => {
+    sfx.click()
+    const opts = phase === 'night' ? ['clear', 'rain', 'snow'] : ['clear', 'rain', 'snow', 'rainbow']
+    setWeather((w) => opts[(opts.indexOf(w) + 1) % opts.length])
+  }
+
   // iOS 13+ 陀螺儀需要使用者手勢授權，顯示一顆「體感」按鈕
   const [gyroNeed, setGyroNeed] = useState(false)
   useEffect(() => {
@@ -514,7 +578,7 @@ export default function HomeRoomScreen({ onNavigate }) {
 
       {/* 進場運鏡：鏡頭從遠處緩緩推進 */}
       <motion.div
-        className={`room-scene phase-${phase}`}
+        className={`room-scene phase-${phase} weather-${weather}`}
         ref={containerRef}
         initial={{ scale: 1.16, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -522,10 +586,39 @@ export default function HomeRoomScreen({ onNavigate }) {
       >
         {/* Isometric room background layers（視差：背景反向微移） */}
         <div className="room-wall" />
-        <div className="room-window">
-          <span className="room-window-orb">{phase === 'night' ? '🌙' : '☀️'}</span>
-          <span className="room-window-cloud">☁️</span>
+
+        {/* 大觀景窗：窗外天空反向視差＋天氣＋遠山＋飛過的訪客；點窗戶換天氣 */}
+        <div className="room-window" onClick={cycleWeather} role="button" aria-label="點一下換天氣">
+          <div className="room-window-sky">
+            <span className="rw-orb">{phase === 'night' ? '🌙' : '☀️'}</span>
+            <span className="rw-cloud c1">☁️</span>
+            <span className="rw-cloud c2">☁️</span>
+            <span className="rw-cloud c3">🌥️</span>
+            {weather === 'rainbow' && phase !== 'night' && <span className="rw-rainbow">🌈</span>}
+            <AnimatePresence>
+              {visitor && (
+                <motion.span
+                  key={visitor.key}
+                  className={`rw-visitor ${visitor.feifei ? 'rw-feifei' : ''}`}
+                  style={{ fontSize: visitor.size }}
+                  initial={{ left: '-16%', top: `${visitor.top}%`, opacity: 1 }}
+                  animate={{ left: '112%', top: `${visitor.shoot ? visitor.top + 36 : visitor.top}%` }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: visitor.dur, ease: visitor.shoot ? 'easeIn' : 'linear' }}
+                  onAnimationComplete={() => setVisitor(null)}
+                >
+                  <span className={visitor.flip ? 'rw-flip' : ''}>{visitor.e}</span>
+                </motion.span>
+              )}
+            </AnimatePresence>
+            <div className="rw-hills" />
+            {weather === 'rain' && <div className="rw-rain" />}
+            {weather === 'snow' && <div className="rw-snow" />}
+          </div>
+          <div className="rw-bars" />
         </div>
+        <div className="room-window-sill" />
+        <div className="room-window-light" />
         <div className="room-floor-wrap">
           <div className="room-floor-grid" />
         </div>

@@ -369,7 +369,10 @@
   transform: translate(calc(var(--par-x) * 6px), calc(var(--par-y) * 3px));
   transition: transform 0.25s ease-out;
   will-change: transform;
+  pointer-events: none;           /* 容器不吃點擊（讓窗戶可點），家具/寵物自己開回來 */
 }
+.room-actors .room-deco,
+.room-actors .room-pet { pointer-events: auto; }
 .room-fore {
   position: absolute;
   inset: -24px;
@@ -381,60 +384,224 @@
   will-change: transform;
 }
 
-/* ── 牆上的窗戶：白天藍天流雲 / 黃昏橘霞 / 夜晚星空 ── */
+/* ── 第2彈：大觀景窗＋窗外的世界（天氣/遠山/訪客/窗光） ─────────────── */
 .room-window {
   position: absolute;
-  top: 5%;
-  left: 39%;
-  width: 96px;
-  height: 72px;
-  border: 5px solid #a8763e;
-  border-radius: 12px;
+  top: 3.5%;
+  left: 28%;
+  width: 44%;
+  height: 27%;
+  border: 6px solid #a8763e;
+  border-radius: 14px;
   overflow: hidden;
-  pointer-events: none;
+  pointer-events: auto;         /* 點窗戶換天氣 */
+  cursor: pointer;
   z-index: 2;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18), inset 0 0 12px rgba(255, 255, 255, 0.35);
-  background: linear-gradient(180deg, #7ec8f7 0%, #b3e3ff 65%, #e2f5ff 100%);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2), inset 0 0 14px rgba(255, 255, 255, 0.3);
+  background: #7ec8f7;
 }
-.room-window::before {
+
+/* 十字窗框 */
+.rw-bars { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.rw-bars::before {
   content: '';
   position: absolute;
   top: 0; bottom: 0;
-  left: calc(50% - 2px);
-  width: 4px;
+  left: calc(50% - 2.5px);
+  width: 5px;
   background: #a8763e;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
 }
-.phase-dusk .room-window {
+.rw-bars::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(55% - 2.5px);
+  height: 5px;
+  background: #a8763e;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+}
+
+/* 窗外天空：反向視差＋放大裁切 → 有「往窗外看」的深度 */
+.room-window-sky {
+  position: absolute;
+  inset: 0;
+  transform: translate(calc(var(--par-x) * 9px), calc(var(--par-y) * 5px)) scale(1.12);
+  transition: transform 0.25s ease-out, background 1.2s, filter 0.8s;
+  will-change: transform;
+  background: linear-gradient(180deg, #6bbdf5 0%, #a8dcff 55%, #dff3ff 100%);
+}
+.phase-dusk .room-window-sky {
   background: linear-gradient(180deg, #ff9e6d 0%, #ffc37e 60%, #ffe3a8 100%);
 }
-.phase-night .room-window {
+.phase-night .room-window-sky {
   background:
-    radial-gradient(1.6px 1.6px at 22% 30%, #fff 50%, transparent 51%),
-    radial-gradient(1.4px 1.4px at 68% 22%, #fff 50%, transparent 51%),
-    radial-gradient(1.2px 1.2px at 44% 58%, #fff 50%, transparent 51%),
-    radial-gradient(1.4px 1.4px at 84% 62%, #fff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 12% 30%, #fff 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 30% 14%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 44% 42%, #fff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 58% 20%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 72% 38%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 88% 16%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 22% 52%, #fff 50%, transparent 51%),
     linear-gradient(180deg, #1b2a5a 0%, #2e3f7a 100%);
 }
-.room-window-orb {
+/* 陰天（雨/雪）窗外變暗 */
+.weather-rain .room-window-sky { filter: brightness(0.82) saturate(0.72); }
+.weather-snow .room-window-sky { filter: brightness(0.94) saturate(0.6); }
+
+.rw-orb {
   position: absolute;
-  top: 7px;
-  right: 11px;
-  font-size: 1.25rem;
-  filter: drop-shadow(0 0 6px rgba(255, 240, 160, 0.9));
+  top: 9%;
+  right: 12%;
+  font-size: 1.9rem;
+  filter: drop-shadow(0 0 8px rgba(255, 240, 160, 0.9));
 }
-.room-window-cloud {
+.weather-rain .rw-orb, .weather-snow .rw-orb { display: none; }
+
+/* 流雲三朵：不同高度、大小、速度 */
+.rw-cloud { position: absolute; opacity: 0.92; pointer-events: none; }
+.rw-cloud.c1 { top: 16%; font-size: 1.3rem;  animation: rw-cloud 34s linear infinite; }
+.rw-cloud.c2 { top: 38%; font-size: 0.95rem; animation: rw-cloud 48s linear infinite; animation-delay: -18s; }
+.rw-cloud.c3 { top: 8%;  font-size: 1.1rem;  animation: rw-cloud 60s linear infinite; animation-delay: -40s; }
+@keyframes rw-cloud {
+  from { left: -22%; }
+  to   { left: 108%; }
+}
+.phase-night .rw-cloud { opacity: 0.2; }
+.weather-rain .rw-cloud { filter: grayscale(0.6) brightness(0.7); }
+
+/* 遠山剪影＋夜晚山腳小燈 */
+.rw-hills {
   position: absolute;
-  top: 30px;
-  left: -32px;
-  font-size: 1.05rem;
-  opacity: 0.9;
-  animation: cloud-drift 26s linear infinite;
+  bottom: -4%;
+  left: -8%; right: -8%;
+  height: 42%;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 100% at 26% 100%, #8fbf72 0%, #8fbf72 99%, transparent 100%),
+    radial-gradient(66% 88% at 76% 100%, #649a55 0%, #649a55 99%, transparent 100%);
+  transition: filter 1.2s;
 }
-.phase-night .room-window-cloud { opacity: 0.22; }
-@keyframes cloud-drift {
-  from { transform: translateX(0); }
-  to   { transform: translateX(160px); }
+.phase-dusk .rw-hills  { filter: brightness(0.72) saturate(0.85) hue-rotate(-12deg); }
+.phase-night .rw-hills { filter: brightness(0.38) saturate(0.55); }
+.weather-snow .rw-hills { filter: brightness(1.25) saturate(0.35); }
+/* 夜晚遠方人家亮起兩盞小燈 */
+.phase-night .rw-hills::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(2.5px 2.5px at 30% 62%, #ffd980 60%, transparent 62%),
+    radial-gradient(2px 2px at 68% 70%, #ffd980 60%, transparent 62%);
+  filter: none;
+  animation: lamp-flicker 3.2s ease-in-out infinite;
 }
+
+/* 雨絲（斜線紋往下跑） */
+.rw-rain {
+  position: absolute;
+  inset: -25% 0 0 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    105deg,
+    transparent 0px, transparent 9px,
+    rgba(205, 228, 255, 0.5) 9px, rgba(205, 228, 255, 0.5) 10.5px
+  );
+  animation: rw-rain-fall 0.55s linear infinite;
+}
+@keyframes rw-rain-fall {
+  from { transform: translateY(-14px); }
+  to   { transform: translateY(0); }
+}
+
+/* 雪花（白點飄落） */
+.rw-snow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(3px 3px at 18% 12%, #fff 50%, transparent 52%),
+    radial-gradient(2.4px 2.4px at 52% 30%, #fff 50%, transparent 52%),
+    radial-gradient(2px 2px at 80% 8%, #fff 50%, transparent 52%),
+    radial-gradient(2.6px 2.6px at 34% 58%, #fff 50%, transparent 52%),
+    radial-gradient(2px 2px at 68% 76%, #fff 50%, transparent 52%),
+    radial-gradient(2.4px 2.4px at 92% 48%, #fff 50%, transparent 52%);
+  background-size: 100% 90px;
+  animation: rw-snow-fall 4.2s linear infinite;
+}
+@keyframes rw-snow-fall {
+  from { background-position: 0 -90px; }
+  to   { background-position: 0 0; }
+}
+
+/* 彩虹（從山丘後面升起） */
+.rw-rainbow {
+  position: absolute;
+  bottom: 30%;
+  left: 12%;
+  font-size: 3.4rem;
+  opacity: 0.95;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
+}
+
+/* 窗外訪客（小鳥/蝴蝶/熱氣球/流星/貓頭鷹/信天翁飛飛） */
+.rw-visitor {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+}
+.rw-flip { display: inline-block; transform: scaleX(-1); }
+.rw-feifei { filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.95)); }
+
+/* 窗台＋盆栽 */
+.room-window-sill {
+  position: absolute;
+  top: calc(3.5% + 27%);
+  left: 26.5%;
+  width: 47%;
+  height: 9px;
+  border-radius: 3px 3px 5px 5px;
+  background: linear-gradient(180deg, #b98449 0%, #8f5a2b 100%);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+  z-index: 2;
+  transform: translate(calc(var(--par-x) * -13px), calc(var(--par-y) * -8px));
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+.room-window-sill::after {
+  content: '🪴';
+  position: absolute;
+  left: 1.5%;
+  top: -24px;
+  font-size: 1.35rem;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.18));
+}
+
+/* 窗光灑在地板上（跟著時段與天氣變化） */
+.room-window-light {
+  position: absolute;
+  top: 40%;
+  left: 33%;
+  width: 36%;
+  height: 30%;
+  transform: skewX(-22deg);
+  pointer-events: none;
+  z-index: 2;
+  filter: blur(7px);
+  background: linear-gradient(180deg, rgba(255, 244, 200, 0.3) 0%, rgba(255, 244, 200, 0.04) 100%);
+  transition: background 1.2s ease, opacity 1.2s ease;
+}
+.phase-dusk .room-window-light {
+  background: linear-gradient(180deg, rgba(255, 186, 110, 0.26) 0%, rgba(255, 186, 110, 0.03) 100%);
+}
+.phase-night .room-window-light {
+  background: linear-gradient(180deg, rgba(175, 200, 255, 0.15) 0%, rgba(175, 200, 255, 0.02) 100%);
+}
+.weather-rain .room-window-light, .weather-snow .room-window-light { opacity: 0.35; }
 
 /* ── 晝夜色調層（multiply 讓整室變色，夜晚偏藍、黃昏偏橘） ── */
 .room-tint {
