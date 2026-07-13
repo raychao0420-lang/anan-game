@@ -90,6 +90,16 @@ const THEME_MOODS = {
   space:  { twinkle: '⭐', luna: '🌙', pluto: '🪐', xiaoq: '🔭', owl: '✨' },
 }
 
+// ── 第5彈：跟寵物玩（丟零食＋玩具球＋摸摸加心情） ─────────────────────────
+// 點🍪/🎾再點地板丟出去：零食大家都愛搶著吃（心情+8）；球只有愛玩的寵物會去追，
+// 追到就往別處踢（最後一腳心情+5）。摸寵物也會心情+2。
+const BALL_CHASERS = ['lulu', 'monkey', 'hamster', 'dino', 'kotaro', 'hana', 'kitsune', 'seal']
+const TOY_TOOLS = {
+  treat: { emoji: '🍪', hint: '點地板，把零食丟過去！' },
+  ball:  { emoji: '🎾', hint: '點地板，把球丟過去！' },
+}
+const chasesToy = (petId, toy) => !!toy && (toy.kind === 'treat' || BALL_CHASERS.includes(petId))
+
 const PET_CONFIG = {
   lulu:   { startPos: { x: 12, y: 50 }, bobDuration: 1.8, wanderInterval: 2800, burstEmoji: '🐾' },
   hana:   { startPos: { x: 44, y: 54 }, bobDuration: 2.1, wanderInterval: 3500, burstEmoji: '💙' },
@@ -321,7 +331,7 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
 
 // ── Wandering pet ─────────────────────────────────────────────────────────────
 
-function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100, weather = 'clear', theme = null, reportPos, meetX = null }) {
+function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100, weather = 'clear', theme = null, reportPos, meetX = null, toy = null, onToyReach }) {
   const cfg = PET_CONFIG[petId] ?? DEFAULT_PET_CONFIG
 
   // 這隻寵物會被吸引的家具（依個性）
@@ -343,8 +353,16 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
   const weatherRef = useRef(weather)
   useEffect(() => { weatherRef.current = weather }, [weather])
 
+  const toyRef = useRef(toy)
+  useEffect(() => { toyRef.current = toy }, [toy])
+
   // 位置回報給父層做「寵物相遇」偵測
   useEffect(() => { reportPos?.(petId, pos) }, [petId, pos, reportPos])
+
+  // 追到零食/球了 → 通知父層處理（吃掉／踢走）
+  useEffect(() => {
+    if (chasesToy(petId, toy) && Math.hypot(pos.x - toy.x, pos.y - toy.y) < 8) onToyReach?.(petId, toy)
+  }, [petId, pos, toy, onToyReach])
 
   // 現在正在「使用中」的家具（在附近就算）
   const activeDeco = myDecos.find((d) => Math.hypot(pos.x - d.x, pos.y - d.y) < ACTIVITY_RADIUS)
@@ -376,7 +394,12 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
         }
 
         let dx, dy
-        if (target) {
+        const t5 = toyRef.current
+        if (chasesToy(petId, t5)) {
+          // 有零食/球在地上：放下手邊的事衝過去
+          dx = (t5.x - prev.x) * 0.75 + (Math.random() - 0.5) * 4
+          dy = (t5.y - prev.y) * 0.75 + (Math.random() - 0.5) * 3
+        } else if (target) {
           // 雨天躲帳篷要真的鑽進去（抵達半徑收緊），平常在家具旁玩就好
           const arriveR = (petId === 'lulu' && weatherRef.current === 'rain' && target.id === 'tent') ? 7 : ACTIVITY_RADIUS
           const near = Math.hypot(prev.x - target.x, prev.y - target.y) < arriveR
@@ -498,7 +521,7 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
 // ── Main screen ───────────────────────────────────────────────────────────────
 
 export default function HomeRoomScreen({ onNavigate }) {
-  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods } = useGameStore()
+  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood } = useGameStore()
   const containerRef = useRef(null)
 
   // 晝夜光線（每分鐘檢查一次）
@@ -531,11 +554,59 @@ export default function HomeRoomScreen({ onNavigate }) {
     return () => clearInterval(t)
   }, [phase, weather])
 
-  const cycleWeather = () => {
+  const cycleWeather = (e) => {
+    e.stopPropagation()   // 丟零食模式下點窗戶只換天氣，不丟東西
     sfx.click()
     const opts = phase === 'night' ? ['clear', 'rain', 'snow'] : ['clear', 'rain', 'snow', 'rainbow']
     setWeather((w) => opts[(opts.indexOf(w) + 1) % opts.length])
   }
+
+  // ── 第5彈：丟零食／玩具球 ──
+  const [tool, setTool]   = useState(null)   // 'treat' | 'ball'：按了按鈕等著點地板
+  const [toy, setToy]     = useState(null)   // 地上的零食/球 {kind,x,y,key,kicks}
+  const [toyFx, setToyFx] = useState(null)   // 吃掉/踢完的表情特效
+  const toyKeyRef = useRef(null)             // 防兩隻寵物同時搶到重複觸發
+
+  const throwToy = (e) => {
+    if (!tool) return
+    const r = containerRef.current.getBoundingClientRect()
+    const x = Math.max(10, Math.min(74, (e.clientX - r.left) / r.width * 100))
+    const y = Math.max(45, Math.min(64, (e.clientY - r.top) / r.height * 100))
+    setToy({ kind: tool, x, y, key: Date.now(), kicks: tool === 'ball' ? 3 : 0 })
+    ;(tool === 'ball' ? sfx.boing : sfx.click)()
+    setTool(null)
+  }
+
+  const onToyReach = useCallback((petId, t) => {
+    if (toyKeyRef.current === t.key) return
+    toyKeyRef.current = t.key
+    if (t.kind === 'treat') {
+      sfx.munch()
+      updatePetMood(petId, 8)
+      setToyFx({ x: t.x, y: t.y, emoji: '😋', key: t.key })
+      setToy(null)
+    } else if (t.kicks > 0) {
+      sfx.boing()   // 追到球 → 往別處踢，再追！
+      setToy({ kind: 'ball', x: 10 + Math.random() * 62, y: 45 + Math.random() * 18, key: Date.now(), kicks: t.kicks - 1 })
+    } else {
+      sfx.coins()
+      updatePetMood(petId, 5)
+      setToyFx({ x: t.x, y: t.y, emoji: '🌟', key: t.key })
+      setToy(null)
+    }
+  }, [updatePetMood])
+
+  // 沒寵物理它就自動收走；特效秀完自動消失
+  useEffect(() => {
+    if (!toy) return
+    const t = setTimeout(() => setToy(null), 25000)
+    return () => clearTimeout(t)
+  }, [toy])
+  useEffect(() => {
+    if (!toyFx) return
+    const t = setTimeout(() => setToyFx(null), 1000)
+    return () => clearTimeout(t)
+  }, [toyFx])
 
   // 寵物位置回報 → 相遇偵測（兩隻靠近就冒互動表情、面對面）
   const [petPositions, setPetPositions] = useState({})
@@ -647,6 +718,7 @@ export default function HomeRoomScreen({ onNavigate }) {
 
   const handlePetClick = (petId) => {
     sfx.pet(petId)
+    updatePetMood(petId, 2)   // 摸摸也會開心
   }
 
   // 相遇配對：任兩隻已解鎖寵物距離 < MEET_DIST
@@ -681,8 +753,9 @@ export default function HomeRoomScreen({ onNavigate }) {
 
       {/* 進場運鏡：鏡頭從遠處緩緩推進 */}
       <motion.div
-        className={`room-scene phase-${phase} weather-${weather}${activeTheme ? ` theme-${activeTheme}` : ''}${snapping ? ' snapping' : ''}`}
+        className={`room-scene phase-${phase} weather-${weather}${activeTheme ? ` theme-${activeTheme}` : ''}${snapping ? ' snapping' : ''}${tool ? ' throwing' : ''}`}
         ref={containerRef}
+        onClick={throwToy}
         initial={{ scale: 1.16, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
@@ -758,8 +831,33 @@ export default function HomeRoomScreen({ onNavigate }) {
               theme={activeTheme}
               reportPos={reportPos}
               meetX={meetPartner[petId] ?? null}
+              toy={toy}
+              onToyReach={onToyReach}
             />
           ))}
+
+          {/* 第5彈：地上的零食/球＋吃掉/踢完的表情 */}
+          {toy && (
+            <motion.div key={toy.key} className="room-toy"
+              style={{ left: `${toy.x}%`, top: `${toy.y}%`, zIndex: Math.round(toy.y) }}
+              initial={{ opacity: 0, scale: 0.4, y: -40 }}
+              animate={{ opacity: 1, scale: 1, y: [-40, 0, -12, 0, -5, 0] }}
+              transition={{ duration: 0.6 }}>
+              {toy.kind === 'treat' ? '🍪' : '🎾'}
+            </motion.div>
+          )}
+          <AnimatePresence>
+            {toyFx && (
+              <motion.div key={toyFx.key} className="room-toy-fx"
+                style={{ left: `${toyFx.x}%`, top: `${toyFx.y}%` }}
+                initial={{ opacity: 1, y: 0, scale: 0.7 }}
+                animate={{ opacity: 0, y: -46, scale: 1.5 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.9 }}>
+                {toyFx.emoji}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* 寵物相遇：兩隻靠近時中間冒互動表情 */}
           {meetings.map((m) => (
@@ -795,17 +893,34 @@ export default function HomeRoomScreen({ onNavigate }) {
 
         {/* iPad 體感視差授權鈕 */}
         {gyroNeed && (
-          <motion.button className="room-gyro-btn" whileTap={{ scale: 0.9 }} onClick={enableGyro}>
+          <motion.button className="room-gyro-btn" whileTap={{ scale: 0.9 }}
+            onClick={(e) => { e.stopPropagation(); enableGyro() }}>
             📱 開啟體感
           </motion.button>
         )}
 
         {/* 拍照按鈕＋快門閃光 */}
         {!snapping && !photo && (
-          <motion.button className="room-photo-btn" whileTap={{ scale: 0.85 }} onClick={takePhoto} aria-label="拍照">
+          <motion.button className="room-photo-btn" whileTap={{ scale: 0.85 }}
+            onClick={(e) => { e.stopPropagation(); takePhoto() }} aria-label="拍照">
             📸
           </motion.button>
         )}
+
+        {/* 第5彈：丟零食/丟球按鈕＋提示 */}
+        {!snapping && (
+          <div className="room-toy-btns">
+            {Object.entries(TOY_TOOLS).map(([k, t]) => (
+              <motion.button key={k} className={`room-toy-btn${tool === k ? ' armed' : ''}`}
+                whileTap={{ scale: 0.85 }}
+                onClick={(e) => { e.stopPropagation(); sfx.click(); setTool(tool === k ? null : k) }}
+                aria-label={t.hint}>
+                {t.emoji}
+              </motion.button>
+            ))}
+          </div>
+        )}
+        {tool && <div className="room-toy-hint">{TOY_TOOLS[tool].hint}</div>}
         <AnimatePresence>
           {snapping && (
             <motion.div className="room-photo-flash"

@@ -840,3 +840,66 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   cursor: pointer;
 }
+
+/* ── 第5彈：跟寵物玩（丟零食＋玩具球） ── */
+.room-scene.throwing { cursor: crosshair; }
+
+.room-toy-btns {
+  position: absolute;
+  left: 12px;
+  bottom: 14px;
+  z-index: 140;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.room-toy-btn {
+  border: none;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  font-size: 1.3rem;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+
+.room-toy-btn.armed {
+  background: #ffe08a;
+  box-shadow: 0 0 0 3px rgba(255, 200, 60, 0.85), 0 2px 10px rgba(0, 0, 0, 0.24);
+}
+
+.room-toy-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 140;
+  background: rgba(60, 40, 20, 0.78);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.room-toy {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.25));
+}
+
+.room-toy-fx {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 1.6rem;
+  z-index: 120;
+  pointer-events: none;
+}
+
+.room-scene.snapping .room-toy-btns,
+.room-scene.snapping .room-toy-hint { display: none; }
