@@ -5,6 +5,7 @@ import { SEASON2, BADGE_BOARD } from './series2'
 import { SEASON3, GEM_BOARD } from './series3'
 import { SEASON4, LICENSE_BOARD } from './series4'
 import { SEASON5, PASSPORT_BOARD } from './series5'
+import { SEASON6, PUZZLE_BOARD } from './series6'
 import { SERIES_TEACH } from './seriesTeach'
 
 function normalize(season, extra) {
@@ -72,5 +73,14 @@ export const SEASONS = [
     clueIcon: '✉️',
     subtitle: { zh: '第五季 · 已完結', en: 'Season 5 · Complete' },
     done: true,
+  }),
+  normalize(SEASON6, {
+    key: 'season6',
+    board: PUZZLE_BOARD,
+    collType: 'piece',                                   // 每集 ep.piece.id 收進 store.seriesPieces
+    collLabel: { zh: '台灣拼圖', en: 'Taiwan Puzzle' },
+    clueLabel: { zh: '小虎的腳印', en: "Little Tiger's Paw Prints" },
+    clueIcon: '🐾',
+    subtitle: { zh: '第六季 · 連載中', en: 'Season 6 · Ongoing' },
   }),
 ]

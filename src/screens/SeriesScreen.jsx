@@ -85,7 +85,7 @@ function TeachStep({ step, i, total }) {
 }
 
 export default function SeriesScreen({ onBack }) {
-  const { activePet, pets, petEquipment, petMoods, seriesSolved, seriesShards, seriesBadges, seriesGems, seriesSeals, seriesStamps,
+  const { activePet, pets, petEquipment, petMoods, seriesSolved, seriesShards, seriesBadges, seriesGems, seriesSeals, seriesStamps, seriesPieces,
           petEnergy, gainEnergy, spendEnergy,
           solveEpisode, updatePetMood, grantPet, grantItem } = useGameStore()
 
@@ -114,6 +114,7 @@ export default function SeriesScreen({ onBack }) {
                   : season?.collType === 'gem'   ? (seriesGems ?? [])
                   : season?.collType === 'seal'  ? (seriesSeals ?? [])
                   : season?.collType === 'stamp' ? (seriesStamps ?? [])
+                  : season?.collType === 'piece' ? (seriesPieces ?? [])
                   : (seriesShards ?? [])
   const boardKey = (item) => (season?.collType === 'shard' ? item.color : item.id)
 
@@ -187,8 +188,8 @@ export default function SeriesScreen({ onBack }) {
   const accuse = (id) => {
     if (id === ep.culprit) {
       sfx.unlock()
-      // 第三參數收 S1 碎片色、第四參數收 S2 星座徽章 id、第五參數收 S3 軌道寶石 id、第六參數收 S4 級別金印 id、第七參數收 S5 環遊紀念章 id（一集只會有其一）
-      solveEpisode(ep.id, ep.reward, ep.shard?.color, ep.badge?.id, ep.gem?.id, ep.seal?.id, ep.stamp?.id)
+      // 第三參數收 S1 碎片色、第四參數收 S2 星座徽章 id、第五參數收 S3 軌道寶石 id、第六參數收 S4 級別金印 id、第七參數收 S5 環遊紀念章 id、第八參數收 S6 台灣拼圖 id（一集只會有其一）
+      solveEpisode(ep.id, ep.reward, ep.shard?.color, ep.badge?.id, ep.gem?.id, ep.seal?.id, ep.stamp?.id, ep.piece?.id)
       updatePetMood(activePet, 15)
       const gotPet = ep.petReward ? grantPet(ep.petReward) : false
       setNewPet(gotPet ? ep.petReward : null)
@@ -200,8 +201,8 @@ export default function SeriesScreen({ onBack }) {
     }
   }
 
-  // 破案收集物（S1 碎片 / S2 徽章 / S3 寶石 / S4 金印 / S5 紀念章）通用取用
-  const gotCollectible = ep?.shard || ep?.badge || ep?.gem || ep?.seal || ep?.stamp
+  // 破案收集物（S1 碎片 / S2 徽章 / S3 寶石 / S4 金印 / S5 紀念章 / S6 台灣拼圖）通用取用
+  const gotCollectible = ep?.shard || ep?.badge || ep?.gem || ep?.seal || ep?.stamp || ep?.piece
 
   const backBtn = () => {
     if (phase === 'seasons') { stopSpeaking(); sfx.click(); onBack() }
