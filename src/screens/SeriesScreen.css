@@ -298,7 +298,7 @@
   font-family: inherit;
 }
 
-/* 分步驟教學：每一步一個編號圓圈 */
+/* 分步驟教學：每一步一個圖示（📖想一想 → 🧮算一算 → ✏️換你了） */
 .srs-tutor-step {
   display: flex;
   align-items: flex-start;
@@ -306,22 +306,44 @@
   padding: 6px 0;
 }
 .srs-tutor-step + .srs-tutor-step { border-top: 1px dashed #e3f1f8; }
-.srs-tutor-step-no {
+.srs-tutor-step .srs-bi { flex: 1 1 auto; }
+.srs-tutor-step .srs-zh { font-size: 0.98rem; line-height: 1.5; }
+.srs-step-tag {
   flex: 0 0 auto;
-  width: 22px;
-  height: 22px;
+  width: 46px;
   margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.srs-step-icon {
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: #7cc6ec;
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 900;
+  border: 2px solid #7cc6ec;
+  background: #eaf6fd;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.srs-tutor-step .srs-bi { flex: 1 1 auto; }
-.srs-tutor-step .srs-zh { font-size: 0.98rem; line-height: 1.5; }
+.srs-step-label { font-size: 0.62rem; font-weight: 900; color: #2b6f95; }
+.srs-step-tag.work .srs-step-icon { border-color: #f0b054; background: #fff4e2; }
+.srs-step-tag.work .srs-step-label { color: #a06a1c; }
+.srs-step-tag.turn .srs-step-icon { border-color: #7cd08a; background: #eafbef; }
+.srs-step-tag.turn .srs-step-label { color: #2e8a4d; }
+
+/* 教學文字裡自動變色的數字與運算符號 */
+.srs-t-num {
+  font-weight: 900;
+  color: #e0662b;
+  background: #fff1e5;
+  border-radius: 8px;
+  padding: 0 5px;
+  font-size: 1.06em;
+}
+.srs-t-op { font-weight: 900; color: #2b8ac0; font-size: 1.06em; padding: 0 2px; }
 
 /* ── 推理指認：偵探筆記證據板＋嫌疑人說詞（S3 EP2 起） ── */
 .srs-case-notes { margin: 12px 0; }

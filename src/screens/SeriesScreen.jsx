@@ -52,6 +52,38 @@ function Bi({ t, className = '' }) {
   )
 }
 
+// 教學文字裡的數字與運算符號自動變色放大，小孩一眼看到重點
+const MATH_RE = /(\d+(?:[.,]\d+)*|[×÷＋−＝=+])/g
+function renderMath(text) {
+  return text.split(MATH_RE).map((tok, i) => {
+    if (/^\d/.test(tok)) return <span key={i} className="srs-t-num">{tok}</span>
+    if (/^[×÷＋−＝=+]$/.test(tok)) return <span key={i} className="srs-t-op">{tok}</span>
+    return tok
+  })
+}
+
+// 教學步驟圖示：📖想一想（概念）→ 🧮算一算（列式）→ ✏️換你了（自己算）
+const STEP_TAGS = {
+  think: { icon: '📖', zh: '想一想', cls: 'think' },
+  work:  { icon: '🧮', zh: '算一算', cls: 'work' },
+  turn:  { icon: '✏️', zh: '換你了', cls: 'turn' },
+}
+function TeachStep({ step, i, total }) {
+  const tag = i === total - 1 ? STEP_TAGS.turn : i === 0 ? STEP_TAGS.think : STEP_TAGS.work
+  return (
+    <div className="srs-tutor-step">
+      <span className={`srs-step-tag ${tag.cls}`}>
+        <span className="srs-step-icon">{tag.icon}</span>
+        <span className="srs-step-label">{tag.zh}</span>
+      </span>
+      <div className="srs-bi">
+        <p className="srs-zh">{renderMath(step.zh)}</p>
+        <p className="srs-en">{renderMath(step.en)}<SpeakBtn text={step.en} /></p>
+      </div>
+    </div>
+  )
+}
+
 export default function SeriesScreen({ onBack }) {
   const { activePet, pets, petEquipment, petMoods, seriesSolved, seriesShards, seriesBadges, seriesGems, seriesSeals, seriesStamps,
           petEnergy, gainEnergy, spendEnergy,
@@ -375,10 +407,7 @@ export default function SeriesScreen({ onBack }) {
                         <div className="srs-tutor-steps">
                           {scene.puzzle.teach
                             ? scene.puzzle.teach.map((step, i) => (
-                                <div key={i} className="srs-tutor-step">
-                                  <span className="srs-tutor-step-no">{i + 1}</span>
-                                  <Bi t={step} />
-                                </div>
+                                <TeachStep key={i} step={step} i={i} total={scene.puzzle.teach.length} />
                               ))
                             : <Bi t={scene.puzzle.hint} />}
                         </div>
@@ -388,7 +417,7 @@ export default function SeriesScreen({ onBack }) {
 
                   {hint && !showTutor && (
                     <div className="dtv-hint">
-                      💡 {scene.puzzle.hint.zh}<br /><span className="srs-en">{scene.puzzle.hint.en}</span>
+                      💡 {renderMath(scene.puzzle.hint.zh)}<br /><span className="srs-en">{renderMath(scene.puzzle.hint.en)}</span>
                     </div>
                   )}
                 </>
@@ -401,10 +430,7 @@ export default function SeriesScreen({ onBack }) {
                     <div className="srs-notes">
                       <div className="srs-notes-title">🕵️ 偵探筆記 · 這題是怎麼破解的 Detective Notes</div>
                       {scene.puzzle.teach.map((step, i) => (
-                        <div key={i} className="srs-tutor-step">
-                          <span className="srs-tutor-step-no">{i + 1}</span>
-                          <Bi t={step} />
-                        </div>
+                        <TeachStep key={i} step={step} i={i} total={scene.puzzle.teach.length} />
                       ))}
                       <div className="srs-notes-ans">
                         ✨ 所以答案就是 {scene.puzzle.answer} {scene.puzzle.unit.zh}！
