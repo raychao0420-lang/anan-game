@@ -70,6 +70,7 @@ export const SEASONS = [
     collLabel: { zh: '環遊紀念章', en: 'Passport Stamps' },
     clueLabel: { zh: '感謝卡', en: 'Thank-You Cards' },
     clueIcon: '✉️',
-    subtitle: { zh: '第五季 · 連載中', en: 'Season 5 · Ongoing' },
+    subtitle: { zh: '第五季 · 已完結', en: 'Season 5 · Complete' },
+    done: true,
   }),
 ]

@@ -328,9 +328,28 @@ export const PETS = {
     happyEmoji: '🤩',
     sadEmoji: '🥺',
   },
+  // 飛飛：連載劇《環遊世界大冒險》終章加入的信天翁郵差（事件限定，不可金幣購買）
+  feifei: {
+    id: 'feifei',
+    name: '飛飛',
+    breed: '信天翁郵差',
+    personality: '溫柔、方向感超好、翅膀展開像一整片雲，背著裝了四十年謝謝的小信袋',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '完成《環遊世界大冒險》終章世界同學會，飛飛就會收起信袋，永遠陪你一起飛！',
+    stages: [
+      null,
+      { emoji: '🕊️', label: '迷糊雛鳥',     size: '5rem', bg: '#F4F7FA', border: '#AEBFCC' },
+      { emoji: '🕊️', label: '順風少年',     size: '5rem', bg: '#EFF6FB', border: '#8FB4D0' },
+      { emoji: '🕊️', label: '環球飛行家',   size: '5rem', bg: '#EAF4FC', border: '#6FA8D4' },
+      { emoji: '🕊️', label: '傳說信天翁',   size: '5rem', bg: '#F0F7FF', border: '#7FB0E8', glow: true },
+    ],
+    happyEmoji: '🥰',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei']
 
 // ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
 // 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
@@ -368,4 +387,5 @@ export const PET_SKILLS = {
   luna:    { name: '月光搖籃', icon: '🌙', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒' },
   pluto:   { name: '團圓之心', icon: '💗', effect: { type: 'coin',  add: 25 },   desc: '這一題答對 +25 金幣（全家福的祝福！）' },
   xiaoq:   { name: '靈光一閃', icon: '💡', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒（尤里卡的瞬間！）' },
+  feifei:  { name: '順風翅膀', icon: '🪽', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒（乘著環遊世界的風！）' },
 }

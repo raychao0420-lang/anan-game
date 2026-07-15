@@ -96,7 +96,7 @@ export default function HomeScreen({ onNavigate }) {
             onClick={() => nav('series')}
           >
             📺 連載劇場：星星偵探
-            <span className="home-hero-sub">第五季 環遊世界大冒險 · 出發！</span>
+            <span className="home-hero-sub">第五季 環遊世界大冒險 · 大結局！</span>
             <span className="home-badge home-badge-new">NEW</span>
           </motion.button>
           <motion.button

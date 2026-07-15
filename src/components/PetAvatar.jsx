@@ -152,6 +152,14 @@ const EVO = {
     { body:'#CFCDC2', belly:'#F5F3EA', ear:'#B49A54', nose:'#4E4838', mark:'#A8863A', excl:true },
     { body:'#D8D4C4', belly:'#FAF7EA', ear:'#C4A94E', nose:'#4A4430', mark:'#D4AF37', excl:true, hat:true, glow:'#F0D878' },
   ],
+  // 飛飛：雪白信天翁郵差（ear=翅尖/描邊、mark=信袋色；stage3 起翅膀張開 soar、stage4 背小信袋 pouch＋天光）
+  feifei: [
+    null,
+    { body:'#F2F5F8', belly:'#FFFFFF', ear:'#AEBFCC', nose:'#4E5A66', mark:'#C9A86A' },
+    { body:'#EFF4F9', belly:'#FFFFFF', ear:'#8FB4D0', nose:'#46525E', mark:'#C9A86A' },
+    { body:'#EDF3FA', belly:'#FFFFFF', ear:'#6FA8D4', nose:'#3E4A58', mark:'#B8934E', soar:true },
+    { body:'#F4F8FF', belly:'#FFFFFF', ear:'#7FB0E8', nose:'#3A4656', mark:'#D4AF37', soar:true, pouch:true, glow:'#BFDCFF' },
+  ],
 }
 
 // ── Pet bases ─────────────────────────────────────────────────────────────────
@@ -617,6 +625,66 @@ function XiaoQBase({ c }) {
       <g stroke="#E8A23C" strokeWidth="1.8" strokeLinecap="round">
         <path d="M42,110 l-3,6 M42,110 l0,6.5 M42,110 l3,6" />
         <path d="M58,110 l-3,6 M58,110 l0,6.5 M58,110 l3,6" />
+      </g>
+    </g>
+  )
+}
+
+// 飛飛：雪白信天翁郵差（大翅膀、橘黃長喙；stage3 起翅膀張開、stage4 背著小信袋）
+function FeifeiBase({ c }) {
+  return (
+    <g>
+      {/* Wings：幼年收攏、進化後張開像一整片雲 */}
+      {c.soar ? (
+        <g>
+          <path d="M28,78 C10,68 2,54 4,44 C14,52 24,56 32,64 L36,76 Z" fill={c.body} stroke={c.ear} strokeWidth="1.2" />
+          <path d="M72,78 C90,68 98,54 96,44 C86,52 76,56 68,64 L64,76 Z" fill={c.body} stroke={c.ear} strokeWidth="1.2" />
+          <path d="M8,47 l8,5 M14,55 l8,5" stroke={c.ear} strokeWidth="1.2" strokeLinecap="round" opacity="0.6" />
+          <path d="M92,47 l-8,5 M86,55 l-8,5" stroke={c.ear} strokeWidth="1.2" strokeLinecap="round" opacity="0.6" />
+        </g>
+      ) : (
+        <g>
+          <path d="M27,80 C18,88 20,102 29,107 L33,98 C29,92 30,85 33,81 Z" fill={c.ear} opacity="0.75" />
+          <path d="M73,80 C82,88 80,102 71,107 L67,98 C71,92 70,85 67,81 Z" fill={c.ear} opacity="0.75" />
+        </g>
+      )}
+      {/* Body */}
+      <ellipse cx="50" cy="90" rx="24" ry="21" fill={c.body} />
+      <ellipse cx="50" cy="94" rx="15" ry="14" fill={c.belly} opacity="0.9" />
+      {/* Mail pouch（stage4：裝了四十年謝謝的小信袋） */}
+      {c.pouch && (
+        <g>
+          <path d="M36,84 Q34,100 40,104 L52,104 Q56,98 54,86 Z" fill={c.mark} />
+          <path d="M36,84 L54,86 L45,94 Z" fill="#E8CD8E" />
+          <rect x="42.5" y="93" width="6" height="4.4" rx="0.8" fill="#FFF6DD" />
+          <path d="M42.5,93 l3,2 l3,-2" fill="none" stroke={c.mark} strokeWidth="0.8" />
+        </g>
+      )}
+      {/* Tail */}
+      <path d="M50,108 l-5,8 l5,-2 l5,2 Z" fill={c.ear} opacity="0.8" />
+      {/* Head */}
+      <circle cx="50" cy="42" r="25" fill={c.body} />
+      {/* 眉羽：信天翁招牌的溫柔眼影 */}
+      <path d="M30,36 Q37,32 43,35" fill="none" stroke={c.ear} strokeWidth="2" strokeLinecap="round" opacity="0.55" />
+      <path d="M70,36 Q63,32 57,35" fill="none" stroke={c.ear} strokeWidth="2" strokeLinecap="round" opacity="0.55" />
+      {/* Eyes（等了四十年，還是很溫柔的眼睛） */}
+      <circle cx="40" cy="42" r="6"   fill="#1A2430" />
+      <circle cx="60" cy="42" r="6"   fill="#1A2430" />
+      <circle cx="42.2" cy="39.6" r="2.2" fill="white" />
+      <circle cx="62.2" cy="39.6" r="2.2" fill="white" />
+      <circle cx="38.6" cy="44.4" r="1.1" fill="rgba(255,255,255,0.7)" />
+      <circle cx="58.6" cy="44.4" r="1.1" fill="rgba(255,255,255,0.7)" />
+      {/* 長喙：信天翁的大長嘴，前端小勾 */}
+      <path d="M43,50 Q50,46 57,50 L54,58 Q50,62 46,58 Z" fill="#F2B24E" />
+      <path d="M46,58 Q50,62 54,58 L52.5,61 Q50,63.5 47.5,61 Z" fill="#D89432" />
+      <path d="M43,50 Q50,53 57,50" fill="none" stroke="#C07E28" strokeWidth="1" opacity="0.7" />
+      {/* Cheek blush */}
+      <ellipse cx="31" cy="48" rx="5" ry="3.2" fill="rgba(255,160,150,0.28)" />
+      <ellipse cx="69" cy="48" rx="5" ry="3.2" fill="rgba(255,160,150,0.28)" />
+      {/* Feet */}
+      <g stroke="#E8A23C" strokeWidth="2" strokeLinecap="round">
+        <path d="M43,109 l-3,6 M43,109 l1,6.5 M43,109 l4,5.5" />
+        <path d="M57,109 l-4,5.5 M57,109 l-1,6.5 M57,109 l3,6" />
       </g>
     </g>
   )
@@ -1519,6 +1587,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'luna' ? <LunaBase c={colors} />
        : petId === 'pluto' ? <PlutoBase c={colors} />
        : petId === 'xiaoq' ? <XiaoQBase c={colors} />
+       : petId === 'feifei' ? <FeifeiBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 

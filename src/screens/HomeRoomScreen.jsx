@@ -86,7 +86,7 @@ const MEET_EMOJIS = ['💕', '🎶', '✨']    // 相遇互動表情（好朋友
 const THEME_IDS = { theme_forest: 'forest', theme_ocean: 'ocean', theme_space: 'space' }
 const THEME_MOODS = {
   forest: { lulu: '🌿', kitsune: '🍄', beaver: '🪵', hamster: '🌰', mejiro: '🌸' },
-  ocean:  { hana: '🫧', kotaro: '🫧', seal: '🐟', penguin: '🐠' },
+  ocean:  { hana: '🫧', kotaro: '🫧', seal: '🐟', penguin: '🐠', feifei: '🌊' },
   space:  { twinkle: '⭐', luna: '🌙', pluto: '🪐', xiaoq: '🔭', owl: '✨' },
 }
 
@@ -122,7 +122,7 @@ const DECO_ACTIVITIES = {
   trampoline:  { pets: ['lulu', 'monkey', 'hamster', 'dino'],            motion: 'bounce', emoji: '🤸' },
   disco:       { pets: ['monkey', 'hamster', 'lulu', 'mejiro'],          motion: 'bounce', emoji: '🕺' },
   castle:      { pets: ['monkey', 'dino', 'hamster', 'lulu'],            motion: 'play',   emoji: '👑' },
-  pool:        { pets: ['hana', 'kotaro', 'seal', 'penguin', 'beaver'],  motion: 'splash', emoji: '💦' },
+  pool:        { pets: ['hana', 'kotaro', 'seal', 'penguin', 'beaver', 'feifei'],  motion: 'splash', emoji: '💦' },
   hot_spring:  { pets: ['hana', 'kotaro', 'seal', 'monkey'],             motion: 'soak',   emoji: '♨️' },
   fish_tank:   { pets: ['jiji', 'hana', 'kotaro', 'seal', 'penguin'],    motion: 'gaze',   emoji: '😻' },
   piano:       { pets: ['mejiro', 'owl', 'jiji'],                        motion: 'play',   emoji: '🎵' },
@@ -138,14 +138,15 @@ const DECO_ACTIVITIES = {
   moon_hammock:{ pets: ['luna', 'twinkle', 'pluto', 'jiji', 'seal'],     motion: 'sleep',  emoji: '🌙' },
   reunion_lamp:{ pets: ['pluto', 'twinkle', 'luna', 'lulu', 'hamster', 'monkey', 'jiji', 'seal'], motion: 'gaze', emoji: '💗' },
   puzzle_board:{ pets: ['xiaoq', 'owl', 'jiji', 'beaver', 'dino', 'hamster'],     motion: 'gaze',   emoji: '🖍️' },
+  world_route_map:{ pets: ['feifei', 'xiaoq', 'owl', 'mejiro', 'raccoon', 'monkey'], motion: 'gaze', emoji: '✈️' },
   library:     { pets: ['owl', 'jiji', 'xiaoq'],                                  motion: 'gaze',   emoji: '📖' },
   painting:    { pets: ['jiji', 'owl', 'mejiro', 'xiaoq'],                        motion: 'gaze',   emoji: '🖼️' },
   fairy_light: { pets: ['raccoon', 'monkey', 'mejiro', 'jiji', 'twinkle', 'luna', 'pluto', 'xiaoq'], motion: 'gaze', emoji: '✨' },
   mushroom_lamp:{ pets: ['raccoon', 'jiji', 'owl', 'twinkle', 'luna', 'xiaoq'],   motion: 'gaze',   emoji: '🍄' },
-  rainbow:     { pets: ['mejiro', 'penguin', 'seal', 'twinkle', 'luna'], motion: 'gaze',   emoji: '🌈' },
+  rainbow:     { pets: ['mejiro', 'penguin', 'seal', 'twinkle', 'luna', 'feifei'], motion: 'gaze',   emoji: '🌈' },
   bamboo:      { pets: ['hamster', 'beaver', 'dino', 'mejiro'],          motion: 'gaze',   emoji: '😋' },
   plant:       { pets: ['mejiro', 'hamster', 'beaver'],                  motion: 'gaze',   emoji: '🌿' },
-  bird_perch:  { pets: ['mejiro', 'owl', 'xiaoq'],                                motion: 'gaze',   emoji: '🐤' },
+  bird_perch:  { pets: ['mejiro', 'owl', 'xiaoq', 'feifei'],                      motion: 'gaze',   emoji: '🐤' },
 }
 
 // 動作 → 上下擺動的幅度(px)與速度(秒)。讓不同活動看起來不一樣。

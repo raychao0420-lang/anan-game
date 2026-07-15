@@ -23,6 +23,7 @@ export const SHOP_ITEMS = [
   { id: 'moon_mochi',     name: '月光麻糬', emoji: '🍡', category: 'food', price: 110, desc: '像月亮一樣圓潤軟Q的麻糬，小月的最愛！', exp: { lulu: 30, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 65 } },
   { id: 'reunion_candy',  name: '團圓糖', emoji: '🍭', category: 'food', price: 120, desc: '圓圓一顆、暖暖甜甜的團圓糖，小冥的最愛！大家一起吃更甜～', exp: { lulu: 35, hana: 35, kotaro: 35, jiji: 25, kitsune: 45, mejiro: 65 } },
   { id: 'wisdom_cookie',  name: '智慧餅乾', emoji: '🍪', category: 'food', price: 120, desc: '烤成問號形狀的酥脆餅乾，小Q的最愛！吃一口，靈光一閃「尤里卡！」', exp: { lulu: 40, hana: 35, kotaro: 35, jiji: 60, kitsune: 40, mejiro: 45 } },
+  { id: 'stamp_gummy',    name: '郵票軟糖', emoji: '💌', category: 'food', price: 120, desc: '做成小郵票形狀、包裝像迷你信封的軟糖，飛飛的最愛！每一顆都是不同國家的口味～', exp: { lulu: 35, hana: 35, kotaro: 35, jiji: 25, kitsune: 40, mejiro: 70 } },
   // ── 帽子 ──
   { id: 'bow',        name: '蝴蝶結',   emoji: '🎀', category: 'hat',  price: 100, desc: '可愛滿分' },
   { id: 'cap',        name: '棒球帽',   emoji: '🧢', category: 'hat',  price: 120, desc: '運動風' },
@@ -85,6 +86,7 @@ export const SHOP_ITEMS = [
   { id: 'moon_hammock', name: '月光吊床',   emoji: '🌛', category: 'home', price: 240, desc: '月牙形的柔軟吊床，小月窩進去輕輕搖，像被月光抱著入睡。' },
   { id: 'reunion_lamp', name: '團圓星燈',   emoji: '💗', category: 'home', price: 260, desc: '心形的暖暖星燈，小冥最愛窩在旁邊；燈一亮，大家就會湊過來擠成一團，誰都不孤單。' },
   { id: 'puzzle_board', name: '解謎小黑板', emoji: '🖍️', category: 'home', price: 260, desc: '掛在牆上的迷你黑板，畫滿數列跟問號。小Q最愛站在前面出題考大家，聰明的孩子們都搶著來解！' },
+  { id: 'world_route_map', name: '環遊世界航線圖', emoji: '🗺️', category: 'home', price: 280, desc: '掛在牆上的大航線圖，十二枚郵票沿著航線一路貼回台灣。飛飛最愛停在前面，跟大家講每一站的故事～' },
   // ── 主題壁紙（整個房間換裝，一次只能貼一款；擺放後生效） ──
   { id: 'theme_forest', name: '森林小屋壁紙', emoji: '🌲', category: 'home', price: 600,  desc: '整個家變成森林小屋！LULU、雪狐、河狸、倉鼠都覺得像回到大自然' },
   { id: 'theme_ocean',  name: '海底世界壁紙', emoji: '🐚', category: 'home', price: 800,  desc: '整個家潛進海底！水獺、海豹、企鵝樂翻天，泡泡咕嚕咕嚕' },
@@ -114,6 +116,8 @@ export const SHOP_ITEMS = [
   { id: 'family_star_map', name: '全家福星圖', emoji: '🗺️', category: 'rare', price: 0, desc: '《太陽系大冒險》終章，小冥親手拼好的全家福星圖。上面每一顆星星，都是一路陪牠回家的人——太陽、八大行星、彗星，還有安安、小星、小月。星圖正中央，是一片小小的、暖暖發亮的心形冰原。它輕輕告訴你：是不是行星不重要，你一直都是這一家的。', boss: true },
   // ── 連載劇《邏輯偵探學院》信物（劇情獎勵，不可購買）──
   { id: 'master_license', name: '名偵探執照', emoji: '📜', category: 'rare', price: 0, desc: '《邏輯偵探學院》終章，阿基教授親手頒發的名偵探執照，十二枚級別金印在陽光下閃閃發亮。最下面一行是教授的親筆：「執照不是證明你多聰明，是提醒你——把想不通的事想通，把難過的人變笑。」旁邊還有一個小小的爪印，是副署人：名偵探貓頭鷹，小Q。', boss: true },
+  // ── 連載劇《環遊世界大冒險》信物（劇情獎勵，不可購買）──
+  { id: 'thanks_card_481', name: '第 481 張感謝卡', emoji: '✉️', category: 'rare', price: 0, desc: '《環遊世界大冒險》終章，謝謝牆掛滿了四十年、四百八十張感謝卡。散場後，安安在背包裡發現了第 481 張——十二站的老朋友、教授、小Q和飛飛，每個人都簽了名。上面寫著：「謝謝妳，讓謝謝找到回家的路。——全世界」', boss: true },
 ]
 
 // 新寵物（波波/嚕嚕/圓圓/阿丁/小麥）的食物偏好。原本食物 exp 只列了 6 隻，
@@ -131,6 +135,7 @@ const NEW_PET_FOOD_EXP = {
   luna:    { bone: 20, fish: 30,  meat: 20,  apple: 50,  berry: 120, nectar: 100,sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 100,moon_mochi: 150, reunion_candy: 100 }, // 月亮精靈：月光麻糬是專屬最愛，也愛莓果蛋糕與團圓糖
   pluto:   { bone: 20, fish: 30,  meat: 20,  apple: 60,  berry: 90,  nectar: 80, sushi: 30,  cake: 110,shrimp: 20,  stardust_candy: 100,moon_mochi: 100, reunion_candy: 150 }, // 冥王星精靈：團圓糖是專屬最愛，也愛蛋糕與姊妹的星星糖月光麻糬
   xiaoq:   { bone: 30, fish: 80,  meat: 90,  apple: 40,  berry: 50,  nectar: 20, sushi: 70,  cake: 90, shrimp: 60,  stardust_candy: 60, moon_mochi: 60,  reunion_candy: 60, wisdom_cookie: 150 }, // 邏輯貓頭鷹精靈：智慧餅乾是專屬最愛，貓頭鷹本色也愛肉跟魚
+  feifei:  { bone: 20, fish: 110, meat: 50,  apple: 40,  berry: 60,  nectar: 40, sushi: 90,  cake: 80, shrimp: 100, stardust_candy: 60, moon_mochi: 60,  reunion_candy: 70, wisdom_cookie: 60, stamp_gummy: 150 }, // 信天翁郵差：郵票軟糖是專屬最愛，海鳥本色也愛魚蝦壽司
 }
 SHOP_ITEMS.forEach((item) => {
   if (item.category !== 'food') return
