@@ -50,6 +50,7 @@ const QUESTIONS_PER_STAGE = 10
 // 除法關卡（含綜合進階裡的純除法）給多一點作答時間
 const DIVISION_STAGES = new Set([31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 59, 60, 67, 91, 92])
 const getTimeLimit = (id) => {
+  if (id >= 96 && id <= 100) return 90              // 兩位數×兩位數：一分半
   if (id >= 11 && id <= 20) return 30               // 3位數
   if (id <= 10 || (id >= 41 && id <= 55)) return 35 // 2位數
   if (DIVISION_STAGES.has(id)) return 30            // 除法
