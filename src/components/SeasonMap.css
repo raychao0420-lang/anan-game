@@ -1,0 +1,84 @@
+/* 連載劇場真實地圖：紙質卡片＋海洋漸層＋可點站點 */
+.smap {
+  width: 100%;
+  border: 3px solid #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(50, 80, 120, 0.25);
+  background: #6fb3de;
+}
+.smap-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  font-weight: 900;
+  font-size: 0.95rem;
+  color: #fff;
+  background: linear-gradient(90deg, #4a90c9, #6fb3de);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.smap-prog { font-size: 0.9rem; }
+.smap svg { display: block; width: 100%; height: auto; }
+
+.smap-bg { fill: url(#smap-sea); }
+.smap-landmass { fill: url(#smap-land); stroke: #7ea86a; stroke-width: 1; }
+.smap-county { fill: #f2ecd8; stroke: #b9a98c; stroke-width: 1.1; stroke-linejoin: round; transition: fill 0.4s; }
+.smap-county.lit { stroke: #fff; stroke-width: 1.4; filter: drop-shadow(0 0 3px rgba(255, 220, 120, 0.8)); }
+
+/* 航線：流動的虛線 */
+.smap-route {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.4;
+  stroke-dasharray: 7 6;
+  stroke-linecap: round;
+  opacity: 0.85;
+  animation: smap-flow 1.6s linear infinite;
+}
+@keyframes smap-flow { to { stroke-dashoffset: -13; } }
+
+/* 站點 */
+.smap-st { cursor: pointer; }
+.smap-coming { cursor: default; }
+.smap-badge { fill: #fff; stroke: #f0a437; stroke-width: 2.5; }
+.smap-done .smap-badge { stroke: #52b788; }
+.smap-locked .smap-badge { fill: #e7e2d8; stroke: #b8b0a0; }
+.smap-coming .smap-badge { fill: rgba(255, 255, 255, 0.55); stroke: #9db8cc; stroke-dasharray: 4 3; }
+.smap-coming .smap-emoji { opacity: 0.5; }
+.smap-emoji, .smap-no, .smap-check, .smap-label { text-anchor: middle; dominant-baseline: middle; user-select: none; }
+.smap-no {
+  font-weight: 900;
+  fill: #fff;
+  stroke: #e8842c;
+  stroke-width: 3;
+  paint-order: stroke;
+}
+.smap-done .smap-no { stroke: #40916c; }
+.smap-locked .smap-no, .smap-coming .smap-no { stroke: #9a938a; }
+.smap-label {
+  font-weight: 900;
+  fill: #2b4a66;
+  stroke: #fff;
+  stroke-width: 3;
+  paint-order: stroke;
+}
+.smap-coming .smap-label { fill: #7a8a99; font-size: 0.6rem; }
+.smap-leader { stroke: rgba(255, 255, 255, 0.9); stroke-width: 1.6; stroke-dasharray: 3 3; }
+.smap-anchor { fill: #e8842c; stroke: #fff; stroke-width: 1.5; }
+
+/* 目前所在地：呼吸光圈 */
+.smap-pulse {
+  fill: none;
+  stroke: #ffd166;
+  stroke-width: 4;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: smap-pulse 1.5s ease-out infinite;
+}
+@keyframes smap-pulse {
+  0% { transform: scale(1); opacity: 0.95; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+.smap-now .smap-badge { stroke: #f0a437; stroke-width: 3.2; }
+.smap-st:active .smap-badge { transform: scale(0.92); transform-box: fill-box; transform-origin: center; }

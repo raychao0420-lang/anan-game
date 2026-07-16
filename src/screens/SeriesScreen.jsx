@@ -7,6 +7,7 @@ import { PETS, TUTOR_PETS, SOS_COST, SOS_REGEN } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import PetAvatar from '../components/PetAvatar'
 import NumberPad from '../components/NumberPad'
+import SeasonMap from '../components/SeasonMap'
 import { sfx } from '../utils/sound'
 import { speakEnglish, stopSpeaking, isSpeechSupported } from '../utils/speech'
 import './DetectiveScreen.css'
@@ -255,6 +256,9 @@ export default function SeriesScreen({ onBack }) {
             <div className="dtv-case-emoji">{season.emoji}</div>
             <h1 className="dtv-title">{season.title.zh}</h1>
             <div className="srs-title-en">{season.title.en}</div>
+
+            {/* 冒險地圖（S5 環遊世界 / S6 台灣環島）：點站點直接開集數 */}
+            <SeasonMap season={season} seriesSolved={seriesSolved} isLocked={isLocked} onOpen={openEpisode} />
 
             {/* 收集牆：碎片 / 星座徽章 */}
             <div className="srs-wall">
