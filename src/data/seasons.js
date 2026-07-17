@@ -81,6 +81,6 @@ export const SEASONS = [
     collLabel: { zh: '台灣拼圖', en: 'Taiwan Puzzle' },
     clueLabel: { zh: '小虎的腳印', en: "Little Tiger's Paw Prints" },
     clueIcon: '🐾',
-    subtitle: { zh: '第六季 · 連載中', en: 'Season 6 · Ongoing' },
+    subtitle: { zh: '第六季 · 已完結', en: 'Season 6 · Complete' },
   }),
 ]

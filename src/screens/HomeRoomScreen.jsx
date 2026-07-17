@@ -85,7 +85,7 @@ const MEET_EMOJIS = ['💕', '🎶', '✨']    // 相遇互動表情（好朋友
 // 主題壁紙（shop theme_* 擺放後整室換裝，一次一款）；各主題有「覺得像家」的寵物冒泡泡
 const THEME_IDS = { theme_forest: 'forest', theme_ocean: 'ocean', theme_space: 'space' }
 const THEME_MOODS = {
-  forest: { lulu: '🌿', kitsune: '🍄', beaver: '🪵', hamster: '🌰', mejiro: '🌸' },
+  forest: { lulu: '🌿', kitsune: '🍄', beaver: '🪵', hamster: '🌰', mejiro: '🌸', xiaohu: '🐾' },
   ocean:  { hana: '🫧', kotaro: '🫧', seal: '🐟', penguin: '🐠', feifei: '🌊' },
   space:  { twinkle: '⭐', luna: '🌙', pluto: '🪐', xiaoq: '🔭', owl: '✨' },
 }
@@ -93,7 +93,7 @@ const THEME_MOODS = {
 // ── 第5彈：跟寵物玩（丟零食＋玩具球＋摸摸加心情） ─────────────────────────
 // 點🍪/🎾再點地板丟出去：零食大家都愛搶著吃（心情+8）；球只有愛玩的寵物會去追，
 // 追到就往別處踢（最後一腳心情+5）。摸寵物也會心情+2。
-const BALL_CHASERS = ['lulu', 'monkey', 'hamster', 'dino', 'kotaro', 'hana', 'kitsune', 'seal']
+const BALL_CHASERS = ['lulu', 'monkey', 'hamster', 'dino', 'kotaro', 'hana', 'kitsune', 'seal', 'xiaohu']
 const TOY_TOOLS = {
   treat: { emoji: '🍪', hint: '點地板，把零食丟過去！' },
   ball:  { emoji: '🎾', hint: '點地板，把球丟過去！' },
@@ -129,8 +129,8 @@ const DECO_ACTIVITIES = {
   art_studio:  { pets: ['monkey', 'mejiro', 'dino'],                     motion: 'play',   emoji: '🎨' },
   pet_bed:     { pets: '*',                                             motion: 'sleep',  emoji: '💤' },
   sofa:        { pets: '*',                                             motion: 'sleep',  emoji: '😌' },
-  fireplace:   { pets: ['jiji', 'lulu', 'kitsune', 'seal'],              motion: 'sleep',  emoji: '😌' },
-  tent:        { pets: ['raccoon', 'dino', 'hamster', 'lulu'],           motion: 'hide',   emoji: '⛺' },
+  fireplace:   { pets: ['jiji', 'lulu', 'kitsune', 'seal', 'xiaohu'],    motion: 'sleep',  emoji: '😌' },
+  tent:        { pets: ['raccoon', 'dino', 'hamster', 'lulu', 'xiaohu'], motion: 'hide',   emoji: '⛺' },
   igloo:       { pets: ['kitsune', 'penguin', 'seal'],                   motion: 'hide',   emoji: '❄️' },
   snow_globe:  { pets: ['kitsune', 'penguin', 'seal'],                   motion: 'gaze',   emoji: '😍' },
   telescope:   { pets: ['owl', 'mejiro', 'jiji', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq'], motion: 'gaze', emoji: '🌟' },
@@ -139,6 +139,7 @@ const DECO_ACTIVITIES = {
   reunion_lamp:{ pets: ['pluto', 'twinkle', 'luna', 'lulu', 'hamster', 'monkey', 'jiji', 'seal'], motion: 'gaze', emoji: '💗' },
   puzzle_board:{ pets: ['xiaoq', 'owl', 'jiji', 'beaver', 'dino', 'hamster'],     motion: 'gaze',   emoji: '🖍️' },
   world_route_map:{ pets: ['feifei', 'xiaoq', 'owl', 'mejiro', 'raccoon', 'monkey'], motion: 'gaze', emoji: '✈️' },
+  taiwan_puzzle_wall:{ pets: ['xiaohu', 'lulu', 'owl', 'dino', 'feifei', 'xiaoq'], motion: 'gaze', emoji: '🧩' },
   library:     { pets: ['owl', 'jiji', 'xiaoq'],                                  motion: 'gaze',   emoji: '📖' },
   painting:    { pets: ['jiji', 'owl', 'mejiro', 'xiaoq'],                        motion: 'gaze',   emoji: '🖼️' },
   fairy_light: { pets: ['raccoon', 'monkey', 'mejiro', 'jiji', 'twinkle', 'luna', 'pluto', 'xiaoq'], motion: 'gaze', emoji: '✨' },

@@ -347,9 +347,28 @@ export const PETS = {
     happyEmoji: '🥰',
     sadEmoji: '🥺',
   },
+  // 小虎：連載劇《漫遊台灣大冒險》終章加入的黑臘腸（事件限定，不可金幣購買）
+  xiaohu: {
+    id: 'xiaohu',
+    name: '小虎',
+    breed: '短毛黑臘腸',
+    personality: '短短的腿、長長的身體、黑亮的短毛，鼻子超靈；跟著環島一圈後，最愛跟大家分享家鄉桃園大溪的美',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '完成《漫遊台灣大冒險》終章台灣真美分享會，小虎就會翹起尾巴，永遠跟你一起回家！',
+    stages: [
+      null,
+      { emoji: '🐕', label: '庄腳小臘腸',   size: '5rem', bg: '#F2EFEA', border: '#A89880' },
+      { emoji: '🐕', label: '漫遊少年犬',   size: '5rem', bg: '#F5EFE6', border: '#C08A50' },
+      { emoji: '🐕', label: '環島小勇士',   size: '5rem', bg: '#F7F0E2', border: '#C89040' },
+      { emoji: '🐕', label: '傳說黑臘腸',   size: '5rem', bg: '#FAF3E0', border: '#D4AF37', glow: true },
+    ],
+    happyEmoji: '🥰',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu']
 
 // ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
 // 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
@@ -388,4 +407,5 @@ export const PET_SKILLS = {
   pluto:   { name: '團圓之心', icon: '💗', effect: { type: 'coin',  add: 25 },   desc: '這一題答對 +25 金幣（全家福的祝福！）' },
   xiaoq:   { name: '靈光一閃', icon: '💡', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒（尤里卡的瞬間！）' },
   feifei:  { name: '順風翅膀', icon: '🪽', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒（乘著環遊世界的風！）' },
+  xiaohu:  { name: '靈敏鼻子', icon: '🐽', effect: { type: 'coin',  add: 22 },   desc: '這一題答對 +22 金幣（聞得出寶藏藏在哪！）' },
 }

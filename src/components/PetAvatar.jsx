@@ -160,6 +160,15 @@ const EVO = {
     { body:'#EDF3FA', belly:'#FFFFFF', ear:'#6FA8D4', nose:'#3E4A58', mark:'#B8934E', soar:true },
     { body:'#F4F8FF', belly:'#FFFFFF', ear:'#7FB0E8', nose:'#3A4656', mark:'#D4AF37', soar:true, pouch:true, glow:'#BFDCFF' },
   ],
+  // 小虎：短毛黑臘腸（黑亮短毛＋棕紅眉斑/肚子，belly=棕紅斑、ear=垂耳深黑、mark=領巾/配件色；
+  // stage2 起紅領巾 scarf、stage3 背小土產包 pack、stage4 分享會小徽章 badge＋金光）
+  xiaohu: [
+    null,
+    { body:'#3A3A44', belly:'#C68A4E', ear:'#26262E', nose:'#15151C', mark:'#B84A3A' },
+    { body:'#34343E', belly:'#CE9254', ear:'#222229', nose:'#13131A', mark:'#C4402E', scarf:true },
+    { body:'#2E2E38', belly:'#D69A58', ear:'#1E1E26', nose:'#111118', mark:'#C4402E', scarf:true, pack:true },
+    { body:'#2A2A34', belly:'#DDA25E', ear:'#1B1B24', nose:'#101018', mark:'#C4402E', scarf:true, pack:true, badge:true, glow:'#F0C878' },
+  ],
 }
 
 // ── Pet bases ─────────────────────────────────────────────────────────────────
@@ -686,6 +695,83 @@ function FeifeiBase({ c }) {
         <path d="M43,109 l-3,6 M43,109 l1,6.5 M43,109 l4,5.5" />
         <path d="M57,109 l-4,5.5 M57,109 l-1,6.5 M57,109 l3,6" />
       </g>
+    </g>
+  )
+}
+
+// 小虎：短毛黑臘腸（短短的腿、長長的身體、黑亮短毛、棕紅眉斑）
+function XiaohuBase({ c }) {
+  return (
+    <g>
+      {/* ── 長長的身體（臘腸狗招牌）＋短短的腿 ── */}
+      <g stroke={c.ear} strokeWidth="0">
+        <rect x="27" y="104" width="7" height="12" rx="3.5" fill={c.body} />
+        <rect x="66" y="104" width="7" height="12" rx="3.5" fill={c.body} />
+      </g>
+      <ellipse cx="50" cy="96" rx="31" ry="14" fill={c.body} />
+      {/* 黑亮短毛的高光（背脊一道亮） */}
+      <path d="M24,90 Q50,80 76,90" fill="none" stroke="white" strokeWidth="2.4" strokeLinecap="round" opacity="0.18" />
+      {/* 棕紅肚子 */}
+      <ellipse cx="50" cy="102" rx="19" ry="8" fill={c.belly} opacity="0.9" />
+      {/* 前腳掌棕紅小襪子 */}
+      <ellipse cx="30.5" cy="115" rx="4" ry="2.6" fill={c.belly} opacity="0.85" />
+      <ellipse cx="69.5" cy="115" rx="4" ry="2.6" fill={c.belly} opacity="0.85" />
+      {/* 尾巴：細細往上翹（開心的時候翹得更高） */}
+      <path d="M79,92 C88,88 92,80 91,73 Q94,80 90,88 C87,93 83,95 80,95 Z" fill={c.body} />
+      <circle cx="90.5" cy="74.5" r="2.4" fill={c.belly} opacity="0.8" />
+
+      {/* 小土產包（stage3：環島一路收集的家鄉味） */}
+      {c.pack && (
+        <g>
+          <path d="M62,86 Q60,100 66,103 L76,102 Q80,96 77,86 Z" fill="#A9743C" />
+          <path d="M62,86 L77,86 L70,93 Z" fill="#C89058" />
+          <path d="M64,84 Q70,80 76,84" fill="none" stroke="#8A5E30" strokeWidth="2" strokeLinecap="round" />
+          <circle cx="70" cy="95" r="2" fill="#FFE9B0" />
+        </g>
+      )}
+
+      {/* ── 頭 ── */}
+      <circle cx="46" cy="46" r="24" fill={c.body} />
+      {/* 長吻（臘腸狗的長鼻子）＋棕紅口吻 */}
+      <ellipse cx="46" cy="58" rx="12" ry="8.5" fill={c.belly} opacity="0.9" />
+      {/* 垂垂的大長耳（過下巴） */}
+      <path d="M24,32 C14,40 12,62 18,74 Q24,82 30,76 C34,66 32,44 30,32 Z" fill={c.ear} />
+      <path d="M68,32 C78,40 80,62 74,74 Q68,82 62,76 C58,66 60,44 62,32 Z" fill={c.ear} />
+      <path d="M22,44 Q19,56 22,66" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" opacity="0.14" />
+      <path d="M70,44 Q73,56 70,66" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" opacity="0.14" />
+      {/* 棕紅眉斑（黑臘腸的招牌小眉毛） */}
+      <ellipse cx="37" cy="36.5" rx="4.4" ry="2.8" fill={c.belly} opacity="0.95" />
+      <ellipse cx="55" cy="36.5" rx="4.4" ry="2.8" fill={c.belly} opacity="0.95" />
+      {/* 眼睛（亮亮的、看見家鄉就發光） */}
+      <circle cx="37" cy="44" r="5.6" fill="#14100C" />
+      <circle cx="55" cy="44" r="5.6" fill="#14100C" />
+      <circle cx="39" cy="41.8" r="2" fill="white" />
+      <circle cx="57" cy="41.8" r="2" fill="white" />
+      <circle cx="35.6" cy="46.2" r="1" fill="rgba(255,255,255,0.6)" />
+      <circle cx="53.6" cy="46.2" r="1" fill="rgba(255,255,255,0.6)" />
+      {/* 靈敏的大鼻子＋嘴 */}
+      <ellipse cx="46" cy="55" rx="5" ry="3.8" fill={c.nose} />
+      <circle cx="44.4" cy="54" r="1" fill="rgba(255,255,255,0.35)" />
+      <path d="M46,58.5 L46,61.5 M46,61.5 Q42,64.5 39,62 M46,61.5 Q50,64.5 53,62" fill="none" stroke={c.nose} strokeWidth="1.4" strokeLinecap="round" />
+      {/* Cheek blush */}
+      <ellipse cx="28" cy="52" rx="4.6" ry="3" fill="rgba(255,140,120,0.25)" />
+      <ellipse cx="64" cy="52" rx="4.6" ry="3" fill="rgba(255,140,120,0.25)" />
+
+      {/* 紅領巾（stage2：出發漫遊的記號） */}
+      {c.scarf && (
+        <g>
+          <path d="M32,66 Q46,74 60,66 L58,71 Q46,78 34,71 Z" fill={c.mark} />
+          <path d="M44,72 L42,82 L48,81 L47,72 Z" fill={c.mark} />
+          <path d="M44,75 l3,0" stroke="#8E2E22" strokeWidth="0.8" opacity="0.7" />
+        </g>
+      )}
+      {/* 分享會小徽章（stage4：台灣真美分享會的紀念） */}
+      {c.badge && (
+        <g>
+          <circle cx="58" cy="74" r="4.6" fill="#FFD54A" stroke="#D4AF37" strokeWidth="1" />
+          <path d="M58,71 l0.9,1.9 l2.1,0.3 l-1.5,1.5 l0.35,2.1 l-1.85,-1 l-1.85,1 l0.35,-2.1 l-1.5,-1.5 l2.1,-0.3 Z" fill="#B8860B" />
+        </g>
+      )}
     </g>
   )
 }
@@ -1588,6 +1674,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'pluto' ? <PlutoBase c={colors} />
        : petId === 'xiaoq' ? <XiaoQBase c={colors} />
        : petId === 'feifei' ? <FeifeiBase c={colors} />
+       : petId === 'xiaohu' ? <XiaohuBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 
