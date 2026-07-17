@@ -2,11 +2,12 @@
 
 /* ── 中英雙語 ── */
 .srs-bi { width: 100%; }
-.srs-zh { margin: 0; }
+.srs-zh { margin: 0; white-space: pre-line; } /* 保留 \n：EP11 統計圖用 emoji 長條多行呈現 */
 .srs-en {
   color: #7b6fa0;
   font-style: italic;
   font-size: 0.9em;
+  white-space: pre-line;
 }
 .srs-bi .srs-en { margin: 2px 0 0; }
 
