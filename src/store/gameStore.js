@@ -58,6 +58,7 @@ export const useGameStore = create(
         pluto:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
         xiaoq:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
         feifei:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        xiaohu:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
       },
       stages: makeStages(),
       ownedItems:        [],
@@ -609,6 +610,7 @@ export const useGameStore = create(
             pluto:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
             xiaoq:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
             feifei:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+            xiaohu:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
           },
           stages: makeStages(),
           ownedItems:        [],
@@ -657,7 +659,7 @@ export const useGameStore = create(
       name: 'anan-game-v2',
       onRehydrateStorage: () => (state) => {
         if (!state) return
-        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei']
+        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu']
         allPets.forEach((id) => {
           if (!state.pets[id])
             state.pets[id] = { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] }
