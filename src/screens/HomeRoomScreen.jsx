@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import html2canvas from 'html2canvas'
 import { useGameStore } from '../store/gameStore'
@@ -178,10 +178,11 @@ const DECO_SLOTS = [
 
 const BOUNDS      = { xMin: 6,  xMax: 78, yMin: 42, yMax: 66 }
 const DECO_BOUNDS = { xMin: 2,  xMax: 88, yMin: 2,  yMax: 86 }
+const EMPTY_ITEMS = []  // 穩定的空陣列參照，避免沒裝備的寵物每次 render 都拿到新陣列而白重繪
 
 // ── Draggable decoration ──────────────────────────────────────────────────────
 
-function DraggableDeco({ item, pos, onMove, containerRef }) {
+const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, containerRef }) {
   const [localPos, setLocalPos]   = useState({ x: pos.x, y: pos.y })
   const [userScale, setUserScale] = useState(pos.scale ?? 1)
   const [dragging, setDragging]   = useState(false)
@@ -329,11 +330,11 @@ function DraggableDeco({ item, pos, onMove, containerRef }) {
       {pinching  && <div className="room-deco-drag-hint">縮放中...</div>}
     </motion.div>
   )
-}
+})
 
 // ── Wandering pet ─────────────────────────────────────────────────────────────
 
-function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100, weather = 'clear', theme = null, reportPos, meetX = null, toy = null, onToyReach }) {
+const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100, weather = 'clear', theme = null, reportPos, meetX = null, toy = null, onToyReach }) {
   const cfg = PET_CONFIG[petId] ?? DEFAULT_PET_CONFIG
 
   // 這隻寵物會被吸引的家具（依個性）
@@ -518,7 +519,7 @@ function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, p
       </AnimatePresence>
     </div>
   )
-}
+})
 
 // ── Main screen ───────────────────────────────────────────────────────────────
 
@@ -691,21 +692,13 @@ export default function HomeRoomScreen({ onNavigate }) {
     }
   }, [])
 
-  const unlockedPets = Object.entries(pets).filter(([, data]) => data.unlocked)
+  const unlockedPets = useMemo(
+    () => Object.entries(pets).filter(([, data]) => data.unlocked),
+    [pets]
+  )
 
   // 主題壁紙不當家具擺、改成整室換裝
   const activeTheme = equippedHomeItems.map((id) => THEME_IDS[id]).find(Boolean) ?? null
-
-  const homeDecos = equippedHomeItems
-    .filter(id => !THEME_IDS[id])
-    .map(id => SHOP_ITEMS.find(i => i.id === id))
-    .filter(Boolean)
-
-  // Pool position (default to floor-center if not moved)
-  const poolEquipped = equippedHomeItems.includes('pool')
-  const poolPos = poolEquipped
-    ? (homeDecoPositions['pool'] || { x: 45, y: 71 })
-    : null
 
   const getDecoPos = (item, idx) => {
     if (homeDecoPositions[item.id]) return homeDecoPositions[item.id]
@@ -713,15 +706,41 @@ export default function HomeRoomScreen({ onNavigate }) {
     return { ...DECO_SLOTS[idx % DECO_SLOTS.length], scale: 1 }
   }
 
-  // 已擺放、且有互動的家具座標，給寵物尋路用
-  const placedDecos = homeDecos
-    .map((item, idx) => ({ id: item.id, ...getDecoPos(item, idx) }))
-    .filter((d) => DECO_ACTIVITIES[d.id])
+  // 家具清單＋座標一次算好（只在擺設變動時重算），避免寵物移動時整室重繪拖累家具與其他寵物
+  const homeDecos = useMemo(() => {
+    const items = equippedHomeItems
+      .filter(id => !THEME_IDS[id])
+      .map(id => SHOP_ITEMS.find(i => i.id === id))
+      .filter(Boolean)
+    return items.map((item, idx) => ({ item, pos: getDecoPos(item, idx) }))
+  }, [equippedHomeItems, homeDecoPositions])
 
-  const handlePetClick = (petId) => {
+  // Pool position (default to floor-center if not moved)
+  const poolEquipped = equippedHomeItems.includes('pool')
+  const poolPos = useMemo(
+    () => (poolEquipped ? (homeDecoPositions['pool'] || { x: 45, y: 71 }) : null),
+    [poolEquipped, homeDecoPositions]
+  )
+
+  // 已擺放、且有互動的家具座標，給寵物尋路用
+  const placedDecos = useMemo(
+    () => homeDecos.map(({ item, pos }) => ({ id: item.id, ...pos })).filter((d) => DECO_ACTIVITIES[d.id]),
+    [homeDecos]
+  )
+
+  // 每隻寵物身上裝備解析好的道具（只在裝備變動時重算，寵物移動不影響）
+  const petItemsById = useMemo(() => {
+    const map = {}
+    for (const [petId, ids] of Object.entries(petEquipment)) {
+      map[petId] = (ids || []).map(id => SHOP_ITEMS.find(i => i.id === id)).filter(Boolean)
+    }
+    return map
+  }, [petEquipment])
+
+  const handlePetClick = useCallback((petId) => {
     sfx.pet(petId)
     updatePetMood(petId, 2)   // 摸摸也會開心
-  }
+  }, [updatePetMood])
 
   // 相遇配對：任兩隻已解鎖寵物距離 < MEET_DIST
   const meetings = []
@@ -805,11 +824,11 @@ export default function HomeRoomScreen({ onNavigate }) {
         {/* 互動層（家具+寵物）：視差正向微移 */}
         <div className="room-actors">
           {/* Decorations (draggable) */}
-          {homeDecos.map((item, idx) => (
+          {homeDecos.map(({ item, pos }) => (
             <DraggableDeco
               key={item.id}
               item={item}
-              pos={getDecoPos(item, idx)}
+              pos={pos}
               onMove={moveHomeDeco}
               containerRef={containerRef}
             />
@@ -822,9 +841,7 @@ export default function HomeRoomScreen({ onNavigate }) {
               petId={petId}
               petDef={PETS[petId]}
               petData={petData}
-              equippedPetItems={(petEquipment[petId] || [])
-                .map(id => SHOP_ITEMS.find(i => i.id === id))
-                .filter(Boolean)}
+              equippedPetItems={petItemsById[petId] || EMPTY_ITEMS}
               placedDecos={placedDecos}
               poolPos={poolPos}
               onPetClick={handlePetClick}
