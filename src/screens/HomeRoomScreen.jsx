@@ -187,6 +187,21 @@ const OUTDOOR_DECOS = new Set(['pool', 'hot_spring', 'tent', 'igloo', 'telescope
 const habitatOfPet  = (id) => (OUTDOOR_PETS.has(id) ? 'outdoor' : 'indoor')
 const habitatOfDeco = (id) => (OUTDOOR_DECOS.has(id) ? 'outdoor' : 'indoor')
 
+// ── 秘密庭園：種花種樹，依真實時間長大 → 時間到開花 ──────────────────────
+// 花 5 分鐘開花、樹 15 分鐘開花；中途 40% 時間長成小苗。開花後點一下採收換金幣。
+const PLANT_KINDS = {
+  flower: { bloomMs: 5 * 60 * 1000,  reward: 15, grow: '🌿', blooms: ['🌷', '🌻', '🌸', '🌹', '🌼', '🌺'] },
+  tree:   { bloomMs: 15 * 60 * 1000, reward: 40, grow: '🌲', blooms: ['🌳'] },
+}
+// 依經過時間回傳目前外觀：🌱 種子 → 🌿/🌲 長大 → 開花
+function plantView(p, now) {
+  const cfg = PLANT_KINDS[p.kind] || PLANT_KINDS.flower
+  const t = now - p.plantedAt
+  if (t >= cfg.bloomMs) return { emoji: cfg.blooms[p.v % cfg.blooms.length], bloomed: true, reward: cfg.reward }
+  if (t >= cfg.bloomMs * 0.4) return { emoji: cfg.grow, bloomed: false }
+  return { emoji: '🌱', bloomed: false }
+}
+
 // ── Draggable decoration ──────────────────────────────────────────────────────
 
 const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, containerRef }) {
@@ -531,11 +546,19 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
 // ── Main screen ───────────────────────────────────────────────────────────────
 
 export default function HomeRoomScreen({ onNavigate }) {
-  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood } = useGameStore()
+  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins } = useGameStore()
   const containerRef = useRef(null)
 
-  // 室內 / 戶外雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
+  // 溫暖的家（室內）／ 秘密庭園（戶外）雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
   const [scene, setScene] = useState('indoor')
+
+  // 庭園植物成長：每 30 秒把「現在時間」更新一次（純 state，render 用它算成長；開花不必手動刷新）
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    if (scene !== 'outdoor') return
+    const t = setInterval(() => setNow(Date.now()), 30000)
+    return () => clearInterval(t)
+  }, [scene])
 
   // 晝夜光線（每分鐘檢查一次）
   const [phase, setPhase] = useState(getDayPhase)
@@ -583,11 +606,28 @@ export default function HomeRoomScreen({ onNavigate }) {
   const throwToy = (e) => {
     if (!tool) return
     const r = containerRef.current.getBoundingClientRect()
+    // 種花／種樹：點草地種下（庭園可種範圍比丟東西更廣）
+    if (tool === 'flower' || tool === 'tree') {
+      const px = Math.max(8, Math.min(90, (e.clientX - r.left) / r.width * 100))
+      const py = Math.max(46, Math.min(82, (e.clientY - r.top) / r.height * 100))
+      plantSeed(tool, px, py)
+      sfx.click()
+      setTool(null)
+      return
+    }
     const x = Math.max(10, Math.min(74, (e.clientX - r.left) / r.width * 100))
     const y = Math.max(45, Math.min(64, (e.clientY - r.top) / r.height * 100))
     setToy({ kind: tool, x, y, key: Date.now(), kicks: tool === 'ball' ? 3 : 0 })
     ;(tool === 'ball' ? sfx.boing : sfx.click)()
     setTool(null)
+  }
+
+  // 開花後點一下採收：換金幣＋冒星星，清出位置可再種
+  const harvest = (p, reward) => {
+    sfx.coins()
+    addCoins(reward)
+    setToyFx({ x: p.x, y: p.y - 4, emoji: '✨', key: p.key })
+    collectPlant(p.key)
   }
 
   const onToyReach = useCallback((petId, t) => {
@@ -836,6 +876,16 @@ export default function HomeRoomScreen({ onNavigate }) {
         </div>
         <div className="room-side-shade" />
 
+        {/* 秘密庭園的天空：流動的雲＋夜晚閃爍的星星 */}
+        {scene === 'outdoor' && (
+          <div className="room-sky-fx" aria-hidden="true">
+            {phase === 'night' && <div className="osky-stars" />}
+            <span className="osky-cloud o1">☁️</span>
+            <span className="osky-cloud o2">🌥️</span>
+            <span className="osky-cloud o3">☁️</span>
+          </div>
+        )}
+
         {/* 互動層（家具+寵物）：視差正向微移 */}
         <div className="room-actors">
           {/* Decorations (draggable) — 只渲染目前場景的家具 */}
@@ -893,6 +943,29 @@ export default function HomeRoomScreen({ onNavigate }) {
             )}
           </AnimatePresence>
 
+          {/* 秘密庭園：種下的花草樹木，依真實時間長大→開花，開花後可點採收 */}
+          {scene === 'outdoor' && garden.map((p) => {
+            const v = plantView(p, now)
+            const ds = getDepthScale(p.y)
+            return (
+              <div
+                key={p.key}
+                className={`room-plant${v.bloomed ? ' bloomed' : ''}`}
+                style={{ left: `${p.x}%`, top: `${p.y}%`, zIndex: Math.round(p.y),
+                  transform: `translateX(-50%) scale(${ds})`, transformOrigin: 'bottom center' }}
+                onClick={v.bloomed ? (e) => { e.stopPropagation(); harvest(p, v.reward) } : undefined}
+              >
+                <div className="room-plant-shadow" />
+                <motion.span className="room-plant-emoji"
+                  initial={{ scale: 0, y: 6 }} animate={{ scale: 1, y: 0 }}
+                  transition={{ type: 'spring', stiffness: 240, damping: 14 }}>
+                  {v.emoji}
+                </motion.span>
+                {v.bloomed && <span className="room-plant-ping">✨</span>}
+              </div>
+            )
+          })}
+
           {/* 寵物相遇：兩隻靠近時中間冒互動表情 */}
           {meetings.map((m) => (
             <div key={m.key} className="room-meet"
@@ -944,10 +1017,10 @@ export default function HomeRoomScreen({ onNavigate }) {
         {/* 室內 / 戶外 場景切換 */}
         {!snapping && (
           <div className="room-scene-tabs">
-            {[['indoor', '🏠 室內'], ['outdoor', '🌳 戶外']].map(([id, label]) => (
+            {[['indoor', '🏠 溫暖的家'], ['outdoor', '🌳 秘密庭園']].map(([id, label]) => (
               <motion.button key={id} className={`room-scene-tab${scene === id ? ' active' : ''}`}
                 whileTap={{ scale: 0.9 }}
-                onClick={(e) => { e.stopPropagation(); if (scene !== id) { sfx.click(); setScene(id) } }}>
+                onClick={(e) => { e.stopPropagation(); if (scene !== id) { sfx.click(); setScene(id); setTool(null) } }}>
                 {label}
               </motion.button>
             ))}
@@ -967,7 +1040,23 @@ export default function HomeRoomScreen({ onNavigate }) {
             ))}
           </div>
         )}
-        {tool && <div className="room-toy-hint">{TOY_TOOLS[tool].hint}</div>}
+        {/* 秘密庭園：種花／種樹按鈕（只在庭園場景出現） */}
+        {!snapping && scene === 'outdoor' && (
+          <div className="room-seed-btns">
+            {[['flower', '🌷'], ['tree', '🌳']].map(([k, emoji]) => (
+              <motion.button key={k} className={`room-seed-btn${tool === k ? ' armed' : ''}`}
+                whileTap={{ scale: 0.85 }}
+                onClick={(e) => { e.stopPropagation(); sfx.click(); setTool(tool === k ? null : k) }}>
+                {emoji}
+              </motion.button>
+            ))}
+          </div>
+        )}
+        {tool && (
+          <div className="room-toy-hint">
+            {TOY_TOOLS[tool]?.hint || (tool === 'flower' ? '點草地，種下花朵！時間到會開花～' : '點草地，種下小樹！慢慢長大會開花～')}
+          </div>
+        )}
         <AnimatePresence>
           {snapping && (
             <motion.div className="room-photo-flash"

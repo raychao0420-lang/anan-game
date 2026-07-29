@@ -979,3 +979,96 @@
     repeating-linear-gradient(90deg, transparent, transparent 39px,
       rgba(30, 80, 20, 0.07) 39px, rgba(30, 80, 20, 0.07) 40px);
 }
+
+/* 天空特效：流動的雲＋夜晚星星（庭園限定；純 CSS 動畫走合成器，不吃主執行緒） */
+.room-sky-fx {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 36%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+.osky-cloud { position: absolute; opacity: 0.9; }
+.osky-cloud.o1 { top: 14%; font-size: 2rem;   animation: osky-drift 42s linear infinite; }
+.osky-cloud.o2 { top: 34%; font-size: 1.4rem; animation: osky-drift 60s linear infinite; animation-delay: -24s; }
+.osky-cloud.o3 { top: 6%;  font-size: 1.7rem; animation: osky-drift 74s linear infinite; animation-delay: -52s; }
+@keyframes osky-drift { from { left: -18%; } to { left: 112%; } }
+.scene-outdoor.phase-night .osky-cloud { opacity: 0.25; }
+.scene-outdoor.weather-rain .osky-cloud { filter: grayscale(0.6) brightness(0.7); }
+
+.osky-stars {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1.6px 1.6px at 14% 32%, #fff 50%, transparent 52%),
+    radial-gradient(1.3px 1.3px at 32% 16%, #fff 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 48% 40%, #fff 50%, transparent 52%),
+    radial-gradient(1.2px 1.2px at 62% 20%, #fff 50%, transparent 52%),
+    radial-gradient(1.6px 1.6px at 76% 36%, #fff 50%, transparent 52%),
+    radial-gradient(1.3px 1.3px at 88% 14%, #fff 50%, transparent 52%),
+    radial-gradient(1.2px 1.2px at 24% 52%, #fff 50%, transparent 52%),
+    radial-gradient(1.4px 1.4px at 54% 60%, #fff 50%, transparent 52%);
+  animation: osky-twinkle 3.2s ease-in-out infinite;
+}
+@keyframes osky-twinkle { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+
+/* ── 秘密庭園：種下的花草樹木 ─────────────────────────────────────────── */
+.room-seed-btns {
+  position: absolute;
+  right: 12px;
+  bottom: 14px;
+  z-index: 140;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.room-seed-btn {
+  border: none;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  font-size: 1.3rem;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+.room-seed-btn.armed {
+  background: #b6e59a;
+  box-shadow: 0 0 0 3px rgba(120, 200, 90, 0.9), 0 2px 10px rgba(0, 0, 0, 0.24);
+}
+.room-scene.snapping .room-seed-btns { display: none; }
+
+.room-plant {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.room-actors .room-plant.bloomed { pointer-events: auto; cursor: pointer; }
+.room-plant-emoji {
+  font-size: 1.8rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.22));
+}
+.room-plant.bloomed .room-plant-emoji { font-size: 2.1rem; }
+.room-plant-shadow {
+  position: absolute;
+  bottom: -4px;
+  width: 60%;
+  height: 7px;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 50%;
+  filter: blur(3px);
+}
+.room-plant-ping {
+  position: absolute;
+  top: -10px; right: -8px;
+  font-size: 0.9rem;
+  animation: plant-ping 1.4s ease-in-out infinite;
+}
+@keyframes plant-ping {
+  0%, 100% { transform: scale(0.8) rotate(-8deg); opacity: 0.7; }
+  50%      { transform: scale(1.15) rotate(8deg); opacity: 1; }
+}

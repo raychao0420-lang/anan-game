@@ -65,6 +65,7 @@ export const useGameStore = create(
       petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [], dino: [], monkey: [], raccoon: [] },
       equippedHomeItems: [],
       homeDecoPositions: {},
+      garden: [],   // 戶外花園：{ key, kind:'flower'|'tree', x, y, plantedAt, v } 真實時間持久化，離開再回來繼續長
 
       // M3: daily tasks
       dailyDate: null,
@@ -256,6 +257,16 @@ export const useGameStore = create(
             [itemId]: { x, y, scale: scale ?? s.homeDecoPositions[itemId]?.scale ?? 1 },
           },
         })),
+
+      // 秘密庭園：種下一株（花/樹），記真實時間 → 之後依經過時間長大開花；最多留 24 株
+      plantSeed: (kind, x, y) =>
+        set((s) => ({
+          garden: [...(s.garden || []),
+            { key: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, kind, x, y, plantedAt: Date.now(), v: Math.floor(Math.random() * 6) }
+          ].slice(-24),
+        })),
+      collectPlant: (key) =>
+        set((s) => ({ garden: (s.garden || []).filter((p) => p.key !== key) })),
 
       // ── M3: Daily tasks ──
       initDaily: (today) => {
@@ -711,6 +722,8 @@ export const useGameStore = create(
         if (!state.seriesSeals) state.seriesSeals = []
         if (!state.seriesStamps) state.seriesStamps = []
         if (!state.seriesPieces) state.seriesPieces = []
+        // 秘密庭園
+        if (!state.garden) state.garden = []
       },
     }
   )
