@@ -244,6 +244,26 @@ generators[100] = () => {                                          // 兩位乘�
   return ops[rand(0, 4)]()
 }
 
+// ── 一位數 × 兩位數（101-105）·翰林四上 ─────────────────────
+generators[101] = () => makeMul(rand(2, 9), rand(10, 19))          // 一位 × 十幾
+generators[102] = () => makeMul(rand(2, 9), rand(11, 49))          // 一位 × 中兩位
+generators[103] = () => makeMul(rand(2, 9), rand(20, 99))          // 一位 × 大兩位
+generators[104] = () => makeMul(rand(3, 9), rand(11, 99))          // 一位(大) × 全兩位
+generators[105] = () => {                                          // 一位乘兩位綜合
+  const ops = [generators[101], generators[102], generators[103]]
+  return ops[rand(0, 2)]()
+}
+
+// ── 一位數 × 三位數（106-110）·翰林四上 ─────────────────────
+generators[106] = () => makeMul(rand(2, 9), rand(100, 199))        // 一位 × 一百多
+generators[107] = () => makeMul(rand(2, 9), rand(100, 499))        // 一位 × 中三位
+generators[108] = () => makeMul(rand(2, 9), rand(100, 999))        // 一位 × 全三位
+generators[109] = () => makeMul(rand(3, 9), rand(200, 999))        // 一位(大) × 大三位
+generators[110] = () => {                                          // 一位乘三位大挑戰
+  const ops = [generators[106], generators[107], generators[108], generators[109]]
+  return ops[rand(0, 3)]()
+}
+
 // 每關開頭的「暖身簡單題」——先讓孩子連續答對、建立信心，再進入正常難度
 const WARMUP_COUNT = 2
 
@@ -359,3 +379,17 @@ STAGE_NAMES[97]  = '兩位乘十幾'
 STAGE_NAMES[98]  = '兩位乘廿幾'
 STAGE_NAMES[99]  = '兩位乘兩位'
 STAGE_NAMES[100] = '🏆 兩位乘法王'
+
+// 一位數 × 兩位數
+STAGE_NAMES[101] = '一位乘十幾'
+STAGE_NAMES[102] = '一位乘兩位I'
+STAGE_NAMES[103] = '一位乘兩位II'
+STAGE_NAMES[104] = '一位乘兩位III'
+STAGE_NAMES[105] = '一位乘兩位綜合'
+
+// 一位數 × 三位數
+STAGE_NAMES[106] = '一位乘一百多'
+STAGE_NAMES[107] = '一位乘三位I'
+STAGE_NAMES[108] = '一位乘三位II'
+STAGE_NAMES[109] = '一位乘三位III'
+STAGE_NAMES[110] = '🏆 一位乘三位王'

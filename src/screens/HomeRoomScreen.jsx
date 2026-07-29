@@ -180,6 +180,13 @@ const BOUNDS      = { xMin: 6,  xMax: 78, yMin: 42, yMax: 66 }
 const DECO_BOUNDS = { xMin: 2,  xMax: 88, yMin: 2,  yMax: 86 }
 const EMPTY_ITEMS = []  // 穩定的空陣列參照，避免沒裝備的寵物每次 render 都拿到新陣列而白重繪
 
+// ── 室內外雙場景：寵物與家具各自歸屬，一次只渲染一個場景 → 同時動畫的寵物數減半、另一半完全卸載 ──
+// 戶外＝水生/星空/野外的孩子與家具；沒列到的都算室內。要調整歸屬只改這兩個 Set。
+const OUTDOOR_PETS  = new Set(['hana', 'kotaro', 'seal', 'penguin', 'beaver', 'feifei', 'dino', 'monkey', 'twinkle', 'luna', 'pluto', 'mejiro'])
+const OUTDOOR_DECOS = new Set(['pool', 'hot_spring', 'tent', 'igloo', 'telescope', 'star_swing', 'moon_hammock', 'bamboo', 'plant', 'castle', 'trampoline', 'bird_perch', 'world_route_map', 'taiwan_puzzle_wall', 'rainbow'])
+const habitatOfPet  = (id) => (OUTDOOR_PETS.has(id) ? 'outdoor' : 'indoor')
+const habitatOfDeco = (id) => (OUTDOOR_DECOS.has(id) ? 'outdoor' : 'indoor')
+
 // ── Draggable decoration ──────────────────────────────────────────────────────
 
 const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, containerRef }) {
@@ -527,6 +534,9 @@ export default function HomeRoomScreen({ onNavigate }) {
   const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood } = useGameStore()
   const containerRef = useRef(null)
 
+  // 室內 / 戶外雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
+  const [scene, setScene] = useState('indoor')
+
   // 晝夜光線（每分鐘檢查一次）
   const [phase, setPhase] = useState(getDayPhase)
   useEffect(() => {
@@ -728,6 +738,11 @@ export default function HomeRoomScreen({ onNavigate }) {
     [homeDecos]
   )
 
+  // 只留目前場景的寵物 / 家具 / 尋路點（另一場景整組不 render）
+  const scenePets    = useMemo(() => unlockedPets.filter(([id]) => habitatOfPet(id) === scene), [unlockedPets, scene])
+  const sceneDecos   = useMemo(() => homeDecos.filter(({ item }) => habitatOfDeco(item.id) === scene), [homeDecos, scene])
+  const scenePlaced  = useMemo(() => placedDecos.filter((d) => habitatOfDeco(d.id) === scene), [placedDecos, scene])
+
   // 每隻寵物身上裝備解析好的道具（只在裝備變動時重算，寵物移動不影響）
   const petItemsById = useMemo(() => {
     const map = {}
@@ -745,7 +760,7 @@ export default function HomeRoomScreen({ onNavigate }) {
   // 相遇配對：任兩隻已解鎖寵物距離 < MEET_DIST
   const meetings = []
   const meetPartner = {}
-  const posIds = unlockedPets.map(([id]) => id).filter((id) => petPositions[id])
+  const posIds = scenePets.map(([id]) => id).filter((id) => petPositions[id])
   for (let i = 0; i < posIds.length; i++) {
     for (let j = i + 1; j < posIds.length; j++) {
       const a = posIds[i], b = posIds[j]
@@ -774,7 +789,7 @@ export default function HomeRoomScreen({ onNavigate }) {
 
       {/* 進場運鏡：鏡頭從遠處緩緩推進 */}
       <motion.div
-        className={`room-scene phase-${phase} weather-${weather}${activeTheme ? ` theme-${activeTheme}` : ''}${snapping ? ' snapping' : ''}${tool ? ' throwing' : ''}`}
+        className={`room-scene scene-${scene} phase-${phase} weather-${weather}${activeTheme ? ` theme-${activeTheme}` : ''}${snapping ? ' snapping' : ''}${tool ? ' throwing' : ''}`}
         ref={containerRef}
         onClick={throwToy}
         initial={{ scale: 1.16, opacity: 0 }}
@@ -823,8 +838,8 @@ export default function HomeRoomScreen({ onNavigate }) {
 
         {/* 互動層（家具+寵物）：視差正向微移 */}
         <div className="room-actors">
-          {/* Decorations (draggable) */}
-          {homeDecos.map(({ item, pos }) => (
+          {/* Decorations (draggable) — 只渲染目前場景的家具 */}
+          {sceneDecos.map(({ item, pos }) => (
             <DraggableDeco
               key={item.id}
               item={item}
@@ -834,16 +849,16 @@ export default function HomeRoomScreen({ onNavigate }) {
             />
           ))}
 
-          {/* Pets */}
-          {unlockedPets.map(([petId, petData]) => (
+          {/* Pets — 只渲染目前場景的寵物 */}
+          {scenePets.map(([petId, petData]) => (
             <WanderingPet
               key={petId}
               petId={petId}
               petDef={PETS[petId]}
               petData={petData}
               equippedPetItems={petItemsById[petId] || EMPTY_ITEMS}
-              placedDecos={placedDecos}
-              poolPos={poolPos}
+              placedDecos={scenePlaced}
+              poolPos={scene === 'outdoor' ? poolPos : null}
               onPetClick={handlePetClick}
               mood={petMoods?.[petId] ?? 80}
               weather={weather}
@@ -893,7 +908,7 @@ export default function HomeRoomScreen({ onNavigate }) {
           ))}
 
           {/* Hint */}
-          {homeDecos.length === 0 && (
+          {sceneDecos.length === 0 && (
             <motion.div
               className="room-empty-hint"
               initial={{ opacity: 0 }}
@@ -924,6 +939,19 @@ export default function HomeRoomScreen({ onNavigate }) {
             onClick={(e) => { e.stopPropagation(); takePhoto() }} aria-label="拍照">
             📸
           </motion.button>
+        )}
+
+        {/* 室內 / 戶外 場景切換 */}
+        {!snapping && (
+          <div className="room-scene-tabs">
+            {[['indoor', '🏠 室內'], ['outdoor', '🌳 戶外']].map(([id, label]) => (
+              <motion.button key={id} className={`room-scene-tab${scene === id ? ' active' : ''}`}
+                whileTap={{ scale: 0.9 }}
+                onClick={(e) => { e.stopPropagation(); if (scene !== id) { sfx.click(); setScene(id) } }}>
+                {label}
+              </motion.button>
+            ))}
+          </div>
         )}
 
         {/* 第5彈：丟零食/丟球按鈕＋提示 */}
