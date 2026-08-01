@@ -386,3 +386,8 @@
   text-align: left;
 }
 .srs-next-label { font-weight: 900; color: var(--accent, #b06bd6); margin-bottom: 4px; }
+
+/* 自然科圖解（S7）：現場故事下方的 inline SVG 圖，看圖更好懂 */
+.srs-diagram { margin: 10px auto 4px; max-width: 320px; }
+.srs-diagram svg { filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12)); border-radius: 12px; }
+.srs-diagram-fallback { padding: 12px; }

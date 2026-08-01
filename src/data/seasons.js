@@ -6,6 +6,7 @@ import { SEASON3, GEM_BOARD } from './series3'
 import { SEASON4, LICENSE_BOARD } from './series4'
 import { SEASON5, PASSPORT_BOARD } from './series5'
 import { SEASON6, PUZZLE_BOARD } from './series6'
+import { SEASON7, STORYBOOK_BOARD } from './series7'
 import { SERIES_TEACH } from './seriesTeach'
 
 function normalize(season, extra) {
@@ -82,5 +83,14 @@ export const SEASONS = [
     clueLabel: { zh: '小虎的腳印', en: "Little Tiger's Paw Prints" },
     clueIcon: '🐾',
     subtitle: { zh: '第六季 · 已完結', en: 'Season 6 · Complete' },
+  }),
+  normalize(SEASON7, {
+    key: 'season7',
+    board: STORYBOOK_BOARD,
+    collType: 'page',                                    // 每集 ep.page.id 收進 store.seriesPages
+    collLabel: { zh: '家鄉故事書', en: 'Hometown Storybook' },
+    clueLabel: { zh: '阿榕的落葉', en: "Old Banyan's Leaves" },
+    clueIcon: '🍃',
+    subtitle: { zh: '第七季 · 連載中', en: 'Season 7 · Ongoing' },
   }),
 ]
