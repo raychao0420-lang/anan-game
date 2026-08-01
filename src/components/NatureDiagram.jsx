@@ -127,6 +127,57 @@ const DIAGRAMS = {
       <text x="80" y="26" fontSize="8" fill={C.sub} textAnchor="middle">量一量匾額的邊長</text>
     </g>
   ),
+
+  // 河階：大漢溪千百年往下切，河邊留下一階一階的平台（剖面圖）
+  'river-terrace': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <rect x="8" y="8" width="144" height="66" rx="6" fill={C.sky} />
+      {/* 階梯狀地形：左高右低，一階一階往河面下降 */}
+      <path d="M8,30 H44 V44 H80 V58 H112 V70 H152 V74 H8 Z" fill={C.ground} stroke="#b9a06f" strokeWidth="1.2" />
+      {/* 每階的小田（綠） */}
+      <rect x="12" y="26" width="28" height="4" rx="1.5" fill={C.green} />
+      <rect x="48" y="40" width="28" height="4" rx="1.5" fill={C.green} />
+      <rect x="84" y="54" width="24" height="4" rx="1.5" fill={C.green} />
+      {/* 河（右下） */}
+      <path d="M112,70 H152 V74 H112 Z" fill={C.water} />
+      <path d="M112,74 Q132,71 152,74" stroke="#fff" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* 下切箭頭 */}
+      <line x1="128" y1="20" x2="128" y2="66" stroke={C.red} strokeWidth="1.6" strokeDasharray="3 2" />
+      <path d="M128,66 l-3,-6 h6 z" fill={C.red} />
+      <text x="140" y="40" fontSize="7" fill={C.red}>下切</text>
+      {/* 落差標示 */}
+      <text x="26" y="22" fontSize="7" fill={C.sub} textAnchor="middle">高階</text>
+      <text x="132" y="88" fontSize="7.5" fill={C.water} textAnchor="middle" fontWeight="bold">大漢溪</text>
+      <text x="70" y="98" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">河流下切，切出一階一階的「河階」</text>
+    </g>
+  ),
+
+  // 面積方格：長方形田分成 1 平方公尺的小格，面積＝長×寬
+  'area-grid': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 8×5 方格 */}
+      <g>
+        {Array.from({ length: 5 }).map((_, r) =>
+          Array.from({ length: 8 }).map((_, c) => (
+            <rect key={`${r}-${c}`} x={30 + c * 12} y={22 + r * 10} width="12" height="10"
+              fill={(r + c) % 2 ? '#dff0e3' : '#eef8f0'} stroke={C.green} strokeWidth="0.6" />
+          ))
+        )}
+      </g>
+      {/* 長（下） */}
+      <line x1="30" y1="78" x2="126" y2="78" stroke={C.ink} strokeWidth="1" />
+      <path d="M30,78 l5,-3 v6 z M126,78 l-5,-3 v6 z" fill={C.ink} />
+      <text x="78" y="88" fontSize="8" fill={C.ink} textAnchor="middle">長</text>
+      {/* 寬（左） */}
+      <line x1="24" y1="22" x2="24" y2="72" stroke={C.ink} strokeWidth="1" />
+      <path d="M24,22 l-3,5 h6 z M24,72 l-3,-5 h6 z" fill={C.ink} />
+      <text x="14" y="49" fontSize="8" fill={C.ink} textAnchor="middle" transform="rotate(-90,14,49)">寬</text>
+      <text x="128" y="16" fontSize="7" fill={C.sub} textAnchor="end">1 格 = 1 平方公尺</text>
+      <text x="82" y="99" fontSize="8.5" fill={C.green} textAnchor="middle" fontWeight="bold">面積 = 長 × 寬（數格子）</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
