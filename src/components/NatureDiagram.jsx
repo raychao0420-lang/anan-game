@@ -232,6 +232,75 @@ const DIAGRAMS = {
       <text x="90" y="100" fontSize="7.5" fill={C.sub} textAnchor="middle">折線往上＝數量越來越多</text>
     </g>
   ),
+
+  // 月相：新月→上弦→滿月→下弦（約 30 天一輪）
+  'moon-phase': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <rect x="8" y="20" width="144" height="44" rx="6" fill="#26344a" />
+      <text x="82" y="15" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">月相變化（約 30 天一輪）</text>
+      {[
+        { cx: 30,  n: '新月', dark: 'full' },
+        { cx: 68,  n: '上弦月', dark: 'left' },
+        { cx: 106, n: '滿月', dark: 'none' },
+        { cx: 144, n: '下弦月', dark: 'right' },
+      ].map((m) => (
+        <g key={m.n}>
+          <circle cx={m.cx} cy="42" r="12" fill="#f6efc9" stroke="#d9cf9a" strokeWidth="0.8" />
+          {m.dark === 'full' && <circle cx={m.cx} cy="42" r="12" fill="#31425c" />}
+          {m.dark === 'left' && <path d={`M${m.cx},30 A12 12 0 0 0 ${m.cx},54 Z`} fill="#31425c" />}
+          {m.dark === 'right' && <path d={`M${m.cx},30 A12 12 0 0 1 ${m.cx},54 Z`} fill="#31425c" />}
+          <text x={m.cx} y="74" fontSize="6.6" fill={C.sub} textAnchor="middle">{m.n}</text>
+        </g>
+      ))}
+      <text x="82" y="92" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">月亮每天晚升約 50 分鐘</text>
+    </g>
+  ),
+
+  // 月亮東升西落：半圓弧，東 0°→正南 90°→西 180°
+  'moonrise': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <rect x="8" y="8" width="144" height="60" rx="6" fill="#20304a" />
+      {/* 弧線 東→頂→西 */}
+      <path d="M22,64 A58 44 0 0 1 138,64" fill="none" stroke="#8fa6c4" strokeWidth="1.4" strokeDasharray="3 3" />
+      {/* 地平線 */}
+      <line x1="14" y1="64" x2="146" y2="64" stroke="#c9b48a" strokeWidth="2" />
+      {/* 月亮在東邊升起 */}
+      <circle cx="28" cy="60" r="6" fill="#f6efc9" />
+      {/* 正南最高 */}
+      <circle cx="80" cy="22" r="5" fill="#f6efc9" opacity="0.5" />
+      {/* 角度標示 */}
+      <text x="20" y="76" fontSize="7.5" fill="#f6b73c" textAnchor="middle">東 0°</text>
+      <text x="80" y="16" fontSize="7.5" fill="#f6b73c" textAnchor="middle">正南 90°</text>
+      <text x="140" y="76" fontSize="7.5" fill="#f6b73c" textAnchor="middle">西 180°</text>
+      <text x="82" y="92" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">月亮和太陽一樣：東邊升、西邊落</text>
+    </g>
+  ),
+
+  // 時鐘角度：6 點整，時針分針成一直線＝180°（每格 30°）
+  'clock-angle': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <circle cx="80" cy="50" r="34" fill="#fff" stroke={C.ink} strokeWidth="2" />
+      {/* 12 格刻度 */}
+      {Array.from({ length: 12 }).map((_, i) => {
+        const a = (i * 30 - 90) * Math.PI / 180
+        return <line key={i} x1={80 + Math.cos(a) * 30} y1={50 + Math.sin(a) * 30}
+          x2={80 + Math.cos(a) * 34} y2={50 + Math.sin(a) * 34} stroke={C.sub} strokeWidth="1" />
+      })}
+      <text x="80" y="26" fontSize="7" fill={C.ink} textAnchor="middle">12</text>
+      <text x="80" y="80" fontSize="7" fill={C.ink} textAnchor="middle">6</text>
+      <text x="106" y="53" fontSize="7" fill={C.ink} textAnchor="middle">3</text>
+      <text x="55" y="53" fontSize="7" fill={C.ink} textAnchor="middle">9</text>
+      {/* 6 點：分針指 12、時針指 6，成一直線 */}
+      <line x1="80" y1="50" x2="80" y2="22" stroke="#e0574f" strokeWidth="2.4" strokeLinecap="round" />
+      <line x1="80" y1="50" x2="80" y2="74" stroke={C.ink} strokeWidth="3" strokeLinecap="round" />
+      <circle cx="80" cy="50" r="2.5" fill={C.ink} />
+      <text x="118" y="50" fontSize="9" fill="#e0574f" fontWeight="bold">180°</text>
+      <text x="82" y="98" fontSize="7.8" fill={C.sub} textAnchor="middle">時鐘每一大格＝30°；6 點成一直線＝180°</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
