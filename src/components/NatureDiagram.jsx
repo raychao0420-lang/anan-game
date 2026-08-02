@@ -301,6 +301,72 @@ const DIAGRAMS = {
       <text x="82" y="98" fontSize="7.8" fill={C.sub} textAnchor="middle">時鐘每一大格＝30°；6 點成一直線＝180°</text>
     </g>
   ),
+
+  // 槓桿：支點近重物，施力臂長→省力（抬厚重神桌）
+  'lever': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 橫桿 */}
+      <rect x="18" y="52" width="124" height="5" rx="2.5" fill="#a9764a" transform="rotate(-6 80 54)" />
+      {/* 支點三角形（靠右，近重物） */}
+      <path d="M108,70 l8,-14 l8,14 z" fill={C.ink} />
+      {/* 重物：神桌（右短臂） */}
+      <rect x="120" y="30" width="22" height="16" rx="2" fill="#8a5a30" stroke="#5f3c1e" strokeWidth="1.2" />
+      <text x="131" y="41" fontSize="6.5" fill="#fdf6e3" textAnchor="middle">神桌</text>
+      <line x1="131" y1="46" x2="131" y2="60" stroke={C.red} strokeWidth="1.4" />
+      <path d="M131,60 l-3,-6 h6 z" fill={C.red} />
+      {/* 施力（左長臂，往下壓） */}
+      <line x1="34" y1="42" x2="34" y2="60" stroke={C.green} strokeWidth="2" />
+      <path d="M34,62 l-3,-6 h6 z" fill={C.green} />
+      <text x="34" y="38" fontSize="7" fill={C.green} textAnchor="middle">施力 20kg</text>
+      <text x="131" y="26" fontSize="7" fill={C.red} textAnchor="middle">重 60kg</text>
+      <text x="82" y="90" fontSize="8.3" fill={C.ink} textAnchor="middle" fontWeight="bold">槓桿：施力臂越長，越省力</text>
+    </g>
+  ),
+
+  // 摩擦力：砂紙磨木頭，摩擦力方向與運動相反
+  'friction': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 木頭桌面（粗糙面） */}
+      <rect x="20" y="58" width="120" height="16" rx="2" fill="#c98a4b" stroke="#7a4e22" strokeWidth="1.2" />
+      {Array.from({ length: 12 }).map((_, i) => (
+        <line key={i} x1={24 + i * 10} y1="58" x2={28 + i * 10} y2="54" stroke="#7a4e22" strokeWidth="0.8" />
+      ))}
+      {/* 砂紙木塊 */}
+      <rect x="66" y="42" width="30" height="14" rx="2" fill="#8fa6c4" stroke={C.ink} strokeWidth="1.2" />
+      <text x="81" y="52" fontSize="6.5" fill="#fff" textAnchor="middle">砂紙</text>
+      {/* 運動方向 → */}
+      <line x1="98" y1="38" x2="122" y2="38" stroke={C.green} strokeWidth="2" />
+      <path d="M122,38 l-6,-3 v6 z" fill={C.green} />
+      <text x="110" y="34" fontSize="6.8" fill={C.green} textAnchor="middle">推 →</text>
+      {/* 摩擦力 ← */}
+      <line x1="64" y1="50" x2="44" y2="50" stroke={C.red} strokeWidth="2" />
+      <path d="M44,50 l6,-3 v6 z" fill={C.red} />
+      <text x="52" y="46" fontSize="6.8" fill={C.red} textAnchor="middle">← 摩擦力</text>
+      <text x="82" y="90" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">摩擦力：方向和運動相反</text>
+    </g>
+  ),
+
+  // 對稱軸：沿虛線對摺，左右完全一樣（線對稱）
+  'symmetry': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 對稱軸（虛線） */}
+      <line x1="80" y1="16" x2="80" y2="80" stroke={C.red} strokeWidth="1.4" strokeDasharray="4 3" />
+      <text x="80" y="12" fontSize="7" fill={C.red} textAnchor="middle">對稱軸</text>
+      {/* 左右鏡射的花紋（牡丹雕花意象） */}
+      {[-1, 1].map((s) => (
+        <g key={s} transform={`translate(80,48) scale(${s},1)`}>
+          <path d="M6,14 C6,2 26,2 26,14 C34,10 34,26 24,26 C24,34 10,34 10,26 C2,26 2,10 6,14 Z"
+            fill="#5aa469" stroke="#2f6b45" strokeWidth="1.2" transform="translate(4,-16)" />
+          <circle cx="18" cy="6" r="3" fill="#e0574f" />
+          <rect x="4" y="18" width="22" height="4" rx="2" fill="#a9764a" />
+        </g>
+      ))}
+      <text x="82" y="92" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">沿對稱軸對摺，左右完全一樣</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
