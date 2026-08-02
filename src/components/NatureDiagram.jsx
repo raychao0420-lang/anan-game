@@ -178,6 +178,60 @@ const DIAGRAMS = {
       <text x="82" y="99" fontSize="8.5" fill={C.green} textAnchor="middle" fontWeight="bold">面積 = 長 × 寬（數格子）</text>
     </g>
   ),
+
+  // 長條圖：月眉溼地生物調查（水鳥20·魚35·青蛙25·蜻蜓10）
+  'bar-chart': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="82" y="15" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">月眉溼地生物調查（隻）</text>
+      {/* 座標軸 */}
+      <line x1="30" y1="22" x2="30" y2="80" stroke={C.ink} strokeWidth="1.2" />
+      <line x1="30" y1="80" x2="150" y2="80" stroke={C.ink} strokeWidth="1.2" />
+      {/* 長條（value×1.5 為高度） */}
+      {[
+        { x: 40,  v: 20, h: 30, c: '#6db6d8', n: '水鳥' },
+        { x: 68,  v: 35, h: 52, c: '#3fa39a', n: '魚' },
+        { x: 96,  v: 25, h: 38, c: '#5aa469', n: '青蛙' },
+        { x: 124, v: 10, h: 15, c: '#e0a24f', n: '蜻蜓' },
+      ].map((b) => (
+        <g key={b.n}>
+          <rect x={b.x} y={80 - b.h} width="18" height={b.h} rx="1.5" fill={b.c} />
+          <text x={b.x + 9} y={78 - b.h} fontSize="7.5" fill={C.ink} textAnchor="middle" fontWeight="bold">{b.v}</text>
+          <text x={b.x + 9} y="90" fontSize="7" fill={C.sub} textAnchor="middle">{b.n}</text>
+        </g>
+      ))}
+      <text x="82" y="101" fontSize="7.5" fill={C.sub} textAnchor="middle">長條越高＝數量越多</text>
+    </g>
+  ),
+
+  // 折線圖：蜻蜓一週數量（週一 6 → 週五 14，往上升）
+  'line-chart': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="82" y="15" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">蜻蜓一週數量（折線圖·隻）</text>
+      <line x1="26" y1="22" x2="26" y2="78" stroke={C.ink} strokeWidth="1.2" />
+      <line x1="26" y1="78" x2="152" y2="78" stroke={C.ink} strokeWidth="1.2" />
+      {/* 5 個點：6,8,10,12,14 → y = 78 - v*3.2 */}
+      {(() => {
+        const pts = [6, 8, 10, 12, 14].map((v, i) => ({ x: 40 + i * 26, y: 78 - v * 3.2, v }))
+        const d = pts.map((p, i) => (i ? 'L' : 'M') + p.x + ',' + p.y).join(' ')
+        const days = ['一', '二', '三', '四', '五']
+        return (
+          <g>
+            <path d={d} stroke="#e0a24f" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            {pts.map((p, i) => (
+              <g key={i}>
+                <circle cx={p.x} cy={p.y} r="2.6" fill="#e0574f" />
+                <text x={p.x} y={p.y - 5} fontSize="7" fill={C.ink} textAnchor="middle" fontWeight="bold">{p.v}</text>
+                <text x={p.x} y="88" fontSize="7" fill={C.sub} textAnchor="middle">週{days[i]}</text>
+              </g>
+            ))}
+          </g>
+        )
+      })()}
+      <text x="90" y="100" fontSize="7.5" fill={C.sub} textAnchor="middle">折線往上＝數量越來越多</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
