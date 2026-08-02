@@ -417,6 +417,63 @@ const DIAGRAMS = {
       <text x="80" y="94" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">水受熱→蒸發，變成水蒸氣跑掉</text>
     </g>
   ),
+
+  // 水循環：埤塘水蒸發→凝結成雲→下雨→回到埤塘
+  'water-cycle': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <rect x="8" y="8" width="144" height="66" rx="6" fill="#dcefff" />
+      {/* 太陽 */}
+      <circle cx="26" cy="24" r="9" fill={C.sun} stroke={C.sunEdge} strokeWidth="1.2" />
+      {/* 雲 */}
+      <g fill="#f4f7fb" stroke="#b9c6d6" strokeWidth="1">
+        <ellipse cx="104" cy="26" rx="16" ry="9" />
+        <ellipse cx="118" cy="24" rx="11" ry="8" />
+        <ellipse cx="92" cy="24" rx="10" ry="7" />
+      </g>
+      {/* 埤塘 */}
+      <rect x="18" y="62" width="124" height="12" rx="2" fill="#6db6d8" />
+      <path d="M18,64 Q80,60 142,64" stroke="#fff" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* 蒸發 ↑（左） */}
+      <path d="M50,60 q4,-10 0,-18 q-4,-8 0,-14" fill="none" stroke="#3fa39a" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M50,28 l-3,5 h6 z" fill="#3fa39a" />
+      <text x="44" y="46" fontSize="6.6" fill="#3fa39a" textAnchor="end">蒸發↑</text>
+      {/* 下雨 ↓（右） */}
+      {[98, 106, 114].map((x, i) => (
+        <line key={i} x1={x} y1="36" x2={x - 2} y2="56" stroke="#4f8fd6" strokeWidth="1.4" strokeLinecap="round" />
+      ))}
+      <text x="122" y="50" fontSize="6.6" fill="#4f8fd6">下雨↓</text>
+      {/* 頂部箭頭：水氣飄向雲 */}
+      <path d="M58,20 q16,-6 30,4" fill="none" stroke="#3fa39a" strokeWidth="1.2" strokeDasharray="3 2" />
+      <text x="82" y="88" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">水循環：蒸發→成雲→下雨→回埤塘</text>
+    </g>
+  ),
+
+  // 蓄水量：埤塘剖面，水面面積 × 水深 ＝ 蓄水量（體積）
+  'capacity': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 埤塘剖面（梯形土堤＋水） */}
+      <path d="M24,34 h96 l10,40 h-116 z" fill="#c9b48a" stroke="#8a7648" strokeWidth="1.2" />
+      <rect x="30" y="38" width="84" height="30" fill="#6db6d8" />
+      <path d="M30,40 Q72,37 114,40" stroke="#fff" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* 水面面積（上緣） */}
+      <line x1="30" y1="34" x2="114" y2="34" stroke="#e0574f" strokeWidth="1.4" />
+      <text x="72" y="30" fontSize="7" fill="#e0574f" textAnchor="middle">水面面積</text>
+      {/* 水深（左） */}
+      <line x1="24" y1="38" x2="24" y2="68" stroke={C.ink} strokeWidth="1" />
+      <path d="M24,38 l-3,5 h6 z M24,68 l-3,-5 h6 z" fill={C.ink} />
+      <text x="14" y="55" fontSize="7" fill={C.ink} textAnchor="middle" transform="rotate(-90,14,55)">水深</text>
+      {/* 1 立方公尺小方塊 */}
+      <g transform="translate(128,50)">
+        <path d="M0,6 l6,-4 l6,4 l-6,4 z" fill="#8fd0c6" stroke="#3fa39a" strokeWidth="0.7" />
+        <path d="M0,6 v7 l6,4 v-7 z" fill="#6bbdb0" stroke="#3fa39a" strokeWidth="0.7" />
+        <path d="M12,6 v7 l-6,4 v-7 z" fill="#57a99c" stroke="#3fa39a" strokeWidth="0.7" />
+        <text x="6" y="26" fontSize="5.6" fill={C.sub} textAnchor="middle">1立方公尺</text>
+      </g>
+      <text x="70" y="90" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">蓄水量 = 水面面積 × 水深</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
