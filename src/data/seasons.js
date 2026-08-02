@@ -91,6 +91,7 @@ export const SEASONS = [
     collLabel: { zh: '家鄉故事書', en: 'Hometown Storybook' },
     clueLabel: { zh: '阿榕的落葉', en: "Old Banyan's Leaves" },
     clueIcon: '🍃',
-    subtitle: { zh: '第七季 · 連載中', en: 'Season 7 · Ongoing' },
+    subtitle: { zh: '第七季 · 已完結', en: 'Season 7 · Complete' },
+    done: true,
   }),
 ]

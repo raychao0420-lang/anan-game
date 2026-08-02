@@ -366,9 +366,27 @@ export const PETS = {
     happyEmoji: '🥰',
     sadEmoji: '🥺',
   },
+  arong: {
+    id: 'arong',
+    name: '阿榕',
+    breed: '百年老樹靈',
+    personality: '大溪老街廟口那棵百年老榕樹的樹靈，看遍家鄉一百年的變化；沉穩溫柔，最愛聽人說故事，也最會把老故事一頁一頁傳給下一代',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '完成《家鄉時光大冒險》終章八德家鄉大會，把家鄉故事書拼滿十二頁，阿榕就會化作一株小樹苗，跟你一起回家！',
+    stages: [
+      null,
+      { emoji: '🌱', label: '家鄉小樹苗',   size: '5rem', bg: '#EEF5E6', border: '#9CBB7A' },
+      { emoji: '🌿', label: '老街小榕樹',   size: '5rem', bg: '#E9F3E0', border: '#7FA85C' },
+      { emoji: '🌳', label: '廟口老榕樹',   size: '5rem', bg: '#E6F1DC', border: '#5E9440' },
+      { emoji: '🌳', label: '家鄉守護神榕', size: '5rem', bg: '#EAF5DE', border: '#3E7D2A', glow: true },
+    ],
+    happyEmoji: '🥰',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu', 'arong']
 
 // ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
 // 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
@@ -382,7 +400,7 @@ export const SKILL_COST = 20              // 每次發動消耗（統一）
 // ── 連載劇場「家教求救」──────────────────────────────────────────────
 // 智慧型寵物可在連載劇場當家教：按求救鈕，用教學方式帶著想（給方法、不給答案）。
 // 消耗能量（比技能便宜），每答對一題回復。擁有清單中任一隻即可求救（依序優先）。
-export const TUTOR_PETS = ['xiaoq', 'owl', 'jiji', 'beaver']  // 小Q🦉(名偵探前輩,優先) / 嚕嚕🦉 / 吉吉🐈‍⬛ / 阿丁🦫
+export const TUTOR_PETS = ['xiaoq', 'owl', 'jiji', 'beaver', 'arong']  // 小Q🦉(名偵探前輩,優先) / 嚕嚕🦉 / 吉吉🐈‍⬛ / 阿丁🦫 / 阿榕🌳(百年老樹靈,家鄉記憶)
 export const SOS_COST = 15                // 求救一次消耗能量
 export const SOS_REGEN = 10               // 連載劇場每答對一題，家教回復能量
 
@@ -408,4 +426,5 @@ export const PET_SKILLS = {
   xiaoq:   { name: '靈光一閃', icon: '💡', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒（尤里卡的瞬間！）' },
   feifei:  { name: '順風翅膀', icon: '🪽', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒（乘著環遊世界的風！）' },
   xiaohu:  { name: '靈敏鼻子', icon: '🐽', effect: { type: 'coin',  add: 22 },   desc: '這一題答對 +22 金幣（聞得出寶藏藏在哪！）' },
+  arong:   { name: '家鄉記憶', icon: '🍃', effect: { type: 'shield' },           desc: '這一題答錯不斷連段（老樹記得你努力過）' },
 }
