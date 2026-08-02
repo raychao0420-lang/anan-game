@@ -632,6 +632,37 @@ const DIAGRAMS = {
       <text x="82" y="101" fontSize="7.5" fill={C.sub} textAnchor="middle">長條越高＝收成越多</text>
     </g>
   ),
+
+  // 斜坡與輪子：輕便車在鐵軌上靠輪子省力；上坡費力、下坡加速
+  'incline': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 斜坡 */}
+      <path d="M16,78 L140,30 L140,78 Z" fill="#d8c39a" stroke="#b9a06f" strokeWidth="1.2" />
+      {/* 鐵軌（斜坡上兩條線） */}
+      <line x1="20" y1="76" x2="138" y2="31" stroke="#8a7648" strokeWidth="1.4" />
+      <line x1="24" y1="78.5" x2="140" y2="34" stroke="#8a7648" strokeWidth="1.4" />
+      {/* 枕木 */}
+      {[0.2, 0.4, 0.6, 0.8].map((t, i) => (
+        <line key={i} x1={20 + t * 118} y1={76 - t * 45} x2={24 + t * 116} y2={78.5 - t * 44.5} stroke="#7a5b34" strokeWidth="1" />
+      ))}
+      {/* 輕便車 */}
+      <g transform="translate(70,44) rotate(-21)">
+        <rect x="-12" y="-10" width="24" height="10" rx="1.5" fill="#a9764a" stroke="#7a4e22" strokeWidth="1" />
+        <circle cx="-7" cy="2" r="3.4" fill="#5a4a3a" stroke="#2f2a22" strokeWidth="1" />
+        <circle cx="7" cy="2" r="3.4" fill="#5a4a3a" stroke="#2f2a22" strokeWidth="1" />
+      </g>
+      {/* 上坡推力（沿斜坡往上） */}
+      <line x1="56" y1="62" x2="44" y2="67" stroke={C.green} strokeWidth="2" />
+      <path d="M56,62 l-2,6 l6,-2 z" fill={C.green} />
+      <text x="40" y="64" fontSize="6.4" fill={C.green} textAnchor="end">上坡費力</text>
+      {/* 下坡加速（沿斜坡往下） */}
+      <line x1="96" y1="47" x2="112" y2="41" stroke={C.red} strokeWidth="2" />
+      <path d="M112,41 l-6,-1 l3,5 z" fill={C.red} />
+      <text x="120" y="40" fontSize="6.4" fill={C.red}>下坡加速</text>
+      <text x="80" y="93" fontSize="7.8" fill={C.ink} textAnchor="middle" fontWeight="bold">輪子＋鐵軌＝省力；上坡費力、下坡加速</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
