@@ -474,6 +474,68 @@ const DIAGRAMS = {
       <text x="70" y="90" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">蓄水量 = 水面面積 × 水深</text>
     </g>
   ),
+
+  // 水的三態：固態（冰）⇄ 液態（水）⇄ 氣態（水蒸氣）
+  'water-states': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="15" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">水的三態</text>
+      {/* 固態：冰塊 */}
+      <g transform="translate(20,34)">
+        <path d="M0,8 l10,-6 l10,6 l-10,6 z" fill="#bfe3f2" stroke="#6db6d8" strokeWidth="0.8" />
+        <path d="M0,8 v12 l10,6 v-12 z" fill="#9cd2ea" stroke="#6db6d8" strokeWidth="0.8" />
+        <path d="M20,8 v12 l-10,6 v-12 z" fill="#7cc0dd" stroke="#6db6d8" strokeWidth="0.8" />
+        <text x="10" y="38" fontSize="6.6" fill={C.sub} textAnchor="middle">固態·冰</text>
+      </g>
+      {/* 液態：水 */}
+      <g transform="translate(66,40)">
+        <path d="M0,14 q14,-6 28,0 v6 q-14,5 -28,0 z" fill="#6db6d8" />
+        <path d="M14,-2 q6,8 0,12 q-6,-4 0,-12 z" fill="#4f8fd6" />
+        <text x="14" y="32" fontSize="6.6" fill={C.sub} textAnchor="middle">液態·水</text>
+      </g>
+      {/* 氣態：水蒸氣 */}
+      <g transform="translate(116,32)">
+        {[0, 8, 16].map((x, i) => (
+          <path key={i} d={`M${x},22 q5,-6 0,-12 q-5,-6 0,-12`} fill="none" stroke="#b9c6d6" strokeWidth="1.6" strokeLinecap="round" />
+        ))}
+        <text x="8" y="40" fontSize="6.6" fill={C.sub} textAnchor="middle">氣態·水蒸氣</text>
+      </g>
+      {/* 轉換箭頭 */}
+      <text x="46" y="46" fontSize="6.4" fill="#e0574f" textAnchor="middle">融化→</text>
+      <text x="104" y="42" fontSize="6.4" fill="#e0574f" textAnchor="middle">蒸發→</text>
+      <text x="80" y="94" fontSize="7.6" fill={C.ink} textAnchor="middle" fontWeight="bold">受熱：冰→水→水蒸氣；遇冷則相反</text>
+    </g>
+  ),
+
+  // 水力發電：水往下沖，推動渦輪，帶動發電機發電
+  'hydro-power': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 壩體＋上游水 */}
+      <rect x="12" y="24" width="30" height="52" fill="#9aa7b2" stroke={C.ink} strokeWidth="1.2" />
+      <rect x="12" y="24" width="16" height="52" fill="#6db6d8" />
+      {/* 水往下沖 */}
+      <path d="M42,40 q14,4 18,22" fill="none" stroke="#4f8fd6" strokeWidth="4" strokeLinecap="round" />
+      <text x="52" y="38" fontSize="6.4" fill="#4f8fd6">水沖下</text>
+      {/* 渦輪（水車） */}
+      <g transform="translate(66,66)">
+        <circle r="14" fill="#e8edf1" stroke={C.ink} strokeWidth="1.4" />
+        {[0, 60, 120, 180, 240, 300].map((d) => {
+          const a = d * Math.PI / 180
+          return <line key={d} x1="0" y1="0" x2={Math.cos(a) * 13} y2={Math.sin(a) * 13} stroke={C.sub} strokeWidth="1.4" />
+        })}
+        <circle r="3" fill={C.ink} />
+      </g>
+      <text x="66" y="90" fontSize="6.4" fill={C.sub} textAnchor="middle">渦輪</text>
+      {/* 發電機＋電 */}
+      <rect x="96" y="52" width="30" height="24" rx="3" fill="#f2c14e" stroke="#b8892b" strokeWidth="1.2" />
+      <text x="111" y="67" fontSize="12" fill="#7a5b13" textAnchor="middle" fontWeight="bold">⚡</text>
+      <path d="M80,66 h14" stroke={C.ink} strokeWidth="1.4" />
+      <path d="M126,58 q10,0 10,8 q0,8 -8,8" fill="none" stroke="#f2c14e" strokeWidth="1.6" />
+      <text x="136" y="52" fontSize="9" fill="#e0a24f" textAnchor="middle">💡</text>
+      <text x="80" y="99" fontSize="7.6" fill={C.ink} textAnchor="middle" fontWeight="bold">水沖下→轉動渦輪→發電機發電</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
