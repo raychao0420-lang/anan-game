@@ -367,6 +367,56 @@ const DIAGRAMS = {
       <text x="82" y="92" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">沿對稱軸對摺，左右完全一樣</text>
     </g>
   ),
+
+  // 位值表：讀大數一格一位（以 258000＝二十五萬八千 為例，萬位＝5）
+  'place-value': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="18" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">位值表：一格站一位</text>
+      {[
+        { n: '十萬', d: '2' }, { n: '萬', d: '5', hi: true }, { n: '千', d: '8' },
+        { n: '百', d: '0' }, { n: '十', d: '0' }, { n: '個', d: '0' },
+      ].map((c, i) => {
+        const x = 16 + i * 21
+        return (
+          <g key={i}>
+            <rect x={x} y="28" width="21" height="14" fill={c.hi ? '#ffe8a3' : '#eef2f5'} stroke={C.sub} strokeWidth="0.8" />
+            <text x={x + 10.5} y="38" fontSize="7" fill={C.sub} textAnchor="middle">{c.n}</text>
+            <rect x={x} y="42" width="21" height="22" fill={c.hi ? '#fff2cc' : '#fff'} stroke={C.sub} strokeWidth="0.8" />
+            <text x={x + 10.5} y="58" fontSize="13" fill={c.hi ? '#d98a00' : C.ink} textAnchor="middle" fontWeight="bold">{c.d}</text>
+          </g>
+        )
+      })}
+      <text x="80" y="80" fontSize="8" fill={C.ink} textAnchor="middle">258000 ＝ 二十五萬八千</text>
+      <text x="80" y="95" fontSize="8" fill="#d98a00" textAnchor="middle" fontWeight="bold">「萬位」的數字是 5</text>
+    </g>
+  ),
+
+  // 蒸發：滷鍋加熱，水受熱變水蒸氣往上跑（水的變化）
+  'evaporation': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 鍋 */}
+      <path d="M46,54 h68 l-6,20 h-56 z" fill="#8a949c" stroke={C.ink} strokeWidth="1.4" />
+      <rect x="42" y="50" width="76" height="6" rx="2" fill="#6b7a86" />
+      {/* 滷汁 */}
+      <path d="M52,58 h56 l-3,10 h-50 z" fill="#7a4a24" />
+      {/* 豆干 */}
+      <rect x="62" y="60" width="10" height="6" rx="1" fill="#c98a4b" />
+      <rect x="86" y="61" width="10" height="6" rx="1" fill="#c98a4b" />
+      {/* 火 */}
+      <path d="M64,80 q4,-8 8,0 q4,-8 8,0 q4,-8 8,0 q4,-8 8,0" fill="none" stroke="#e0574f" strokeWidth="2" />
+      {/* 蒸發：水蒸氣往上（波浪箭頭） */}
+      {[58, 80, 102].map((x, i) => (
+        <g key={i}>
+          <path d={`M${x},48 q4,-6 0,-12 q-4,-6 0,-12`} fill="none" stroke="#6db6d8" strokeWidth="1.6" strokeLinecap="round" />
+          <path d={`M${x},24 l-3,4 h6 z`} fill="#6db6d8" />
+        </g>
+      ))}
+      <text x="126" y="30" fontSize="7" fill="#6db6d8" textAnchor="middle">水蒸氣</text>
+      <text x="80" y="94" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">水受熱→蒸發，變成水蒸氣跑掉</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
