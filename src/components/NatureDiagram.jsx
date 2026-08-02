@@ -569,6 +569,69 @@ const DIAGRAMS = {
       <text x="70" y="94" fontSize="8.2" fill={C.ink} textAnchor="middle" fontWeight="bold">速度 = 距離 ÷ 時間</text>
     </g>
   ),
+
+  // 植物構造與光合作用：根·莖·葉·花，葉子靠陽光行光合作用
+  'plant-parts': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <rect x="8" y="8" width="144" height="60" rx="6" fill="#eaf6ff" />
+      {/* 太陽 */}
+      <circle cx="30" cy="22" r="8" fill={C.sun} stroke={C.sunEdge} strokeWidth="1.2" />
+      {[0, 45, 90, 135].map((d) => {
+        const a = d * Math.PI / 180
+        return <line key={d} x1={30 + Math.cos(a) * 10} y1={22 + Math.sin(a) * 10} x2={30 + Math.cos(a) * 14} y2={22 + Math.sin(a) * 14} stroke={C.sun} strokeWidth="1.2" />
+      })}
+      {/* 陽光照向葉子 */}
+      <line x1="40" y1="30" x2="72" y2="46" stroke={C.sun} strokeWidth="1.4" strokeDasharray="3 2" />
+      {/* 土壤 */}
+      <rect x="8" y="60" width="144" height="16" fill="#b98a5a" />
+      {/* 莖 */}
+      <rect x="82" y="30" width="4" height="34" fill="#5aa469" />
+      {/* 葉 */}
+      <path d="M84,46 q16,-8 22,2 q-14,6 -22,-2 z" fill="#5aa469" />
+      <path d="M84,54 q-16,-6 -22,3 q14,6 22,-3 z" fill="#6cb87a" />
+      {/* 花 */}
+      <g transform="translate(84,28)">
+        {[0, 72, 144, 216, 288].map((d) => {
+          const a = d * Math.PI / 180
+          return <ellipse key={d} cx={Math.cos(a) * 6} cy={Math.sin(a) * 6} rx="4" ry="2.6" fill="#e0574f" transform={`rotate(${d} ${Math.cos(a) * 6} ${Math.sin(a) * 6})`} />
+        })}
+        <circle r="3" fill={C.sun} />
+      </g>
+      {/* 根 */}
+      <path d="M84,64 q-4,8 -10,10 M84,64 q4,8 10,10 M84,64 v10" stroke="#8a6a3a" strokeWidth="1.4" fill="none" />
+      {/* 標籤 */}
+      <text x="108" y="26" fontSize="6.6" fill={C.sub}>花</text>
+      <text x="112" y="46" fontSize="6.6" fill={C.sub}>葉</text>
+      <text x="92" y="50" fontSize="6.6" fill={C.sub}>莖</text>
+      <text x="98" y="74" fontSize="6.6" fill="#fdf6e3">根</text>
+      <text x="46" y="30" fontSize="6.4" fill={C.sunEdge}>陽光</text>
+      <text x="80" y="90" fontSize="7.6" fill={C.ink} textAnchor="middle" fontWeight="bold">葉子行光合作用：陽光＋水＋二氧化碳→養分</text>
+    </g>
+  ),
+
+  // 花海收成長條圖（甲30·乙45·丙25·丁20 籃）
+  'harvest-chart': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="82" y="15" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">花海收成（籃）</text>
+      <line x1="30" y1="22" x2="30" y2="80" stroke={C.ink} strokeWidth="1.2" />
+      <line x1="30" y1="80" x2="150" y2="80" stroke={C.ink} strokeWidth="1.2" />
+      {[
+        { x: 40,  v: 30, h: 33, c: '#e0574f', n: '甲' },
+        { x: 68,  v: 45, h: 50, c: '#e0a24f', n: '乙' },
+        { x: 96,  v: 25, h: 28, c: '#7a5bd0', n: '丙' },
+        { x: 124, v: 20, h: 22, c: '#5aa469', n: '丁' },
+      ].map((b) => (
+        <g key={b.n}>
+          <rect x={b.x} y={80 - b.h} width="18" height={b.h} rx="1.5" fill={b.c} />
+          <text x={b.x + 9} y={78 - b.h} fontSize="7.5" fill={C.ink} textAnchor="middle" fontWeight="bold">{b.v}</text>
+          <text x={b.x + 9} y="90" fontSize="7" fill={C.sub} textAnchor="middle">{b.n}區</text>
+        </g>
+      ))}
+      <text x="82" y="101" fontSize="7.5" fill={C.sub} textAnchor="middle">長條越高＝收成越多</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
