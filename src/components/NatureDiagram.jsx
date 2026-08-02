@@ -536,6 +536,39 @@ const DIAGRAMS = {
       <text x="80" y="99" fontSize="7.6" fill={C.ink} textAnchor="middle" fontWeight="bold">水沖下→轉動渦輪→發電機發電</text>
     </g>
   ),
+
+  // 速度：走的距離 ÷ 花的時間 ＝ 每分鐘走多快（速率前導）
+  'speed': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 路 */}
+      <line x1="20" y1="56" x2="140" y2="56" stroke="#c9b48a" strokeWidth="6" strokeLinecap="round" />
+      {/* 起點終點旗 */}
+      <line x1="24" y1="56" x2="24" y2="38" stroke={C.ink} strokeWidth="1.2" />
+      <path d="M24,38 h9 v6 h-9 z" fill="#5aa469" />
+      <line x1="136" y1="56" x2="136" y2="38" stroke={C.ink} strokeWidth="1.2" />
+      <path d="M136,38 h-9 v6 h9 z" fill="#e0574f" />
+      {/* 神轎（移動中） */}
+      <g transform="translate(74,44)">
+        <rect x="0" y="0" width="16" height="10" rx="1.5" fill="#c98a4b" stroke="#7a4e22" strokeWidth="1" />
+        <path d="M2,0 l6,-5 l6,5 z" fill="#e0a24f" />
+        <line x1="-4" y1="10" x2="20" y2="10" stroke="#7a4e22" strokeWidth="1.2" />
+      </g>
+      <path d="M66,40 h-8 M64,46 h-8" stroke={C.sub} strokeWidth="1.2" strokeLinecap="round" />
+      {/* 距離標示 */}
+      <line x1="24" y1="66" x2="136" y2="66" stroke={C.ink} strokeWidth="0.8" />
+      <path d="M24,66 l5,-3 v6 z M136,66 l-5,-3 v6 z" fill={C.ink} />
+      <text x="80" y="76" fontSize="7" fill={C.ink} textAnchor="middle">距離（公尺）</text>
+      {/* 時鐘 */}
+      <g transform="translate(126,22)">
+        <circle r="9" fill="#fff" stroke={C.ink} strokeWidth="1.2" />
+        <line x1="0" y1="0" x2="0" y2="-6" stroke={C.ink} strokeWidth="1.2" />
+        <line x1="0" y1="0" x2="4" y2="2" stroke={C.ink} strokeWidth="1.2" />
+        <text x="0" y="20" fontSize="6" fill={C.sub} textAnchor="middle">時間（分）</text>
+      </g>
+      <text x="70" y="94" fontSize="8.2" fill={C.ink} textAnchor="middle" fontWeight="bold">速度 = 距離 ÷ 時間</text>
+    </g>
+  ),
 }
 
 export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
