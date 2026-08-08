@@ -264,6 +264,33 @@ generators[110] = () => {                                          // 一位乘�
   return ops[rand(0, 3)]()
 }
 
+// ── 三位數除法：三位數 ÷ 一位數（整除）（111-115）·翰林四上 ─────
+// 保證被除數為三位數：商 × 除數 落在 100~999，答案為商
+function makeDiv3(minQ, maxQ, minB, maxB) {
+  const b  = rand(minB, maxB)
+  const lo = Math.max(minQ, Math.ceil(100 / b))
+  const hi = Math.min(maxQ, Math.floor(999 / b))
+  return makeDiv(rand(lo, Math.max(lo, hi)), b)
+}
+generators[111] = () => makeDiv3(11, 99, 2, 9)            // 商兩位
+generators[112] = () => makeDiv3(100, 499, 2, 4)          // 商三位（除數小）
+generators[113] = () => makeDiv3(50, 199, 5, 9)           // 除數大
+generators[114] = () => {                                  // 三位除一位綜合
+  const ops = [generators[111], generators[112], generators[113]]
+  return ops[rand(0, 2)]()
+}
+generators[115] = () => (rand(0, 1) ? generators[114]() : generators[39]()) // 除法馬拉松（含兩位÷一位）
+
+// ── 四位數加減：一億以內的數·翰林四上（116-120）──────────────────
+generators[116] = () => { const a = rand(1000, 8000); return makeAdd(a, rand(100, 999)) }        // 四位 + 三位
+generators[117] = () => { const a = rand(1000, 5000); return makeAdd(a, rand(1000, 9999 - a)) }  // 四位 + 四位（和≤9999）
+generators[118] = () => { const a = rand(1200, 9999); return makeSub(a, rand(100, 999)) }        // 四位 - 三位
+generators[119] = () => { const a = rand(2000, 9999); return makeSub(a, rand(1000, a - 500)) }   // 四位 - 四位
+generators[120] = () => {                                  // 大數加減綜合
+  const ops = [generators[116], generators[117], generators[118], generators[119]]
+  return ops[rand(0, 3)]()
+}
+
 // 每關開頭的「暖身簡單題」——先讓孩子連續答對、建立信心，再進入正常難度
 const WARMUP_COUNT = 2
 
@@ -393,3 +420,17 @@ STAGE_NAMES[107] = '一位乘三位I'
 STAGE_NAMES[108] = '一位乘三位II'
 STAGE_NAMES[109] = '一位乘三位III'
 STAGE_NAMES[110] = '🏆 一位乘三位王'
+
+// 三位數除法（三位 ÷ 一位）
+STAGE_NAMES[111] = '三位除一位I'
+STAGE_NAMES[112] = '三位除一位II'
+STAGE_NAMES[113] = '三位除一位III'
+STAGE_NAMES[114] = '三位除綜合'
+STAGE_NAMES[115] = '🏆 三位除法王'
+
+// 四位數加減（一億以內的數）
+STAGE_NAMES[116] = '四位數加'
+STAGE_NAMES[117] = '四位數加+'
+STAGE_NAMES[118] = '四位數減'
+STAGE_NAMES[119] = '四位數減+'
+STAGE_NAMES[120] = '🏆 大數加減王'

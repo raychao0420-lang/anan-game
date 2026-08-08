@@ -52,6 +52,8 @@ const DIVISION_STAGES = new Set([31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 59, 60,
 const getTimeLimit = (id) => {
   if (id >= 96 && id <= 100) return 90              // 兩位數×兩位數：一分半
   if (id >= 106 && id <= 110) return 60             // 一位數×三位數：一分鐘
+  if (id >= 111 && id <= 115) return 45             // 三位數÷一位數
+  if (id >= 116 && id <= 120) return 45             // 四位數加減
   if (id >= 101 && id <= 105) return 30             // 一位數×兩位數
   if (id >= 11 && id <= 20) return 30               // 3位數
   if (id <= 10 || (id >= 41 && id <= 55)) return 35 // 2位數

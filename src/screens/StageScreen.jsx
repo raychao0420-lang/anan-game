@@ -15,6 +15,8 @@ const CHAPTERS = [
   { label: '除法',         range: [31, 40], icon: '➗', cat: 'muldiv'  },
   { label: '乘除進階',     range: [86, 95], icon: '🎯', cat: 'muldiv'  },
   { label: '兩位數乘法',   range: [96, 100], icon: '🧮', cat: 'muldiv'  },
+  { label: '三位數除法',   range: [111, 115], icon: '➗', cat: 'muldiv'  },
+  { label: '四位數加減',   range: [116, 120], icon: '🔢', cat: 'digits3' },
   { label: '綜合進階',     range: [56, 70], icon: '🚀', cat: 'mixed'   },
 ]
 
@@ -27,7 +29,7 @@ const CAT_TABS = [
 ]
 
 // chapter-first-stage → prerequisite stage
-const CHAPTER_PREREQS = { 41: 10, 11: 55, 71: 55, 86: 40, 96: 30, 101: 30 }
+const CHAPTER_PREREQS = { 41: 10, 11: 55, 71: 55, 86: 40, 96: 30, 101: 30, 111: 40, 116: 20 }
 
 const CHAPTER_LOCK_HINT = {
   11:  '完成加減進階第55關才能挑戰！',
@@ -36,6 +38,8 @@ const CHAPTER_LOCK_HINT = {
   86:  '完成除法第40關才能解鎖！',
   96:  '完成乘法第30關才能解鎖！',
   101: '完成乘法第30關才能解鎖！',
+  111: '完成除法第40關才能解鎖！',
+  116: '完成三位數第20關才能解鎖！',
 }
 
 function Stars({ count }) {
