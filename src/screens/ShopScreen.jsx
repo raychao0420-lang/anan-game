@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS, SHOP_CATEGORIES } from '../data/shop'
+import { PLANT_KINDS, SEED_KINDS, FERTILIZER } from '../data/garden'
 import PetAvatar from '../components/PetAvatar'
 import './ShopScreen.css'
 
@@ -11,6 +12,7 @@ export default function ShopScreen({ onNavigate }) {
     coins, activePet, pets, ownedItems,
     petEquipment, equippedHomeItems,
     buyItem, feedPet,
+    seedlings, fertilizer, buySeedling, buyFertilizer,
   } = useGameStore()
   const [category, setCategory] = useState('food')
   const [buyFeedback, setBuyFeedback] = useState(null)
@@ -47,6 +49,27 @@ export default function ShopScreen({ onNavigate }) {
     feedPet(activePet, item.price, expGain)
     setFeedFlash({ itemId: item.id, exp: expGain })
     setTimeout(() => setFeedFlash(null), 1200)
+  }
+
+  // 花園分頁：花苗＋肥料（消耗品，可重複購買）
+  const gardenItems = [
+    ...SEED_KINDS.map((k) => ({
+      id: k, emoji: PLANT_KINDS[k].bagEmoji, name: PLANT_KINDS[k].seedName,
+      desc: PLANT_KINDS[k].desc, price: PLANT_KINDS[k].price, owned: seedlings?.[k] || 0,
+      buy: () => buySeedling(k, PLANT_KINDS[k].price),
+    })),
+    {
+      id: 'fertilizer', emoji: FERTILIZER.emoji, name: FERTILIZER.name,
+      desc: FERTILIZER.desc, price: FERTILIZER.price, owned: fertilizer || 0,
+      buy: () => buyFertilizer(FERTILIZER.price),
+    },
+  ]
+
+  const handleBuyGarden = (item) => {
+    if (coins < item.price) return
+    item.buy()
+    setBuyFeedback(item.id)
+    setTimeout(() => setBuyFeedback(null), 1000)
   }
 
   return (
@@ -114,6 +137,37 @@ export default function ShopScreen({ onNavigate }) {
 
       {/* Items grid */}
       <div className="shop-grid">
+        {category === 'garden' && gardenItems.map((item) => {
+          const canAfford = coins >= item.price
+          return (
+            <motion.div
+              key={item.id}
+              className="shop-item"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="shop-item-emoji">{item.emoji}</div>
+              <div className="shop-item-name">{item.name}<span className="shop-own-count">持有 {item.owned}</span></div>
+              <div className="shop-item-desc">{item.desc}</div>
+
+              {buyFeedback === item.id && (
+                <motion.div className="shop-buy-flash" initial={{ scale: 0 }} animate={{ scale: [1.2, 1] }}>
+                  🎉
+                </motion.div>
+              )}
+
+              <motion.button
+                className={`shop-buy-btn ${!canAfford ? 'broke' : ''}`}
+                whileTap={canAfford ? { scale: 0.9 } : {}}
+                onClick={() => handleBuyGarden(item)}
+                disabled={!canAfford}
+              >
+                💰 {item.price}
+              </motion.button>
+            </motion.div>
+          )
+        })}
         {filtered.map((item) => {
           const isFood = item.category === 'food'
           const owned = !isFood && ownedItems.includes(item.id)

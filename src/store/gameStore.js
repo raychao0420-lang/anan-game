@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import { ACHIEVEMENTS } from '../data/achievements'
 import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
+import { rollSeedDrop, todayKey, PLANT_KINDS } from '../data/garden'
 
 const makeStages = () => {
   const s = {}
@@ -65,7 +66,10 @@ export const useGameStore = create(
       petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [], dino: [], monkey: [], raccoon: [] },
       equippedHomeItems: [],
       homeDecoPositions: {},
-      garden: [],   // 戶外花園：{ key, kind:'flower'|'tree', x, y, plantedAt, v } 真實時間持久化，離開再回來繼續長
+      garden: [],   // 戶外花園：{ key, kind:'flower'|'rare'|'tree', x, y, v, waterCount, lastWater } 每天澆水成長
+      seedlings: { flower: 3, rare: 0, tree: 1 },  // 花苗庫存：過關掉落或商店購買，種花時消耗
+      fertilizer: 1,                               // 魔法肥料數量：撒一次立刻多長一天
+      lastSeedDrop: null,                          // 最近一次過關掉的花苗種類（給結算畫面顯示）
 
       // M3: daily tasks
       dailyDate: null,
@@ -131,10 +135,18 @@ export const useGameStore = create(
       completeStage: (stageId, stars, coinsEarned) => {
         set((s) => {
           const isPerfect = stars === 3 && coinsEarned >= 100
+          // 花園：過關有機率掉花苗（三星機率高、稀有花苗更容易）
+          const dropChance = stars >= 3 ? 0.75 : stars >= 1 ? 0.5 : 0.3
+          const drop = Math.random() < dropChance ? rollSeedDrop(stars) : null
+          const seedlings = drop
+            ? { ...s.seedlings, [drop]: (s.seedlings?.[drop] || 0) + 1 }
+            : s.seedlings
           return {
             coins: s.coins + coinsEarned,
             totalCoinsEarned: s.totalCoinsEarned + coinsEarned,
             perfectStages: s.perfectStages + (isPerfect ? 1 : 0),
+            seedlings,
+            lastSeedDrop: drop,
             stages: {
               ...s.stages,
               [stageId]: {
@@ -259,15 +271,67 @@ export const useGameStore = create(
           },
         })),
 
-      // 秘密庭園：種下一株（花/樹），記真實時間 → 之後依經過時間長大開花；最多留 24 株
+      // 秘密庭園：種下一株（花/樹），消耗一顆對應花苗；之後每天澆水成長；最多留 24 株
       plantSeed: (kind, x, y) =>
-        set((s) => ({
-          garden: [...(s.garden || []),
-            { key: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, kind, x, y, plantedAt: Date.now(), v: Math.floor(Math.random() * 6) }
-          ].slice(-24),
-        })),
+        set((s) => {
+          if ((s.seedlings?.[kind] || 0) <= 0) return s
+          return {
+            seedlings: { ...s.seedlings, [kind]: s.seedlings[kind] - 1 },
+            garden: [...(s.garden || []),
+              { key: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, kind, x, y, v: Math.floor(Math.random() * 6), waterCount: 0, lastWater: null }
+            ].slice(-24),
+          }
+        }),
       collectPlant: (key) =>
         set((s) => ({ garden: (s.garden || []).filter((p) => p.key !== key) })),
+
+      // 澆水：每株每天可澆一次，澆一次成長一階；沒澆只是暫停（溫和版，不會枯死）
+      waterPlant: (key) =>
+        set((s) => {
+          const today = todayKey()
+          let watered = false
+          const garden = (s.garden || []).map((p) => {
+            if (p.key !== key || p.lastWater === today || (p.waterCount || 0) >= 99) return p
+            watered = true
+            return { ...p, waterCount: (p.waterCount || 0) + 1, lastWater: today }
+          })
+          return watered ? { garden } : s
+        }),
+      // 一鍵把所有「今天還沒澆、尚未開花」的植物澆一遍
+      waterAll: () =>
+        set((s) => {
+          const today = todayKey()
+          let count = 0
+          const garden = (s.garden || []).map((p) => {
+            const need = PLANT_KINDS[p.kind]?.need ?? 2
+            if (p.lastWater === today || (p.waterCount || 0) >= need) return p
+            count++
+            return { ...p, waterCount: (p.waterCount || 0) + 1, lastWater: today }
+          })
+          return count > 0 ? { garden } : s
+        }),
+      // 撒肥料：立刻多長一天（跳過每日限制），消耗一包
+      useFertilizer: (key) =>
+        set((s) => {
+          if ((s.fertilizer || 0) <= 0) return s
+          let used = false
+          const garden = (s.garden || []).map((p) => {
+            if (p.key !== key || (p.waterCount || 0) >= 99) return p
+            used = true
+            return { ...p, waterCount: (p.waterCount || 0) + 1 }
+          })
+          return used ? { garden, fertilizer: s.fertilizer - 1 } : s
+        }),
+
+      addSeedling: (kind, n = 1) =>
+        set((s) => ({ seedlings: { ...s.seedlings, [kind]: (s.seedlings?.[kind] || 0) + n } })),
+      buySeedling: (kind, price) =>
+        set((s) => (s.coins < price ? s : {
+          coins: s.coins - price,
+          seedlings: { ...s.seedlings, [kind]: (s.seedlings?.[kind] || 0) + 1 },
+        })),
+      buyFertilizer: (price) =>
+        set((s) => (s.coins < price ? s : { coins: s.coins - price, fertilizer: (s.fertilizer || 0) + 1 })),
 
       // ── M3: Daily tasks ──
       initDaily: (today) => {
@@ -631,6 +695,10 @@ export const useGameStore = create(
           petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [], dino: [], monkey: [], raccoon: [] },
           equippedHomeItems: [],
           homeDecoPositions: {},
+          garden: [],
+          seedlings: { flower: 3, rare: 0, tree: 1 },
+          fertilizer: 1,
+          lastSeedDrop: null,
           dailyDate: null,
           dailyProgress: {},
           dailyTasksDone: [],
@@ -716,6 +784,15 @@ export const useGameStore = create(
         if (state.loginStreak === undefined) state.loginStreak = 0
         if (state.loginStreakBest === undefined) state.loginStreakBest = 0
         state.pendingLoginGift = null
+        // 花園升級：花苗庫存／肥料，並補齊舊植物的澆水欄位
+        if (!state.seedlings) state.seedlings = { flower: 3, rare: 0, tree: 1 }
+        if (state.fertilizer === undefined) state.fertilizer = 1
+        if (state.lastSeedDrop === undefined) state.lastSeedDrop = null
+        if (Array.isArray(state.garden)) {
+          state.garden = state.garden.map((p) => (
+            p.waterCount === undefined ? { ...p, kind: p.kind === 'tree' ? 'tree' : 'flower', waterCount: 1, lastWater: null } : p
+          ))
+        }
         // M7: 推理事件簿
         if (!state.mysterySolved) state.mysterySolved = {}
         // M8: 長篇連續劇

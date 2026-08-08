@@ -5,6 +5,7 @@ export const SHOP_CATEGORIES = [
   { id: 'accessory', label: '配件', icon: '👓' },
   { id: 'toy',       label: '玩具', icon: '🎮' },
   { id: 'home',      label: '家居', icon: '🏠' },
+  { id: 'garden',    label: '花園', icon: '🌱' },
   { id: 'rare',      label: '稀有', icon: '⭐' },
 ]
 

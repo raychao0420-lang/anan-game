@@ -205,6 +205,17 @@
   font-weight: 800;
   color: #333;
 }
+.shop-own-count {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 9px;
+  background: #eafbe4;
+  color: #4a9a35;
+  font-size: 0.66rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
 
 .shop-item-desc {
   font-size: 0.75rem;

@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
+import { PLANT_KINDS } from '../data/garden'
 import { STAGE_NAMES } from '../data/questions'
 import { sfx } from '../utils/sound'
 import './ResultScreen.css'
@@ -28,6 +29,9 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
   const replayCoins = Math.floor(totalCoins / 4)
   const displayCoins = isReplay ? replayCoins : totalCoins
 
+  // 過關可能掉花苗 → 顯示在結算卡上
+  const [seedDrop, setSeedDrop] = useState(null)
+
   useEffect(() => {
     stampPlayTime()
     if (!isReplay) {
@@ -38,6 +42,7 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
       // Always update stars so the stage list shows the highest stars achieved
       completeStage(stageId, stars, replayCoins)
     }
+    setSeedDrop(useGameStore.getState().lastSeedDrop)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -109,6 +114,14 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
             <span>獲得金幣{isReplay && <span className="replay-badge">重複挑戰 ×¼</span>}</span>
             <span className="result-val coins">+{displayCoins} 💰</span>
           </div>
+          {seedDrop && PLANT_KINDS[seedDrop] && (
+            <motion.div className="result-row"
+              initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7, type: 'spring', stiffness: 300 }}>
+              <span>🌱 撿到花苗</span>
+              <span className="result-val">{PLANT_KINDS[seedDrop].bagEmoji} {PLANT_KINDS[seedDrop].seedName} ×1</span>
+            </motion.div>
+          )}
         </div>
 
         {/* Boss button */}

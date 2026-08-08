@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
+import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey } from '../data/garden'
 import { sfx, startAmbient, stopAmbient } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
@@ -187,20 +188,7 @@ const OUTDOOR_DECOS = new Set(['pool', 'hot_spring', 'tent', 'igloo', 'telescope
 const habitatOfPet  = (id) => (OUTDOOR_PETS.has(id) ? 'outdoor' : 'indoor')
 const habitatOfDeco = (id) => (OUTDOOR_DECOS.has(id) ? 'outdoor' : 'indoor')
 
-// ── 秘密庭園：種花種樹，依真實時間長大 → 時間到開花 ──────────────────────
-// 花 5 分鐘開花、樹 15 分鐘開花；中途 40% 時間長成小苗。開花後點一下採收換金幣。
-const PLANT_KINDS = {
-  flower: { bloomMs: 5 * 60 * 1000,  reward: 15, grow: '🌿', blooms: ['🌷', '🌻', '🌸', '🌹', '🌼', '🌺'] },
-  tree:   { bloomMs: 15 * 60 * 1000, reward: 40, grow: '🌲', blooms: ['🌳'] },
-}
-// 依經過時間回傳目前外觀：🌱 種子 → 🌿/🌲 長大 → 開花
-function plantView(p, now) {
-  const cfg = PLANT_KINDS[p.kind] || PLANT_KINDS.flower
-  const t = now - p.plantedAt
-  if (t >= cfg.bloomMs) return { emoji: cfg.blooms[p.v % cfg.blooms.length], bloomed: true, reward: cfg.reward }
-  if (t >= cfg.bloomMs * 0.4) return { emoji: cfg.grow, bloomed: false }
-  return { emoji: '🌱', bloomed: false }
-}
+// ── 秘密庭園：種花種樹，每天澆水成長（規則見 data/garden.js）─────────────────
 
 // ── Draggable decoration ──────────────────────────────────────────────────────
 
@@ -546,19 +534,12 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
 // ── Main screen ───────────────────────────────────────────────────────────────
 
 export default function HomeRoomScreen({ onNavigate }) {
-  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins } = useGameStore()
+  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins,
+          seedlings, fertilizer, waterPlant, waterAll, useFertilizer, addSeedling, updateDailyProgress } = useGameStore()
   const containerRef = useRef(null)
 
   // 溫暖的家（室內）／ 秘密庭園（戶外）雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
   const [scene, setScene] = useState('indoor')
-
-  // 庭園植物成長：每 30 秒把「現在時間」更新一次（純 state，render 用它算成長；開花不必手動刷新）
-  const [now, setNow] = useState(() => Date.now())
-  useEffect(() => {
-    if (scene !== 'outdoor') return
-    const t = setInterval(() => setNow(Date.now()), 30000)
-    return () => clearInterval(t)
-  }, [scene])
 
   // 晝夜光線（每分鐘檢查一次）
   const [phase, setPhase] = useState(getDayPhase)
@@ -606,15 +587,18 @@ export default function HomeRoomScreen({ onNavigate }) {
   const throwToy = (e) => {
     if (!tool) return
     const r = containerRef.current.getBoundingClientRect()
-    // 種花／種樹：點草地種下（庭園可種範圍比丟東西更廣）
-    if (tool === 'flower' || tool === 'tree') {
+    // 種花／種樹：點草地種下（庭園可種範圍比丟東西更廣）；沒花苗就不種
+    if (SEED_KINDS.includes(tool)) {
+      if ((seedlings?.[tool] || 0) <= 0) { setTool(null); return }
       const px = Math.max(8, Math.min(90, (e.clientX - r.left) / r.width * 100))
       const py = Math.max(46, Math.min(82, (e.clientY - r.top) / r.height * 100))
       plantSeed(tool, px, py)
       sfx.click()
-      setTool(null)
+      if ((seedlings?.[tool] || 0) <= 1) setTool(null)   // 種到最後一顆才收起工具，連種更順手
       return
     }
+    // 撒肥料工具：點草地無效（要點在植物上），直接忽略
+    if (tool === 'fert') return
     const x = Math.max(10, Math.min(74, (e.clientX - r.left) / r.width * 100))
     const y = Math.max(45, Math.min(64, (e.clientY - r.top) / r.height * 100))
     setToy({ kind: tool, x, y, key: Date.now(), kicks: tool === 'ball' ? 3 : 0 })
@@ -623,11 +607,44 @@ export default function HomeRoomScreen({ onNavigate }) {
   }
 
   // 開花後點一下採收：換金幣＋冒星星，清出位置可再種
-  const harvest = (p, reward) => {
+  // 寵物適性：愛這種花的寵物（已解鎖的）會開心，心情提升並冒愛心
+  const harvest = (p, cfg, reward) => {
     sfx.coins()
     addCoins(reward)
-    setToyFx({ x: p.x, y: p.y - 4, emoji: '✨', key: p.key })
+    const lover = (cfg?.love || []).find((id) => pets[id]?.unlocked)
+    if (lover) updatePetMood(lover, 6)
+    if (Math.random() < 0.25) addSeedling('flower')   // 小機率回收一顆普通花苗
+    setToyFx({ x: p.x, y: p.y - 4, emoji: lover ? '💖' : '✨', key: p.key })
     collectPlant(p.key)
+  }
+
+  // 點植物：已開花→採收；持肥料→施肥；否則→今天澆水（尚未澆過的話）
+  const tapPlant = (e, p, v) => {
+    e.stopPropagation()
+    if (v.bloomed) { harvest(p, v.cfg, v.reward); return }
+    if (tool === 'fert') {
+      if ((fertilizer || 0) <= 0) return
+      useFertilizer(p.key)
+      sfx.coins()
+      setToyFx({ x: p.x, y: p.y - 4, emoji: '✨', key: `${p.key}-f` })
+      return
+    }
+    if (p.lastWater === todayKey()) return   // 今天澆過了
+    waterPlant(p.key)
+    updateDailyProgress('water', 1)
+    sfx.click()
+    setToyFx({ x: p.x, y: p.y - 4, emoji: '💧', key: `${p.key}-${p.waterCount}` })
+  }
+
+  // 一鍵全部澆水
+  const handleWaterAll = (e) => {
+    e.stopPropagation()
+    const today = todayKey()
+    const n = garden.filter((p) => p.lastWater !== today && (p.waterCount || 0) < (PLANT_KINDS[p.kind]?.need ?? 2)).length
+    if (n === 0) return
+    waterAll()
+    updateDailyProgress('water', n)
+    sfx.coins()
   }
 
   const onToyReach = useCallback((petId, t) => {
@@ -945,23 +962,33 @@ export default function HomeRoomScreen({ onNavigate }) {
 
           {/* 秘密庭園：種下的花草樹木，依真實時間長大→開花，開花後可點採收 */}
           {scene === 'outdoor' && garden.map((p) => {
-            const v = plantView(p, now)
+            const v = plantView(p)
             const ds = getDepthScale(p.y)
+            const needsWater = !v.bloomed && p.lastWater !== todayKey()
             return (
               <div
                 key={p.key}
                 className={`room-plant${v.bloomed ? ' bloomed' : ''}`}
                 style={{ left: `${p.x}%`, top: `${p.y}%`, zIndex: Math.round(p.y),
                   transform: `translateX(-50%) scale(${ds})`, transformOrigin: 'bottom center' }}
-                onClick={v.bloomed ? (e) => { e.stopPropagation(); harvest(p, v.reward) } : undefined}
+                onClick={(e) => tapPlant(e, p, v)}
               >
                 <div className="room-plant-shadow" />
                 <motion.span className="room-plant-emoji"
+                  key={v.emoji}
                   initial={{ scale: 0, y: 6 }} animate={{ scale: 1, y: 0 }}
                   transition={{ type: 'spring', stiffness: 240, damping: 14 }}>
                   {v.emoji}
                 </motion.span>
                 {v.bloomed && <span className="room-plant-ping">✨</span>}
+                {/* 今天還沒澆水：冒一滴水珠提醒安安來照顧 */}
+                {needsWater && (
+                  <motion.span className="room-plant-thirsty"
+                    animate={{ y: [0, -4, 0], opacity: [0.7, 1, 0.7] }}
+                    transition={{ repeat: Infinity, duration: 1.4 }}>
+                    💧
+                  </motion.span>
+                )}
               </div>
             )
           })}
@@ -1040,21 +1067,43 @@ export default function HomeRoomScreen({ onNavigate }) {
             ))}
           </div>
         )}
-        {/* 秘密庭園：種花／種樹按鈕（只在庭園場景出現） */}
+        {/* 秘密庭園：花苗／肥料／全部澆水按鈕（只在庭園場景出現） */}
         {!snapping && scene === 'outdoor' && (
           <div className="room-seed-btns">
-            {[['flower', '🌷'], ['tree', '🌳']].map(([k, emoji]) => (
-              <motion.button key={k} className={`room-seed-btn${tool === k ? ' armed' : ''}`}
-                whileTap={{ scale: 0.85 }}
-                onClick={(e) => { e.stopPropagation(); sfx.click(); setTool(tool === k ? null : k) }}>
-                {emoji}
-              </motion.button>
-            ))}
+            {SEED_KINDS.map((k) => {
+              const count = seedlings?.[k] || 0
+              return (
+                <motion.button key={k} className={`room-seed-btn${tool === k ? ' armed' : ''}${count === 0 ? ' empty' : ''}`}
+                  whileTap={count > 0 ? { scale: 0.85 } : {}}
+                  disabled={count === 0}
+                  onClick={(e) => { e.stopPropagation(); if (count === 0) return; sfx.click(); setTool(tool === k ? null : k) }}>
+                  {PLANT_KINDS[k].bagEmoji}
+                  <span className="room-seed-count">{count}</span>
+                </motion.button>
+              )
+            })}
+            {/* 魔法肥料 */}
+            <motion.button className={`room-seed-btn${tool === 'fert' ? ' armed' : ''}${(fertilizer || 0) === 0 ? ' empty' : ''}`}
+              whileTap={(fertilizer || 0) > 0 ? { scale: 0.85 } : {}}
+              disabled={(fertilizer || 0) === 0}
+              onClick={(e) => { e.stopPropagation(); if ((fertilizer || 0) === 0) return; sfx.click(); setTool(tool === 'fert' ? null : 'fert') }}>
+              {FERTILIZER.emoji}
+              <span className="room-seed-count">{fertilizer || 0}</span>
+            </motion.button>
+            {/* 一鍵全部澆水 */}
+            <motion.button className="room-seed-btn water-all"
+              whileTap={{ scale: 0.85 }}
+              onClick={handleWaterAll}>
+              💦
+            </motion.button>
           </div>
         )}
         {tool && (
           <div className="room-toy-hint">
-            {TOY_TOOLS[tool]?.hint || (tool === 'flower' ? '點草地，種下花朵！時間到會開花～' : '點草地，種下小樹！慢慢長大會開花～')}
+            {TOY_TOOLS[tool]?.hint
+              || (tool === 'fert' ? '點一株植物撒肥料，立刻多長一天！'
+              : SEED_KINDS.includes(tool) ? `點草地種下${PLANT_KINDS[tool].seedName}，每天澆水就會長大～`
+              : '')}
           </div>
         )}
         <AnimatePresence>

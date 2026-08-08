@@ -7,6 +7,7 @@ export const DAILY_TASK_DEFS = [
   { id: 'stage3',    label: '完成3個關卡',  icon: '🚀', type: 'stages',   target: 3,   reward: 50 },
   { id: 'stars3',    label: '三星通關一次', icon: '⭐', type: 'stars3',   target: 1,   reward: 50 },
   { id: 'combo5',    label: '達成5連答',    icon: '🔥', type: 'combo5',   target: 1,   reward: 30 },
+  { id: 'water3',    label: '幫花園澆水3次', icon: '💧', type: 'water',    target: 3,   reward: 30 },
 ]
 
 export function getTodayTasks(dateStr) {
