@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
-import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey } from '../data/garden'
+import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, makeGardenQuestion } from '../data/garden'
 import { sfx, startAmbient, stopAmbient } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
@@ -535,7 +535,8 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
 
 export default function HomeRoomScreen({ onNavigate }) {
   const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins,
-          seedlings, fertilizer, waterPlant, waterAll, useFertilizer, addSeedling, updateDailyProgress } = useGameStore()
+          seedlings, fertilizer, waterPlant, waterAll, useFertilizer, addSeedling, updateDailyProgress,
+          solveMagicPlant, recordBloom, registerWaterDay, gardenKeeper, setGardenKeeper, keeperTend, gardenDex } = useGameStore()
   const containerRef = useRef(null)
 
   // 溫暖的家（室內）／ 秘密庭園（戶外）雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
@@ -606,22 +607,62 @@ export default function HomeRoomScreen({ onNavigate }) {
     setTool(null)
   }
 
+  // ── 花園第二彈：小提示浮條／圖鑑／魔法花答題／小幫手 ──
+  const [notice, setNotice]       = useState(null)  // 畫面上方冒出的小提示
+  const [quiz, setQuiz]           = useState(null)  // 魔法花答題 {key,x,y,q,ans,choices,wrong}
+  const [codexOpen, setCodexOpen] = useState(false) // 花園圖鑑彈窗
+  const [keeperOpen, setKeeperOpen] = useState(false) // 選小幫手彈窗
+  const say = useCallback((msg) => setNotice({ msg, key: Date.now() }), [])
+  const petFace = (id) => PETS[id]?.stages?.[1]?.emoji ?? '🐾'
+
+  // 今天有澆到水就登記一次連續澆水（每 3 天小獎、7 天大獎）
+  const bumpStreak = useCallback(() => {
+    const r = registerWaterDay()
+    if (r?.reward) say(`🔥 連續澆水 ${r.streak} 天！獎勵 ${r.reward} 金幣！`)
+  }, [registerWaterDay, say])
+
   // 開花後點一下採收：換金幣＋冒星星，清出位置可再種
-  // 寵物適性：愛這種花的寵物（已解鎖的）會開心，心情提升並冒愛心
-  const harvest = (p, cfg, reward) => {
+  // 寵物適性：愛這種花的寵物（已解鎖的）會開心；彩虹天採收金幣加成；集進圖鑑
+  const harvest = (p, v) => {
+    const cfg = v.cfg
     sfx.coins()
-    addCoins(reward)
+    const rainbow = weather === 'rainbow'
+    addCoins(Math.round(v.reward * (rainbow ? 1.5 : 1)))
     const lover = (cfg?.love || []).find((id) => pets[id]?.unlocked)
     if (lover) updatePetMood(lover, 6)
-    if (Math.random() < 0.25) addSeedling('flower')   // 小機率回收一顆普通花苗
-    setToyFx({ x: p.x, y: p.y - 4, emoji: lover ? '💖' : '✨', key: p.key })
+    // 採收回收：35% 掉回一顆同種花苗（魔法花只回收普通花苗，免得太好賺）
+    if (Math.random() < 0.35) addSeedling(p.kind === 'magic' ? 'flower' : p.kind)
+    const dex = recordBloom(v.emoji)
+    setToyFx({ x: p.x, y: p.y - 4, emoji: lover ? '💖' : rainbow ? '🌈' : '✨', key: p.key })
     collectPlant(p.key)
+    if (dex?.complete) say('🏵️ 花園圖鑑全部收集完成！獎勵 200 金幣！')
   }
 
-  // 點植物：已開花→採收；持肥料→施肥；否則→今天澆水（尚未澆過的話）
+  // 魔法花澆滿後，點一下出一題數學，答對才盛開
+  const openQuiz = (p) => {
+    sfx.click()
+    const { q, ans, choices } = makeGardenQuestion()
+    setQuiz({ key: p.key, x: p.x, y: p.y, q, ans, choices, wrong: null })
+  }
+  const answerQuiz = (choice) => {
+    if (!quiz) return
+    if (choice === quiz.ans) {
+      solveMagicPlant(quiz.key)
+      sfx.correct()
+      setToyFx({ x: quiz.x, y: quiz.y - 4, emoji: '🌈', key: `${quiz.key}-m` })
+      setQuiz(null)
+      say('🔮 答對了！魔法花盛開啦，好厲害！')
+    } else {
+      sfx.wrong()
+      setQuiz((q) => ({ ...q, wrong: choice }))
+    }
+  }
+
+  // 點植物：已開花→採收；魔法花澆滿→答題；持肥料→施肥；否則→今天澆水（尚未澆過的話）
   const tapPlant = (e, p, v) => {
     e.stopPropagation()
-    if (v.bloomed) { harvest(p, v.cfg, v.reward); return }
+    if (v.bloomed) { harvest(p, v); return }
+    if (v.ready) { openQuiz(p); return }
     if (tool === 'fert') {
       if ((fertilizer || 0) <= 0) return
       useFertilizer(p.key)
@@ -632,6 +673,7 @@ export default function HomeRoomScreen({ onNavigate }) {
     if (p.lastWater === todayKey()) return   // 今天澆過了
     waterPlant(p.key)
     updateDailyProgress('water', 1)
+    bumpStreak()
     sfx.click()
     setToyFx({ x: p.x, y: p.y - 4, emoji: '💧', key: `${p.key}-${p.waterCount}` })
   }
@@ -644,8 +686,37 @@ export default function HomeRoomScreen({ onNavigate }) {
     if (n === 0) return
     waterAll()
     updateDailyProgress('water', n)
+    bumpStreak()
     sfx.coins()
   }
+
+  // 下雨天：進到庭園自動幫所有口渴的植物澆一遍（免費小驚喜）
+  useEffect(() => {
+    if (scene !== 'outdoor' || weather !== 'rain') return
+    const today = todayKey()
+    const n = garden.filter((p) => p.lastWater !== today && (p.waterCount || 0) < (PLANT_KINDS[p.kind]?.need ?? 2)).length
+    if (n === 0) return
+    waterAll()
+    updateDailyProgress('water', n)
+    bumpStreak()
+    say('☔ 今天下雨，幫你把花園都澆好了！')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scene, weather])
+
+  // 小幫手：進庭園時，牠趁你不在幫喜歡的花澆水
+  useEffect(() => {
+    if (scene !== 'outdoor') return
+    const r = keeperTend()
+    if (r) say(`${petFace(r.petId)} ${PETS[r.petId].name} 趁你不在，幫忙澆了 ${r.count} 株花！`)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scene])
+
+  // 小提示浮條 2.6 秒後自動消失
+  useEffect(() => {
+    if (!notice) return
+    const t = setTimeout(() => setNotice(null), 2600)
+    return () => clearTimeout(t)
+  }, [notice])
 
   const onToyReach = useCallback((petId, t) => {
     if (toyKeyRef.current === t.key) return
@@ -964,11 +1035,11 @@ export default function HomeRoomScreen({ onNavigate }) {
           {scene === 'outdoor' && garden.map((p) => {
             const v = plantView(p)
             const ds = getDepthScale(p.y)
-            const needsWater = !v.bloomed && p.lastWater !== todayKey()
+            const needsWater = !v.bloomed && !v.ready && p.lastWater !== todayKey()
             return (
               <div
                 key={p.key}
-                className={`room-plant${v.bloomed ? ' bloomed' : ''}`}
+                className={`room-plant${v.bloomed ? ' bloomed' : ''}${v.ready ? ' ready' : ''}`}
                 style={{ left: `${p.x}%`, top: `${p.y}%`, zIndex: Math.round(p.y),
                   transform: `translateX(-50%) scale(${ds})`, transformOrigin: 'bottom center' }}
                 onClick={(e) => tapPlant(e, p, v)}
@@ -981,6 +1052,22 @@ export default function HomeRoomScreen({ onNavigate }) {
                   {v.emoji}
                 </motion.span>
                 {v.bloomed && <span className="room-plant-ping">✨</span>}
+                {/* 開花的花上飛來蝴蝶／蜜蜂：小小生態 */}
+                {v.bloomed && (
+                  <motion.span className="room-plant-critter"
+                    animate={{ x: [0, 7, -4, 0], y: [0, -6, -2, 0], rotate: [0, 12, -8, 0] }}
+                    transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }}>
+                    {p.v % 2 ? '🐝' : '🦋'}
+                  </motion.span>
+                )}
+                {/* 魔法花澆滿了：冒問號，等安安答題 */}
+                {v.ready && (
+                  <motion.span className="room-plant-quiz"
+                    animate={{ scale: [1, 1.25, 1] }}
+                    transition={{ repeat: Infinity, duration: 1.1 }}>
+                    ❓
+                  </motion.span>
+                )}
                 {/* 今天還沒澆水：冒一滴水珠提醒安安來照顧 */}
                 {needsWater && (
                   <motion.span className="room-plant-thirsty"
@@ -992,6 +1079,20 @@ export default function HomeRoomScreen({ onNavigate }) {
               </div>
             )
           })}
+
+          {/* 夜晚的秘密庭園：地面飄起螢火蟲 */}
+          {scene === 'outdoor' && phase === 'night' && (
+            <div className="garden-fireflies" aria-hidden="true">
+              {[...Array(7)].map((_, i) => (
+                <motion.span key={i} className="firefly"
+                  style={{ left: `${8 + i * 12}%`, top: `${58 + (i % 3) * 9}%` }}
+                  animate={{ x: [0, 18, -10, 0], y: [0, -14, -4, 0], opacity: [0.2, 1, 0.35, 0.2] }}
+                  transition={{ repeat: Infinity, duration: 4 + i * 0.6, ease: 'easeInOut', delay: i * 0.4 }}>
+                  ✨
+                </motion.span>
+              ))}
+            </div>
+          )}
 
           {/* 寵物相遇：兩隻靠近時中間冒互動表情 */}
           {meetings.map((m) => (
@@ -1096,6 +1197,19 @@ export default function HomeRoomScreen({ onNavigate }) {
               onClick={handleWaterAll}>
               💦
             </motion.button>
+            {/* 花園圖鑑 */}
+            <motion.button className="room-seed-btn codex"
+              whileTap={{ scale: 0.85 }}
+              onClick={(e) => { e.stopPropagation(); sfx.click(); setCodexOpen(true) }}>
+              📖
+              <span className="room-seed-count">{(gardenDex || []).length}</span>
+            </motion.button>
+            {/* 花園小幫手 */}
+            <motion.button className={`room-seed-btn keeper${gardenKeeper ? ' on' : ''}`}
+              whileTap={{ scale: 0.85 }}
+              onClick={(e) => { e.stopPropagation(); sfx.click(); setKeeperOpen(true) }}>
+              {gardenKeeper ? petFace(gardenKeeper) : '🐾'}
+            </motion.button>
           </div>
         )}
         {tool && (
@@ -1132,6 +1246,93 @@ export default function HomeRoomScreen({ onNavigate }) {
                 <button onClick={() => { sfx.click(); setPhoto(null) }}>✕ 關閉</button>
               </div>
               <div className="room-polaroid-hint">平板可以長按照片存到相簿喔</div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 花園小提示浮條 */}
+      <AnimatePresence>
+        {notice && (
+          <motion.div key={notice.key} className="garden-notice"
+            initial={{ opacity: 0, y: -18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }}>
+            {notice.msg}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 魔法花答題 */}
+      <AnimatePresence>
+        {quiz && (
+          <motion.div className="garden-modal" onClick={() => setQuiz(null)}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="garden-quiz" onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.7, y: 30 }} animate={{ scale: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 220, damping: 18 }}>
+              <div className="garden-quiz-title">🔮 魔法花要盛開了！答對就綻放～</div>
+              <div className="garden-quiz-q">{quiz.q} = ?</div>
+              <div className="garden-quiz-choices">
+                {quiz.choices.map((c) => (
+                  <motion.button key={c} whileTap={{ scale: 0.9 }}
+                    className={`garden-quiz-choice${quiz.wrong === c ? ' wrong' : ''}`}
+                    onClick={() => answerQuiz(c)}>
+                    {c}
+                  </motion.button>
+                ))}
+              </div>
+              {quiz.wrong != null && <div className="garden-quiz-hint">再想想看，你可以的！💪</div>}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 花園圖鑑 */}
+      <AnimatePresence>
+        {codexOpen && (
+          <motion.div className="garden-modal" onClick={() => setCodexOpen(false)}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="garden-codex" onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.7, y: 30 }} animate={{ scale: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 220, damping: 18 }}>
+              <div className="garden-codex-title">📖 花園圖鑑</div>
+              <div className="garden-codex-sub">已收集 {(gardenDex || []).length} / {ALL_BLOOMS.length} 種花色</div>
+              <div className="garden-codex-grid">
+                {ALL_BLOOMS.map((e) => {
+                  const got = (gardenDex || []).includes(e)
+                  return <span key={e} className={`garden-codex-cell${got ? ' got' : ''}`}>{got ? e : '❔'}</span>
+                })}
+              </div>
+              <div className="garden-codex-tip">全部收集完成可得 200 金幣大獎！</div>
+              <button className="garden-modal-close" onClick={() => { sfx.click(); setCodexOpen(false) }}>關閉</button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 選花園小幫手 */}
+      <AnimatePresence>
+        {keeperOpen && (
+          <motion.div className="garden-modal" onClick={() => setKeeperOpen(false)}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="garden-keeper" onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.7, y: 30 }} animate={{ scale: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 220, damping: 18 }}>
+              <div className="garden-codex-title">🐾 花園小幫手</div>
+              <div className="garden-codex-sub">選一隻寵物，牠會每天幫忙澆牠喜歡的花</div>
+              <div className="garden-keeper-grid">
+                {unlockedPets.map(([id]) => (
+                  <motion.button key={id} whileTap={{ scale: 0.9 }}
+                    className={`garden-keeper-cell${gardenKeeper === id ? ' on' : ''}`}
+                    onClick={() => { sfx.click(); setGardenKeeper(id); setKeeperOpen(false) }}>
+                    <span className="gk-face">{petFace(id)}</span>
+                    <span className="gk-name">{PETS[id].name}</span>
+                  </motion.button>
+                ))}
+              </div>
+              <button className="garden-modal-close"
+                onClick={() => { sfx.click(); if (gardenKeeper) setGardenKeeper(gardenKeeper); setKeeperOpen(false) }}>
+                {gardenKeeper ? '不指派了' : '關閉'}
+              </button>
             </motion.div>
           </motion.div>
         )}

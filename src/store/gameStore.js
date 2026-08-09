@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import { ACHIEVEMENTS } from '../data/achievements'
 import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
-import { rollSeedDrop, todayKey, PLANT_KINDS } from '../data/garden'
+import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS } from '../data/garden'
 
 const makeStages = () => {
   const s = {}
@@ -67,9 +67,16 @@ export const useGameStore = create(
       equippedHomeItems: [],
       homeDecoPositions: {},
       garden: [],   // 戶外花園：{ key, kind:'flower'|'rare'|'tree', x, y, v, waterCount, lastWater } 每天澆水成長
-      seedlings: { flower: 3, rare: 0, tree: 1 },  // 花苗庫存：過關掉落或商店購買，種花時消耗
+      seedlings: { flower: 3, rare: 0, tree: 1, magic: 0 },  // 花苗庫存：過關掉落或商店購買，種花時消耗
       fertilizer: 1,                               // 魔法肥料數量：撒一次立刻多長一天
       lastSeedDrop: null,                          // 最近一次過關掉的花苗種類（給結算畫面顯示）
+      gardenDex: [],                               // 花園圖鑑：採收過的花色（集滿給一次大獎）
+      gardenDexDone: false,                        // 圖鑑全收集獎勵是否已發
+      waterStreak: 0,                              // 連續澆水天數（溫和版：斷了只是重數，不處罰）
+      waterStreakBest: 0,
+      lastWaterDay: null,                          // 最近一次澆水的日期（判斷連續）
+      gardenKeeper: null,                          // 指派的花園小幫手寵物 id
+      keeperHelpedDay: null,                       // 小幫手今天是否已幫忙過
 
       // M3: daily tasks
       dailyDate: null,
@@ -332,6 +339,67 @@ export const useGameStore = create(
         })),
       buyFertilizer: (price) =>
         set((s) => (s.coins < price ? s : { coins: s.coins - price, fertilizer: (s.fertilizer || 0) + 1 })),
+
+      // 魔法花答對題目 → 標記這株可以盛開
+      solveMagicPlant: (key) =>
+        set((s) => ({ garden: (s.garden || []).map((p) => (p.key === key ? { ...p, solved: true } : p)) })),
+
+      // 採收到一朵新花色 → 記進圖鑑；集滿所有花色首次給 200 金幣大獎。回傳 {complete,reward}。
+      recordBloom: (emoji) => {
+        const s = get()
+        if (!emoji || (s.gardenDex || []).includes(emoji)) return null
+        const dex = [...(s.gardenDex || []), emoji]
+        const complete = !s.gardenDexDone && ALL_BLOOMS.every((e) => dex.includes(e))
+        set((prev) => ({
+          gardenDex: dex,
+          ...(complete ? { gardenDexDone: true, coins: prev.coins + 200, totalCoinsEarned: prev.totalCoinsEarned + 200 } : {}),
+        }))
+        return { complete, reward: complete ? 200 : 0 }
+      },
+
+      // 今天有澆水就登記一次：連續澆水累積 streak（斷了重數、不處罰），每 3 天小獎、每 7 天大獎。
+      // 回傳 {streak,reward}；今天已登記過回傳 null。
+      registerWaterDay: () => {
+        const s = get()
+        const today = todayKey()
+        if (s.lastWaterDay === today) return null
+        const streak = s.lastWaterDay === yesterdayKey() ? (s.waterStreak || 0) + 1 : 1
+        const reward = streak % 7 === 0 ? 60 : streak % 3 === 0 ? 25 : 0
+        set((prev) => ({
+          lastWaterDay: today,
+          waterStreak: streak,
+          waterStreakBest: Math.max(prev.waterStreakBest || 0, streak),
+          ...(reward ? { coins: prev.coins + reward, totalCoinsEarned: prev.totalCoinsEarned + reward } : {}),
+        }))
+        return { streak, reward }
+      },
+
+      // 指派花園小幫手（喜歡某些花的寵物幫忙顧）
+      setGardenKeeper: (petId) =>
+        set((s) => ({ gardenKeeper: s.gardenKeeper === petId ? null : petId })),
+
+      // 進花園時呼叫：小幫手趁你不在，幫「牠喜歡的」植物澆水（每天最多 2 株）。
+      // 回傳 {petId,count}；今天已幫過或沒事可做回傳 null。
+      keeperTend: () => {
+        const s = get()
+        const keeper = s.gardenKeeper
+        const today = todayKey()
+        if (!keeper || !s.pets[keeper]?.unlocked || s.keeperHelpedDay === today) return null
+        const loved = new Set(
+          Object.entries(PLANT_KINDS).filter(([, c]) => (c.love || []).includes(keeper)).map(([k]) => k)
+        )
+        let helped = 0
+        const garden = (s.garden || []).map((p) => {
+          const need = PLANT_KINDS[p.kind]?.need ?? 2
+          if (helped < 2 && p.lastWater !== today && (p.waterCount || 0) < need && loved.has(p.kind)) {
+            helped++
+            return { ...p, waterCount: (p.waterCount || 0) + 1, lastWater: today }
+          }
+          return p
+        })
+        set({ garden, keeperHelpedDay: today })
+        return helped > 0 ? { petId: keeper, count: helped } : null
+      },
 
       // ── M3: Daily tasks ──
       initDaily: (today) => {
@@ -696,9 +764,16 @@ export const useGameStore = create(
           equippedHomeItems: [],
           homeDecoPositions: {},
           garden: [],
-          seedlings: { flower: 3, rare: 0, tree: 1 },
+          seedlings: { flower: 3, rare: 0, tree: 1, magic: 0 },
           fertilizer: 1,
           lastSeedDrop: null,
+          gardenDex: [],
+          gardenDexDone: false,
+          waterStreak: 0,
+          waterStreakBest: 0,
+          lastWaterDay: null,
+          gardenKeeper: null,
+          keeperHelpedDay: null,
           dailyDate: null,
           dailyProgress: {},
           dailyTasksDone: [],
@@ -785,9 +860,18 @@ export const useGameStore = create(
         if (state.loginStreakBest === undefined) state.loginStreakBest = 0
         state.pendingLoginGift = null
         // 花園升級：花苗庫存／肥料，並補齊舊植物的澆水欄位
-        if (!state.seedlings) state.seedlings = { flower: 3, rare: 0, tree: 1 }
+        if (!state.seedlings) state.seedlings = { flower: 3, rare: 0, tree: 1, magic: 0 }
+        if (state.seedlings.magic === undefined) state.seedlings.magic = 0
         if (state.fertilizer === undefined) state.fertilizer = 1
         if (state.lastSeedDrop === undefined) state.lastSeedDrop = null
+        // 花園第二彈：圖鑑／連續澆水／小幫手
+        if (!state.gardenDex) state.gardenDex = []
+        if (state.gardenDexDone === undefined) state.gardenDexDone = false
+        if (state.waterStreak === undefined) state.waterStreak = 0
+        if (state.waterStreakBest === undefined) state.waterStreakBest = 0
+        if (state.lastWaterDay === undefined) state.lastWaterDay = null
+        if (state.gardenKeeper === undefined) state.gardenKeeper = null
+        if (state.keeperHelpedDay === undefined) state.keeperHelpedDay = null
         if (Array.isArray(state.garden)) {
           state.garden = state.garden.map((p) => (
             p.waterCount === undefined ? { ...p, kind: p.kind === 'tree' ? 'tree' : 'flower', waterCount: 1, lastWater: null } : p
