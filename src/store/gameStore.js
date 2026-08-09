@@ -60,6 +60,7 @@ export const useGameStore = create(
         xiaoq:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
         feifei:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
         xiaohu:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
+        arong:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
       },
       stages: makeStages(),
       ownedItems:        [],
@@ -817,10 +818,18 @@ export const useGameStore = create(
       name: 'anan-game-v2',
       onRehydrateStorage: () => (state) => {
         if (!state) return
-        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu']
+        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu', 'arong']
         allPets.forEach((id) => {
-          if (!state.pets[id])
+          const p = state.pets[id]
+          if (!p) {
             state.pets[id] = { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] }
+          } else {
+            // 補齊殘缺欄位：grantPet 曾對未在 pets 初始化的寵物（如阿榕）展開 undefined，
+            // 造成 { unlocked:true } 缺 evolutionStage → 寵物頁讀 stages[undefined] 直接崩潰
+            if (p.evolutionStage === undefined) p.evolutionStage = 1
+            if (p.foodExp === undefined) p.foodExp = 0
+            if (!p.accessories) p.accessories = []
+          }
           if (!state.petEquipment[id])
             state.petEquipment[id] = []
         })
