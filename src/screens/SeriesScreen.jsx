@@ -414,6 +414,13 @@ export default function SeriesScreen({ onBack }) {
                       <div className="srs-tutor-bubble">
                         <p className="srs-tutor-lead">別急，我們一步一步想～（老師只教方法，最後的答案要你自己算出來喔！）</p>
                         <p className="srs-tutor-lead srs-en">Let’s think step by step — I’ll teach the method, you find the answer!</p>
+                        {/* 老師把圖拿到手邊一起講：有圖的題目，看圖學方法更好懂，寵物求救更有價值 */}
+                        {(scene.chart || scene.diagram) && (
+                          <div className="srs-tutor-diagram">
+                            <p className="srs-tutor-lead">👀 老師先指著這張圖：<span className="srs-en">Look at this picture with me:</span></p>
+                            <NatureDiagram id={scene.diagram} chart={scene.chart} size={172} />
+                          </div>
+                        )}
                         <div className="srs-tutor-steps">
                           {scene.puzzle.teach
                             ? scene.puzzle.teach.map((step, i) => (

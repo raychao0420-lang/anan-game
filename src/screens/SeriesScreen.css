@@ -218,6 +218,13 @@
 }
 .srs-tutor-lead { font-size: 0.9rem; font-weight: 800; color: #3a6b85; margin: 0 0 4px; }
 .srs-tutor-lead.srs-en { font-weight: 600; font-style: italic; color: #8aacbf; }
+.srs-tutor-diagram {
+  margin: 8px 0 4px;
+  padding: 6px;
+  background: #f4fafd;
+  border-radius: 12px;
+}
+.srs-tutor-diagram .srs-tutor-lead { text-align: center; }
 .srs-tutor-steps {
   margin-top: 6px;
   border-top: 1px dashed #cfe6f2;
