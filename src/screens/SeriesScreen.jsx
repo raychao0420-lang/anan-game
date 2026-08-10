@@ -380,8 +380,8 @@ export default function SeriesScreen({ onBack }) {
               </div>
               <div className="dtv-partner-row">{partner(56)}<Bi t={scene.story} /></div>
 
-              {/* 自然科圖解：現場帶 diagram 者渲染 inline SVG，看圖更好懂（S7 起） */}
-              {scene.diagram && <NatureDiagram id={scene.diagram} />}
+              {/* 圖解：diagram＝自然科固定圖解；chart＝照題目數字現場畫的統計圖，看圖更好懂 */}
+              {(scene.diagram || scene.chart) && <NatureDiagram id={scene.diagram} chart={scene.chart} />}
 
               {!solvedClue ? (
                 <>

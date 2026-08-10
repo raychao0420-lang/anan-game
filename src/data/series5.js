@@ -2852,6 +2852,10 @@ export const SEASON5 = {
         {
           place: { zh: '果汁攤的長條圖', en: 'The Juice Stall’s Bar Chart' },
           emoji: '🍹',
+          chart: {
+            type: 'bar', title: '果汁攤上週銷量（杯）', highlight: 2, caption: '長條越高＝賣越多',
+            data: [{ label: '週一', v: 30 }, { label: '週二', v: 40 }, { label: '週三', v: 45 }, { label: '週四', v: 25 }, { label: '週五', v: 20 }],
+          },
           story: { zh: '第一站是紅鶴弗朗的果汁攤。弗朗急得單腳直跳：「上禮拜每天賣幾杯，我都畫成這張『長條圖』了，可是到底哪天賣最多，我一急就看不懂啦！」安安把圖攤平：「長條圖的祕密——長條越高，代表數量越多。」上週銷量：週一 ▇▇▇▇▇▇ 30杯、週二 ▇▇▇▇▇▇▇▇ 40杯、週三 ▇▇▇▇▇▇▇▇▇ 45杯、週四 ▇▇▇▇▇ 25杯、週五 ▇▇▇▇ 20杯。',
                    en: 'First, Fran the flamingo’s juice stall. Fran hops on one leg in a panic: “I drew last week’s daily sales as this ‘bar chart,’ but which day sold the most? In a rush I just can’t read it!” An-An smooths the chart out: “A bar chart’s secret — the taller the bar, the bigger the number.” Last week’s sales: Mon ▇▇▇▇▇▇ 30, Tue ▇▇▇▇▇▇▇▇ 40, Wed ▇▇▇▇▇▇▇▇▇ 45, Thu ▇▇▇▇▇ 25, Fri ▇▇▇▇ 20 cups.' },
           clueNote: { zh: '果汁攤長條圖：最高是週三，賣 45 杯', en: 'Juice bar chart: tallest is Wednesday, 45 cups' },
@@ -2875,6 +2879,7 @@ export const SEASON5 = {
         {
           place: { zh: '彩球攤的一格代表多量', en: 'When One Square Means Many' },
           emoji: '🎈',
+          chart: { type: 'picto', title: '這款彩球的備量', per: 5, cells: 7, emoji: '🎈', unit: '個' },
           story: { zh: '下一攤是彩球攤。老闆遞來一張長條圖，這次長條上沒寫數字，只有一格一格的方塊：「偵探，我的圖只畫格子沒寫數，你看得懂嗎？」安安指著圖角的小字：「這裡有個約定——『一格代表 5 個彩球』。要備最多的那款，長條有整整 7 格。」',
                    en: 'Next, the balloon stall. The owner hands over a bar chart — this time the bars have no numbers, only little squares: “Detective, my chart is just squares with no numbers — can you read it?” An-An points to the small print in the corner: “There’s a key here — ‘one square stands for 5 balloons.’ The most-needed kind has a full 7 squares.”' },
           clueNote: { zh: '一格＝5 個，滿 7 格＝7×5＝35 個', en: 'One square = 5, a full 7 squares = 7 × 5 = 35' },
@@ -2898,6 +2903,10 @@ export const SEASON5 = {
         {
           place: { zh: '氣球用量比一比', en: 'Comparing Balloon Usage' },
           emoji: '📊',
+          chart: {
+            type: 'bar', title: '週末氣球用量（串）', caption: '兩根一比，差多少一目了然',
+            data: [{ label: '週六', v: 40 }, { label: '週日', v: 25 }],
+          },
           story: { zh: '遊行組跑來求救：週末兩天的氣球用量差好多，害他們一天多買、一天不夠。長條圖上：週六 ▇▇▇▇▇▇▇▇ 40串、週日 ▇▇▇▇▇ 25串。圖圖問：「這兩天到底差幾串？我好算下次的量。」',
                    en: 'The parade team rushes over: the two weekend days used wildly different amounts of balloons, so they over-bought one day and ran short the next. On the bar chart: Sat ▇▇▇▇▇▇▇▇ 40 strings, Sun ▇▇▇▇▇ 25 strings. Tutu asks: “How many strings apart are the two days? So I can plan next time.”' },
           clueNote: { zh: '週六 40 串、週日 25 串，相差 40−25＝15 串', en: 'Sat 40, Sun 25 strings; difference 40 − 25 = 15' },
@@ -2933,6 +2942,10 @@ export const SEASON5 = {
               scene: {
                 place: { zh: '果汁四天合計', en: 'Juice: Four-Day Total' },
                 emoji: '🍹',
+                chart: {
+                  type: 'bar', title: '果汁四天銷量（杯）', caption: '合計＝每根長條全加起來',
+                  data: [{ label: '週一', v: 30 }, { label: '週二', v: 45 }, { label: '週三', v: 25 }, { label: '週四', v: 20 }],
+                },
                 story: { zh: '果汁攤四天的長條圖：週一 30杯、週二 45杯、週三 25杯、週四 20杯。弗朗問：「四天一共賣了幾杯？我好進貨。」',
                          en: 'The juice stall’s four-day bar chart: Mon 30, Tue 45, Wed 25, Thu 20 cups. Fran asks: “How many cups over the four days? So I can restock.”' },
                 clueNote: { zh: '果汁四天合計＝30+45+25+20＝120 杯', en: 'Juice four-day total = 30+45+25+20 = 120 cups' },
@@ -2960,6 +2973,10 @@ export const SEASON5 = {
               scene: {
                 place: { zh: '遊行四天合計', en: 'Parade: Four-Day Total' },
                 emoji: '📈',
+                chart: {
+                  type: 'line', title: '遊行四天人數（千人）', caption: '每個點都是一個數字，合計全加起來',
+                  data: [{ label: '週四', v: 25 }, { label: '週五', v: 40 }, { label: '週六', v: 25 }, { label: '週日', v: 30 }],
+                },
                 story: { zh: '遊行人數的折線圖，四天的點：週四 25千人、週五 40千人、週六 25千人、週日 30千人。圖圖問：「四天一共來了幾千人？」',
                          en: 'The parade’s line graph, four points: Thu 25, Fri 40, Sat 25, Sun 30 (thousands). Tutu asks: “How many thousands over the four days?”' },
                 clueNote: { zh: '遊行四天合計＝25+40+25+30＝120 千人', en: 'Parade four-day total = 25+40+25+30 = 120 thousand' },
@@ -2986,6 +3003,10 @@ export const SEASON5 = {
         {
           place: { zh: '遊行人數的折線圖', en: 'The Parade’s Line Graph' },
           emoji: '📈',
+          chart: {
+            type: 'line', title: '本週遊行人數（千人）', highlight: 1, caption: '點爬到最高＝那天人最多',
+            data: [{ label: '週一', v: 26 }, { label: '週二', v: 38 }, { label: '週三', v: 30 }, { label: '週四', v: 34 }],
+          },
           story: { zh: '圖圖捧來一張新圖：「這張線一直上上下下的，是什麼？」安安說：「這是『折線圖』——用點標出每天的人數，再用線連起來，最適合看『變化』。」這週遊行人數：週一 26千人、週二 38千人、週三 30千人、週四 34千人。「哪一天人最多？就是折線爬到『最高點』的那天。」',
                    en: 'Tutu brings a new chart: “This line keeps going up and down — what is it?” An-An says: “That’s a LINE GRAPH — mark each day’s crowd with a point, join them with a line; best for seeing CHANGE.” This week’s parade crowd: Mon 26, Tue 38, Wed 30, Thu 34 (thousands). “Which day had the most? The day the line climbs to its HIGHEST point.”' },
           clueNote: { zh: '折線圖最高點＝週二 38 千人', en: 'Line graph’s highest point = Tuesday, 38 thousand' },
@@ -3009,6 +3030,10 @@ export const SEASON5 = {
         {
           place: { zh: '折線圖看變化', en: 'Reading Change on the Line' },
           emoji: '📉',
+          chart: {
+            type: 'line', title: '遊行人數的變化（千人）', segment: [0, 1], caption: '紅色這段爬得最陡＝增加最多',
+            data: [{ label: '週一', v: 26 }, { label: '週二', v: 38 }, { label: '週三', v: 30 }, { label: '週四', v: 34 }],
+          },
           story: { zh: '安安指著折線圖上最陡的那一段：「折線圖最厲害的地方，是看『變化』——線爬得越陡，那一段增加得越多。」從週一 26千人 到週二 38千人，這一段爬得最陡。「這一段，人數上升了幾千？」',
                    en: 'An-An points to the steepest stretch of the line: “A line graph’s real power is showing CHANGE — the steeper the climb, the bigger the rise.” From Monday’s 26 to Tuesday’s 38 is the steepest stretch. “Along this stretch, by how many thousand did the crowd rise?”' },
           clueNote: { zh: '上升最陡的一段：週一26→週二38，上升 38−26＝12 千人', en: 'Steepest rise: Mon 26 → Tue 38, up 38 − 26 = 12 thousand' },
@@ -3032,6 +3057,10 @@ export const SEASON5 = {
         {
           place: { zh: '缺一項的合計 ★', en: 'The Missing Total ★' },
           emoji: '🧮',
+          chart: {
+            type: 'bar', title: '四大攤位銷量（份）｜合計 260', caption: '一根被蓋住了，用合計倒推',
+            data: [{ label: '燒烤', v: 80 }, { label: '可麗餅', v: 65 }, { label: '椰子水', v: 55 }, { label: '？', v: null }],
+          },
           story: { zh: '嘉年華四個大攤位的總銷量本該是 260 份，可是有一攤的長條被咖哩醬蓋住看不見了。看得見的三攤：燒烤 80份、可麗餅 65份、椰子水 55份。安安說：「合計知道、缺一項，可以倒推回去。」小Q握緊拳頭：「星、星題★！」',
                    en: 'The four big stalls should total 260 servings, but one stall’s bar is hidden under a curry smudge. The three visible: BBQ 80, crêpes 65, coconut water 55. An-An says: “Total known, one part missing — we can work backwards.” Little Q clenches his fists: “S-star problem ★!”' },
           clueNote: { zh: '四攤合計 260，已知 80+65+55＝200，缺項＝260−200＝60', en: 'Four stalls total 260; known 80+65+55 = 200; missing = 260 − 200 = 60' },
@@ -3055,6 +3084,7 @@ export const SEASON5 = {
         {
           place: { zh: '幫嘉年華畫新圖 ★', en: 'Drawing the New Chart ★' },
           emoji: '📐',
+          chart: { type: 'picto', title: '今天的入場人數', per: 10, total: 90, emoji: '🧍', unit: '人' },
           story: { zh: '最後，安安要帶大家「動手畫」一張看得懂的新統計圖。第一根長條要畫「今天的入場人數」——一共 90 人，說好「一格代表 10 人」。小Q舉起蠟筆：「星、星題★！這根長條，要塗幾格才對？」',
                    en: 'Finally, An-An leads everyone to DRAW a new, readable chart. The first bar is “today’s admissions” — 90 people in all, with the key “one square = 10 people.” Little Q raises a crayon: “S-star problem ★! How many squares do I colour for this bar?”' },
           clueNote: { zh: '90 人，一格代表 10 人，要畫 90÷10＝9 格', en: '90 people, one square = 10, draw 90 ÷ 10 = 9 squares' },

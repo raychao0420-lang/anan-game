@@ -665,8 +665,125 @@ const DIAGRAMS = {
   ),
 }
 
-export default function NatureDiagram({ id, emojiFallback = '🔬', size = 200 }) {
-  const art = DIAGRAMS[id]
+// ── 資料驅動圖表：題目給哪些數字，就照那些數字現場畫，孩子看到的圖和題目一模一樣 ──
+// scene.chart = { type:'bar'|'line'|'picto', title, data:[{label,v}], highlight, segment, caption, per, cells, total, emoji, unit }
+const BAR_PALETTE = ['#6db6d8', '#5aa469', '#e0a24f', '#7a5bd0', '#3fa39a']
+
+function BarChart({ title, data, highlight, caption }) {
+  const x0 = 28, y0 = 82, plotW = 122, plotH = 54
+  const maxV = Math.max(...data.map((d) => d.v ?? 0), 1)
+  const slot = plotW / data.length
+  const bw = Math.min(16, slot * 0.62)
+  return (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {title && <text x="82" y="14" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">{title}</text>}
+      <line x1={x0} y1={y0 - plotH} x2={x0} y2={y0} stroke={C.ink} strokeWidth="1.2" />
+      <line x1={x0} y1={y0} x2={x0 + plotW} y2={y0} stroke={C.ink} strokeWidth="1.2" />
+      {data.map((d, i) => {
+        const cx = x0 + slot * (i + 0.5)
+        if (d.v == null) {
+          const h = plotH * 0.5
+          return (
+            <g key={i}>
+              <rect x={cx - bw / 2} y={y0 - h} width={bw} height={h} rx="1.5" fill="none" stroke={C.sub} strokeWidth="1" strokeDasharray="3 2" />
+              <text x={cx} y={y0 - h - 3} fontSize="9" fill={C.sub} textAnchor="middle" fontWeight="bold">?</text>
+              <text x={cx} y={y0 + 9} fontSize="6.4" fill={C.sub} textAnchor="middle">{d.label}</text>
+            </g>
+          )
+        }
+        const h = (d.v / maxV) * plotH
+        const hi = i === highlight
+        return (
+          <g key={i}>
+            <rect x={cx - bw / 2} y={y0 - h} width={bw} height={h} rx="1.5" fill={hi ? '#e0574f' : BAR_PALETTE[i % BAR_PALETTE.length]} />
+            <text x={cx} y={y0 - h - 2.5} fontSize="7" fill={hi ? '#e0574f' : C.ink} textAnchor="middle" fontWeight={hi ? 'bold' : 'normal'}>{d.v}</text>
+            <text x={cx} y={y0 + 9} fontSize="6.4" fill={C.sub} textAnchor="middle">{d.label}</text>
+          </g>
+        )
+      })}
+      {caption && <text x="82" y="100" fontSize="7" fill={C.sub} textAnchor="middle">{caption}</text>}
+    </g>
+  )
+}
+
+function LineChart({ title, data, highlight, segment, caption }) {
+  const x0 = 26, y0 = 80, plotW = 128
+  const vals = data.map((d) => d.v)
+  const maxV = Math.max(...vals), minV = Math.min(...vals)
+  const span = maxV - minV || 1
+  const n = data.length
+  const px = (i) => x0 + (n === 1 ? plotW / 2 : (plotW * i) / (n - 1))
+  const py = (v) => y0 - 6 - ((v - minV) / span) * 44
+  const pts = data.map((d, i) => ({ x: px(i), y: py(d.v), ...d }))
+  const dpath = pts.map((p, i) => (i ? 'L' : 'M') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ')
+  return (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {title && <text x="82" y="14" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">{title}</text>}
+      <line x1={x0} y1={y0 - 52} x2={x0} y2={y0} stroke={C.ink} strokeWidth="1.2" />
+      <line x1={x0} y1={y0} x2={x0 + plotW} y2={y0} stroke={C.ink} strokeWidth="1.2" />
+      <path d={dpath} stroke="#e0a24f" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      {segment && (
+        <path d={`M${pts[segment[0]].x},${pts[segment[0]].y} L${pts[segment[1]].x},${pts[segment[1]].y}`}
+          stroke="#e0574f" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      )}
+      {pts.map((p, i) => {
+        const hi = i === highlight
+        return (
+          <g key={i}>
+            <circle cx={p.x} cy={p.y} r={hi ? 3.4 : 2.4} fill="#e0574f" />
+            <text x={p.x} y={p.y - 4.5} fontSize="6.8" fill={C.ink} textAnchor="middle" fontWeight={hi ? 'bold' : 'normal'}>{p.v}</text>
+            <text x={p.x} y={y0 + 9} fontSize="6.4" fill={C.sub} textAnchor="middle">{p.label}</text>
+          </g>
+        )
+      })}
+      {caption && <text x="82" y="100" fontSize="7" fill={C.sub} textAnchor="middle">{caption}</text>}
+    </g>
+  )
+}
+
+function PictoChart({ title, per, cells, total, emoji = '🟦', unit = '', caption }) {
+  const known = cells != null
+  const sq = 12, gap = 2
+  const rowW = (cells || 0) * (sq + gap) - gap
+  const startX = 80 - rowW / 2
+  return (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {title && <text x="82" y="14" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">{title}</text>}
+      {/* 圖例：一格代表多少 */}
+      <rect x="34" y="26" width="12" height="12" rx="2" fill="#6db6d8" stroke={C.ink} strokeWidth="0.8" />
+      <text x="52" y="35.5" fontSize="8.5" fill={C.ink} fontWeight="bold">= {per} {emoji}</text>
+      <text x="126" y="35" fontSize="7" fill={C.sub} textAnchor="end">一格代表 {per}{unit}</text>
+      {known ? (
+        <g>
+          {Array.from({ length: cells }).map((_, i) => (
+            <rect key={i} x={startX + i * (sq + gap)} y="50" width={sq} height={sq} rx="2" fill="#8fd0e6" stroke={C.ink} strokeWidth="0.8" />
+          ))}
+          <text x="82" y="80" fontSize="7.5" fill={C.sub} textAnchor="middle">{cells} 格 × 一格 {per}{unit} = ?</text>
+        </g>
+      ) : (
+        <g>
+          <rect x="30" y="50" width="100" height="14" rx="2" fill="none" stroke={C.sub} strokeWidth="1" strokeDasharray="4 3" />
+          <text x="80" y="60" fontSize="9" fill={C.sub} textAnchor="middle" fontWeight="bold">要畫幾格？</text>
+          <text x="82" y="80" fontSize="7.5" fill={C.sub} textAnchor="middle">共 {total}，一格 {per}{unit} → {total} ÷ {per}</text>
+        </g>
+      )}
+      {caption && <text x="82" y="97" fontSize="7" fill={C.sub} textAnchor="middle">{caption}</text>}
+    </g>
+  )
+}
+
+function chartArt(chart) {
+  if (chart.type === 'bar') return <BarChart {...chart} />
+  if (chart.type === 'line') return <LineChart {...chart} />
+  if (chart.type === 'picto') return <PictoChart {...chart} />
+  return null
+}
+
+export default function NatureDiagram({ id, chart, emojiFallback = '🔬', size = 200 }) {
+  const art = chart ? chartArt(chart) : DIAGRAMS[id]
   if (!art) {
     return <div className="srs-diagram srs-diagram-fallback" style={{ fontSize: 40, textAlign: 'center' }}>{emojiFallback}</div>
   }

@@ -2892,6 +2892,10 @@ export const SEASON6 = {
         {
           place: { zh: '冰品攤·讀長條圖', en: 'The Ice Stand — Reading a Bar Chart' },
           emoji: '🍧',
+          chart: {
+            type: 'bar', title: '冰品攤四天銷量（杯）', highlight: 1, caption: '長條最高＝賣最好',
+            data: [{ label: '第1天', v: 30 }, { label: '第2天', v: 45 }, { label: '第3天', v: 25 }, { label: '第4天', v: 20 }],
+          },
           story: { zh: '冰品攤的山豬老闆冰寶抱頭：「統計本糊了，我只好把這四天賣的冰重新數一遍，畫成了這張圖（一格＝5 杯）：\n第1天 ▇▇▇▇▇▇ 30 杯\n第2天 ▇▇▇▇▇▇▇▇▇ 45 杯\n第3天 ▇▇▇▇▇ 25 杯\n第4天 ▇▇▇▇ 20 杯\n你看！長條最高的那天，就是賣最好的那天——那天賣了幾杯？」',
                    en: 'Bingbao the boar at the ice stand clutches his head: “With the book blurred, I recounted these four days and drew this chart (one cell = 5 cups):\nDay 1 ▇▇▇▇▇▇ 30\nDay 2 ▇▇▇▇▇▇▇▇▇ 45\nDay 3 ▇▇▇▇▇ 25\nDay 4 ▇▇▇▇ 20\nSee! The tallest bar is the best-selling day — how many cups that day?”' },
           clueNote: { zh: '冰品長條圖最高＝第 2 天 45 杯；冰寶的木箱裡其他紙都是乾的', en: 'Tallest bar = Day 2, 45 cups; the other papers in Bingbao’s wooden box are all DRY' },
@@ -2915,6 +2919,7 @@ export const SEASON6 = {
         {
           place: { zh: '初鹿鮮奶攤·一格代表 5', en: 'The Chulu Milk Stand — One Cell = 5' },
           emoji: '🥛',
+          chart: { type: 'picto', title: '熱鮮奶今日銷量', per: 5, cells: 7, emoji: '🥛', unit: '杯' },
           story: { zh: '隔壁初鹿鮮奶攤的乳牛姐姐也畫了圖，可是她的紙比較小：「我一格代表 5 杯，今天的熱鮮奶畫了 7 格：\n熱鮮奶 ▇▇▇▇▇▇▇\n7 格，到底是賣了幾杯呀？」',
                    en: 'Next door, the cow lady at the Chulu milk stand drew hers on smaller paper: “One cell stands for 5 cups, and today’s hot milk fills 7 cells:\nHot milk ▇▇▇▇▇▇▇\n7 cells — how many cups is that?”' },
           clueNote: { zh: '一格代表 5：7 格＝35 杯', en: 'One cell = 5: 7 cells = 35 cups' },
@@ -2938,6 +2943,10 @@ export const SEASON6 = {
         {
           place: { zh: '紅烏龍茶攤·比一比差多少', en: 'The Red Oolong Stand — Compare the Gap' },
           emoji: '🍵',
+          chart: {
+            type: 'bar', title: '紅烏龍茶銷量（杯）', caption: '兩根一比，差多少一目了然',
+            data: [{ label: '昨天', v: 40 }, { label: '今天', v: 25 }],
+          },
           story: { zh: '鹿野紅烏龍茶攤的茶壺爺爺畫了兩條長條：\n昨天 ▇▇▇▇▇▇▇▇ 40 杯\n今天 ▇▇▇▇▇ 25 杯\n「唉，今天涼掉好多……到底比昨天少賣了幾杯？兩條長條的『差』，就是答案！」',
                    en: 'Grandpa Teapot at the red-oolong stand drew two bars:\nYesterday ▇▇▇▇▇▇▇▇ 40\nToday ▇▇▇▇▇ 25\n“Sigh, today cooled right off… how many fewer cups than yesterday? The GAP between the bars is the answer!”' },
           clueNote: { zh: '兩天差 40−25＝15 杯', en: 'Two-day gap 40 − 25 = 15 cups' },
@@ -2973,6 +2982,10 @@ export const SEASON6 = {
               scene: {
                 place: { zh: '冰品長條圖合計', en: 'Totaling the Ice Bar Chart' },
                 emoji: '📊',
+                chart: {
+                  type: 'bar', title: '冰品四天銷量（杯）', caption: '合計＝每根長條全加起來',
+                  data: [{ label: '第1天', v: 30 }, { label: '第2天', v: 45 }, { label: '第3天', v: 25 }, { label: '第4天', v: 20 }],
+                },
                 story: { zh: '冰寶的長條圖四天分別是 30、45、25、20 杯。四天一共賣了幾杯？',
                          en: 'Bingbao’s bars read 30, 45, 25, 20 cups over four days. Total cups?' },
                 clueNote: { zh: '長條圖合計 30＋45＋25＋20＝120 杯', en: 'Bar total 30 + 45 + 25 + 20 = 120 cups' },
@@ -3000,6 +3013,10 @@ export const SEASON6 = {
               scene: {
                 place: { zh: '體驗券折線圖合計', en: 'Totaling the Ticket Line Graph' },
                 emoji: '📈',
+                chart: {
+                  type: 'line', title: '體驗券四時段（張）', caption: '每個點都是一個數字，合計全加起來',
+                  data: [{ label: '時段1', v: 20 }, { label: '時段2', v: 25 }, { label: '時段3', v: 35 }, { label: '時段4', v: 40 }],
+                },
                 story: { zh: '熱氣球繫留體驗券的折線圖，四個時段的點分別落在 20、25、35、40 張。四個時段一共賣了幾張？',
                          en: 'The tethered-ride ticket line graph has four points at 20, 25, 35, 40. Total tickets?' },
                 clueNote: { zh: '折線圖四點總和 20＋25＋35＋40＝120 張', en: 'Line-graph total 20 + 25 + 35 + 40 = 120 tickets' },
@@ -3026,6 +3043,10 @@ export const SEASON6 = {
         {
           place: { zh: '接駁車折線圖·最高點', en: 'The Shuttle Line Graph — the Peak' },
           emoji: '🚌',
+          chart: {
+            type: 'line', title: '五天接駁班次（班）', highlight: 2, caption: '點爬到最高＝最忙的一天',
+            data: [{ label: '週一', v: 20 }, { label: '週二', v: 26 }, { label: '週三', v: 38 }, { label: '週四', v: 30 }, { label: '週五', v: 34 }],
+          },
           story: { zh: '接駁站站長水牛伯攤開一張折線圖：「我把這五天的接駁班次畫成折線——點愈高，班愈多、人愈多：\n週一 20 → 週二 26 → 週三 38 → 週四 30 → 週五 34\n折線最高的那個點，就是最忙的一天！那天開了幾班？」',
                    en: 'Uncle Buffalo, the shuttle stationmaster, unrolls a line graph: “Five days of shuttle runs — the higher the point, the more runs and riders:\nMon 20 → Tue 26 → Wed 38 → Thu 30 → Fri 34\nThe highest point is the busiest day! How many runs that day?”' },
           clueNote: { zh: '折線圖最高點＝週三 38 班；那晚水牛伯把統計本晾在服務台窗台，窗台正對山谷', en: 'Line-graph peak = Wed, 38 runs; that night Uncle Buffalo left the record book airing on the windowsill facing the valley' },
@@ -3049,6 +3070,10 @@ export const SEASON6 = {
         {
           place: { zh: '折線圖·爬得最陡的一段', en: 'The Steepest Climb on the Line' },
           emoji: '⛰️',
+          chart: {
+            type: 'line', title: '接駁班次的變化（班）', segment: [1, 2], caption: '紅色這段爬得最陡＝增加最多',
+            data: [{ label: '週一', v: 20 }, { label: '週二', v: 26 }, { label: '週三', v: 38 }],
+          },
           story: { zh: '小Q指著折線圖：「還有一個祕密藏在『線的斜度』裡——哪一段爬得最陡，就是人潮增加最快的一段！週一 20 → 週二 26 → 週三 38。爬最陡的那一段，多了幾班？」',
                    en: 'Little Q points at the graph: “One more secret hides in the SLOPE — the steepest climb is where crowds grew fastest! Mon 20 → Tue 26 → Wed 38. On the steepest segment, how many more runs?”' },
           clueNote: { zh: '上升最陡的一段＝週二→週三，38−26＝12 班；統計本的字暈成一朵朵小圓花', en: 'Steepest rise = Tue→Wed, 38 − 26 = 12 runs; the book’s words blurred into little round blossoms' },
@@ -3072,6 +3097,10 @@ export const SEASON6 = {
         {
           place: { zh: '明年的備料表 ★', en: 'Next Year’s Supply Sheet ★' },
           emoji: '🍱',
+          chart: {
+            type: 'bar', title: '池上飯包四天銷量（個）｜合計 260', caption: '第四天糊掉了，用合計倒推',
+            data: [{ label: '第1天', v: 80 }, { label: '第2天', v: 65 }, { label: '第3天', v: 55 }, { label: '第4天', v: null }],
+          },
           story: { zh: '池上飯包攤想先寫好「明年備料表」：今年四天一共賣了 260 個飯包，前三天分別是 80、65、55 個——可是第四天那格的數字，剛好糊掉了！挑戰星題：用合計倒推，第四天賣了幾個？',
                    en: 'The Chishang lunchbox stand drafts next year’s supply sheet: 260 boxes sold over four days, the first three being 80, 65, 55 — but day four’s cell is blurred out! Star challenge: work backwards from the total — how many on day four?' },
           clueNote: { zh: '★合計倒推：260−(80＋65＋55)＝60 個', en: '★Backwards from the total: 260 − (80 + 65 + 55) = 60 boxes' },
@@ -3095,6 +3124,7 @@ export const SEASON6 = {
         {
           place: { zh: '巨幅長條圖·開工 ★', en: 'The Giant Bar Chart Begins ★' },
           emoji: '🖌️',
+          chart: { type: 'picto', title: '今天的遊客人數', per: 10, total: 90, emoji: '🧍', unit: '人' },
           story: { zh: '安安提議：「與其怕紙糊掉，不如把統計畫成『巨大的帆布長條圖』掛在會場，誰都看得懂、雨也淋不壞！」第一條就畫「今天的遊客」：一共 90 位，帆布上一格代表 10 人。挑戰星題：這條長條要畫幾格？',
                    en: 'An-An proposes: “Instead of fearing soggy paper, paint the stats onto a GIANT canvas bar chart for the whole venue — readable by all, rainproof too!” First bar: today’s visitors — 90 in all, one cell = 10 people. Star challenge: how many cells to paint?' },
           clueNote: { zh: '★90 人、一格代表 10 人＝畫 9 格；那天傍晚，山谷來過一場「太陽雨」', en: '★90 people at one cell = 10 → paint 9 cells; that evening a SUNSHOWER passed through the valley' },
