@@ -19,6 +19,8 @@
   flex-direction: column;
   gap: 14px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+  max-height: 88dvh;   /* 分頁內容變多後，小平板要能捲動 */
+  overflow-y: auto;
 }
 
 .save-title {
@@ -132,4 +134,135 @@
   cursor: pointer;
   text-align: center;
   padding: 4px;
+}
+
+/* ── 分頁 ── */
+.save-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.save-tab {
+  flex: 1 1 auto;
+  padding: 8px 6px;
+  border: 2px solid #EEE;
+  border-radius: 12px;
+  background: #FAFAFA;
+  color: #888;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.save-tab.is-on {
+  border-color: #4ECDC4;
+  background: #E8F9F7;
+  color: #2A9D94;
+}
+
+/* ── 換裝置 QR ── */
+.save-qr {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  background: white;
+  border: 2px solid #EEE;
+  border-radius: 16px;
+}
+
+.save-qr img {
+  width: 200px;
+  height: 200px;
+  image-rendering: pixelated;  /* QR 放大時保持邊緣銳利，好掃 */
+}
+
+/* ── 玩家清單 ── */
+.save-players {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.save-player {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.save-player-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 2px solid #EEE;
+  border-radius: 14px;
+  background: #FAFAFA;
+  cursor: pointer;
+  text-align: left;
+}
+
+.save-player.is-me .save-player-main {
+  border-color: #4ECDC4;
+  background: #E8F9F7;
+  cursor: default;
+}
+
+.save-player-emoji { font-size: 1.5rem; }
+
+.save-player-name {
+  flex: 1;
+  font-weight: 800;
+  color: #444;
+}
+
+.save-player-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: white;
+  background: #4ECDC4;
+  border-radius: 8px;
+  padding: 2px 8px;
+}
+
+.save-player-del {
+  width: 36px;
+  border: 2px solid #FFE0E0;
+  border-radius: 12px;
+  background: #FFF5F5;
+  color: #FF6B6B;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+/* ── 選頭貼 ── */
+.save-emoji-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.save-emoji {
+  width: 40px;
+  height: 40px;
+  font-size: 1.3rem;
+  border: 2px solid #EEE;
+  border-radius: 12px;
+  background: #FAFAFA;
+  cursor: pointer;
+}
+
+.save-emoji.is-on {
+  border-color: #4ECDC4;
+  background: #E8F9F7;
+}
+
+.save-hint-line {
+  font-size: 0.8rem;
+  color: #999;
+  line-height: 1.5;
+  text-align: center;
 }

@@ -24,6 +24,7 @@ import ArcadeScreen from './screens/ArcadeScreen'
 import DetectiveScreen from './screens/DetectiveScreen'
 import SeriesScreen from './screens/SeriesScreen'
 import AchievementToast from './components/AchievementToast'
+import LoginGate from './components/LoginGate'
 import './index.css'
 
 const pageVariants = {
@@ -82,6 +83,7 @@ export default function App() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100dvh', overflow: 'hidden' }}>
+      <LoginGate />
       <AchievementToast />
 
       <AnimatePresence mode="wait">

@@ -282,10 +282,11 @@ export default function HomeScreen({ onNavigate }) {
         </motion.button>
       </div>
 
+      {/* AnimatePresence 的子元素一定要給 key，否則 React 會抱怨重複 key、退場動畫也會失效 */}
       <AnimatePresence>
-        {showSave && <SaveModal onClose={() => setShowSave(false)} />}
-        {showEggs && <LuckyEggModal onClose={() => setShowEggs(false)} />}
-        {pendingLoginGift && <LoginGiftModal onOpenEggs={() => setShowEggs(true)} />}
+        {showSave && <SaveModal key="save" onClose={() => setShowSave(false)} />}
+        {showEggs && <LuckyEggModal key="eggs" onClose={() => setShowEggs(false)} />}
+        {pendingLoginGift && <LoginGiftModal key="gift" onOpenEggs={() => setShowEggs(true)} />}
       </AnimatePresence>
     </div>
   )
