@@ -65,7 +65,8 @@ const SPECIES = {
   // Hana「活潑好奇」＝腿長、身形苗條、嘴尖一點；Kotaro「沉穩愛吃」＝矮胖、圓臉。
   hana:    { kind: 'quad', ear: 'tiny', tail: 'flat', size: 0.94, snout: 0.70, long: 1.50, leg: 0.50, neck: 0.38, girth: 0.92, blush: true },
   kotaro:  { kind: 'quad', ear: 'tiny', tail: 'flat', size: 1.02, snout: 0.60, long: 1.58, leg: 0.44, neck: 0.32, girth: 1.12, blush: true },
-  jiji:    { kind: 'quad', ear: 'point', tail: 'long',   size: 0.92, snout: 0.5 },
+  // 貓：臉是楔形不是球 —— 頭骨窄一點、前後長一點，配上高尖耳
+  jiji:    { kind: 'quad', ear: 'point', tail: 'long',   size: 0.92, snout: 0.55, skull: [0.86, 0.90, 1.14] },
   kitsune: { kind: 'quad', ear: 'point', tail: 'bushy',  size: 0.95, snout: 0.8, blush: true },
   raccoon: { kind: 'quad', ear: 'round', tail: 'ring',   size: 0.95, snout: 0.7, mask: true },
   beaver:  { kind: 'quad', ear: 'tiny',  tail: 'paddle', size: 0.95, snout: 0.7, teeth: true },
@@ -269,7 +270,9 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       body.add(head)
       outline(put(body, capsule(bodyR * 0.44, bodyR * 0.66), mBody,
         0, (neckY + head.position.y) / 2, (neckZ + head.position.z) / 2, null, [0.72, 0, 0]), 1.06)
-      const skull = put(head, ball(headR, 16), mBody, 0, 0, 0, [1, 0.96, 1])
+      // skull＝頭骨比例 [寬, 高, 長]。狗是圓的，貓要窄一點、前後長一點才有楔形感。
+      // ⚠️ 斑紋 patch() 是照 headR 貼在正球面上的，所以有斑紋的寵物（米格魯）別改這個。
+      const skull = put(head, ball(headR, 16), mBody, 0, 0, 0, spec.skull ?? [1, 0.96, 1])
       outline(skull, 1.06)
 
       // 眼睛上方的深色斑：三色犬「棕頭」的來源，也給米格魯一點眉毛的表情
@@ -312,11 +315,12 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
             sx * headR * 0.14, -earLen * 0.62, 0, [0.34, 1, 1.22]), 1.1)
           parts.ears.push(root)
         } else if (spec.ear === 'point') {
-          const ear = put(head, new THREE.ConeGeometry(headR * 0.34, headR * 0.66, 8), mEar,
-            sx * headR * 0.56, headR * 0.82, 0, null, [0, 0, sx * -0.22])
+          // 貓和狐狸的尖耳要「高而窄」，圓球頭配矮耳朵會整隻變成泰迪熊
+          const ear = put(head, new THREE.ConeGeometry(headR * 0.31, headR * 0.84, 8), mEar,
+            sx * headR * 0.54, headR * 0.90, 0, null, [0, 0, sx * -0.20])
           outline(ear, 1.1)
-          put(head, new THREE.ConeGeometry(headR * 0.18, headR * 0.4, 8), toon(c.earInner || '#F5B8C8'),
-            sx * headR * 0.56, headR * 0.84, headR * 0.1, null, [0, 0, sx * -0.22])
+          put(head, new THREE.ConeGeometry(headR * 0.16, headR * 0.50, 8), toon(c.earInner || '#F5B8C8'),
+            sx * headR * 0.54, headR * 0.92, headR * 0.1, null, [0, 0, sx * -0.20])
         } else if (spec.ear === 'round') {
           const ear = put(head, ball(headR * 0.32, 10), mEar, sx * headR * 0.76, headR * 0.66, 0, [1, 1, 0.55])
           outline(ear, 1.1)
