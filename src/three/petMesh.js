@@ -60,8 +60,11 @@ const SPECIES = {
   // 臘腸狗：黑背黃腳的雙色，同樣有眼上的黃斑
   xiaohu:  { kind: 'quad', ear: 'flop',  tail: 'wag',    size: 0.92, snout: 1.0, long: 1.5, leg: 0.55,
              socks: true, eyePatch: true },
-  hana:    { kind: 'quad', ear: 'tiny',  tail: 'flat',   size: 0.95, snout: 0.7, blush: true },
-  kotaro:  { kind: 'quad', ear: 'tiny',  tail: 'flat',   size: 1.00, snout: 0.7, blush: true },
+  // 兩隻都是水獺，第 1～3 階的配色幾乎一樣（#8B6347 / #7A5538），遠看分不出來，
+  // 所以改用體型拉開差距，而且對得上個性：
+  // Hana「活潑好奇」＝腿長、身形苗條、嘴尖一點；Kotaro「沉穩愛吃」＝矮胖、圓臉。
+  hana:    { kind: 'quad', ear: 'tiny', tail: 'flat', size: 0.94, snout: 0.70, long: 1.50, leg: 0.50, neck: 0.38, girth: 0.92, blush: true },
+  kotaro:  { kind: 'quad', ear: 'tiny', tail: 'flat', size: 1.02, snout: 0.60, long: 1.58, leg: 0.44, neck: 0.32, girth: 1.12, blush: true },
   jiji:    { kind: 'quad', ear: 'point', tail: 'long',   size: 0.92, snout: 0.5 },
   kitsune: { kind: 'quad', ear: 'point', tail: 'bushy',  size: 0.95, snout: 0.8, blush: true },
   raccoon: { kind: 'quad', ear: 'round', tail: 'ring',   size: 0.95, snout: 0.7, mask: true },
@@ -220,7 +223,8 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
     case 'quad': {
       const long = spec.long ?? 1
       const legH = s * 0.34 * (spec.leg ?? 1)   // 腿加長：原本 0.26 太短，肚子幾乎貼地
-      const bodyR = s * 0.245                    // 身體收窄，才襯得出大頭、也才看得到脖子
+      // 身體收窄，才襯得出大頭、也才看得到脖子；girth 用來拉開同物種的胖瘦（兩隻水獺）
+      const bodyR = s * 0.245 * (spec.girth ?? 1)
       const bodyLen = s * 0.36 * long
       const bodyY = legH + bodyR * 0.95
       // ⚠️ 膠囊的實際長度是 length + 2×radius（兩端各有一顆半球帽）。
@@ -256,9 +260,12 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
 
       // 大頭＋脖子。脖子是關鍵：沒有它，頭和身體兩顆球就會糊成一團看不出是動物
       const headR = s * 0.30
-      const neckY = bodyY + bodyR * 0.62
+      // neck＝頭抬多高。狗要抬頭挺胸（1）；水獺這種鼬科是長身短腿、頭幾乎跟背同高（0.3~0.4），
+      // 不壓低的話同一套骨架看起來就都是狗。
+      const lift = spec.neck ?? 1
+      const neckY = bodyY + bodyR * (0.30 + 0.32 * lift)
       const neckZ = halfLen * 0.72
-      head.position.set(0, neckY + headR * 0.62, neckZ + headR * 0.62)
+      head.position.set(0, neckY + headR * (0.22 + 0.40 * lift), neckZ + headR * 0.62)
       body.add(head)
       outline(put(body, capsule(bodyR * 0.44, bodyR * 0.66), mBody,
         0, (neckY + head.position.y) / 2, (neckZ + head.position.z) / 2, null, [0.72, 0, 0]), 1.06)
@@ -512,6 +519,10 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
     case 'float': {
       const floatY = s * 0.64
       const core = new THREE.Group()
+      // 擠出的薄片正面在哪，眼睛就要放在哪。原本一律用 s*0.3，
+      // 但星星／月亮擠出後正面只到 0.11s，眼睛等於浮在臉前面 0.19s 的空中。
+      const flatDepth = s * 0.16, flatBevel = s * 0.03
+      let eyeZ = s * 0.3
       if (spec.shape === 'star') {
         // 用五角星輪廓拉出厚度，比五根圓錐像星星多了
         const shape = new THREE.Shape()
@@ -522,21 +533,46 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
           i ? shape.lineTo(px, py) : shape.moveTo(px, py)
         }
         shape.closePath()
-        const geo = new THREE.ExtrudeGeometry(shape, { depth: s * 0.16, bevelEnabled: true, bevelSize: s * 0.03, bevelThickness: s * 0.03, bevelSegments: 2 })
+        const geo = new THREE.ExtrudeGeometry(shape, { depth: flatDepth, bevelEnabled: true, bevelSize: flatBevel, bevelThickness: flatBevel, bevelSegments: 2 })
         geo.center()
         outline(put(core, geo, mBody, 0, 0, 0), 1.05)
+        eyeZ = flatDepth / 2 + flatBevel
       } else if (spec.shape === 'moon') {
-        const ring = put(core, new THREE.TorusGeometry(s * 0.3, s * 0.14, 10, 22, Math.PI * 1.3), mBody, 0, 0, 0, null, [0, 0, -Math.PI * 0.3])
-        outline(ring, 1.06)
+        // 彎月＝大圓「挖掉」一個偏心的小圓。原本用一段等粗的圓環，
+        // 兩端是平的開口，看起來像馬蹄鐵／磁鐵，不像月亮 ——
+        // 月牙的關鍵就在「兩端要收成尖角、內緣要是圓弧」。
+        const R = s * 0.44, r2 = s * 0.36, d = s * 0.22
+        const x0 = (R * R - r2 * r2 + d * d) / (2 * d)       // 兩圓交點
+        const y0 = Math.sqrt(Math.max(0, R * R - x0 * x0))
+        const a0 = Math.atan2(y0, x0)                        // 交點在外圓的角度
+        const b0 = Math.atan2(y0, x0 - d)                    // 交點在內圓的角度
+        const pts = []
+        for (let i = 0; i <= 26; i++) {                      // 外弧：走左半邊
+          const a = a0 + (2 * Math.PI - 2 * a0) * (i / 26)
+          pts.push(new THREE.Vector2(Math.cos(a) * R, Math.sin(a) * R))
+        }
+        for (let i = 0; i <= 20; i++) {                      // 內弧：沿內圓左側繞回去
+          const b = (2 * Math.PI - b0) + (b0 - (2 * Math.PI - b0)) * (i / 20)
+          pts.push(new THREE.Vector2(d + Math.cos(b) * r2, Math.sin(b) * r2))
+        }
+        const geo = new THREE.ExtrudeGeometry(new THREE.Shape(pts),
+          { depth: flatDepth, bevelEnabled: true, bevelSize: flatBevel, bevelThickness: flatBevel, bevelSegments: 2 })
+        geo.center()
+        outline(put(core, geo, mBody, 0, 0, 0, null, [0, 0, 0.5]), 1.05)   // 稍微側躺才像掛在天上
+        eyeZ = flatDepth / 2 + flatBevel
       } else {
         outline(put(core, ball(s * 0.34, 16), mBody, 0, 0, 0), 1.05)
         put(core, new THREE.TorusGeometry(s * 0.52, s * 0.035, 8, 28), mBelly, 0, 0, 0, null, [Math.PI * 0.42, 0, 0])
+        eyeZ = s * 0.30
       }
       core.position.y = floatY
       body.add(core)
       parts.float = core
-      makeEyes(core, parts, 0, s * 0.3, s * 0.055, s * 0.11)
-      makeBlush(core, s, -s * 0.08, s * 0.26, s * 0.19)
+      // 月牙的臉要放在「彎進去那一側」的實心處，放正中央會落在挖掉的缺口上
+      const faceX = spec.shape === 'moon' ? -s * 0.12 : 0
+      makeEyes(core, parts, 0, eyeZ, s * 0.055, s * 0.11)
+      for (const e of parts.eyes) e.position.x += faceX
+      makeBlush(core, s, -s * 0.08, eyeZ * 0.92, s * 0.19 - faceX * 0.5)
       break
     }
 
