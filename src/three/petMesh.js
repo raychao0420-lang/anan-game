@@ -58,8 +58,9 @@ const SPECIES = {
   lulu:    { kind: 'quad', ear: 'flop',  tail: 'flag',   size: 1.00, snout: 1.0, saddle: true, blush: true,
              socks: true, bib: true, blaze: true, eyePatch: true },
   // 臘腸狗：黑背黃腳的雙色，同樣有眼上的黃斑
+  // 黑臘腸：眼睛用榛色而不是金色 —— 黑狗配金瞳會像夜裡發光，但純黑眼珠又會消失在毛色裡
   xiaohu:  { kind: 'quad', ear: 'flop',  tail: 'wag',    size: 0.92, snout: 1.0, long: 1.5, leg: 0.55,
-             socks: true, eyePatch: true },
+             socks: true, eyePatch: true, eye: '#B8813A' },
   // 兩隻都是水獺，第 1～3 階的配色幾乎一樣（#8B6347 / #7A5538），遠看分不出來，
   // 所以改用體型拉開差距，而且對得上個性：
   // Hana「活潑好奇」＝腿長、身形苗條、嘴尖一點；Kotaro「沉穩愛吃」＝矮胖、圓臉。
@@ -72,7 +73,8 @@ const SPECIES = {
   beaver:  { kind: 'quad', ear: 'tiny',  tail: 'paddle', size: 0.95, snout: 0.7, teeth: true },
   hamster: { kind: 'quad', ear: 'round', tail: 'nub',    size: 0.72, snout: 0.5, blush: true },
   seal:    { kind: 'blob', tail: 'fin',  size: 1.00, snout: 0.6, blush: true },
-  penguin: { kind: 'upright', beak: true, size: 0.95, blush: true },
+  // 企鵝的深藍身體也會觸發亮眼珠，但金瞳配企鵝很怪，改用柔和的暖褐色
+  penguin: { kind: 'upright', beak: true, size: 0.95, blush: true, eye: '#A88358' },
   owl:     { kind: 'upright', beak: true, size: 0.90, tuft: true, bigEyes: true },
   xiaoq:   { kind: 'upright', beak: true, size: 0.90, tuft: true, bigEyes: true, glasses: true },
   mejiro:  { kind: 'bird', beak: true, size: 0.58 },
@@ -165,11 +167,19 @@ function makeLeg(parent, mBody, mPaw, s, x, y, z, legH) {
   return hip
 }
 
-// 大眼睛＋高光點：卡通角色的可愛度幾乎都在這
+// 螢幕亮度（用來判斷毛色深淺）
+const lum = (hex) => {
+  const n = parseInt(String(hex).slice(1), 16)
+  return (((n >> 16) & 255) * 0.299 + ((n >> 8) & 255) * 0.587 + (n & 255) * 0.114) / 255
+}
+
+// 大眼睛＋高光點：卡通角色的可愛度幾乎都在這。
+// 眼珠顏色從 parts.eyeCol 讀（由 buildPet 依毛色算好），深色寵物不能用黑眼珠 ——
+// 黑貓吉吉的黑眼睛會整顆融進毛色裡，只剩高光那一點，看起來像獨眼。
 function makeEyes(target, parts, y, z, r, spread) {
   const geo = ball(r, 12)
   const hi = ball(r * 0.34, 8)
-  const dark = toon('#1B1208')
+  const dark = toon(parts.eyeCol || '#1B1208')
   for (const sx of [-1, 1]) {
     const e = put(target, geo, dark, sx * spread, y, z)
     put(e, hi, EYE_HILIGHT, r * 0.3, r * 0.32, r * 0.62)   // 高光跟著眼睛一起縮放
@@ -201,6 +211,9 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
   const mMuzzle = toon(c.muzzle || c.belly || '#fff8ee')
 
   const parts = { legs: [], eyes: [], wings: [], ears: [] }
+  // 毛色太深就改用亮眼珠，否則黑眼睛會整顆消失在毛色裡（吉吉曾經看起來像獨眼）。
+  // spec.eye 可逐物種覆寫：黑貓配金瞳很對，但黑狗配金瞳會像夜裡發光的眼睛。
+  parts.eyeCol = spec.eye || (lum(c.body) < 0.34 ? '#F0C24A' : '#1B1208')
   g.userData.parts = parts
 
   const shadow = new THREE.Mesh(
