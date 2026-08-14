@@ -522,7 +522,7 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       // 擠出的薄片正面在哪，眼睛就要放在哪。原本一律用 s*0.3，
       // 但星星／月亮擠出後正面只到 0.11s，眼睛等於浮在臉前面 0.19s 的空中。
       const flatDepth = s * 0.16, flatBevel = s * 0.03
-      let eyeZ = s * 0.3
+      let eyeZ                                    // 由下面各形狀自己填
       if (spec.shape === 'star') {
         // 用五角星輪廓拉出厚度，比五根圓錐像星星多了
         const shape = new THREE.Shape()
