@@ -1177,7 +1177,8 @@ export default function HomeRoomScreen({ onNavigate }) {
         {/* iPad 體感視差授權鈕 */}
         {gyroNeed && (
           <motion.button className="room-gyro-btn" whileTap={{ scale: 0.9 }}
-            onClick={(e) => { e.stopPropagation(); enableGyro() }}>
+            onClick={(e) => { e.stopPropagation(); enableGyro() }}
+            data-tip="開啟後傾斜平板，畫面會跟著移動">
             📱 開啟體感
           </motion.button>
         )}
@@ -1185,7 +1186,7 @@ export default function HomeRoomScreen({ onNavigate }) {
         {/* 拍照按鈕＋快門閃光 */}
         {!snapping && !photo && (
           <motion.button className="room-photo-btn" whileTap={{ scale: 0.85 }}
-            onClick={(e) => { e.stopPropagation(); takePhoto() }} aria-label="拍照">
+            onClick={(e) => { e.stopPropagation(); takePhoto() }} aria-label="拍照" data-tip="拍一張照片">
             📸
           </motion.button>
         )}
@@ -1194,7 +1195,8 @@ export default function HomeRoomScreen({ onNavigate }) {
         {!snapping && (
           <motion.button className="room-3d-btn" whileTap={{ scale: 0.85 }}
             onClick={(e) => { e.stopPropagation(); sfx.click(); setUse3D((v) => !v) }}
-            aria-label={use3D ? '切回平面' : '切換立體'}>
+            aria-label={use3D ? '切回平面' : '切換立體'}
+            data-tip={use3D ? '切回平面場景' : '切換成立體場景'}>
             {use3D ? '🖼️ 2D' : '🧊 3D'}
           </motion.button>
         )}
@@ -1206,7 +1208,9 @@ export default function HomeRoomScreen({ onNavigate }) {
               e.stopPropagation(); sfx.click()
               setLamp((v) => !(v ?? (phase === 'night' || phase === 'evening')))
             }}
-            aria-label="電燈開關">
+            aria-label="電燈開關"
+            data-tip={(lamp ?? (phase === 'night' || phase === 'evening'))
+              ? '把燈關掉（晚上才看得到螢火蟲）' : '把燈點亮'}>
             {(lamp ?? (phase === 'night' || phase === 'evening')) ? '💡 關燈' : '🔦 開燈'}
           </motion.button>
         )}
@@ -1231,7 +1235,7 @@ export default function HomeRoomScreen({ onNavigate }) {
               <motion.button key={k} className={`room-toy-btn${tool === k ? ' armed' : ''}`}
                 whileTap={{ scale: 0.85 }}
                 onClick={(e) => { e.stopPropagation(); sfx.click(); setTool(tool === k ? null : k) }}
-                aria-label={t.hint}>
+                aria-label={t.hint} data-tip={t.hint}>
                 {t.emoji}
               </motion.button>
             ))}
@@ -1246,7 +1250,8 @@ export default function HomeRoomScreen({ onNavigate }) {
                 <motion.button key={k} className={`room-seed-btn${tool === k ? ' armed' : ''}${count === 0 ? ' empty' : ''}`}
                   whileTap={count > 0 ? { scale: 0.85 } : {}}
                   disabled={count === 0}
-                  onClick={(e) => { e.stopPropagation(); if (count === 0) return; sfx.click(); setTool(tool === k ? null : k) }}>
+                  onClick={(e) => { e.stopPropagation(); if (count === 0) return; sfx.click(); setTool(tool === k ? null : k) }}
+                  data-tip={count === 0 ? `${PLANT_KINDS[k].seedName}（沒有了）` : `種下${PLANT_KINDS[k].seedName}`}>
                   {PLANT_KINDS[k].bagEmoji}
                   <span className="room-seed-count">{count}</span>
                 </motion.button>
@@ -1256,27 +1261,30 @@ export default function HomeRoomScreen({ onNavigate }) {
             <motion.button className={`room-seed-btn${tool === 'fert' ? ' armed' : ''}${(fertilizer || 0) === 0 ? ' empty' : ''}`}
               whileTap={(fertilizer || 0) > 0 ? { scale: 0.85 } : {}}
               disabled={(fertilizer || 0) === 0}
-              onClick={(e) => { e.stopPropagation(); if ((fertilizer || 0) === 0) return; sfx.click(); setTool(tool === 'fert' ? null : 'fert') }}>
+              onClick={(e) => { e.stopPropagation(); if ((fertilizer || 0) === 0) return; sfx.click(); setTool(tool === 'fert' ? null : 'fert') }}
+              data-tip={(fertilizer || 0) === 0 ? '魔法肥料（沒有了）' : '灑魔法肥料'}>
               {FERTILIZER.emoji}
               <span className="room-seed-count">{fertilizer || 0}</span>
             </motion.button>
             {/* 一鍵全部澆水 */}
             <motion.button className="room-seed-btn water-all"
               whileTap={{ scale: 0.85 }}
-              onClick={handleWaterAll}>
+              onClick={handleWaterAll} data-tip="一次幫全部的花澆水">
               💦
             </motion.button>
             {/* 花園圖鑑 */}
             <motion.button className="room-seed-btn codex"
               whileTap={{ scale: 0.85 }}
-              onClick={(e) => { e.stopPropagation(); sfx.click(); setCodexOpen(true) }}>
+              onClick={(e) => { e.stopPropagation(); sfx.click(); setCodexOpen(true) }}
+              data-tip="花園圖鑑：看看收集了哪些花">
               📖
               <span className="room-seed-count">{(gardenDex || []).length}</span>
             </motion.button>
             {/* 花園小幫手 */}
             <motion.button className={`room-seed-btn keeper${gardenKeeper ? ' on' : ''}`}
               whileTap={{ scale: 0.85 }}
-              onClick={(e) => { e.stopPropagation(); sfx.click(); setKeeperOpen(true) }}>
+              onClick={(e) => { e.stopPropagation(); sfx.click(); setKeeperOpen(true) }}
+              data-tip={gardenKeeper ? '換一隻花園小幫手' : '指派花園小幫手'}>
               {gardenKeeper ? petFace(gardenKeeper) : '🐾'}
             </motion.button>
           </div>
