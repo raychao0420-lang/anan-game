@@ -805,10 +805,12 @@
 .room-scene.scene-outdoor .room-3d-btn::after,
 .room-scene.scene-outdoor .room-lamp-btn::after { right: auto; left: 0; }
 
-/* 秘密庭園的種花按鈕是一整排直的貼在右下角，會把這三顆蓋掉 → 庭園時改掛左邊 */
-.room-scene.scene-outdoor .room-photo-btn { right: auto; left: 12px; bottom: 68px; }
-.room-scene.scene-outdoor .room-3d-btn    { right: auto; left: 12px; bottom: 110px; }
-.room-scene.scene-outdoor .room-lamp-btn  { right: auto; left: 12px; bottom: 152px; }
+/* 秘密庭園時右下角是整排直的種花按鈕，會把這三顆蓋掉 → 改掛左邊。
+   但左下角還有丟零食／丟球那一欄（2 顆 × 46px ＋ 8px 間距，從 bottom:14 疊到 114），
+   所以要從 124 起跳才不會卡到。TOY_TOOLS 之後若加第 3 顆，這裡要跟著往上挪 54px。 */
+.room-scene.scene-outdoor .room-photo-btn { right: auto; left: 12px; bottom: 124px; }
+.room-scene.scene-outdoor .room-3d-btn    { right: auto; left: 12px; bottom: 166px; }
+.room-scene.scene-outdoor .room-lamp-btn  { right: auto; left: 12px; bottom: 208px; }
 
 /* 電燈開關：疊在 3D 切換鈕上面一排 */
 .room-lamp-btn {

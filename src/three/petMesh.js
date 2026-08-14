@@ -275,11 +275,16 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       }
 
       if (spec.snout) {
-        const snoutLen = headR * 0.62 * spec.snout
-        // 口鼻不描邊：它埋在頭的描邊裡面，畫了也看不到
-        put(head, capsule(headR * 0.30, snoutLen), mMuzzle, 0, -headR * 0.30, headR * 0.66,
-          [1, 0.92, 0.95], [Math.PI / 2, 0, 0])
-        put(head, ball(headR * 0.17, 10), mDark, 0, -headR * 0.20, headR * 0.72 + snoutLen * 0.6, [1.2, 0.92, 1])
+        // 米格魯（史努比）的招牌是「明顯突出的嘴管」，不是臉上一個小凸起。
+        // 原本只凸出頭部半徑的 27%，太含蓄；拉長到 41% 並「加上描邊」，
+        // 才會讀成一截接出去的獨立體積而不是頭的一部分。
+        const snoutLen = headR * 0.78 * spec.snout
+        const snoutR = headR * 0.32
+        outline(put(head, capsule(snoutR, snoutLen), mMuzzle, 0, -headR * 0.26, headR * 0.70,
+          [1.05, 1, 0.95], [Math.PI / 2, 0, 0]), 1.06)
+        // 大鼻頭壓在嘴管前端的上緣（史努比的鼻子又大又圓）
+        put(head, ball(headR * 0.19, 10), mDark, 0, -headR * 0.16,
+          headR * 0.70 + snoutLen * 0.5 + snoutR * 0.72, [1.15, 0.95, 1])
       }
       if (spec.teeth) put(head, new THREE.BoxGeometry(headR * 0.34, headR * 0.28, headR * 0.1), toon('#FFFBEA'), 0, -headR * 0.52, headR * 0.82)
       if (spec.mask) put(head, ball(headR * 0.94, 12), toon(c.ear || '#4A4A4A'), 0, headR * 0.06, headR * 0.16, [1.02, 0.4, 0.92])
