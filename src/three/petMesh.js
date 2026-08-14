@@ -35,10 +35,16 @@ const toon = (color) => {
 const OUTLINE_MAT = shared(new THREE.MeshBasicMaterial({ color: 0x2a1e14, side: THREE.BackSide }))
 const EYE_HILIGHT = shared(new THREE.MeshBasicMaterial({ color: 0xffffff }))
 
-// 描邊：把同一顆幾何放大一點、只畫背面，就會在輪廓外圍露出一圈深色線
+// 描邊：把同一顆幾何放大一點、只畫背面，就會在輪廓外圍露出一圈深色線。
+// 固定倍率的問題是「小零件的線會細到看不見」（放大 7% 對半徑 0.02 的耳朵只有 0.0014），
+// 所以這裡改成保證至少有 OUTLINE_W 的世界座標寬度，全身線寬才一致。
+const OUTLINE_W = 0.017
 function outline(mesh, thickness = 1.07) {
   const o = new THREE.Mesh(mesh.geometry, OUTLINE_MAT)
-  o.scale.setScalar(thickness)
+  const geo = mesh.geometry
+  if (!geo.boundingSphere) geo.computeBoundingSphere()
+  const r = geo.boundingSphere.radius * Math.max(mesh.scale.x, mesh.scale.y, mesh.scale.z)
+  o.scale.setScalar(Math.max(thickness, 1 + OUTLINE_W / Math.max(r, 0.02)))
   o.position.copy(mesh.position)
   o.rotation.copy(mesh.rotation)
   o.scale.multiply(mesh.scale)
@@ -107,15 +113,26 @@ function patch(parent, r, mat, phi, phiLen, theta, thetaLen, cx = 0, cy = 0, cz 
 }
 const FRONT = Math.PI / 2
 
-// 一條腿＝髖部 Group（動畫轉這個）＋大腿膠囊＋圓腳掌，比等粗圓柱有肉多了
+// 一條腿＝髖部 Group（擺動）→ 大腿 → 膝蓋 Group（彎曲）→ 小腿＋圓腳掌。
+// 拆成兩節才有關節感：單根膠囊繞髖部擺，看起來就像掃把在掃地。
+// 動畫端只要轉 hip.rotation.x 和 hip.userData.knee.rotation.x 就有完整步態。
 function makeLeg(parent, mBody, mPaw, s, x, y, z, legH) {
   const hip = new THREE.Group()
   hip.position.set(x, y, z)
   parent.add(hip)
-  const thigh = put(hip, capsule(s * 0.088, legH * 0.7), mBody, 0, -legH * 0.45, 0)
-  outline(thigh, 1.13)
-  // 腳掌不描邊：它幾乎都被大腿的描邊蓋住，省下來的 draw call 比較實在
-  put(hip, ball(s * 0.1, 10), mPaw, 0, -legH * 0.92, s * 0.02, [1.1, 0.8, 1.25])
+
+  const upper = legH * 0.5
+  const lower = legH - upper
+  outline(put(hip, capsule(s * 0.086, upper * 0.7), mBody, 0, -upper * 0.5, 0), 1.1)
+
+  const knee = new THREE.Group()
+  knee.position.y = -upper
+  hip.add(knee)
+  outline(put(knee, capsule(s * 0.070, lower * 0.66), mBody, 0, -lower * 0.5, 0), 1.1)
+  // 腳掌不描邊：它幾乎都被小腿的描邊蓋住，省下來的 draw call 比較實在
+  put(knee, ball(s * 0.10, 10), mPaw, 0, -lower - s * 0.008, s * 0.028, [1.15, 0.8, 1.35])
+
+  hip.userData.knee = knee
   return hip
 }
 
@@ -173,27 +190,30 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
     // ── 四足：狗、水獺、貓、狐狸、浣熊、河狸、倉鼠 ──
     case 'quad': {
       const long = spec.long ?? 1
-      const legH = s * 0.26 * (spec.leg ?? 1)
-      const bodyR = s * 0.29
-      const bodyLen = s * 0.34 * long
-      const bodyY = legH + bodyR * 0.92
+      const legH = s * 0.34 * (spec.leg ?? 1)   // 腿加長：原本 0.26 太短，肚子幾乎貼地
+      const bodyR = s * 0.245                    // 身體收窄，才襯得出大頭、也才看得到脖子
+      const bodyLen = s * 0.36 * long
+      const bodyY = legH + bodyR * 0.95
+      // ⚠️ 膠囊的實際長度是 length + 2×radius（兩端各有一顆半球帽）。
+      // 之前所有前後位置都只算 bodyLen*0.5，忘了加半徑，結果整顆頭埋進身體＝一坨馬鈴薯。
+      const halfLen = bodyLen * 0.5 + bodyR
 
-      // 身體＝橫躺的膠囊（不是壓扁的球，所以不會像馬鈴薯）
       const torso = put(body, capsule(bodyR, bodyLen), mBody, 0, bodyY, 0, null, [Math.PI / 2, 0, 0])
-      outline(torso, 1.06)
-      put(body, capsule(bodyR * 0.78, bodyLen * 0.9), mBelly, 0, bodyY - bodyR * 0.34, s * 0.03,
+      outline(torso, 1.05)
+      put(body, capsule(bodyR * 0.8, bodyLen * 0.92), mBelly, 0, bodyY - bodyR * 0.36, s * 0.03,
         [1, 1, 0.72], [Math.PI / 2, 0, 0])
 
-      if (spec.saddle && c.saddle) {   // 米格魯的背鞍
-        put(body, capsule(bodyR * 0.86, bodyLen * 0.72), toon(c.saddle), 0, bodyY + bodyR * 0.3, -s * 0.02,
-          [1, 1, 0.62], [Math.PI / 2, 0, 0])
+      // 米格魯的背鞍＝包住身體上半圈的一段圓柱殼（開口朝下），會完全貼合身體曲面。
+      // 用實心橢球做不出來：小一點會整塊縮在身體裡看不見，大一點就在背上凸一個駝峰。
+      if (spec.saddle && c.saddle) {
+        put(body, new THREE.CylinderGeometry(bodyR * 1.03, bodyR * 1.03, bodyLen * 0.94, 20, 1, true,
+          Math.PI * 0.42, Math.PI * 1.16), toon(c.saddle), 0, bodyY, -s * 0.01, null, [Math.PI / 2, 0, 0])
       }
 
       // 白襪子：腳掌用口鼻的白（米格魯／臘腸狗的四腳是白的）
       const mPaw = spec.socks ? mMuzzle : mBody
-      const hipZ = bodyLen * 0.5 + bodyR * 0.2
       for (const [lx, lz] of [[-1, 1], [1, 1], [-1, -1], [1, -1]]) {
-        const leg = makeLeg(body, mBody, mPaw, s, lx * bodyR * 0.66, bodyY - bodyR * 0.5, lz * hipZ * 0.62, legH + bodyR * 0.5)
+        const leg = makeLeg(body, mBody, mPaw, s, lx * bodyR * 0.62, bodyY - bodyR * 0.55, lz * halfLen * 0.6, legH + bodyR * 0.55)
         leg.userData.front = lz > 0      // 坐下時前腳打直、後腿摺起來，要分得出來
         parts.legs.push(leg)
       }
@@ -205,38 +225,43 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
         patch(body, bodyR, mMuzzle, FRONT, 1.5, 1.9, 1.1, 0, bodyY, bodyLen * 0.5)
       }
 
-      // 大頭：卡通比例，頭幾乎跟身體一樣寬
-      const headR = s * 0.33
-      head.position.set(0, bodyY + bodyR * 0.5, bodyLen * 0.5 + headR * 0.5)
+      // 大頭＋脖子。脖子是關鍵：沒有它，頭和身體兩顆球就會糊成一團看不出是動物
+      const headR = s * 0.30
+      const neckY = bodyY + bodyR * 0.62
+      const neckZ = halfLen * 0.72
+      head.position.set(0, neckY + headR * 0.62, neckZ + headR * 0.62)
       body.add(head)
+      outline(put(body, capsule(bodyR * 0.44, bodyR * 0.66), mBody,
+        0, (neckY + head.position.y) / 2, (neckZ + head.position.z) / 2, null, [0.72, 0, 0]), 1.06)
       const skull = put(head, ball(headR, 16), mBody, 0, 0, 0, [1, 0.96, 1])
       outline(skull, 1.06)
 
       // 眼睛上方的深色斑：三色犬「棕頭」的來源，也給米格魯一點眉毛的表情
       if (spec.eyePatch) for (const sx of [-1, 1]) {
-        patch(head, headR, mEar, FRONT + sx * 0.52, 0.62, 0.92, 0.5)
+        patch(head, headR, mEar, FRONT + sx * 0.50, 0.60, 1.02, 0.46)
       }
-      // 臉中央的白色鼻樑線：從額頭一路白到口鼻
+      // 臉中央的白色鼻樑線：只走臉的前面，別繞過頭頂（不然像貼了一條賽車貼紙）
       if (spec.blaze) {
-        patch(head, headR, mMuzzle, FRONT, 0.42, 1.0, 1.25)
+        patch(head, headR, mMuzzle, FRONT, 0.34, 1.28, 0.78)
       }
 
       if (spec.snout) {
-        const snoutLen = headR * 0.5 * spec.snout
+        const snoutLen = headR * 0.62 * spec.snout
         // 口鼻不描邊：它埋在頭的描邊裡面，畫了也看不到
-        put(head, capsule(headR * 0.34, snoutLen), mMuzzle, 0, -headR * 0.26, headR * 0.62,
-          [1, 1, 0.9], [Math.PI / 2, 0, 0])
-        put(head, ball(headR * 0.15, 10), mDark, 0, -headR * 0.14, headR * 0.74 + snoutLen * 0.5, [1.25, 0.9, 1])
+        put(head, capsule(headR * 0.30, snoutLen), mMuzzle, 0, -headR * 0.30, headR * 0.66,
+          [1, 0.92, 0.95], [Math.PI / 2, 0, 0])
+        put(head, ball(headR * 0.17, 10), mDark, 0, -headR * 0.20, headR * 0.72 + snoutLen * 0.6, [1.2, 0.92, 1])
       }
       if (spec.teeth) put(head, new THREE.BoxGeometry(headR * 0.34, headR * 0.28, headR * 0.1), toon('#FFFBEA'), 0, -headR * 0.52, headR * 0.82)
       if (spec.mask) put(head, ball(headR * 0.94, 12), toon(c.ear || '#4A4A4A'), 0, headR * 0.06, headR * 0.16, [1.02, 0.4, 0.92])
 
       for (const sx of [-1, 1]) {
         if (spec.ear === 'flop') {
-          // 米格魯的招牌垂耳：位置低（跟眼睛齊）、又寬又薄、垂過下巴
-          const ear = put(head, capsule(headR * 0.34, headR * 0.62), mEar,
-            sx * headR * 0.78, -headR * 0.36, headR * 0.04,
-            [0.42, 1, 1.15], [0.12, 0, sx * 0.2])
+          // 米格魯的招牌垂耳：又長又寬、垂到下巴以下。
+          // 遠看時這是唯一認得出品種的線索，所以寧可誇張也不要保守。
+          const ear = put(head, capsule(headR * 0.32, headR * 1.02), mEar,
+            sx * headR * 0.78, -headR * 0.44, -headR * 0.02,
+            [0.36, 1, 1.28], [0.18, 0, sx * 0.14])
           outline(ear, 1.1)
         } else if (spec.ear === 'point') {
           const ear = put(head, new THREE.ConeGeometry(headR * 0.34, headR * 0.66, 8), mEar,
@@ -252,18 +277,21 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
           outline(ear, 1.1)
         }
       }
-      makeEyes(head, parts, headR * 0.12, headR * 0.8, headR * 0.17, headR * 0.36)
-      if (spec.blush) makeBlush(head, s, -headR * 0.18, headR * 0.66, headR * 0.62)
+      makeEyes(head, parts, headR * 0.10, headR * 0.82, headR * 0.20, headR * 0.34)
+      if (spec.blush) makeBlush(head, s, -headR * 0.20, headR * 0.68, headR * 0.60)
 
       // 尾巴（髖部 Group 讓它從根部搖）
       const tail = new THREE.Group()
-      tail.position.set(0, bodyY + bodyR * 0.35, -bodyLen * 0.5 - bodyR * 0.3)
+      tail.position.set(0, bodyY + bodyR * 0.45, -halfLen + bodyR * 0.12)
       body.add(tail)
       parts.tail = tail
       if (spec.tail === 'flag') {
-        // 米格魯的「旗尾」：高高翹起、尾端一撮白，是最好認的特徵之一
-        outline(put(tail, capsule(s * 0.055, s * 0.24), mBody, 0, s * 0.14, -s * 0.04, null, [-0.42, 0, 0]), 1.1)
-        outline(put(tail, ball(s * 0.075, 10), mMuzzle, 0, s * 0.3, s * 0.02), 1.12)
+        // 米格魯的「旗尾」：高高翹起、尾端一撮白，是最好認的特徵之一。
+        // 白尖要貼在膠囊「含半球帽」的真正末端，否則會變成一顆飄在尾巴前面的白球。
+        const tilt = -0.42, tr = s * 0.058, tipLen = s * 0.12 + tr
+        outline(put(tail, capsule(tr, s * 0.24), mBody, 0, s * 0.14, -s * 0.04, null, [tilt, 0, 0]), 1.1)
+        outline(put(tail, ball(tr * 1.15, 10), mMuzzle,
+          0, s * 0.14 + tipLen * Math.cos(tilt), -s * 0.04 + tipLen * Math.sin(tilt)), 1.12)
       } else if (spec.tail === 'bushy') {
         outline(put(tail, capsule(s * 0.15, s * 0.26), mEar, 0, s * 0.04, -s * 0.16, null, [1.1, 0, 0]), 1.08)
       } else if (spec.tail === 'paddle') {

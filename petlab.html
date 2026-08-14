@@ -1,0 +1,76 @@
+<title>寵物實驗室</title>
+<style>
+  body { margin: 0; background: #EADFC8; font-family: system-ui, sans-serif; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+</style>
+<canvas id="c"></canvas>
+<script type="module">
+  import * as THREE from 'three'
+  import { buildPet } from '/src/three/petMesh.js'
+
+  // 只給開發時看模型用的頁面：相機與燈光完全比照 engine.js，
+  // 這樣這裡看到的比例／描邊粗細＝遊戲裡真正的樣子。
+  const CAM_DIR = new THREE.Vector3(6, 7.5, 9).normalize()
+
+  const canvas = document.getElementById('c')
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
+  renderer.setPixelRatio(2)
+  renderer.outputColorSpace = THREE.SRGBColorSpace
+
+  const scene = new THREE.Scene()
+  scene.background = new THREE.Color('#EADFC8')
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100)
+
+  const key = new THREE.DirectionalLight(0xffffff, 1.5)
+  key.position.set(5, 10, 6)
+  const fill = new THREE.DirectionalLight(0xffffff, 0.5)
+  fill.position.set(-6, 4, -4)
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 1.5), key, fill)
+
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshBasicMaterial({ color: '#DCCFB2' }))
+  floor.rotation.x = -Math.PI / 2
+  scene.add(floor)
+
+  // ?pets=lulu,jiji 選寵物／?sit=1 坐姿／?view=2 放大（預設 7.2＝遊戲裡的真實大小）／?turn=90 轉角度
+  const q = new URLSearchParams(location.search)
+  const ids = (q.get('pets') || 'lulu,xiaohu,jiji,kitsune,kotaro,hamster').split(',')
+  const sit = q.get('sit') === '1'
+  const stage = Number(q.get('stage') || 1)
+  const VIEW = Number(q.get('view') || 7.2)
+  const turn = Number(q.get('turn') || 0) * Math.PI / 180
+  const gap = VIEW * 0.132
+
+  ids.forEach((id, i) => {
+    const g = buildPet(id.trim(), stage)
+    g.position.x = (i - (ids.length - 1) / 2) * gap
+    g.rotation.y = Math.atan2(CAM_DIR.x, CAM_DIR.z) + turn   // 0＝正面朝相機
+    if (sit) applySit(g)
+    scene.add(g)
+  })
+
+  // 靜態擺出坐姿，數值與 RoomWorld3D 的動畫一致
+  function applySit(g) {
+    const p = g.userData.parts
+    if (!p?.canSit) return
+    const h = g.userData.height || 0.6
+    p.body.position.y = -h * 0.14
+    p.body.rotation.x = -0.34
+    p.head.rotation.x = 0.22
+    if (p.tail) p.tail.rotation.x = 0.3
+    for (const leg of p.legs) leg.rotation.x = leg.userData.front ? -0.34 : 1.15
+  }
+
+  const resize = () => {
+    const w = innerWidth, h = innerHeight
+    camera.left = -VIEW * (w / h) / 2; camera.right = VIEW * (w / h) / 2
+    camera.top = VIEW / 2; camera.bottom = -VIEW / 2
+    camera.position.copy(CAM_DIR).multiplyScalar(20)
+    camera.lookAt(0, 0.35, 0)
+    camera.updateProjectionMatrix()
+    renderer.setSize(w, h, false)
+    renderer.render(scene, camera)
+  }
+  addEventListener('resize', resize)
+  resize()
+  requestAnimationFrame(() => { resize(); document.title = 'ready' })
+</script>

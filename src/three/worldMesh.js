@@ -74,7 +74,32 @@ export function buildRoom(theme) {
   rug.position.set(-0.4, 0.004, 0.4)
   g.add(rug)
 
+  // 吸頂燈：夜裡自動亮，不必等玩家買檯燈（不然晚上進房間只看得到一片藍黑）。
+  // 掛高、靠後牆，讓它畫在牆面上而不是蓋住地板上的寵物。
+  const lamp = new THREE.Group()
+  lamp.position.set(0, 2.9, CZ - 1.1)
+  lamp.add(new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.36, 6), M('#8A7A66')))
+  const shade = new THREE.Mesh(
+    new THREE.ConeGeometry(0.46, 0.34, 20, 1, true),
+    M('#F6E3C0', { side: THREE.DoubleSide })
+  )
+  shade.position.y = -0.35
+  lamp.add(shade)
+  const bulbMat = new THREE.MeshBasicMaterial({ color: 0xfff0c8 })
+  const bulb = new THREE.Mesh(ball(0.15), bulbMat)
+  bulb.position.y = -0.46
+  lamp.add(bulb)
+  const bulbLight = new THREE.PointLight(0xffd9a0, 0, 16, 1.5)
+  bulbLight.position.y = -0.5
+  lamp.add(bulbLight)
+  g.add(lamp)
+
   g.userData.sky = sky
+  // 交出一個開關函式而不是燈本身：呼叫端只要 roomLamp(true/false)，不必知道裡面有幾個東西要改
+  g.userData.roomLamp = (on) => {
+    bulbLight.intensity = on ? 14 : 0
+    bulbMat.color.set(on ? 0xfff0c8 : 0xdcd6c8)
+  }
   return g
 }
 

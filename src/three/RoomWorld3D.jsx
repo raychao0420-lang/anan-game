@@ -94,6 +94,12 @@ export default function RoomWorld3D({
           // 坐下＝後腿摺到身體下面、前腳打直撐著
           const sitFold = leg.userData.front ? -sit * 0.34 : sit * 1.15
           leg.rotation.x = walkSwing * (1 - sit) + sitFold
+          // 膝蓋：往前擺（swing 為負）時彎起來把腳掌提高，踩到地時打直＝真的在走路而不是滑步。
+          // 站著也留一點點彎，打太直會像玩具兵。
+          if (leg.userData.knee) {
+            leg.userData.knee.rotation.x =
+              (0.1 + Math.max(0, -walkSwing) * 1.3) * (1 - sit) + sit * (leg.userData.front ? 0.12 : 1.0)
+          }
         }
         for (const w of parts?.wings || []) w.rotation.z = Math.sin(t * 2.2 + p.seed) * 0.12
         // 眨眼：每隔幾秒壓一下
@@ -162,6 +168,8 @@ export default function RoomWorld3D({
     // 夜裡才點燈（檯燈、壁爐、香菇燈）
     const lampOn = phase === 'night' || phase === 'evening'
     for (const d of W.decos.values()) if (d.lamp) d.lamp.intensity = lampOn ? 1.1 : 0
+    // 房間本身的吸頂燈，跟著一起亮／滅
+    W.env?.userData.roomLamp?.(lampOn)
 
     // 天氣特效重建
     for (const f of W.fx) { engine.root.remove(f.group); clearGroup(f.group) }
