@@ -348,7 +348,14 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
         outline(put(tail, new THREE.BoxGeometry(s * 0.26, s * 0.06, s * 0.36), toon(c.ear || c.body),
           0, s * 0.14, -s * 0.20, null, [-0.5, 0, 0]), 1.06)
       } else if (spec.tail === 'flat') {
-        outline(put(tail, capsule(s * 0.07, s * 0.3), mBody, 0, s * 0.10, -s * 0.16, [1.4, 1, 1], [-1.15, 0, 0]), 1.08)
+        // 水獺的尾巴是一支「舵」：根部粗壯、往尾端收尖，而且左右寬、上下扁。
+        // 等粗的膠囊做不出來，看起來就是一根香腸接在屁股上 —— 改用截頂圓錐取得漸縮。
+        // 根部要夠粗才接得順（太細會在屁股上出現一道明顯的斷階），
+        // 壓扁也不能過頭，不然會變成一片紙而不是一條有肉的尾巴。
+        const tl = s * 0.46, tilt = -1.28
+        outline(put(tail, new THREE.CylinderGeometry(s * 0.032, s * 0.13, tl, 12), mBody,
+          0, tl * 0.5 * Math.cos(tilt), tl * 0.5 * Math.sin(tilt),
+          [1.26, 1, 0.72], [tilt, 0, 0]), 1.08)
       } else if (spec.tail === 'long') {
         outline(put(tail, capsule(s * 0.045, s * 0.42), mBody, 0, s * 0.20, -s * 0.06, null, [-0.45, 0, 0]), 1.1)
       } else if (spec.tail === 'ring') {
