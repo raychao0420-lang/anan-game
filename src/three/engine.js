@@ -120,27 +120,26 @@ export function createEngine(canvas) {
     canvas.removeEventListener('webglcontextlost', onLost)
     canvas.removeEventListener('webglcontextrestored', onRestored)
     document.removeEventListener('visibilitychange', onVis)
-    scene.traverse((o) => {
-      o.geometry?.dispose()
-      const m = o.material
-      if (Array.isArray(m)) m.forEach((x) => x.dispose())
-      else m?.dispose()
-    })
+    scene.traverse(disposeNode)
     renderer.dispose()
   }
 
   return { renderer, scene, camera, root, onTick, pickFloor, pickObject, resize, dispose, lights: { hemi, key, fill } }
 }
 
+// 釋放一個物件的幾何與材質。
+// ⚠️ 標了 userData.shared 的材質是跨物件共用的（賽璐璐色表、描邊、腮紅），
+// 這種不能 dispose —— 一 dispose 掉，之後再建的寵物就會變成黑的。
+function disposeNode(o) {
+  o.geometry?.dispose()
+  const mats = Array.isArray(o.material) ? o.material : [o.material]
+  for (const m of mats) if (m && !m.userData?.shared) m.dispose()
+}
+
 // 清空一個 Group 底下所有東西並釋放記憶體（切場景時用）
 export function clearGroup(g) {
   for (const child of [...g.children]) {
-    child.traverse?.((o) => {
-      o.geometry?.dispose()
-      const m = o.material
-      if (Array.isArray(m)) m.forEach((x) => x.dispose())
-      else m?.dispose()
-    })
+    child.traverse?.(disposeNode)
     g.remove(child)
   }
 }
