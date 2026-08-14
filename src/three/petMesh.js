@@ -329,21 +329,26 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
         outline(put(tail, ball(tr * 1.15, 10), mMuzzle,
           0, s * 0.14 + tipLen * Math.cos(tilt), -s * 0.04 + tipLen * Math.sin(tilt)), 1.12)
       } else if (spec.tail === 'bushy') {
-        outline(put(tail, capsule(s * 0.15, s * 0.26), mEar, 0, s * 0.04, -s * 0.16, null, [1.1, 0, 0]), 1.08)
+        // 狐狸的大蓬尾：往「後上方」掃（不是垂直豎起來，那會變成一根沖天棒），
+        // 掃出身體輪廓才認得出是狐狸不是白貓
+        outline(put(tail, capsule(s * 0.13, s * 0.30), mEar, 0, s * 0.14, -s * 0.10, null, [-1.0, 0, 0]), 1.08)
       } else if (spec.tail === 'paddle') {
-        outline(put(tail, new THREE.BoxGeometry(s * 0.3, s * 0.07, s * 0.4), toon(c.ear || c.body), 0, 0, -s * 0.2), 1.06)
+        outline(put(tail, new THREE.BoxGeometry(s * 0.26, s * 0.06, s * 0.36), toon(c.ear || c.body),
+          0, s * 0.14, -s * 0.20, null, [-0.5, 0, 0]), 1.06)
       } else if (spec.tail === 'flat') {
-        outline(put(tail, capsule(s * 0.07, s * 0.3), mBody, 0, -s * 0.02, -s * 0.18, [1.4, 1, 1], [1.35, 0, 0]), 1.08)
+        outline(put(tail, capsule(s * 0.07, s * 0.3), mBody, 0, s * 0.10, -s * 0.16, [1.4, 1, 1], [-1.15, 0, 0]), 1.08)
       } else if (spec.tail === 'long') {
-        outline(put(tail, capsule(s * 0.045, s * 0.42), mBody, 0, s * 0.16, -s * 0.08, null, [0.7, 0, 0]), 1.1)
+        outline(put(tail, capsule(s * 0.045, s * 0.42), mBody, 0, s * 0.20, -s * 0.06, null, [-0.45, 0, 0]), 1.1)
       } else if (spec.tail === 'ring') {
-        for (let i = 0; i < 4; i++) {
-          outline(put(tail, ball(s * (0.088 - i * 0.008), 10), i % 2 ? mDark : mBelly, 0, s * 0.035 * i, -s * (0.09 + i * 0.1)), 1.1)
+        // 環紋尾往上畫一道弧，五節才數得出黑白相間
+        for (let i = 0; i < 5; i++) {
+          outline(put(tail, ball(s * (0.085 - i * 0.007), 10), i % 2 ? mDark : mBelly,
+            0, s * (0.05 + i * 0.068), -s * (0.05 + i * 0.075)), 1.1)
         }
       } else if (spec.tail === 'nub') {
         outline(put(tail, ball(s * 0.08, 10), mBelly, 0, 0, -s * 0.06), 1.1)
       } else {
-        outline(put(tail, capsule(s * 0.055, s * 0.18), mBody, 0, s * 0.08, -s * 0.08, null, [0.85, 0, 0]), 1.1)
+        outline(put(tail, capsule(s * 0.055, s * 0.18), mBody, 0, s * 0.12, -s * 0.06, null, [-0.5, 0, 0]), 1.1)
       }
       break
     }
@@ -351,7 +356,11 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
     // ── 海豹：一顆圓滾滾的身體＋前鰭 ──
     case 'blob': {
       const r = s * 0.34
-      const torso = put(body, capsule(r, s * 0.4), mBody, 0, r * 1.02, 0, null, [Math.PI / 2, 0, 0])
+      const bodyLen = s * 0.4
+      const bodyY = r * 1.02
+      // 跟四足一樣：膠囊的真正半長要加上半球帽，之前頭是埋在身體裡的（所以像一坨軟糖）
+      const halfLen = bodyLen / 2 + r
+      const torso = put(body, capsule(r, bodyLen), mBody, 0, bodyY, 0, null, [Math.PI / 2, 0, 0])
       outline(torso, 1.05)
       put(body, capsule(r * 0.76, s * 0.34), mBelly, 0, r * 0.76, s * 0.06, [1, 1, 0.7], [Math.PI / 2, 0, 0])
       for (const sx of [-1, 1]) {
@@ -359,10 +368,13 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
         outline(f, 1.1)
         parts.legs.push(f)
       }
-      outline(put(body, ball(r * 0.44, 10), mBody, 0, r * 0.8, -s * 0.44, [1.7, 0.3, 0.6]), 1.08)
-      const headR = s * 0.3
-      head.position.set(0, r * 1.5, s * 0.3)
+      outline(put(body, ball(r * 0.44, 10), mBody, 0, r * 0.8, -halfLen * 0.95, [1.7, 0.3, 0.6]), 1.08)
+      const headR = s * 0.29
+      head.position.set(0, bodyY + r * 0.66, halfLen * 0.92)
       body.add(head)
+      // 短脖子。海豹的脖子短，但完全沒有的話頭和身體還是會糊成一團
+      outline(put(body, capsule(r * 0.52, r * 0.32), mBody,
+        0, bodyY + r * 0.3, halfLen * 0.6, null, [0.85, 0, 0]), 1.06)
       outline(put(head, ball(headR, 16), mBody, 0, 0, 0), 1.06)
       outline(put(head, capsule(headR * 0.4, headR * 0.2), mMuzzle, 0, -headR * 0.3, headR * 0.6, [1.2, 1, 0.9], [Math.PI / 2, 0, 0]), 1.08)
       put(head, ball(headR * 0.14, 10), mDark, 0, -headR * 0.18, headR * 0.86)
