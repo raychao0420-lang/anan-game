@@ -68,15 +68,32 @@ export default function RoomWorld3D({
         p.group.position.set(toWorldX(p.pos.x), 0, toWorldZ(p.pos.y))
         p.group.rotation.y = p.facing
         const parts = p.group.userData.parts
-        const bob = p.walking ? Math.abs(Math.sin(t * 7)) * 0.045 : Math.sin(t * 1.6 + p.seed) * 0.012
+
+        // 停下來發呆一會兒就坐下（狗坐著的剪影比站著好認），要走了再站起來
+        p.idle = p.walking ? 0 : p.idle + dt
+        const wantSit = parts?.canSit && !p.walking && p.idle > 0.7 ? 1 : 0
+        p.sit += (wantSit - p.sit) * Math.min(dt * 5, 1)          // 平滑過渡，不會瞬間彈起來
+        const sit = p.sit < 0.002 ? 0 : p.sit
+        const h = p.group.userData.height || 0.6
+
+        const bob = p.walking ? Math.abs(Math.sin(t * 7)) * 0.045
+          : Math.sin(t * 1.6 + p.seed) * 0.012 * (1 - sit)        // 坐著就不上下晃了
         if (parts?.body) {
-          parts.body.position.y = bob
+          parts.body.position.y = bob - sit * h * 0.14            // 屁股坐到地上
+          parts.body.rotation.x = -sit * 0.34                     // 上半身往後仰、鼻子抬起來
           parts.body.rotation.z = p.walking ? Math.sin(t * 7) * 0.05 : 0
         }
+        if (parts?.head) parts.head.rotation.x = sit * 0.22       // 頭轉回水平，不然會朝天
         if (parts?.float) parts.float.position.y += (Math.sin(t * 1.4 + p.seed) * 0.0009)
-        if (parts?.tail) parts.tail.rotation.y = Math.sin(t * (p.walking ? 9 : 3)) * (p.walking ? 0.5 : 0.22)
+        if (parts?.tail) {
+          parts.tail.rotation.y = Math.sin(t * (p.walking ? 9 : 3)) * (p.walking ? 0.5 : 0.22)
+          parts.tail.rotation.x = sit * 0.3                       // 坐著時尾巴貼地
+        }
         for (const [i, leg] of (parts?.legs || []).entries()) {
-          leg.rotation.x = p.walking ? Math.sin(t * 7 + i * Math.PI / 2) * 0.5 : 0
+          const walkSwing = p.walking ? Math.sin(t * 7 + i * Math.PI / 2) * 0.5 : 0
+          // 坐下＝後腿摺到身體下面、前腳打直撐著
+          const sitFold = leg.userData.front ? -sit * 0.34 : sit * 1.15
+          leg.rotation.x = walkSwing * (1 - sit) + sitFold
         }
         for (const w of parts?.wings || []) w.rotation.z = Math.sin(t * 2.2 + p.seed) * 0.12
         // 眨眼：每隔幾秒壓一下
@@ -181,7 +198,10 @@ export default function RoomWorld3D({
       const group = buildPet(id, stage, { mood: petMoods[id] ?? 80 })
       engine.root.add(group)
       const pos = pickTarget()
-      W.pets.set(id, { group, stage, pos, target: pickTarget(), wait: rnd(0.5, 3), facing: 0, walking: false, seed: Math.random() * 10 })
+      W.pets.set(id, {
+        group, stage, pos, target: pickTarget(), wait: rnd(0.5, 3),
+        facing: 0, walking: false, idle: 0, sit: 0, seed: Math.random() * 10,
+      })
       group.position.set(toWorldX(pos.x), 0, toWorldZ(pos.y))
     }
   }, [pets, petMoods])

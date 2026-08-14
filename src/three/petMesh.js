@@ -48,8 +48,12 @@ function outline(mesh, thickness = 1.07) {
 
 // 每隻寵物的體型設定。kind 決定骨架，其餘是細節開關。
 const SPECIES = {
-  lulu:    { kind: 'quad', ear: 'flop',  tail: 'wag',    size: 1.00, snout: 1.0, saddle: true, blush: true },
-  xiaohu:  { kind: 'quad', ear: 'flop',  tail: 'wag',    size: 0.92, snout: 1.0, long: 1.5, leg: 0.55 },
+  // 米格魯：三色斑（白口鼻胸腹／棕頭臀／黑背鞍）＋白襪子＋翹起來的白尾尖「旗尾」
+  lulu:    { kind: 'quad', ear: 'flop',  tail: 'flag',   size: 1.00, snout: 1.0, saddle: true, blush: true,
+             socks: true, bib: true, blaze: true, eyePatch: true },
+  // 臘腸狗：黑背黃腳的雙色，同樣有眼上的黃斑
+  xiaohu:  { kind: 'quad', ear: 'flop',  tail: 'wag',    size: 0.92, snout: 1.0, long: 1.5, leg: 0.55,
+             socks: true, eyePatch: true },
   hana:    { kind: 'quad', ear: 'tiny',  tail: 'flat',   size: 0.95, snout: 0.7, blush: true },
   kotaro:  { kind: 'quad', ear: 'tiny',  tail: 'flat',   size: 1.00, snout: 0.7, blush: true },
   jiji:    { kind: 'quad', ear: 'point', tail: 'long',   size: 0.92, snout: 0.5 },
@@ -90,6 +94,18 @@ export function getPalette(petId, stage) {
   const s = Math.max(1, Math.min(4, stage || 1))
   return table?.[s] ?? EVO.lulu[1]
 }
+
+// 斑紋＝貼在球面上的一小片球殼（半徑比主體大一點點，所以會浮在表面）。
+// 直接塞一顆球進去是行不通的——會整顆埋在身體裡看不見。
+// three 的球面參數：phi=π/2 是正前方（+z）、theta 從 0（頭頂）到 π（下巴）。
+function patch(parent, r, mat, phi, phiLen, theta, thetaLen, cx = 0, cy = 0, cz = 0) {
+  const geo = new THREE.SphereGeometry(r * 1.015, 16, 12, phi - phiLen / 2, phiLen, theta - thetaLen / 2, thetaLen)
+  const m = new THREE.Mesh(geo, mat)
+  m.position.set(cx, cy, cz)
+  parent.add(m)
+  return m
+}
+const FRONT = Math.PI / 2
 
 // 一條腿＝髖部 Group（動畫轉這個）＋大腿膠囊＋圓腳掌，比等粗圓柱有肉多了
 function makeLeg(parent, mBody, mPaw, s, x, y, z, legH) {
@@ -173,9 +189,20 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
           [1, 1, 0.62], [Math.PI / 2, 0, 0])
       }
 
+      // 白襪子：腳掌用口鼻的白（米格魯／臘腸狗的四腳是白的）
+      const mPaw = spec.socks ? mMuzzle : mBody
       const hipZ = bodyLen * 0.5 + bodyR * 0.2
       for (const [lx, lz] of [[-1, 1], [1, 1], [-1, -1], [1, -1]]) {
-        parts.legs.push(makeLeg(body, mBody, mBody, s, lx * bodyR * 0.66, bodyY - bodyR * 0.5, lz * hipZ * 0.62, legH + bodyR * 0.5))
+        const leg = makeLeg(body, mBody, mPaw, s, lx * bodyR * 0.66, bodyY - bodyR * 0.5, lz * hipZ * 0.62, legH + bodyR * 0.5)
+        leg.userData.front = lz > 0      // 坐下時前腳打直、後腿摺起來，要分得出來
+        parts.legs.push(leg)
+      }
+      parts.canSit = true                // 四足才會「坐下」，鳥／海豹／精靈不套用
+      parts.standY = bodyY
+
+      // 白胸兜：貼在胸前那顆半球（膠囊的前端圓帽）上，三色犬最好認的一塊
+      if (spec.bib) {
+        patch(body, bodyR, mMuzzle, FRONT, 1.5, 1.9, 1.1, 0, bodyY, bodyLen * 0.5)
       }
 
       // 大頭：卡通比例，頭幾乎跟身體一樣寬
@@ -184,6 +211,15 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       body.add(head)
       const skull = put(head, ball(headR, 16), mBody, 0, 0, 0, [1, 0.96, 1])
       outline(skull, 1.06)
+
+      // 眼睛上方的深色斑：三色犬「棕頭」的來源，也給米格魯一點眉毛的表情
+      if (spec.eyePatch) for (const sx of [-1, 1]) {
+        patch(head, headR, mEar, FRONT + sx * 0.52, 0.62, 0.92, 0.5)
+      }
+      // 臉中央的白色鼻樑線：從額頭一路白到口鼻
+      if (spec.blaze) {
+        patch(head, headR, mMuzzle, FRONT, 0.42, 1.0, 1.25)
+      }
 
       if (spec.snout) {
         const snoutLen = headR * 0.5 * spec.snout
@@ -196,9 +232,11 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       if (spec.mask) put(head, ball(headR * 0.94, 12), toon(c.ear || '#4A4A4A'), 0, headR * 0.06, headR * 0.16, [1.02, 0.4, 0.92])
 
       for (const sx of [-1, 1]) {
-        if (spec.ear === 'flop') {         // 米格魯的長垂耳：貼著臉頰垂下來
-          const ear = put(head, capsule(headR * 0.24, headR * 0.5), mEar,
-            sx * headR * 0.82, -headR * 0.24, 0, [0.62, 1, 1], [0.1, 0, sx * 0.16])
+        if (spec.ear === 'flop') {
+          // 米格魯的招牌垂耳：位置低（跟眼睛齊）、又寬又薄、垂過下巴
+          const ear = put(head, capsule(headR * 0.34, headR * 0.62), mEar,
+            sx * headR * 0.78, -headR * 0.36, headR * 0.04,
+            [0.42, 1, 1.15], [0.12, 0, sx * 0.2])
           outline(ear, 1.1)
         } else if (spec.ear === 'point') {
           const ear = put(head, new THREE.ConeGeometry(headR * 0.34, headR * 0.66, 8), mEar,
@@ -222,7 +260,11 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       tail.position.set(0, bodyY + bodyR * 0.35, -bodyLen * 0.5 - bodyR * 0.3)
       body.add(tail)
       parts.tail = tail
-      if (spec.tail === 'bushy') {
+      if (spec.tail === 'flag') {
+        // 米格魯的「旗尾」：高高翹起、尾端一撮白，是最好認的特徵之一
+        outline(put(tail, capsule(s * 0.055, s * 0.24), mBody, 0, s * 0.14, -s * 0.04, null, [-0.42, 0, 0]), 1.1)
+        outline(put(tail, ball(s * 0.075, 10), mMuzzle, 0, s * 0.3, s * 0.02), 1.12)
+      } else if (spec.tail === 'bushy') {
         outline(put(tail, capsule(s * 0.15, s * 0.26), mEar, 0, s * 0.04, -s * 0.16, null, [1.1, 0, 0]), 1.08)
       } else if (spec.tail === 'paddle') {
         outline(put(tail, new THREE.BoxGeometry(s * 0.3, s * 0.07, s * 0.4), toon(c.ear || c.body), 0, 0, -s * 0.2), 1.06)
