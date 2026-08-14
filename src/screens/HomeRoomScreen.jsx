@@ -552,6 +552,8 @@ export default function HomeRoomScreen({ onNavigate }) {
   // 3D 立體場景（feature flag）：網址帶 ?3d=1 或按畫面上的切換鈕；2D 版原封不動保留著
   const [use3D, setUse3D] = useState(read3D)
   useEffect(() => { localStorage.setItem('anan-3d', use3D ? '1' : '0') }, [use3D])
+  // 燈的開關：null＝照晝夜自動，按下去才變成手動的 true／false
+  const [lamp, setLamp] = useState(null)
 
   // 晝夜光線（每分鐘檢查一次）
   const [phase, setPhase] = useState(getDayPhase)
@@ -947,6 +949,7 @@ export default function HomeRoomScreen({ onNavigate }) {
               theme={activeTheme}
               phase={phase}
               weather={weather}
+              lamp={lamp}
               pets={scenePets}
               petMoods={petMoods}
               decos={sceneDecos}
@@ -1193,6 +1196,18 @@ export default function HomeRoomScreen({ onNavigate }) {
             onClick={(e) => { e.stopPropagation(); sfx.click(); setUse3D((v) => !v) }}
             aria-label={use3D ? '切回平面' : '切換立體'}>
             {use3D ? '🖼️ 2D' : '🧊 3D'}
+          </motion.button>
+        )}
+
+        {/* 電燈開關（只有立體場景有燈）。沒按過就照晝夜自動亮 */}
+        {use3D && !snapping && (
+          <motion.button className="room-lamp-btn" whileTap={{ scale: 0.85 }}
+            onClick={(e) => {
+              e.stopPropagation(); sfx.click()
+              setLamp((v) => !(v ?? (phase === 'night' || phase === 'evening')))
+            }}
+            aria-label="電燈開關">
+            {(lamp ?? (phase === 'night' || phase === 'evening')) ? '💡 關燈' : '🔦 開燈'}
           </motion.button>
         )}
 

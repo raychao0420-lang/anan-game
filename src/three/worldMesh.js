@@ -141,6 +141,29 @@ export function buildGarden(theme) {
     g.add(tree)
   }
 
+  // 庭園燈：夜裡可以手動點亮（開關在畫面右下）。放在後方角落，不擋寵物活動範圍。
+  const lamp = new THREE.Group()
+  lamp.position.set(-3.7, 0, -1.4)
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.08, 1.5, 8), M('#4A4038'))
+  post.position.y = 0.75
+  lamp.add(post)
+  const globeMat = new THREE.MeshBasicMaterial({ color: 0x8F8A7C })
+  const globe = new THREE.Mesh(ball(0.2), globeMat)
+  globe.position.y = 1.6
+  lamp.add(globe)
+  const cap = new THREE.Mesh(new THREE.ConeGeometry(0.26, 0.2, 10), M('#4A4038'))
+  cap.position.y = 1.82
+  lamp.add(cap)
+  const gardenLight = new THREE.PointLight(0xffd9a0, 0, 14, 1.4)
+  gardenLight.position.y = 1.55
+  lamp.add(gardenLight)
+  g.add(lamp)
+  // 介面跟室內吸頂燈一樣，RoomWorld3D 兩邊共用同一段開關邏輯
+  g.userData.roomLamp = (on) => {
+    gardenLight.intensity = on ? 16 : 0
+    globeMat.color.set(on ? 0xfff0c8 : 0x8f8a7c)
+  }
+
   g.userData.sky = sky
   return g
 }
@@ -302,15 +325,18 @@ export function buildFireflies(n = 18) {
     g.add(b)
     bugs.push(b)
   }
+  // 開燈時螢火蟲要變得不明顯 —— 亮處本來就看不太到螢火蟲
+  let muted = false
   const update = (dt, t) => {
     for (const b of bugs) {
       const s = b.userData.seed
-      b.position.x += Math.sin(t * 0.7 + s) * 0.004
-      b.position.y += Math.cos(t * 0.9 + s * 1.7) * 0.003
-      b.material.opacity = 0.35 + 0.55 * (0.5 + 0.5 * Math.sin(t * 2.4 + s * 3))
+      // ⚠️ 要乘 dt。原本是每「幀」加固定值，120Hz 的平板會飄得比 60Hz 遠一倍
+      b.position.x += Math.sin(t * 0.7 + s) * 0.24 * dt
+      b.position.y += Math.cos(t * 0.9 + s * 1.7) * 0.18 * dt
+      b.material.opacity = (0.35 + 0.55 * (0.5 + 0.5 * Math.sin(t * 2.4 + s * 3))) * (muted ? 0.22 : 1)
     }
   }
-  return { group: g, update }
+  return { group: g, update, setMuted: (on) => { muted = on } }
 }
 
 export const themeOf = (id) => THEMES[id] || THEMES.null

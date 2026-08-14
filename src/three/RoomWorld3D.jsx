@@ -17,7 +17,7 @@ const rnd = (a, b) => a + Math.random() * (b - a)
 const pickTarget = () => ({ x: rnd(BOUNDS.xMin, BOUNDS.xMax), y: rnd(BOUNDS.yMin, BOUNDS.yMax) })
 
 export default function RoomWorld3D({
-  scene, theme, phase, weather,
+  scene, theme, phase, weather, lamp = null,   // lamp: true 開／false 關／null 照晝夜自動
   pets = [], petMoods = {}, decos = [], garden = [], toy = null, tool = null,
   onPetClick, onDecoMove, onPlantTap, onFloorTap, onWindowTap, onToyReach, onPetPos,
 }) {
@@ -177,11 +177,6 @@ export default function RoomWorld3D({
     if (weather === 'snow') bg = phase === 'night' ? '#3A3F55' : '#DDE6F0'
     if (W.env?.userData.sky) W.env.userData.sky.material.color.set(bg)
 
-    // 夜裡才點燈（檯燈、壁爐、香菇燈）
-    const lampOn = phase === 'night' || phase === 'evening'
-    for (const d of W.decos.values()) if (d.lamp) d.lamp.intensity = lampOn ? 1.1 : 0
-    // 房間本身的吸頂燈，跟著一起亮／滅
-    W.env?.userData.roomLamp?.(lampOn)
 
     // 天氣特效重建
     for (const f of W.fx) { engine.root.remove(f.group); clearGroup(f.group) }
@@ -199,6 +194,16 @@ export default function RoomWorld3D({
       W.fx.push(ff)
     }
   }, [phase, weather, scene, theme])
+
+  // ── 燈的開關：lamp 沒指定就照晝夜自動。
+  //    要排在天氣特效那個 effect 之後，螢火蟲重建完才輪到這裡調暗。
+  useEffect(() => {
+    const W = worldRef.current
+    const on = lamp ?? (phase === 'night' || phase === 'evening')
+    W.env?.userData.roomLamp?.(on)                 // 室內吸頂燈／庭園燈（同一個介面）
+    for (const d of W.decos.values()) if (d.lamp) d.lamp.intensity = on ? 1.1 : 0
+    for (const f of W.fx) f.setMuted?.(on)         // 開燈時螢火蟲變不明顯
+  }, [lamp, phase, weather, scene, theme, decos])
 
   // ── 寵物同步（新解鎖／進化／離開場景）──
   useEffect(() => {
