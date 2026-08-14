@@ -1,14 +1,27 @@
-import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo, memo, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import html2canvas from 'html2canvas'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, makeGardenQuestion } from '../data/garden'
+import { BOUNDS, ACTIVITY_RADIUS, chasesToy } from '../data/roomRules'
 import { sfx, startAmbient, stopAmbient } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
 import './HomeRoomScreen.css'
+
+// 3D 版整包（含 three.js）只有切到 3D 才載，平常一個位元組都不會下載
+const RoomWorld3D = lazy(() => import('../three/RoomWorld3D'))
+const read3D = () => {
+  const q = new URLSearchParams(location.search).get('3d')
+  if (q === '1') return true
+  if (q === '0') return false
+  return localStorage.getItem('anan-3d') === '1'
+}
+
+// 3D 那邊沒有 DOM 事件可以擋冒泡，共用同一批 handler 時塞這個假事件進去
+const NO_EVENT = { stopPropagation() {} }
 
 const POOL_RADIUS = 18   // % distance threshold for pool interaction
 
@@ -94,13 +107,10 @@ const THEME_MOODS = {
 // ── 第5彈：跟寵物玩（丟零食＋玩具球＋摸摸加心情） ─────────────────────────
 // 點🍪/🎾再點地板丟出去：零食大家都愛搶著吃（心情+8）；球只有愛玩的寵物會去追，
 // 追到就往別處踢（最後一腳心情+5）。摸寵物也會心情+2。
-const BALL_CHASERS = ['lulu', 'monkey', 'hamster', 'dino', 'kotaro', 'hana', 'kitsune', 'seal', 'xiaohu']
 const TOY_TOOLS = {
   treat: { emoji: '🍪', hint: '點地板，把零食丟過去！' },
   ball:  { emoji: '🎾', hint: '點地板，把球丟過去！' },
 }
-const chasesToy = (petId, toy) => !!toy && (toy.kind === 'treat' || BALL_CHASERS.includes(petId))
-
 const PET_CONFIG = {
   lulu:   { startPos: { x: 12, y: 50 }, bobDuration: 1.8, wanderInterval: 2800, burstEmoji: '🐾' },
   hana:   { startPos: { x: 44, y: 54 }, bobDuration: 2.1, wanderInterval: 3500, burstEmoji: '💙' },
@@ -163,8 +173,6 @@ const MOTION = {
   hide:   { amp: 4,  dur: 1.2 },
 }
 
-const ACTIVITY_RADIUS = 24  // 距家具多近算「正在使用」
-
 // Default decoration slots (% positions)
 const DECO_SLOTS = [
   { x: 5,  y: 7  },
@@ -177,7 +185,6 @@ const DECO_SLOTS = [
   { x: 46, y: 79 },
 ]
 
-const BOUNDS      = { xMin: 6,  xMax: 78, yMin: 42, yMax: 66 }
 const DECO_BOUNDS = { xMin: 2,  xMax: 88, yMin: 2,  yMax: 86 }
 const EMPTY_ITEMS = []  // 穩定的空陣列參照，避免沒裝備的寵物每次 render 都拿到新陣列而白重繪
 
@@ -542,6 +549,10 @@ export default function HomeRoomScreen({ onNavigate }) {
   // 溫暖的家（室內）／ 秘密庭園（戶外）雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
   const [scene, setScene] = useState('indoor')
 
+  // 3D 立體場景（feature flag）：網址帶 ?3d=1 或按畫面上的切換鈕；2D 版原封不動保留著
+  const [use3D, setUse3D] = useState(read3D)
+  useEffect(() => { localStorage.setItem('anan-3d', use3D ? '1' : '0') }, [use3D])
+
   // 晝夜光線（每分鐘檢查一次）
   const [phase, setPhase] = useState(getDayPhase)
   useEffect(() => {
@@ -585,26 +596,30 @@ export default function HomeRoomScreen({ onNavigate }) {
   const [toyFx, setToyFx] = useState(null)   // 吃掉/踢完的表情特效
   const toyKeyRef = useRef(null)             // 防兩隻寵物同時搶到重複觸發
 
-  const throwToy = (e) => {
+  // 直接吃百分比座標（2D 由滑鼠換算、3D 由射線打在地板上換算，兩邊共用這一份規則）
+  const throwToyAt = (rawX, rawY) => {
     if (!tool) return
-    const r = containerRef.current.getBoundingClientRect()
     // 種花／種樹：點草地種下（庭園可種範圍比丟東西更廣）；沒花苗就不種
     if (SEED_KINDS.includes(tool)) {
       if ((seedlings?.[tool] || 0) <= 0) { setTool(null); return }
-      const px = Math.max(8, Math.min(90, (e.clientX - r.left) / r.width * 100))
-      const py = Math.max(46, Math.min(82, (e.clientY - r.top) / r.height * 100))
-      plantSeed(tool, px, py)
+      plantSeed(tool, Math.max(8, Math.min(90, rawX)), Math.max(46, Math.min(82, rawY)))
       sfx.click()
       if ((seedlings?.[tool] || 0) <= 1) setTool(null)   // 種到最後一顆才收起工具，連種更順手
       return
     }
     // 撒肥料工具：點草地無效（要點在植物上），直接忽略
     if (tool === 'fert') return
-    const x = Math.max(10, Math.min(74, (e.clientX - r.left) / r.width * 100))
-    const y = Math.max(45, Math.min(64, (e.clientY - r.top) / r.height * 100))
+    const x = Math.max(10, Math.min(74, rawX))
+    const y = Math.max(45, Math.min(64, rawY))
     setToy({ kind: tool, x, y, key: Date.now(), kicks: tool === 'ball' ? 3 : 0 })
     ;(tool === 'ball' ? sfx.boing : sfx.click)()
     setTool(null)
+  }
+
+  const throwToy = (e) => {
+    if (!tool) return
+    const r = containerRef.current.getBoundingClientRect()
+    throwToyAt((e.clientX - r.left) / r.width * 100, (e.clientY - r.top) / r.height * 100)
   }
 
   // ── 花園第二彈：小提示浮條／圖鑑／魔法花答題／小幫手 ──
@@ -924,6 +939,35 @@ export default function HomeRoomScreen({ onNavigate }) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
       >
+        {/* ── 3D 立體場景：整個房間／庭園交給 three.js 畫，狀態仍由上面這些 state 提供 ── */}
+        {use3D && (
+          <Suspense fallback={<div className="room-3d-loading">🧊 立體場景載入中…</div>}>
+            <RoomWorld3D
+              scene={scene}
+              theme={activeTheme}
+              phase={phase}
+              weather={weather}
+              pets={scenePets}
+              petMoods={petMoods}
+              decos={sceneDecos}
+              garden={garden}
+              toy={toy}
+              tool={tool}
+              onPetClick={handlePetClick}
+              onDecoMove={(id, p) => moveHomeDeco(id, p.x, p.y, p.scale)}
+              onPlantTap={(key) => {
+                const p = garden.find((g) => g.key === key)
+                if (p) tapPlant(NO_EVENT, p, plantView(p))
+              }}
+              onFloorTap={(pt) => throwToyAt(pt.x, pt.y)}
+              onWindowTap={() => cycleWeather(NO_EVENT)}
+              onToyReach={onToyReach}
+              onPetPos={reportPos}
+            />
+          </Suspense>
+        )}
+
+        {!use3D && (<>
         {/* Isometric room background layers（視差：背景反向微移） */}
         <div className="room-wall" />
 
@@ -1121,6 +1165,7 @@ export default function HomeRoomScreen({ onNavigate }) {
             </motion.div>
           )}
         </div>
+        </>)}
 
         {/* 晝夜色調 + 前景暗角（最上層，不吃點擊） */}
         <div className="room-tint" />
@@ -1139,6 +1184,15 @@ export default function HomeRoomScreen({ onNavigate }) {
           <motion.button className="room-photo-btn" whileTap={{ scale: 0.85 }}
             onClick={(e) => { e.stopPropagation(); takePhoto() }} aria-label="拍照">
             📸
+          </motion.button>
+        )}
+
+        {/* 2D／3D 切換 */}
+        {!snapping && (
+          <motion.button className="room-3d-btn" whileTap={{ scale: 0.85 }}
+            onClick={(e) => { e.stopPropagation(); sfx.click(); setUse3D((v) => !v) }}
+            aria-label={use3D ? '切回平面' : '切換立體'}>
+            {use3D ? '🖼️ 2D' : '🧊 3D'}
           </motion.button>
         )}
 
