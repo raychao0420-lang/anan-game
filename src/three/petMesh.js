@@ -350,12 +350,18 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       } else if (spec.tail === 'flat') {
         // 水獺的尾巴是一支「舵」：根部粗壯、往尾端收尖，而且左右寬、上下扁。
         // 等粗的膠囊做不出來，看起來就是一根香腸接在屁股上 —— 改用截頂圓錐取得漸縮。
-        // 根部要夠粗才接得順（太細會在屁股上出現一道明顯的斷階），
-        // 壓扁也不能過頭，不然會變成一片紙而不是一條有肉的尾巴。
-        const tl = s * 0.46, tilt = -1.28
-        outline(put(tail, new THREE.CylinderGeometry(s * 0.032, s * 0.13, tl, 12), mBody,
-          0, tl * 0.5 * Math.cos(tilt), tl * 0.5 * Math.sin(tilt),
-          [1.26, 1, 0.72], [tilt, 0, 0]), 1.08)
+        // 截頂圓錐的側邊是直線，看起來就是一支三角錐。
+        // 真實的尾巴輪廓是「外凸」的：根部飽滿、中段還有肉、末段才快速收尖，
+        // 所以用 Lathe 把一條 cos 曲線轉一圈（^0.75 讓中段更飽滿）。
+        // Lathe 的原點就在根部，直接擺在尾巴基座上、往後轉即可。
+        const tl = s * 0.46, base = s * 0.13, segs = 10
+        const prof = []
+        for (let i = 0; i <= segs; i++) {
+          const t = i / segs
+          prof.push(new THREE.Vector2(base * Math.cos(t * Math.PI / 2) ** 0.75, t * tl))
+        }
+        outline(put(tail, new THREE.LatheGeometry(prof, 14), mBody, 0, 0, 0,
+          [1.26, 1, 0.72], [-1.28, 0, 0]), 1.08)
       } else if (spec.tail === 'long') {
         outline(put(tail, capsule(s * 0.045, s * 0.42), mBody, 0, s * 0.20, -s * 0.06, null, [-0.45, 0, 0]), 1.1)
       } else if (spec.tail === 'ring') {
