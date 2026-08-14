@@ -354,11 +354,12 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
         // 真實的尾巴輪廓是「外凸」的：根部飽滿、中段還有肉、末段才快速收尖，
         // 所以用 Lathe 把一條 cos 曲線轉一圈（^0.75 讓中段更飽滿）。
         // Lathe 的原點就在根部，直接擺在尾巴基座上、往後轉即可。
-        const tl = s * 0.46, base = s * 0.13, segs = 10
+        // 指數越小＝中段越飽滿、收尖集中在末端（0.5 比 0.75 更「粗到底才突然收尖」）
+        const tl = s * 0.62, base = s * 0.13, segs = 12
         const prof = []
         for (let i = 0; i <= segs; i++) {
           const t = i / segs
-          prof.push(new THREE.Vector2(base * Math.cos(t * Math.PI / 2) ** 0.75, t * tl))
+          prof.push(new THREE.Vector2(base * Math.cos(t * Math.PI / 2) ** 0.5, t * tl))
         }
         outline(put(tail, new THREE.LatheGeometry(prof, 14), mBody, 0, 0, 0,
           [1.26, 1, 0.72], [-1.28, 0, 0]), 1.08)
