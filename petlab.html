@@ -48,16 +48,19 @@
     scene.add(g)
   })
 
-  // 靜態擺出坐姿，數值與 RoomWorld3D 的動畫一致
+  // 靜態擺出坐姿，數值與 RoomWorld3D 的動畫一致（那邊改了這裡也要跟著改）
   function applySit(g) {
     const p = g.userData.parts
     if (!p?.canSit) return
-    const h = g.userData.height || 0.6
-    p.body.position.y = -h * 0.14
-    p.body.rotation.x = -0.34
+    p.body.position.y = -(g.userData.height || 0.6) * 0.08
+    p.body.rotation.x = -0.38
     p.head.rotation.x = 0.22
     if (p.tail) p.tail.rotation.x = 0.3
-    for (const leg of p.legs) leg.rotation.x = leg.userData.front ? -0.34 : 1.15
+    for (const leg of p.legs) {
+      const front = leg.userData.front
+      leg.rotation.x = front ? 0.38 : -0.41
+      if (leg.userData.knee) leg.userData.knee.rotation.x = front ? 0.1 : 1.6
+    }
   }
 
   const resize = () => {

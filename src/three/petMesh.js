@@ -206,8 +206,9 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       // 米格魯的背鞍＝包住身體上半圈的一段圓柱殼（開口朝下），會完全貼合身體曲面。
       // 用實心橢球做不出來：小一點會整塊縮在身體裡看不見，大一點就在背上凸一個駝峰。
       if (spec.saddle && c.saddle) {
+        // theta 0＝正下方、PI＝正上方，所以要以 PI 為中心切一段（只包背，不要繞到側腹）
         put(body, new THREE.CylinderGeometry(bodyR * 1.03, bodyR * 1.03, bodyLen * 0.94, 20, 1, true,
-          Math.PI * 0.42, Math.PI * 1.16), toon(c.saddle), 0, bodyY, -s * 0.01, null, [Math.PI / 2, 0, 0])
+          Math.PI * 0.54, Math.PI * 0.92), toon(c.saddle), 0, bodyY, -s * 0.01, null, [Math.PI / 2, 0, 0])
       }
 
       // 白襪子：腳掌用口鼻的白（米格魯／臘腸狗的四腳是白的）

@@ -79,8 +79,10 @@ export default function RoomWorld3D({
         const bob = p.walking ? Math.abs(Math.sin(t * 7)) * 0.045
           : Math.sin(t * 1.6 + p.seed) * 0.012 * (1 - sit)        // 坐著就不上下晃了
         if (parts?.body) {
-          parts.body.position.y = bob - sit * h * 0.14            // 屁股坐到地上
-          parts.body.rotation.x = -sit * 0.34                     // 上半身往後仰、鼻子抬起來
+          // 身體是繞著自己中央的地面轉，所以往後仰本身就會把屁股壓下去、胸口抬起來；
+          // 再往下沉一點點把最後那截空隙補掉（沉太多前腳會插到地板下面）
+          parts.body.position.y = bob - sit * h * 0.08
+          parts.body.rotation.x = -sit * 0.38
           parts.body.rotation.z = p.walking ? Math.sin(t * 7) * 0.05 : 0
         }
         if (parts?.head) parts.head.rotation.x = sit * 0.22       // 頭轉回水平，不然會朝天
@@ -91,14 +93,16 @@ export default function RoomWorld3D({
         }
         for (const [i, leg] of (parts?.legs || []).entries()) {
           const walkSwing = p.walking ? Math.sin(t * 7 + i * Math.PI / 2) * 0.5 : 0
-          // 坐下＝後腿摺到身體下面、前腳打直撐著
-          const sitFold = leg.userData.front ? -sit * 0.34 : sit * 1.15
-          leg.rotation.x = walkSwing * (1 - sit) + sitFold
+          const front = leg.userData.front
+          // 坐下：腿的角度會跟身體的 -0.34 疊加，所以前腳要 +0.34 抵銷才會是垂直撐著（不是 -0.34）。
+          // 後腿是「大腿往前轉、小腿在膝蓋往後折下去踩地」，屁股才坐得到地上；
+          // 後腿往後伸直那是伸懶腰，不是坐。
+          leg.rotation.x = walkSwing * (1 - sit) + (front ? sit * 0.38 : -sit * 0.41)
           // 膝蓋：往前擺（swing 為負）時彎起來把腳掌提高，踩到地時打直＝真的在走路而不是滑步。
           // 站著也留一點點彎，打太直會像玩具兵。
           if (leg.userData.knee) {
             leg.userData.knee.rotation.x =
-              (0.1 + Math.max(0, -walkSwing) * 1.3) * (1 - sit) + sit * (leg.userData.front ? 0.12 : 1.0)
+              (0.1 + Math.max(0, -walkSwing) * 1.3) * (1 - sit) + sit * (front ? 0.1 : 1.6)
           }
         }
         for (const w of parts?.wings || []) w.rotation.z = Math.sin(t * 2.2 + p.seed) * 0.12
