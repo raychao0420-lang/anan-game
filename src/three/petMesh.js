@@ -113,6 +113,31 @@ function patch(parent, r, mat, phi, phiLen, theta, thetaLen, cx = 0, cy = 0, cz 
 }
 const FRONT = Math.PI / 2
 
+// 背鞍＝披在背上的一片曲面。整齊的圓柱切片四邊都是直的，側看就像貼了塊方形膏藥，
+// 所以把每一圈的包覆角度依前後位置往正上方收窄，邊緣才變成有生物感的橄欖形。
+// straight＝身體膠囊的圓柱段長度，len＝背鞍要蓋多長（可以超出去蓋到半球帽上）
+function saddleGeo(r, straight, len, spread) {
+  const geo = new THREE.CylinderGeometry(r, r, len, 24, 16, true, Math.PI - spread / 2, spread)
+  const pos = geo.attributes.position
+  const half = len / 2
+  for (let i = 0; i < pos.count; i++) {
+    const y = pos.getY(i)
+    const t = y / half                              // −1（尾端）→ +1（肩端）
+    // 前段收得慢＝肩膀寬，後段收得快＝往尾巴收尖，比左右對稱自然
+    // 留 0.08 的底不要完全收成一個點：收死的話尖端三角形會退化，邊緣出現鋸齒破洞
+    const k = 0.08 + 0.92 * Math.cos(Math.PI / 2 * Math.abs(t) ** (t > 0 ? 1.7 : 1))
+    // 超出圓柱段的部分要跟著半球帽一起縮半徑，不然會從身體裡穿出來變成一片飄布
+    const over = Math.max(0, Math.abs(y) - straight / 2)
+    const rr = r * Math.sqrt(Math.max(0, 1 - (over / r) ** 2))
+    const a = Math.atan2(pos.getX(i), pos.getZ(i))  // 目前角度（0＝正下方、π＝正上方）
+    const na = Math.PI + (a - Math.PI) * k          // 往正上方收
+    pos.setX(i, Math.sin(na) * rr)
+    pos.setZ(i, Math.cos(na) * rr)
+  }
+  geo.computeVertexNormals()
+  return geo
+}
+
 // 一條腿＝髖部 Group（擺動）→ 大腿 → 膝蓋 Group（彎曲）→ 小腿＋圓腳掌。
 // 拆成兩節才有關節感：單根膠囊繞髖部擺，看起來就像掃把在掃地。
 // 動畫端只要轉 hip.rotation.x 和 hip.userData.knee.rotation.x 就有完整步態。
@@ -203,12 +228,11 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       put(body, capsule(bodyR * 0.8, bodyLen * 0.92), mBelly, 0, bodyY - bodyR * 0.36, s * 0.03,
         [1, 1, 0.72], [Math.PI / 2, 0, 0])
 
-      // 米格魯的背鞍＝包住身體上半圈的一段圓柱殼（開口朝下），會完全貼合身體曲面。
+      // 米格魯的背鞍＝貼合身體曲面的一片曲面（見 saddleGeo）。
       // 用實心橢球做不出來：小一點會整塊縮在身體裡看不見，大一點就在背上凸一個駝峰。
       if (spec.saddle && c.saddle) {
-        // theta 0＝正下方、PI＝正上方，所以要以 PI 為中心切一段（只包背，不要繞到側腹）
-        put(body, new THREE.CylinderGeometry(bodyR * 1.03, bodyR * 1.03, bodyLen * 0.94, 20, 1, true,
-          Math.PI * 0.54, Math.PI * 0.92), toon(c.saddle), 0, bodyY, -s * 0.01, null, [Math.PI / 2, 0, 0])
+        put(body, saddleGeo(bodyR * 1.03, bodyLen, bodyLen + bodyR * 0.8, Math.PI * 0.62), toon(c.saddle),
+          0, bodyY, s * 0.02, null, [Math.PI / 2, 0, 0])
       }
 
       // 白襪子：腳掌用口鼻的白（米格魯／臘腸狗的四腳是白的）
