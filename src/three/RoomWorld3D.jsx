@@ -105,7 +105,10 @@ export default function RoomWorld3D({
               (0.1 + Math.max(0, -walkSwing) * 1.3) * (1 - sit) + sit * (front ? 0.1 : 1.6)
           }
         }
-        for (const w of parts?.wings || []) w.rotation.z = Math.sin(t * 2.2 + p.seed) * 0.12
+        // 以建立時的角度為基準相加。直接指派會把小鳥水平展開的翅膀（π/2）轉成垂直
+        for (const w of parts?.wings || []) {
+          w.rotation.z = (w.userData.rest || 0) + Math.sin(t * 2.2 + p.seed) * 0.12
+        }
         // 垂耳跟著步伐甩，站著時輕輕晃 —— 不會動的垂耳看起來還是很僵
         for (const [i, ear] of (parts?.ears || []).entries()) {
           ear.rotation.x = ear.userData.rest +

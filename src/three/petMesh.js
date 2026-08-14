@@ -72,7 +72,7 @@ const SPECIES = {
   owl:     { kind: 'upright', beak: true, size: 0.90, tuft: true, bigEyes: true },
   xiaoq:   { kind: 'upright', beak: true, size: 0.90, tuft: true, bigEyes: true, glasses: true },
   mejiro:  { kind: 'bird', beak: true, size: 0.58 },
-  feifei:  { kind: 'bird', beak: true, size: 1.05, wingspan: 2.0 },
+  feifei:  { kind: 'bird', beak: true, size: 1.05, wingspan: 1.45 },   // 信天翁翼長，但收翅時不能長到拖地
   dino:    { kind: 'biped', tail: 'thick', size: 1.00, spikes: true },
   monkey:  { kind: 'biped', tail: 'curl',  size: 0.90, ear: 'round', snout: 0.6 },
   twinkle: { kind: 'float', shape: 'star',   size: 0.85 },
@@ -172,6 +172,10 @@ function makeEyes(target, parts, y, z, r, spread) {
     parts.eyes.push(e)
   }
 }
+
+// 登記一片會擺動的翅膀／手臂／氣根。要記下原本的角度，
+// 因為動畫端是「指派」rotation.z，不記的話小鳥水平展開的翅膀會被轉成垂直。
+const wing = (parts, m) => { m.userData.rest = m.rotation.z; parts.wings.push(m); return m }
 
 const blushMat = shared(new THREE.MeshBasicMaterial({ color: 0xff9db0, transparent: true, opacity: 0.5 }))
 function makeBlush(head, s, y, z, spread) {
@@ -379,7 +383,7 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       for (const sx of [-1, 1]) {
         const w = put(body, capsule(s * 0.08, s * 0.2), mEar, sx * r * 0.96, r + s * 0.14, 0, [0.55, 1, 1], [0, 0, sx * 0.12])
         outline(w, 1.1)
-        parts.wings.push(w)
+        wing(parts, w)
       }
       for (const sx of [-1, 1]) {
         outline(put(body, ball(s * 0.1, 10), toon('#F5A623'), sx * s * 0.13, s * 0.05, s * 0.07, [1, 0.42, 1.5]), 1.1)
@@ -414,10 +418,18 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       outline(put(body, capsule(r, s * 0.22), mBody, 0, r + s * 0.1, 0, null, [1.35, 0, 0]), 1.05)
       put(body, capsule(r * 0.72, s * 0.18), mBelly, 0, r + s * 0.06, s * 0.1, [1, 1, 0.7], [1.35, 0, 0])
       for (const sx of [-1, 1]) {
-        const w = put(body, capsule(s * 0.07, s * 0.3 * span), mEar, sx * r * 0.9, r + s * 0.14, 0,
-          [1, 1, 0.4], [0, 0, Math.PI / 2])
-        outline(w, 1.1)
-        parts.wings.push(w)
+        // 站著的鳥是把翅膀「收在身側」的，橫著展開會變成一塊穿過身體的板子。
+        // 所以掛一個肩膀 Group，翅膀從那裡往下垂、稍微往後掃、翼尖外撇。
+        // scale 的軸也要對：膠囊沒轉時 local Y 是長度、X 是厚度、Z 是前後翼弦。
+        const sh = new THREE.Group()
+        // 注意 z 旋轉的符號：下垂的翅膀繞 Z 轉，正值才會把翼尖往 +x 帶。
+        // 寫成 sx * -0.5 會讓兩片翅膀都往內轉進身體裡，整個看不見。
+        sh.position.set(sx * r * 0.82, r + s * 0.2, s * 0.02)
+        sh.rotation.set(0.24, 0, sx * 0.2)
+        body.add(sh)
+        const len = s * 0.26 * span
+        outline(put(sh, capsule(s * 0.068, len), mEar, 0, -(len / 2 + s * 0.05), 0, [0.5, 1, 1.5]), 1.1)
+        wing(parts, sh)
       }
       outline(put(body, capsule(s * 0.06, s * 0.2), mEar, 0, r + s * 0.02, -s * 0.34, [1.6, 1, 0.4], [1.4, 0, 0]), 1.1)
       const headR = s * 0.24
@@ -445,7 +457,7 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       for (const sx of [-1, 1]) {
         const a = put(body, capsule(s * 0.07, s * 0.18), mBody, sx * r * 0.94, bodyY + s * 0.02, s * 0.02, null, [0, 0, sx * 0.3])
         outline(a, 1.1)
-        parts.wings.push(a)
+        wing(parts, a)
       }
       const headR = s * 0.31
       head.position.set(0, bodyY + r + headR * 0.7, s * 0.03)
@@ -518,7 +530,7 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
       for (const sx of [-1, 1]) {   // 氣根當手
         const r = put(body, capsule(s * 0.04, s * 0.24), mBody, sx * s * 0.27, s * 0.4, 0, null, [0, 0, sx * 0.5])
         outline(r, 1.12)
-        parts.wings.push(r)
+        wing(parts, r)
       }
       const crown = new THREE.Group()
       crown.position.y = s * 0.84
