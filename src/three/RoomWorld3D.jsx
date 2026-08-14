@@ -106,6 +106,11 @@ export default function RoomWorld3D({
           }
         }
         for (const w of parts?.wings || []) w.rotation.z = Math.sin(t * 2.2 + p.seed) * 0.12
+        // 垂耳跟著步伐甩，站著時輕輕晃 —— 不會動的垂耳看起來還是很僵
+        for (const [i, ear] of (parts?.ears || []).entries()) {
+          ear.rotation.x = ear.userData.rest +
+            (p.walking ? Math.sin(t * 7 + i * 0.5) * 0.24 : Math.sin(t * 1.5 + p.seed + i * 0.5) * 0.05)
+        }
         // 眨眼：每隔幾秒壓一下
         const blink = (Math.sin(t * 0.9 + p.seed * 3) > 0.985) ? 0.12 : 1
         for (const e of parts?.eyes || []) e.scale.y = blink

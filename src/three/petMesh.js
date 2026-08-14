@@ -192,7 +192,7 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
   const mDark = toon(c.nose || '#1a1008')
   const mMuzzle = toon(c.muzzle || c.belly || '#fff8ee')
 
-  const parts = { legs: [], eyes: [], wings: [] }
+  const parts = { legs: [], eyes: [], wings: [], ears: [] }
   g.userData.parts = parts
 
   const shadow = new THREE.Mesh(
@@ -282,12 +282,19 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
 
       for (const sx of [-1, 1]) {
         if (spec.ear === 'flop') {
-          // 米格魯的招牌垂耳：又長又寬、垂到下巴以下。
-          // 遠看時這是唯一認得出品種的線索，所以寧可誇張也不要保守。
-          const ear = put(head, capsule(headR * 0.32, headR * 1.02), mEar,
-            sx * headR * 0.78, -headR * 0.44, -headR * 0.02,
-            [0.36, 1, 1.28], [0.18, 0, sx * 0.14])
-          outline(ear, 1.1)
+          // 米格魯的招牌垂耳：是從「頭頂側邊」掛下來的一片，不是從臉頰長出來的肉。
+          // 耳根接在接近頭頂的高度（原本接在頭中心下方，才會看起來像頭的延伸），
+          // 再讓整片往下垂、稍微外撇，耳根和臉之間就會露出一道縫。
+          // 用 Group 當耳根，動畫端轉它就能讓耳朵跟著甩。
+          const root = new THREE.Group()
+          root.position.set(sx * headR * 0.62, headR * 0.46, -headR * 0.04)
+          root.rotation.set(0.16, 0, sx * 0.30)
+          root.userData.rest = 0.16      // 動畫甩耳朵時以這個角度為基準
+          head.add(root)
+          const earLen = headR * 1.05
+          outline(put(root, capsule(headR * 0.30, earLen), mEar,
+            sx * headR * 0.14, -earLen * 0.62, 0, [0.34, 1, 1.22]), 1.1)
+          parts.ears.push(root)
         } else if (spec.ear === 'point') {
           const ear = put(head, new THREE.ConeGeometry(headR * 0.34, headR * 0.66, 8), mEar,
             sx * headR * 0.56, headR * 0.82, 0, null, [0, 0, sx * -0.22])
