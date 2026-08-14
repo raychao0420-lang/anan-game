@@ -144,6 +144,19 @@ function saddleGeo(r, straight, len, spread) {
   return geo
 }
 
+// 把一條輪廓曲線旋轉成尾巴。profile(t) 回傳 t（0＝根部、1＝尖端）處的半徑倍率。
+// 用基本柱體做不出尾巴：側邊是直線就是三角錐，等粗就是香腸／圓柱 ——
+// 真實尾巴的差別在「曲率」，而每個物種的曲率還不一樣（水獺根部粗、狐狸中段蓬）。
+// Lathe 的原點就在根部，所以直接擺在尾巴基座上往後轉即可，不必再算位移。
+function latheTail(rmax, len, profile, segs = 12) {
+  const pts = []
+  for (let i = 0; i <= segs; i++) {
+    const t = i / segs
+    pts.push(new THREE.Vector2(rmax * profile(t), t * len))
+  }
+  return new THREE.LatheGeometry(pts, 14)
+}
+
 // 一條腿＝髖部 Group（擺動）→ 大腿 → 膝蓋 Group（彎曲）→ 小腿＋圓腳掌。
 // 拆成兩節才有關節感：單根膠囊繞髖部擺，看起來就像掃把在掃地。
 // 動畫端只要轉 hip.rotation.x 和 hip.userData.knee.rotation.x 就有完整步態。
@@ -359,27 +372,21 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
           0, s * 0.14 + tipLen * Math.cos(tilt), -s * 0.04 + tipLen * Math.sin(tilt)), 1.12)
       } else if (spec.tail === 'bushy') {
         // 狐狸的大蓬尾：往「後上方」掃（不是垂直豎起來，那會變成一根沖天棒），
-        // 掃出身體輪廓才認得出是狐狸不是白貓
-        outline(put(tail, capsule(s * 0.13, s * 0.30), mEar, 0, s * 0.14, -s * 0.10, null, [-1.0, 0, 0]), 1.08)
+        // 掃出身體輪廓才認得出是狐狸不是白貓。
+        // 輪廓是「中段最蓬、兩端收」——等粗的膠囊做出來就是一支大圓柱。
+        outline(put(tail, latheTail(s * 0.145, s * 0.60,
+          (t) => Math.sin(Math.PI * (0.28 + 0.72 * t)) ** 0.7), mEar,
+          0, 0, 0, null, [-1.0, 0, 0]), 1.08)
       } else if (spec.tail === 'paddle') {
         outline(put(tail, new THREE.BoxGeometry(s * 0.26, s * 0.06, s * 0.36), toon(c.ear || c.body),
           0, s * 0.14, -s * 0.20, null, [-0.5, 0, 0]), 1.06)
       } else if (spec.tail === 'flat') {
         // 水獺的尾巴是一支「舵」：根部粗壯、往尾端收尖，而且左右寬、上下扁。
         // 等粗的膠囊做不出來，看起來就是一根香腸接在屁股上 —— 改用截頂圓錐取得漸縮。
-        // 截頂圓錐的側邊是直線，看起來就是一支三角錐。
-        // 真實的尾巴輪廓是「外凸」的：根部飽滿、中段還有肉、末段才快速收尖，
-        // 所以用 Lathe 把一條 cos 曲線轉一圈（^0.75 讓中段更飽滿）。
-        // Lathe 的原點就在根部，直接擺在尾巴基座上、往後轉即可。
-        // 指數越小＝中段越飽滿、收尖集中在末端（0.5 比 0.75 更「粗到底才突然收尖」）
-        const tl = s * 0.62, base = s * 0.13, segs = 12
-        const prof = []
-        for (let i = 0; i <= segs; i++) {
-          const t = i / segs
-          prof.push(new THREE.Vector2(base * Math.cos(t * Math.PI / 2) ** 0.5, t * tl))
-        }
-        outline(put(tail, new THREE.LatheGeometry(prof, 14), mBody, 0, 0, 0,
-          [1.26, 1, 0.72], [-1.28, 0, 0]), 1.08)
+        // 水獺的尾巴是一支「舵」：根部粗壯、一路粗到底、末段才突然收尖，
+        // 而且左右寬、上下扁。指數越小中段越飽滿（0.5 比 0.75 更晚收尖）。
+        outline(put(tail, latheTail(s * 0.13, s * 0.62, (t) => Math.cos(t * Math.PI / 2) ** 0.5), mBody,
+          0, 0, 0, [1.26, 1, 0.72], [-1.28, 0, 0]), 1.08)
       } else if (spec.tail === 'long') {
         outline(put(tail, capsule(s * 0.045, s * 0.42), mBody, 0, s * 0.20, -s * 0.06, null, [-0.45, 0, 0]), 1.1)
       } else if (spec.tail === 'ring') {
