@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
-import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, MAX_PLANTS, makeGardenQuestion } from '../data/garden'
+import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, MAX_PLANTS, GARDEN_SCENES, isGardenScene, plantsOf, makeGardenQuestion } from '../data/garden'
 import { BOUNDS, PLANT_BOUNDS, ACTIVITY_RADIUS, chasesToy, habitatOfPet } from '../data/roomRules'
 import { sfx, startAmbient, stopAmbient } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
@@ -608,14 +608,21 @@ export default function HomeRoomScreen({ onNavigate }) {
     // 種花／種樹：點草地種下（庭園可種範圍比丟東西更廣）；沒花苗就不種
     if (SEED_KINDS.includes(tool)) {
       if ((seedlings?.[tool] || 0) <= 0) { setTool(null); return }
+      // 每個庭園只收自己的花苗：魔法花苗只能種在魔法花園，其餘只能種在秘密庭園
+      if (!GARDEN_SCENES[scene]?.seeds.includes(tool)) {
+        say(tool === 'magic'
+          ? '🔮 魔法花苗要種在「魔法花園」喔！'
+          : `🌱 這種花苗要種在「${GARDEN_SCENES.outdoor.label}」喔！`)
+        return
+      }
       // 花園滿了要說出來，不能默默不種（以前是默默把最舊的一株擠掉，更糟）
-      if (garden.length >= MAX_PLANTS) {
-        say(`🌱 花園滿了（${MAX_PLANTS} 株），先採收一些開好的花再種吧！`)
+      if (sceneGarden.length >= MAX_PLANTS) {
+        say(`🌱 這個花園滿了（${MAX_PLANTS} 株），先採收一些開好的花再種吧！`)
         return
       }
       plantSeed(tool,
         Math.max(PLANT_BOUNDS.xMin, Math.min(PLANT_BOUNDS.xMax, rawX)),
-        Math.max(PLANT_BOUNDS.yMin, Math.min(PLANT_BOUNDS.yMax, rawY)))
+        Math.max(PLANT_BOUNDS.yMin, Math.min(PLANT_BOUNDS.yMax, rawY)), scene)
       sfx.click()
       if ((seedlings?.[tool] || 0) <= 1) setTool(null)   // 種到最後一顆才收起工具，連種更順手
       return
@@ -723,7 +730,7 @@ export default function HomeRoomScreen({ onNavigate }) {
 
   // 下雨天：進到庭園自動幫所有口渴的植物澆一遍（免費小驚喜）
   useEffect(() => {
-    if (scene !== 'outdoor' || weather !== 'rain') return
+    if (!isGardenScene(scene) || weather !== 'rain') return
     const today = todayKey()
     const n = garden.filter((p) => p.lastWater !== today && (p.waterCount || 0) < (PLANT_KINDS[p.kind]?.need ?? 2)).length
     if (n === 0) return
@@ -736,7 +743,7 @@ export default function HomeRoomScreen({ onNavigate }) {
 
   // 小幫手：進庭園時，牠趁你不在幫喜歡的花澆水
   useEffect(() => {
-    if (scene !== 'outdoor') return
+    if (!isGardenScene(scene)) return
     const r = keeperTend()
     if (r) say(`${petFace(r.petId)} ${PETS[r.petId].name} 趁你不在，幫忙澆了 ${r.count} 株花！`)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -907,6 +914,10 @@ export default function HomeRoomScreen({ onNavigate }) {
   )
 
   // 只留目前場景的寵物 / 家具 / 尋路點（另一場景整組不 render）
+  // 目前這個庭園場景裡的植物。兩個庭園各自獨立（各自 24 株上限），
+  // 舊存檔沒有 sc 欄位的一律算秘密庭園。
+  const sceneGarden = useMemo(() => plantsOf(garden, scene), [garden, scene])
+
   // 歸屬吃安安在寵物圖鑑裡的搬家設定（petHabitat），沒設過的用預設
   const scenePets    = useMemo(() => unlockedPets.filter(([id]) => habitatOfPet(id, petHabitat) === scene), [unlockedPets, scene, petHabitat])
   const sceneDecos   = useMemo(() => homeDecos.filter(({ item }) => habitatOfDeco(item.id) === scene), [homeDecos, scene])
@@ -958,8 +969,10 @@ export default function HomeRoomScreen({ onNavigate }) {
       </div>
 
       {/* 進場運鏡：鏡頭從遠處緩緩推進 */}
+      {/* 庭園的版型（隱藏窗戶、地面、按鈕位置…）整套寫在 .scene-outdoor 上，
+          所以魔法花園也掛上它當「基底」，自己的 .scene-magic 只負責覆蓋顏色，不必複製一份 CSS */}
       <motion.div
-        className={`room-scene scene-${scene} phase-${phase} weather-${weather}${activeTheme ? ` theme-${activeTheme}` : ''}${snapping ? ' snapping' : ''}${tool ? ' throwing' : ''}`}
+        className={`room-scene scene-${scene}${scene === 'magic' ? ' scene-outdoor' : ''} phase-${phase} weather-${weather}${activeTheme ? ` theme-${activeTheme}` : ''}${snapping ? ' snapping' : ''}${tool ? ' throwing' : ''}`}
         ref={containerRef}
         onClick={throwToy}
         initial={{ scale: 1.16, opacity: 0 }}
@@ -1117,7 +1130,7 @@ export default function HomeRoomScreen({ onNavigate }) {
           </AnimatePresence>
 
           {/* 秘密庭園：種下的花草樹木，依真實時間長大→開花，開花後可點採收 */}
-          {scene === 'outdoor' && garden.map((p) => {
+          {isGardenScene(scene) && sceneGarden.map((p) => {
             const v = plantView(p)
             const ds = getDepthScale(p.y)
             const needsWater = !v.bloomed && !v.ready && p.lastWater !== todayKey()
@@ -1152,7 +1165,7 @@ export default function HomeRoomScreen({ onNavigate }) {
           })}
 
           {/* 夜晚的秘密庭園：地面飄起螢火蟲 */}
-          {scene === 'outdoor' && phase === 'night' && (
+          {isGardenScene(scene) && phase === 'night' && (
             <div className="garden-fireflies" aria-hidden="true">
               {[...Array(7)].map((_, i) => (
                 <span key={i} className="firefly"
@@ -1241,7 +1254,7 @@ export default function HomeRoomScreen({ onNavigate }) {
         {/* 室內 / 戶外 場景切換 */}
         {!snapping && (
           <div className="room-scene-tabs">
-            {[['indoor', '🏠 溫暖的家'], ['outdoor', '🌳 秘密庭園']].map(([id, label]) => (
+            {[['indoor', '🏠 溫暖的家'], ['outdoor', GARDEN_SCENES.outdoor.label], ['magic', GARDEN_SCENES.magic.label]].map(([id, label]) => (
               <motion.button key={id} className={`room-scene-tab${scene === id ? ' active' : ''}`}
                 whileTap={{ scale: 0.9 }}
                 onClick={(e) => { e.stopPropagation(); if (scene !== id) { sfx.click(); setScene(id); setTool(null) } }}>
@@ -1265,9 +1278,10 @@ export default function HomeRoomScreen({ onNavigate }) {
           </div>
         )}
         {/* 秘密庭園：花苗／肥料／全部澆水按鈕（只在庭園場景出現） */}
-        {!snapping && scene === 'outdoor' && (
+        {!snapping && isGardenScene(scene) && (
           <div className="room-seed-btns">
-            {SEED_KINDS.map((k) => {
+            {/* 只列出這個庭園收的花苗：魔法花園只有魔法花苗，秘密庭園沒有魔法花苗 */}
+            {(GARDEN_SCENES[scene]?.seeds || SEED_KINDS).map((k) => {
               const count = seedlings?.[k] || 0
               return (
                 <motion.button key={k} className={`room-seed-btn${tool === k ? ' armed' : ''}${count === 0 ? ' empty' : ''}`}

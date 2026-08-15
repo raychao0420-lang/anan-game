@@ -37,6 +37,16 @@ export const SEED_KINDS = ['flower', 'rare', 'tree', 'magic']
 // 那會讓安安養了好幾天的花無聲消失，畫面上完全沒有提示。
 export const MAX_PLANTS = 24
 
+// 兩個庭園場景。魔法花園只能種魔法花苗 —— 每一株都要答對一題數學才會盛開，
+// 所以它是「答題花園」，把種花跟安安的數學練習綁在一起。
+// 舊存檔的植物沒有 sc 欄位，一律視為秘密庭園。
+export const GARDEN_SCENES = {
+  outdoor: { label: '🌳 秘密庭園', seeds: ['flower', 'rare', 'tree'] },
+  magic:   { label: '🔮 魔法花園', seeds: ['magic'] },
+}
+export const isGardenScene = (sc) => sc === 'outdoor' || sc === 'magic'
+export const plantsOf = (garden, sc) => (garden || []).filter((p) => (p.sc || 'outdoor') === sc)
+
 export const FERTILIZER = {
   name: '魔法肥料', emoji: '💩', price: 30,
   desc: '撒一次立刻多長一天，不用等到明天！',

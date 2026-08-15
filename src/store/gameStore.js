@@ -283,16 +283,19 @@ export const useGameStore = create(
         })),
 
       // 秘密庭園：種下一株（花/樹），消耗一顆對應花苗；之後每天澆水成長；最多留 24 株
-      plantSeed: (kind, x, y) =>
+      // sc＝種在哪個庭園場景（'outdoor' 秘密庭園／'magic' 魔法花園）。
+      // 舊存檔的植物沒有 sc 欄位，一律當作秘密庭園（見 plantsOf）。
+      plantSeed: (kind, x, y, sc = 'outdoor') =>
         set((s) => {
           if ((s.seedlings?.[kind] || 0) <= 0) return s
           // ⚠️ 滿了就不種（花苗也不扣）。原本是 slice(-24)，會默默把最舊的一株擠掉 ——
           // 安安養了好幾天的花會無聲消失，畫面上零提示。改由呼叫端先擋並給訊息。
-          if ((s.garden || []).length >= MAX_PLANTS) return s
+          // 上限是「每個庭園各自」24 株，不是全部加起來。
+          if ((s.garden || []).filter((p) => (p.sc || 'outdoor') === sc).length >= MAX_PLANTS) return s
           return {
             seedlings: { ...s.seedlings, [kind]: s.seedlings[kind] - 1 },
             garden: [...(s.garden || []),
-              { key: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, kind, x, y, v: Math.floor(Math.random() * 6), waterCount: 0, lastWater: null }
+              { key: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, kind, x, y, sc, v: Math.floor(Math.random() * 6), waterCount: 0, lastWater: null }
             ],
           }
         }),

@@ -178,7 +178,10 @@ export default function RoomWorld3D({
     clearGroup(engine.root)
     W.pets.clear(); W.decos.clear(); W.plants.clear(); W.fx = []
 
-    const env = scene === 'outdoor' ? buildGarden(theme) : buildRoom(theme)
+    // 魔法花園沿用庭園的地形，但強制套 space 主題的紫色系，一眼分得出是不同的地方
+    const env = scene === 'outdoor' ? buildGarden(theme)
+      : scene === 'magic' ? buildGarden('space')
+      : buildRoom(theme)
     engine.root.add(env)
     W.env = env
   }, [scene, theme])
@@ -228,13 +231,13 @@ export default function RoomWorld3D({
     for (const f of W.fx) { engine.root.remove(f.group); clearGroup(f.group) }
     W.fx = []
     const wx = buildWeather(weather)
-    if (wx && (scene === 'outdoor' || weather === 'rain' || weather === 'snow')) {
+    if (wx && (scene !== 'indoor' || weather === 'rain' || weather === 'snow')) {
       // 室內只在窗外下（把粒子推到牆後），戶外整片下
       if (scene === 'indoor') wx.group.position.set(1.6, 0.6, -3.2), wx.group.scale.set(0.25, 0.5, 0.2)
       engine.root.add(wx.group)
       W.fx.push(wx)
     }
-    if (scene === 'outdoor' && phase === 'night') {
+    if (scene !== 'indoor' && phase === 'night') {
       const ff = buildFireflies()
       engine.root.add(ff.group)
       W.fx.push(ff)
@@ -316,7 +319,7 @@ export default function RoomWorld3D({
     const engine = engineRef.current
     if (!engine) return
     const W = worldRef.current
-    const list = scene === 'outdoor' ? garden : []
+    const list = scene === 'indoor' ? [] : garden.filter((p) => (p.sc || 'outdoor') === scene)
     const want = new Map(list.map((p) => [p.key, p]))
 
     for (const [key, pl] of W.plants) {

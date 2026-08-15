@@ -1381,3 +1381,28 @@
   transform: translate(-50%, -140%);
   pointer-events: none;
 }
+
+/* ── 🔮 魔法花園：第三個場景 ────────────────────────────────────────────
+   版型沿用 .scene-outdoor（JSX 會同時掛上兩個 class），這裡只覆蓋顏色，
+   所以庭園的排版怎麼改，魔法花園都會自動跟上。 */
+.scene-magic .room-wall {
+  background:
+    radial-gradient(1.8px 1.8px at 12% 22%, #fff 50%, transparent 52%),
+    radial-gradient(1.4px 1.4px at 38% 12%, #ffe9a8 50%, transparent 52%),
+    radial-gradient(1.6px 1.6px at 62% 26%, #fff 50%, transparent 52%),
+    radial-gradient(2px   2px   at 80% 10%, #cdb4ff 50%, transparent 52%),
+    radial-gradient(1.3px 1.3px at 92% 30%, #fff 50%, transparent 52%),
+    linear-gradient(180deg, #3a2668 0%, #5b3d9a 55%, #8a63c9 100%);
+  border-bottom-color: #4a3a7a;
+}
+/* 白天也維持神祕感，只是亮一階（魔法花園沒有「晴天」的概念） */
+.scene-magic.phase-day .room-wall,
+.scene-magic.phase-morning .room-wall {
+  background:
+    radial-gradient(1.6px 1.6px at 24% 20%, #fff 45%, transparent 47%),
+    radial-gradient(1.8px 1.8px at 70% 16%, #ffe9a8 45%, transparent 47%),
+    linear-gradient(180deg, #5b46a8 0%, #8a70d0 55%, #c3aef0 100%);
+}
+.scene-magic .room-floor-wrap { background: linear-gradient(180deg, #6a5aa8 0%, #4a3d7a 100%); }
+/* 場景頁籤變三個，字要縮一點才排得下 */
+.room-scene-tabs .room-scene-tab { font-size: 0.72rem; padding: 5px 9px; }
