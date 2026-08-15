@@ -241,3 +241,40 @@
   .bag-item-name { font-size: 1.05rem; }
   .bag-place-btn { font-size: 1.05rem; padding: 10px 22px; }
 }
+
+/* ── 花：自己種出來採收的，可以送給寵物 ───────────────────────────── */
+.bag-flower-art { font-size: 2.6rem; line-height: 1; display: flex; align-items: center; justify-content: center; }
+.bag-flower-love { font-size: 0.62rem; color: #8a6a4a; margin: 2px 0 4px; text-align: center; }
+.bag-empty-sub { font-size: 0.72rem; color: #9a8a78; margin-top: 4px; }
+
+.bag-give-mask {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(40, 30, 20, 0.45);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.bag-give-card {
+  background: #fffaf2; border-radius: 18px; padding: 16px;
+  width: 100%; max-width: 340px; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+}
+.bag-give-title { font-size: 1rem; font-weight: 800; color: #5c3a1e; text-align: center; margin-bottom: 10px; }
+.bag-give-pets { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.bag-give-pet {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  width: 76px; padding: 8px 4px; border-radius: 12px;
+  border: 2px solid #e6d6c0; background: #fff; cursor: pointer;
+}
+.bag-give-pet.loved { border-color: #f2a0b8; background: #fff2f6; }
+.bag-give-face { font-size: 1.6rem; line-height: 1; }
+.bag-give-name { font-size: 0.7rem; font-weight: 700; color: #5c3a1e; }
+.bag-give-heart { font-size: 0.58rem; color: #d2557a; font-weight: 700; }
+.bag-give-cancel {
+  display: block; margin: 12px auto 0; padding: 6px 18px;
+  border: none; border-radius: 10px; background: #eadfd0; color: #6b5340;
+  font-weight: 700; cursor: pointer;
+}
+.bag-give-fx {
+  position: fixed; left: 50%; transform: translateX(-50%); bottom: 84px; z-index: 70;
+  background: rgba(60, 46, 32, 0.94); color: #fff;
+  padding: 8px 16px; border-radius: 14px; font-size: 0.78rem; font-weight: 700;
+  max-width: 88vw; text-align: center;
+}

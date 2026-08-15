@@ -40,6 +40,19 @@ export const FERTILIZER = {
 // 花園圖鑑：集滿所有花種／樹的花色就完成（給一次性大獎）
 export const ALL_BLOOMS = [...new Set(SEED_KINDS.flatMap((k) => PLANT_KINDS[k].blooms))]
 
+// 採收下來的花會進背包，可以送給寵物。花的 emoji 反查它屬於哪一種花苗，
+// 才知道哪些寵物喜歡它（沿用 PLANT_KINDS 的 love 名單，不另外再定一份）。
+export const bloomKind = (emoji) => SEED_KINDS.find((k) => PLANT_KINDS[k].blooms.includes(emoji)) || null
+
+// 送花的效果。喜歡這種花的寵物收到會特別開心 ——
+// 這條「種花→採收→送給牠喜歡的花」原本是隱形的（採收時偷偷加心情），
+// 現在讓安安自己選要送誰，這份心意才看得見。
+// 數值參考商店食物（exp 5~120、心情 +10）：送對花比餵一般食物有感，但不會誇張到破壞平衡。
+export const FLOWER_GIFT = {
+  loved: { exp: 40, mood: 15 },
+  plain: { exp: 12, mood: 5 },
+}
+
 // 本地日期字串（YYYY-MM-DD），庭園用來判斷「今天是否已澆水」
 export const todayKey = () => new Date().toLocaleDateString('en-CA')
 // 昨天（判斷連續澆水是否接得上）

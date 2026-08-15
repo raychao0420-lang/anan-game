@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import { ACHIEVEMENTS } from '../data/achievements'
 import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
-import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS } from '../data/garden'
+import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS, bloomKind, FLOWER_GIFT } from '../data/garden'
 
 const makeStages = () => {
   const s = {}
@@ -71,6 +71,7 @@ export const useGameStore = create(
       seedlings: { flower: 3, rare: 0, tree: 1, magic: 0 },  // 花苗庫存：過關掉落或商店購買，種花時消耗
       fertilizer: 1,                               // 魔法肥料數量：撒一次立刻多長一天
       lastSeedDrop: null,                          // 最近一次過關掉的花苗種類（給結算畫面顯示）
+      flowers: {},                                 // 採收下來的花：{ '🌷': 3, ... }，可以送給寵物
       gardenDex: [],                               // 花園圖鑑：採收過的花色（集滿給一次大獎）
       gardenDexDone: false,                        // 圖鑑全收集獎勵是否已發
       waterStreak: 0,                              // 連續澆水天數（溫和版：斷了只是重數，不處罰）
@@ -346,6 +347,34 @@ export const useGameStore = create(
         set((s) => ({ garden: (s.garden || []).map((p) => (p.key === key ? { ...p, solved: true } : p)) })),
 
       // 採收到一朵新花色 → 記進圖鑑；集滿所有花色首次給 200 金幣大獎。回傳 {complete,reward}。
+      // 採收的花進背包（可堆疊）。原本採收只換金幣，那朵花什麼都沒留下。
+      addFlower: (emoji) =>
+        set((s) => (emoji ? { flowers: { ...(s.flowers || {}), [emoji]: ((s.flowers || {})[emoji] || 0) + 1 } } : s)),
+
+      // 送花給寵物：喜歡這種花的收到會特別開心（love 名單沿用 PLANT_KINDS）。
+      // 回傳 { loved, exp, mood } 給畫面做反應；沒花或寵物沒解鎖回 null。
+      giveFlower: (emoji, petId) => {
+        const s = get()
+        if (!emoji || !petId) return null
+        if (((s.flowers || {})[emoji] || 0) <= 0) return null
+        if (!s.pets[petId]?.unlocked) return null
+        const kind = bloomKind(emoji)
+        const loved = !!(kind && (PLANT_KINDS[kind].love || []).includes(petId))
+        const gain = loved ? FLOWER_GIFT.loved : FLOWER_GIFT.plain
+        set((prev) => {
+          const left = (prev.flowers[emoji] || 0) - 1
+          const flowers = { ...prev.flowers }
+          if (left > 0) flowers[emoji] = left; else delete flowers[emoji]
+          const pet = prev.pets[petId]
+          return {
+            flowers,
+            pets: { ...prev.pets, [petId]: { ...pet, foodExp: (pet.foodExp || 0) + gain.exp } },
+            petMoods: { ...prev.petMoods, [petId]: Math.min(100, (prev.petMoods?.[petId] ?? 80) + gain.mood) },
+          }
+        })
+        return { loved, ...gain }
+      },
+
       recordBloom: (emoji) => {
         const s = get()
         if (!emoji || (s.gardenDex || []).includes(emoji)) return null

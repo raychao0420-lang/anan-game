@@ -543,7 +543,7 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
 export default function HomeRoomScreen({ onNavigate }) {
   const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins,
           seedlings, fertilizer, waterPlant, waterAll, useFertilizer, addSeedling, updateDailyProgress,
-          solveMagicPlant, recordBloom, registerWaterDay, gardenKeeper, setGardenKeeper, keeperTend, gardenDex } = useGameStore()
+          solveMagicPlant, recordBloom, registerWaterDay, gardenKeeper, setGardenKeeper, keeperTend, gardenDex, addFlower } = useGameStore()
   const containerRef = useRef(null)
 
   // 溫暖的家（室內）／ 秘密庭園（戶外）雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
@@ -646,6 +646,8 @@ export default function HomeRoomScreen({ onNavigate }) {
     sfx.coins()
     const rainbow = weather === 'rainbow'
     addCoins(Math.round(v.reward * (rainbow ? 1.5 : 1)))
+    // 採收的花進背包，之後可以拿去送給寵物（原本採收只換金幣，那朵花什麼都沒留下）
+    addFlower(v.emoji)
     const lover = (cfg?.love || []).find((id) => pets[id]?.unlocked)
     if (lover) updatePetMood(lover, 6)
     // 採收回收：35% 掉回一顆同種花苗（魔法花只回收普通花苗，免得太好賺）
