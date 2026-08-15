@@ -1100,29 +1100,15 @@ export default function HomeRoomScreen({ onNavigate }) {
                 </motion.span>
                 {v.bloomed && <span className="room-plant-ping">✨</span>}
                 {/* 開花的花上飛來蝴蝶／蜜蜂：小小生態 */}
+                {/* ⚠️ 以下三個常駐動畫刻意用 CSS class 而不是 framer-motion：
+                    一株植物最多同時掛三個，24 株就是幾十個 JS 逐幀動畫，平板會卡到點不動 */}
                 {v.bloomed && (
-                  <motion.span className="room-plant-critter"
-                    animate={{ x: [0, 7, -4, 0], y: [0, -6, -2, 0], rotate: [0, 12, -8, 0] }}
-                    transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }}>
-                    {p.v % 2 ? '🐝' : '🦋'}
-                  </motion.span>
+                  <span className="room-plant-critter">{p.v % 2 ? '🐝' : '🦋'}</span>
                 )}
                 {/* 魔法花澆滿了：冒問號，等安安答題 */}
-                {v.ready && (
-                  <motion.span className="room-plant-quiz"
-                    animate={{ scale: [1, 1.25, 1] }}
-                    transition={{ repeat: Infinity, duration: 1.1 }}>
-                    ❓
-                  </motion.span>
-                )}
+                {v.ready && <span className="room-plant-quiz">❓</span>}
                 {/* 今天還沒澆水：冒一滴水珠提醒安安來照顧 */}
-                {needsWater && (
-                  <motion.span className="room-plant-thirsty"
-                    animate={{ y: [0, -4, 0], opacity: [0.7, 1, 0.7] }}
-                    transition={{ repeat: Infinity, duration: 1.4 }}>
-                    💧
-                  </motion.span>
-                )}
+                {needsWater && <span className="room-plant-thirsty">💧</span>}
               </div>
             )
           })}
@@ -1131,12 +1117,11 @@ export default function HomeRoomScreen({ onNavigate }) {
           {scene === 'outdoor' && phase === 'night' && (
             <div className="garden-fireflies" aria-hidden="true">
               {[...Array(7)].map((_, i) => (
-                <motion.span key={i} className="firefly"
-                  style={{ left: `${8 + i * 12}%`, top: `${58 + (i % 3) * 9}%` }}
-                  animate={{ x: [0, 18, -10, 0], y: [0, -14, -4, 0], opacity: [0.2, 1, 0.35, 0.2] }}
-                  transition={{ repeat: Infinity, duration: 4 + i * 0.6, ease: 'easeInOut', delay: i * 0.4 }}>
+                <span key={i} className="firefly"
+                  style={{ left: `${8 + i * 12}%`, top: `${58 + (i % 3) * 9}%`,
+                    '--d': `${4 + i * 0.6}s`, '--dl': `${i * 0.4}s` }}>
                   ✨
-                </motion.span>
+                </span>
               ))}
             </div>
           )}

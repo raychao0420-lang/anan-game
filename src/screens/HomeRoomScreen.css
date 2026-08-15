@@ -1343,3 +1343,33 @@
   background: #a98cf0;
   cursor: pointer;
 }
+
+/* ── 庭園裝飾動畫一律用 CSS，不要用 framer-motion ─────────────────────────
+   framer-motion 的 animate 是在「主執行緒逐幀用 JS 算」的。庭園最多 24 株植物，
+   早上進來時每一株都掛著「今天還沒澆水」的水滴＝24 個 JS 動畫同時跑，
+   平板會卡到點擊被吃掉（安安回報「澆水也不行」就是這個情況）。
+   CSS 動畫交給合成器，數量再多都不佔主執行緒。
+   純裝飾（不需要跟 React 狀態連動）的常駐動畫，以後一律走這裡。 */
+.room-plant-thirsty { animation: plant-thirsty 1.4s ease-in-out infinite; }
+@keyframes plant-thirsty {
+  0%, 100% { transform: translateY(0);    opacity: 0.7; }
+  50%      { transform: translateY(-4px); opacity: 1; }
+}
+.room-plant-quiz { animation: plant-quiz 1.1s ease-in-out infinite; }
+@keyframes plant-quiz {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.25); }
+}
+.room-plant-critter { animation: plant-critter 3.2s ease-in-out infinite; }
+@keyframes plant-critter {
+  0%, 100% { transform: translate(0, 0)       rotate(0deg); }
+  33%      { transform: translate(7px, -6px)  rotate(12deg); }
+  66%      { transform: translate(-4px, -2px) rotate(-8deg); }
+}
+/* 每隻螢火蟲的快慢與起始時間不同，用 --d／--dl 從 JSX 帶進來 */
+.firefly { animation: firefly-drift var(--d, 4s) ease-in-out var(--dl, 0s) infinite; }
+@keyframes firefly-drift {
+  0%, 100% { transform: translate(0, 0);       opacity: 0.2; }
+  33%      { transform: translate(18px, -14px); opacity: 1; }
+  66%      { transform: translate(-10px, -4px); opacity: 0.35; }
+}
