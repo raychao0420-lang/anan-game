@@ -736,10 +736,9 @@ function DinoBase({ c }) {
       {/* Tail */}
       <path d="M73,99 Q92,97 96,84 Q98,93 90,101 Q83,107 71,104 Z" fill={c.body} />
       <path d="M74,100 Q88,98 93,88" fill="none" stroke={c.ear} strokeWidth="1" opacity="0.4" />
-      {/* Back plates (spikes) */}
-      <path d="M50,15 l6.5,11 h-13 Z" fill={c.ear} />
-      <path d="M37,20 l5.5,9.5 h-11 Z" fill={c.ear} opacity="0.9" />
-      <path d="M63,20 l5.5,9.5 h-11 Z" fill={c.ear} opacity="0.9" />
+      {/* 副櫛龍的長頭冠：從後腦往後上方伸出，中空的，可以像喇叭一樣吹出低沉的聲音 */}
+      <path d="M54,26 Q72,11 87,5 Q91,12 79,23 Q67,31 57,34 Z" fill={c.ear} />
+      <path d="M60,26 Q73,15 84,9" fill="none" stroke={c.body} strokeWidth="1.4" opacity="0.45" strokeLinecap="round" />
       {/* Tiny arms */}
       <ellipse cx="29" cy="88" rx="5" ry="7.5" fill={c.body} transform="rotate(22,29,88)" />
       <ellipse cx="71" cy="88" rx="5" ry="7.5" fill={c.body} transform="rotate(-22,71,88)" />
@@ -756,7 +755,8 @@ function DinoBase({ c }) {
       {/* Head */}
       <circle cx="50" cy="46" r="26" fill={c.body} />
       {/* Snout patch */}
-      <ellipse cx="50" cy="54" rx="15" ry="11" fill={c.belly} opacity="0.5" />
+      {/* 鴨嘴龍類的寬扁嘴：比一般吻部寬、上下扁 */}
+      <ellipse cx="50" cy="55" rx="19" ry="9" fill={c.belly} opacity="0.5" />
       {/* Eyes (big shiny) */}
       <circle cx="40" cy="42" r="6.4" fill="#12240E" />
       <circle cx="60" cy="42" r="6.4" fill="#12240E" />
