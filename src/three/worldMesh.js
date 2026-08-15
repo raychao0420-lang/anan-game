@@ -71,8 +71,10 @@ export function buildRoom(theme) {
   // 太陽／月亮：顏色由 applyPhase 換（白天暖黃、夜裡淡白）
   const orb = new THREE.Mesh(new THREE.CircleGeometry(0.26, 20), new THREE.MeshBasicMaterial({ color: 0xffe27a }))
   flat(orb, -0.95, 0.6, 0.006)
-  // 雲：每朵用三顆圓疊出蓬鬆感，一片扁的長方形做不出雲
+  // 雲：每朵用三顆圓疊出蓬鬆感，一片扁的長方形做不出雲。
+  // 每朵各自一個 Group 並記下來，讓 RoomWorld3D 逐幀往右飄、飄出窗框就從左邊回來。
   const puffs = []
+  const clouds = []
   for (const [cx, cy, cs] of [[0.5, 0.68, 1.15], [-0.25, 0.2, 0.85], [1.0, 0.0, 0.7]]) {
     const cloud = new THREE.Group()
     for (const [dx, dy, r] of [[-0.16, 0, 0.15], [0, 0.05, 0.2], [0.17, -0.01, 0.14]]) {
@@ -82,8 +84,30 @@ export function buildRoom(theme) {
       puffs.push(puff)
     }
     cloud.scale.setScalar(cs)
-    flat(cloud, cx, cy, 0.008)
+    clouds.push(flat(cloud, cx, cy, 0.008))
   }
+
+  // 窗外的訪客：白天是飛過的小鳥、夜裡是劃過的流星（2D 版的 rw-visitor，3D 補上）。
+  // 平常整組 visible=false，由 RoomWorld3D 每隔一段時間放牠飛一趟。
+  const visitor = new THREE.Group()
+  const bird = new THREE.Group()
+  for (const sx of [-1, 1]) {          // 兩片翅膀：壓扁的半圓，就是遠處小鳥的剪影
+    const wing = new THREE.Mesh(new THREE.CircleGeometry(0.075, 10, 0, Math.PI), M('#4A5A6A'))
+    wing.position.x = sx * 0.055
+    wing.scale.set(1, 0.5, 1)
+    bird.add(wing)
+  }
+  const star = new THREE.Group()      // 流星：亮點＋往後拖的尾巴
+  const head = new THREE.Mesh(new THREE.CircleGeometry(0.045, 12), M('#FFFFFF'))
+  star.add(head)
+  const tail = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.03), M('#FFF3B0', { transparent: true, opacity: 0.7 }))
+  tail.position.set(0.19, 0.05, 0)
+  tail.rotation.z = 0.28
+  star.add(tail)
+  star.visible = false
+  visitor.add(bird, star)
+  visitor.visible = false
+  flat(visitor, 0, 0.5, 0.009)
   // 彩虹：半圈圓環，只有彩虹天氣才顯示（由 RoomWorld3D 切 visible）
   const bow = new THREE.Group()
   for (const [i, c] of ['#FF6B6B', '#FFB86B', '#FFE66B', '#7BD88F', '#6BC5FF', '#B07BFF'].entries()) {
@@ -105,8 +129,12 @@ export function buildRoom(theme) {
   win.add(sill)
   g.userData.winHills = hills
   g.userData.winPuffs = puffs
+  g.userData.winClouds = clouds
   g.userData.winOrb = orb
   g.userData.winBow = bow
+  // 窗戶的可見範圍：雲與訪客飄到這個界線外就要繞回來／收起來，不然會浮在牆上
+  g.userData.winSpan = WW / 2
+  g.userData.winVisitor = { group: visitor, bird, star }
   win.userData.pick = { type: 'window' }
   g.add(win)
 

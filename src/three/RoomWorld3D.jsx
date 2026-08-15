@@ -6,7 +6,7 @@ import { createEngine, clearGroup, toWorldX, toWorldZ, isWallItem, toWallHeight,
 import { buildPet } from './petMesh'
 import { buildDeco } from './decoMesh'
 import { buildRoom, buildGarden, buildPlant, buildFlowerDeco, buildWeather, buildFireflies, PHASE_LIGHT } from './worldMesh'
-import { BOUNDS, chasesToy } from '../data/roomRules'
+import { chasesToy, wanderBounds } from '../data/roomRules'
 import { plantView } from '../data/garden'
 
 const WALK_SPEED = 9          // 每秒走幾 %
@@ -14,12 +14,16 @@ const REACH = 2.5             // 走到多近算抵達（%）
 const TOY_REACH = 4
 
 const rnd = (a, b) => a + Math.random() * (b - a)
-const pickTarget = () => ({ x: rnd(BOUNDS.xMin, BOUNDS.xMax), y: rnd(BOUNDS.yMin, BOUNDS.yMax) })
+// 有窩的寵物只在窩附近挑目標（規則跟 2D 共用 wanderBounds，不要兩邊各寫一份）
+const pickTarget = (nest) => {
+  const b = wanderBounds(nest)
+  return { x: rnd(b.xMin, b.xMax), y: rnd(b.yMin, b.yMax) }
+}
 
 export default function RoomWorld3D({
   scene, theme, phase, weather, lamp = null,   // lamp: true 開／false 關／null 照晝夜自動
-  pets = [], petMoods = {}, decos = [], garden = [], flowerDecos = [], toy = null, tool = null,
-  onPetClick, onDecoMove, onPlantTap, onFlowerTap, onFloorTap, onWindowTap, onToyReach, onPetPos,
+  pets = [], petMoods = {}, decos = [], garden = [], flowerDecos = [], nests = {}, toy = null, tool = null,
+  onPetClick, onDecoMove, onPlantTap, onFlowerTap, onFloorTap, onWindowTap, onToyReach, onPetPos, onPetNest,
 }) {
   const canvasRef = useRef(null)
   const engineRef = useRef(null)
@@ -28,8 +32,8 @@ export default function RoomWorld3D({
   const cb = useRef({})
   const live = useRef({ toy: null, tool: null })
   useEffect(() => {
-    cb.current = { onPetClick, onDecoMove, onPlantTap, onFlowerTap, onFloorTap, onWindowTap, onToyReach, onPetPos }
-    live.current = { toy, tool, weather, phase, scene }
+    cb.current = { onPetClick, onDecoMove, onPlantTap, onFlowerTap, onFloorTap, onWindowTap, onToyReach, onPetPos, onPetNest }
+    live.current = { toy, tool, weather, phase, scene, nests }
   })
 
   // ── 引擎只建一次 ──
@@ -61,7 +65,7 @@ export default function RoomWorld3D({
         } else {
           p.walking = false
           p.wait -= dt
-          if (p.wait <= 0) { p.target = pickTarget(); p.wait = rnd(1.2, 4) }
+          if (p.wait <= 0) { p.target = pickTarget(live.current.nests?.[id]); p.wait = rnd(1.2, 4) }
         }
 
         p.group.position.set(toWorldX(p.pos.x), 0, toWorldZ(p.pos.y))
@@ -167,6 +171,40 @@ export default function RoomWorld3D({
       // 擺出來的花也輕輕搖（幅度比種在土裡的小，看得出是插在瓶子裡）
       for (const fl of W.flowers.values()) {
         if (fl.sway) fl.sway.rotation.z = Math.sin(t * 1.1 + fl.seed) * 0.04
+      }
+
+      // 窗外的雲慢慢飄；飄出窗框就從另一邊回來，靠近窗框時淡出淡入，不會突然消失
+      const span = W.env?.userData.winSpan
+      if (span) {
+        for (const [i, c] of (W.env.userData.winClouds || []).entries()) {
+          c.position.x += (0.045 + i * 0.012) * dt
+          if (c.position.x > span + 0.4) c.position.x = -span - 0.4
+          const fade = Math.min(1, Math.max(0, (span + 0.4 - Math.abs(c.position.x)) / 0.5))
+          for (const p of c.children) p.material.opacity = 0.92 * fade
+        }
+        // 窗外的訪客：白天小鳥、夜裡流星。每隔十幾秒飛一趟，飛完收起來等下一次
+        const v = W.env.userData.winVisitor
+        if (v) {
+          if (W.visitAt === undefined) W.visitAt = t + 6
+          const foul = live.current.weather === 'rain' || live.current.weather === 'snow'
+          if (!v.group.visible && t > W.visitAt && !foul) {   // 下雨下雪就不飛了，鳥也要躲雨
+            const night = live.current.phase === 'night'
+            v.bird.visible = !night
+            v.star.visible = night
+            v.group.visible = true
+            W.visit = { t0: t, dur: night ? 1.6 : 5.5, y: night ? 0.55 : 0.15 + Math.random() * 0.5, night }
+          }
+          if (v.group.visible) {
+            const k = (t - W.visit.t0) / W.visit.dur
+            if (k >= 1) { v.group.visible = false; W.visitAt = t + 14 + Math.random() * 12 }
+            else {
+              v.group.position.x = -span - 0.3 + k * (span * 2 + 0.6)
+              // 小鳥上下起伏、翅膀拍動；流星是直線往下滑
+              v.group.position.y = W.visit.night ? W.visit.y - k * 0.5 : W.visit.y + Math.sin(k * 7) * 0.09
+              if (!W.visit.night) for (const w of v.bird.children) w.scale.y = 0.5 * (0.45 + 0.55 * Math.abs(Math.sin(t * 9)))
+            }
+          }
+        }
       }
 
       for (const f of W.fx) f.update?.(dt, t)
@@ -397,6 +435,10 @@ export default function RoomWorld3D({
       if (hit?.type === 'deco' && !live.current.tool) {
         const d = W.decos.get(hit.id)
         if (d) drag = { id: hit.id, group: d.group, moved: false }
+      } else if (hit?.type === 'pet' && !live.current.tool) {
+        // 拖寵物＝幫牠找個窩（放開的位置就是窩）；只是點一下仍然是摸摸牠
+        const p = W.pets.get(hit.id)
+        if (p) drag = { id: hit.id, group: p.group, pet: p, moved: false }
       }
       W.hit = hit
     }
@@ -409,13 +451,19 @@ export default function RoomWorld3D({
       const y = Math.max(2, Math.min(86, f.y))
       drag.pos = { x, y }
       drag.moved = true
-      placeDeco(drag.group, { ...drag.pos, scale: drag.group.scale.x })
+      if (drag.pet) {
+        // 寵物要同時改 pos 與 target，否則一放手就被 render loop 拉回原本的目標
+        drag.pet.pos.x = x; drag.pet.pos.y = y
+        drag.pet.target = { x, y }
+        drag.group.position.set(toWorldX(x), 0, toWorldZ(y))
+      } else placeDeco(drag.group, { ...drag.pos, scale: drag.group.scale.x })
     }
 
     const onUp = (e) => {
       const moved = downAt && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) > 8
       if (drag && drag.moved && moved) {
-        cb.current.onDecoMove?.(drag.id, { ...drag.pos, scale: drag.group.scale.x })
+        if (drag.pet) cb.current.onPetNest?.(drag.id, drag.pos)
+        else cb.current.onDecoMove?.(drag.id, { ...drag.pos, scale: drag.group.scale.x })
       } else if (!moved) {
         const hit = W.hit
         if (hit?.type === 'plant') cb.current.onPlantTap?.(hit.key)

@@ -79,7 +79,8 @@ export const useGameStore = create(
       waterStreak: 0,                              // 連續澆水天數（溫和版：斷了只是重數，不處罰）
       waterStreakBest: 0,
       lastWaterDay: null,                          // 最近一次澆水的日期（判斷連續）
-      petHabitat: {},                              // 寵物搬家：{ petId: 'indoor'|'outdoor' }，覆蓋預設歸屬
+      petHabitat: {},                              // 寵物搬家：{ petId: 'indoor'|'outdoor'|'magic' }，覆蓋預設歸屬
+      petNests: {},                                // 寵物的窩：{ petId: {x,y,sc} }，拖曳定位，之後在窩附近活動
       gardenKeeper: null,                          // 指派的花園小幫手寵物 id
       keeperHelpedDay: null,                       // 小幫手今天是否已幫忙過
 
@@ -454,6 +455,18 @@ export const useGameStore = create(
         set((prev) => ({ petHabitat: { ...prev.petHabitat, [petId]: scene } }))
         return 'ok'
       },
+
+      // 寵物的窩：把牠拖到某個位置放開，那裡就成為牠的窩（牠仍會在附近走動）。
+      // 記 sc 是因為同一隻寵物搬家之後，舊場景的窩就不該再套用。
+      // 再拖一次就換位置；拖回原本的窩附近等於沒變，安安不會被卡住。
+      setPetNest: (petId, x, y, sc) =>
+        set((s) => ({ petNests: { ...s.petNests, [petId]: { x, y, sc } } })),
+      clearPetNest: (petId) =>
+        set((s) => {
+          const next = { ...s.petNests }
+          delete next[petId]
+          return { petNests: next }
+        }),
 
       // 指派花園小幫手（喜歡某些花的寵物幫忙顧）
       setGardenKeeper: (petId) =>

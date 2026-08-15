@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS, PET_ORDER, EVOLVE_EXP, PET_SKILLS, PET_TRAITS, SKILL_COST, ENERGY_PER_QUESTION } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
-import { habitatOfPet, MAX_PETS_PER_SCENE } from '../data/roomRules'
+import { habitatOfPet, MAX_PETS_PER_SCENE, HOME_SCENES } from '../data/roomRules'
 import PetAvatar from '../components/PetAvatar'
 import EvolveModal from '../components/EvolveModal'
 import { sfx } from '../utils/sound'
@@ -29,13 +29,13 @@ function getMoodColor(val) {
 
 export default function PetScreen({ onNavigate }) {
   const { coins, pets, activePet, evolvePetFood, unlockPet, setActivePet, petEquipment, petMoods,
-          petHabitat, setPetHabitat } = useGameStore()
+          petHabitat, setPetHabitat, petNests, clearPetNest } = useGameStore()
   const [selected, setSelected] = useState(activePet)
   const [moveMsg, setMoveMsg] = useState('')
 
   // 每個場景目前住了幾隻（只算已解鎖的）
   const homeCount = useMemo(() => {
-    const c = { indoor: 0, outdoor: 0 }
+    const c = { indoor: 0, outdoor: 0, magic: 0 }
     for (const id of PET_ORDER) if (pets[id]?.unlocked) c[habitatOfPet(id, petHabitat)]++
     return c
   }, [pets, petHabitat])
@@ -46,7 +46,7 @@ export default function PetScreen({ onNavigate }) {
     sfx.click()
     setMoveMsg(r === 'full'
       ? `⚠️ 那邊已經住滿 ${MAX_PETS_PER_SCENE} 隻了，要先把別隻搬過來這邊喔！`
-      : `✅ 搬好了！${PETS[selected].name} 現在住在${sc === 'indoor' ? '我的家' : '秘密庭園'}。`)
+      : `✅ 搬好了！${PETS[selected].name} 現在住在${HOME_SCENES.find((h) => h.id === sc)?.label}。`)
   }
   // 訊息 2.6 秒後消失
   useEffect(() => {
@@ -186,7 +186,7 @@ export default function PetScreen({ onNavigate }) {
             <div className="pet-home-card">
               <div className="pet-home-title">🏡 {petDef.name} 住在哪裡</div>
               <div className="pet-home-btns">
-                {[['indoor', '🛋️', '我的家'], ['outdoor', '🌳', '秘密庭園']].map(([sc, icon, label]) => {
+                {HOME_SCENES.map(({ id: sc, icon, label }) => {
                   const here = habitatOfPet(selected, petHabitat) === sc
                   const full = !here && homeCount[sc] >= MAX_PETS_PER_SCENE
                   return (
@@ -203,6 +203,17 @@ export default function PetScreen({ onNavigate }) {
               </div>
               <div className="pet-home-note">
                 {moveMsg || `每個場景最多 ${MAX_PETS_PER_SCENE} 隻，這樣畫面才跑得順。`}
+              </div>
+              {/* 窩：在房間裡把寵物拖到喜歡的位置就會定下來，這裡可以取消 */}
+              <div className="pet-home-note">
+                {petNests?.[selected]
+                  ? <>🏠 牠有自己的窩，只在附近活動。
+                      <button className="pet-nest-clear"
+                        onClick={() => { sfx.click(); clearPetNest(selected); setMoveMsg(`✅ ${petDef.name} 可以到處跑了！`) }}>
+                        放牠自由跑
+                      </button>
+                    </>
+                  : '💡 在房間裡把牠拖到喜歡的地方放開，那裡就會變成牠的窩。'}
               </div>
             </div>
           )}

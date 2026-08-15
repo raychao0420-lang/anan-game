@@ -5,7 +5,7 @@ import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, BLOOM_TRAITS, MAX_PLANTS, MAX_FLOWER_DECOS, GARDEN_SCENES, isGardenScene, plantsOf, makeGardenQuestion } from '../data/garden'
-import { BOUNDS, PLANT_BOUNDS, ACTIVITY_RADIUS, chasesToy, habitatOfPet, flowerDecoBounds } from '../data/roomRules'
+import { BOUNDS, PLANT_BOUNDS, ACTIVITY_RADIUS, chasesToy, habitatOfPet, habitatOfDeco, flowerDecoBounds, wanderBounds } from '../data/roomRules'
 import { sfx, startAmbient, stopAmbient } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
@@ -191,9 +191,6 @@ const EMPTY_ITEMS = []  // 穩定的空陣列參照，避免沒裝備的寵物�
 // ── 室內外雙場景：寵物與家具各自歸屬，一次只渲染一個場景 → 同時動畫的寵物數減半、另一半完全卸載 ──
 // 戶外＝水生/星空/野外的孩子與家具；沒列到的都算室內。要調整歸屬只改這兩個 Set。
 
-const OUTDOOR_DECOS = new Set(['pool', 'hot_spring', 'tent', 'igloo', 'telescope', 'star_swing', 'moon_hammock', 'bamboo', 'plant', 'castle', 'trampoline', 'bird_perch', 'world_route_map', 'taiwan_puzzle_wall', 'rainbow'])
-
-const habitatOfDeco = (id) => (OUTDOOR_DECOS.has(id) ? 'outdoor' : 'indoor')
 
 // ── 秘密庭園：種花種樹，每天澆水成長（規則見 data/garden.js）─────────────────
 
@@ -351,7 +348,7 @@ const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, container
 
 // ── Wandering pet ─────────────────────────────────────────────────────────────
 
-const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100, weather = 'clear', theme = null, reportPos, meetX = null, toy = null, onToyReach }) {
+const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equippedPetItems, placedDecos, poolPos, onPetClick, mood = 100, weather = 'clear', theme = null, reportPos, meetX = null, toy = null, onToyReach, nest = null, onNest }) {
   const cfg = PET_CONFIG[petId] ?? DEFAULT_PET_CONFIG
 
   // 這隻寵物會被吸引的家具（依個性）
@@ -375,6 +372,10 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
 
   const toyRef = useRef(toy)
   useEffect(() => { toyRef.current = toy }, [toy])
+
+  // 窩：有窩的寵物平常只在窩附近晃（拖曳時會即時更新，所以要用 ref）
+  const nestRef = useRef(nest)
+  useEffect(() => { nestRef.current = nest }, [nest])
 
   // 位置回報給父層做「寵物相遇」偵測
   useEffect(() => { reportPos?.(petId, pos) }, [petId, pos, reportPos])
@@ -430,8 +431,10 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
           dx = (Math.random() - 0.5) * 26; dy = (Math.random() - 0.5) * 12                     // 隨意亂晃
         }
 
-        let newX = Math.max(BOUNDS.xMin, Math.min(BOUNDS.xMax, prev.x + dx))
-        let newY = Math.max(BOUNDS.yMin, Math.min(BOUNDS.yMax, prev.y + dy))
+        // 有窩就在窩附近活動；追零食／去玩家具時不受窩限制（那才是有生命的樣子）
+        const wb = (targetRef.current || chasesToy(petId, t5)) ? BOUNDS : wanderBounds(nestRef.current)
+        let newX = Math.max(wb.xMin, Math.min(wb.xMax, prev.x + dx))
+        let newY = Math.max(wb.yMin, Math.min(wb.yMax, prev.y + dy))
 
         // 怕水的 LULU 逃離水池
         if (petId === 'lulu' && pool) {
@@ -450,6 +453,33 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
     }, cfg.wanderInterval + Math.random() * 1500)
     return () => clearInterval(timer)
   }, [cfg.wanderInterval, petId])
+
+  // 拖曳定位：長距離拖動＝幫牠找個窩；只是點一下＝摸摸牠（用移動距離區分，平板才好操作）
+  const dragRef = useRef(null)
+  const onPetDown = (e) => {
+    e.currentTarget.setPointerCapture?.(e.pointerId)
+    dragRef.current = { sx: e.clientX, sy: e.clientY, moved: false, last: null }
+  }
+  const onPetMove = (e) => {
+    const d = dragRef.current
+    if (!d) return
+    if (!d.moved && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) < 10) return
+    d.moved = true
+    const r = e.currentTarget.offsetParent?.getBoundingClientRect()
+    if (!r) return
+    const p = {
+      x: Math.max(BOUNDS.xMin, Math.min(BOUNDS.xMax, (e.clientX - r.left) / r.width * 100)),
+      y: Math.max(BOUNDS.yMin, Math.min(BOUNDS.yMax, (e.clientY - r.top) / r.height * 100)),
+    }
+    d.last = p
+    setPos(p)
+  }
+  const onPetUp = () => {
+    const d = dragRef.current
+    dragRef.current = null
+    if (d?.moved) { if (d.last) onNest?.(petId, d.last) }
+    else handleClick()
+  }
 
   const handleClick = () => {
     setBurst(true)
@@ -472,7 +502,10 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
         zIndex: Math.round(pos.y),
         filter: getDepthBlur(pos.y),
       }}
-      onClick={handleClick}
+      onPointerDown={onPetDown}
+      onPointerMove={onPetMove}
+      onPointerUp={onPetUp}
+      onPointerCancel={onPetUp}
     >
       <div className="room-pet-shadow" />
       {/* Bob layer（room-pet-body 帶拋光地板倒影） */}
@@ -544,7 +577,7 @@ export default function HomeRoomScreen({ onNavigate }) {
   const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins,
           seedlings, fertilizer, waterPlant, waterAll, useFertilizer, addSeedling, updateDailyProgress,
           solveMagicPlant, recordBloom, registerWaterDay, gardenKeeper, setGardenKeeper, keeperTend, gardenDex, addFlower, petHabitat,
-          flowers, flowerDecos, placeFlower, takeFlowerBack } = useGameStore()
+          flowers, flowerDecos, placeFlower, takeFlowerBack, petNests, setPetNest } = useGameStore()
   const containerRef = useRef(null)
 
   // 溫暖的家（室內）／ 秘密庭園（戶外）雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
@@ -669,6 +702,13 @@ export default function HomeRoomScreen({ onNavigate }) {
   const [flowerPick, setFlowerPick] = useState(false)  // 「擺花」選哪一朵的彈窗
   const say = useCallback((msg) => setNotice({ msg, key: Date.now() }), [])
   const petFace = (id) => PETS[id]?.stages?.[1]?.emoji ?? '🐾'
+
+  // 拖曳寵物放開 → 那裡成為牠的窩（之後牠會在附近繞，不會跑到天邊去）
+  const handleNest = useCallback((petId, p) => {
+    setPetNest(petId, p.x, p.y, scene)
+    sfx.click()
+    say(`🏠 ${PETS[petId]?.name} 的窩搬到這裡了，牠會在附近玩`)
+  }, [setPetNest, scene, say])
 
   // 今天有澆到水就登記一次連續澆水（每 3 天小獎、7 天大獎）
   const bumpStreak = useCallback(() => {
@@ -940,6 +980,9 @@ export default function HomeRoomScreen({ onNavigate }) {
   // ⚠️ 這三個刻意「不」包 useMemo：資料量很小，手寫記憶化反而會讓 React Compiler
   // 整個放棄最佳化這個元件（lint 的 "Compilation Skipped"），交給編譯器自動處理就好
   const sceneFlowerDecos = (flowerDecos || []).filter((f) => f.sc === scene)
+  // 這個場景的窩（寵物搬過家的話，舊場景的窩就不算數）
+  const sceneNests = Object.fromEntries(
+    Object.entries(petNests || {}).filter(([, n]) => n.sc === scene))
   const flowerList  = Object.entries(flowers || {}).filter(([, n]) => n > 0)
   const flowerTotal = flowerList.reduce((a, [, n]) => a + n, 0)
 
@@ -1018,6 +1061,7 @@ export default function HomeRoomScreen({ onNavigate }) {
               decos={sceneDecos}
               garden={garden}
               flowerDecos={flowerDecos}
+              nests={sceneNests}
               toy={toy}
               tool={tool}
               onPetClick={handlePetClick}
@@ -1032,6 +1076,7 @@ export default function HomeRoomScreen({ onNavigate }) {
                 sfx.click(); takeFlowerBack(key)
                 say(`🌸 把${BLOOM_TRAITS[f?.emoji]?.name || '花'}收回背包了`)
               }}
+              onPetNest={(id, p) => handleNest(id, p)}
               onFloorTap={(pt) => throwToyAt(pt.x, pt.y)}
               onWindowTap={() => cycleWeather(NO_EVENT)}
               onToyReach={onToyReach}
@@ -1135,6 +1180,8 @@ export default function HomeRoomScreen({ onNavigate }) {
               meetX={meetPartner[petId] ?? null}
               toy={toy}
               onToyReach={onToyReach}
+              nest={petNests?.[petId]?.sc === scene ? petNests[petId] : null}
+              onNest={handleNest}
             />
           ))}
 
