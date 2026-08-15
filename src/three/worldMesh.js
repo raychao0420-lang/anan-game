@@ -1,7 +1,7 @@
 // 場景本體：室內（溫暖的家）與戶外（秘密庭園）的地板、牆、窗、天空、天氣，
 // 以及花園裡會長大的花草樹木。成長規則仍由 data/garden.js 決定，這裡只負責「長什麼樣」。
 import * as THREE from 'three'
-import { PLANT_KINDS } from '../data/garden'
+import { PLANT_KINDS, bloomKind } from '../data/garden'
 
 const M = (c, o) => new THREE.MeshLambertMaterial({ color: c, ...o })
 const ball = (r, s = 10) => new THREE.SphereGeometry(r, s, s - 2)
@@ -300,6 +300,42 @@ export function buildPlant(p, view) {
 
   // 今天還沒澆水 → 頭上冒個小水滴提示（比照 2D 版的 room-plant-thirsty）
   g.userData.thirstyAnchor = top
+  return g
+}
+
+// 擺出來當裝飾的花：陶花瓶＋一朵花。顏色沿用該花色所屬花種的色系（跟 buildPlant 同一套），
+// 所以 2D 看到的是哪一朵、3D 就是同一個色系，不會兩邊對不起來。
+const VASE_BLOOM = { flower: '#FF8FB1', rare: '#E0466E', tree: '#4E9A38', magic: '#B388FF' }
+export function buildFlowerDeco(f) {
+  const g = new THREE.Group()
+  g.userData.pick = { type: 'flowerdeco', key: f.key }
+
+  const vase = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.06, 0.17, 10), M('#C98A52'))
+  vase.position.y = 0.085
+  g.add(vase)
+  const lip = new THREE.Mesh(new THREE.TorusGeometry(0.085, 0.016, 6, 12), M('#B0743F'))
+  lip.position.y = 0.17
+  lip.rotation.x = Math.PI / 2
+  g.add(lip)
+
+  const top = new THREE.Group()
+  top.position.y = 0.31
+  g.add(top)
+  g.userData.sway = top          // 跟植物一樣會輕輕搖
+
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.16, 6), M('#5FA347'))
+  stem.position.y = -0.08
+  top.add(stem)
+
+  const col = VASE_BLOOM[bloomKind(f.emoji)] || VASE_BLOOM.flower
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2
+    const petal = new THREE.Mesh(ball(0.055, 8), M(col))
+    petal.position.set(Math.cos(a) * 0.07, 0, Math.sin(a) * 0.07)
+    petal.scale.set(1, 0.5, 1)
+    top.add(petal)
+  }
+  top.add(new THREE.Mesh(ball(0.04, 8), M('#FFE9A0')))
   return g
 }
 

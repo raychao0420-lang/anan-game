@@ -972,6 +972,54 @@ function PlutoBase({ c }) {
   )
 }
 
+// 阿榕：百年老榕樹靈（樹冠當頭髮＋樹皮樹幹當身體＋垂下的氣根當手，臉長在樹幹上，旁邊飄落葉）
+// 榕樹的招牌就是「從枝條垂下來的氣根」，所以氣根一定要露在剪影外面，不能貼著樹幹。
+function ArongBase({ c }) {
+  const leaf = c.leaf || c.belly
+  return (
+    <g>
+      {/* 垂下的氣根（先畫，讓樹冠壓在上面＝從枝條長出來的） */}
+      <path d="M26,50 Q23,64 26,80" fill="none" stroke={c.ear} strokeWidth="2.6" strokeLinecap="round" />
+      <path d="M75,48 Q78,62 74,76" fill="none" stroke={c.ear} strokeWidth="2.4" strokeLinecap="round" />
+      <path d="M33,52 Q31,62 33,70" fill="none" stroke={c.ear} strokeWidth="1.8" strokeLinecap="round" opacity="0.75" />
+      {/* 樹幹（下方外擴成板根） */}
+      <path d="M40,54 C38,76 37,90 33,101 Q30,107 24,108 L76,108 Q70,107 67,101 C63,90 62,76 60,54 Z"
+        fill={c.body} stroke={c.ear} strokeWidth="1.6" strokeLinejoin="round" />
+      {/* 樹皮亮面＋樹皮紋 */}
+      <path d="M44,58 C42,76 41,90 38,102" fill="none" stroke={c.belly} strokeWidth="3" opacity="0.35" strokeLinecap="round" />
+      <path d="M55,62 C56,76 57,88 59,99" fill="none" stroke={c.ear} strokeWidth="1.4" opacity="0.35" strokeLinecap="round" />
+      {/* 樹洞（老樹的年紀） */}
+      <ellipse cx="63" cy="94" rx="3.4" ry="4.6" fill={c.nose} opacity="0.35" />
+      {/* 樹冠 */}
+      <g stroke={c.ear} strokeWidth="1.5">
+        <circle cx="28" cy="45" r="14" fill={leaf} />
+        <circle cx="72" cy="43" r="15" fill={leaf} />
+        <circle cx="38" cy="28" r="14" fill={leaf} />
+        <circle cx="63" cy="27" r="13" fill={leaf} />
+        <circle cx="50" cy="36" r="22" fill={leaf} />
+      </g>
+      {/* 樹冠受光面 */}
+      <ellipse cx="43" cy="27" rx="13" ry="8" fill="white" opacity="0.16" />
+      {/* 眼睛（大而亮，老樹靈是慈祥的） */}
+      <circle cx="43" cy="71" r="5.4" fill={c.nose} />
+      <circle cx="57" cy="71" r="5.4" fill={c.nose} />
+      <circle cx="44.8" cy="68.7" r="1.9" fill="white" />
+      <circle cx="58.8" cy="68.7" r="1.9" fill="white" />
+      <circle cx="41.2" cy="73" r="1.1" fill="rgba(255,255,255,0.55)" />
+      <circle cx="55.2" cy="73" r="1.1" fill="rgba(255,255,255,0.55)" />
+      {/* 慈祥的笑 */}
+      <path d="M45,79 Q50,83.5 55,79" fill="none" stroke={c.nose} strokeWidth="1.7" strokeLinecap="round" />
+      {/* 腮紅 */}
+      <ellipse cx="37" cy="77" rx="4" ry="2.6" fill="rgba(230,140,90,0.28)" />
+      <ellipse cx="63" cy="77" rx="4" ry="2.6" fill="rgba(230,140,90,0.28)" />
+      {/* 飄落的葉子（阿榕就是用落葉浮字說話的） */}
+      <path d="M14,62 Q19,56 23,62 Q19,68 14,62 Z" fill={c.glow || leaf} opacity="0.8" />
+      <path d="M83,66 Q87,61 90,66 Q87,71 83,66 Z" fill={c.glow || leaf} opacity="0.7" />
+      <path d="M80,88 Q83,84 86,88 Q83,92 80,88 Z" fill={c.glow || leaf} opacity="0.55" />
+    </g>
+  )
+}
+
 // ── Extra clothes ─────────────────────────────────────────────────────────────
 
 function ClothesKimono() {
@@ -1507,6 +1555,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'xiaoq' ? <XiaoQBase c={colors} />
        : petId === 'feifei' ? <FeifeiBase c={colors} />
        : petId === 'xiaohu' ? <XiaohuBase c={colors} />
+       : petId === 'arong' ? <ArongBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 

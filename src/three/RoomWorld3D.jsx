@@ -5,7 +5,7 @@ import * as THREE from 'three'
 import { createEngine, clearGroup, toWorldX, toWorldZ, isWallItem, toWallHeight, U } from './engine'
 import { buildPet } from './petMesh'
 import { buildDeco } from './decoMesh'
-import { buildRoom, buildGarden, buildPlant, buildWeather, buildFireflies, PHASE_LIGHT } from './worldMesh'
+import { buildRoom, buildGarden, buildPlant, buildFlowerDeco, buildWeather, buildFireflies, PHASE_LIGHT } from './worldMesh'
 import { BOUNDS, chasesToy } from '../data/roomRules'
 import { plantView } from '../data/garden'
 
@@ -18,17 +18,17 @@ const pickTarget = () => ({ x: rnd(BOUNDS.xMin, BOUNDS.xMax), y: rnd(BOUNDS.yMin
 
 export default function RoomWorld3D({
   scene, theme, phase, weather, lamp = null,   // lamp: true 開／false 關／null 照晝夜自動
-  pets = [], petMoods = {}, decos = [], garden = [], toy = null, tool = null,
-  onPetClick, onDecoMove, onPlantTap, onFloorTap, onWindowTap, onToyReach, onPetPos,
+  pets = [], petMoods = {}, decos = [], garden = [], flowerDecos = [], toy = null, tool = null,
+  onPetClick, onDecoMove, onPlantTap, onFlowerTap, onFloorTap, onWindowTap, onToyReach, onPetPos,
 }) {
   const canvasRef = useRef(null)
   const engineRef = useRef(null)
-  const worldRef = useRef({ pets: new Map(), decos: new Map(), plants: new Map(), fx: [], toy: null })
+  const worldRef = useRef({ pets: new Map(), decos: new Map(), plants: new Map(), flowers: new Map(), fx: [], toy: null })
   // 回呼與「當下狀態」放進 ref，這樣 render loop 不必因為 props 變動而重建
   const cb = useRef({})
   const live = useRef({ toy: null, tool: null })
   useEffect(() => {
-    cb.current = { onPetClick, onDecoMove, onPlantTap, onFloorTap, onWindowTap, onToyReach, onPetPos }
+    cb.current = { onPetClick, onDecoMove, onPlantTap, onFlowerTap, onFloorTap, onWindowTap, onToyReach, onPetPos }
     live.current = { toy, tool, weather, phase, scene }
   })
 
@@ -164,6 +164,11 @@ export default function RoomWorld3D({
         if (pl.pulse) pl.pulse.scale.setScalar(1 + Math.sin(t * 3) * 0.12)
       }
 
+      // 擺出來的花也輕輕搖（幅度比種在土裡的小，看得出是插在瓶子裡）
+      for (const fl of W.flowers.values()) {
+        if (fl.sway) fl.sway.rotation.z = Math.sin(t * 1.1 + fl.seed) * 0.04
+      }
+
       for (const f of W.fx) f.update?.(dt, t)
     })
 
@@ -176,7 +181,7 @@ export default function RoomWorld3D({
     if (!engine) return
     const W = worldRef.current
     clearGroup(engine.root)
-    W.pets.clear(); W.decos.clear(); W.plants.clear(); W.fx = []
+    W.pets.clear(); W.decos.clear(); W.plants.clear(); W.flowers.clear(); W.fx = []
 
     // 魔法花園沿用庭園的地形，但強制套 space 主題的紫色系，一眼分得出是不同的地方
     const env = scene === 'outdoor' ? buildGarden(theme)
@@ -336,6 +341,25 @@ export default function RoomWorld3D({
     }
   }, [garden, scene])
 
+  // ── 擺出來當裝飾的花（室內、庭園都會有）──
+  useEffect(() => {
+    const engine = engineRef.current
+    if (!engine) return
+    const W = worldRef.current
+    const want = new Map((flowerDecos || []).filter((f) => f.sc === scene).map((f) => [f.key, f]))
+
+    for (const [key, fl] of W.flowers) {
+      if (!want.has(key)) { engine.root.remove(fl.group); clearGroup(fl.group); W.flowers.delete(key) }
+    }
+    for (const [key, f] of want) {
+      if (W.flowers.has(key)) continue
+      const group = buildFlowerDeco(f)
+      group.position.set(toWorldX(f.x), 0, toWorldZ(f.y))
+      engine.root.add(group)
+      W.flowers.set(key, { group, sway: group.userData.sway, seed: Math.random() * 10 })
+    }
+  }, [flowerDecos, scene])
+
   // ── 地上的零食／球 ──
   useEffect(() => {
     const engine = engineRef.current
@@ -395,6 +419,7 @@ export default function RoomWorld3D({
       } else if (!moved) {
         const hit = W.hit
         if (hit?.type === 'plant') cb.current.onPlantTap?.(hit.key)
+        else if (hit?.type === 'flowerdeco') cb.current.onFlowerTap?.(hit.key)
         else if (hit?.type === 'pet') cb.current.onPetClick?.(hit.id)
         else if (hit?.type === 'window') cb.current.onWindowTap?.()
         else {

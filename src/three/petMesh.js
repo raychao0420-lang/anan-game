@@ -9,14 +9,6 @@
 import * as THREE from 'three'
 import { EVO } from '../data/petColors'
 
-// 阿榕（S7 老榕樹靈）在 EVO 表裡沒有配色（2D 版也因此誤用 LULU 的顏色），這裡補一份樹靈色。
-const ARONG_EVO = [null,
-  { body: '#6B7A4A', belly: '#8FA46A', ear: '#4E5C34', nose: '#2E3A1C', leaf: '#5FA347' },
-  { body: '#5E7040', belly: '#86A05F', ear: '#44522C', nose: '#26301A', leaf: '#4E9A38' },
-  { body: '#4F6436', belly: '#7C9A55', ear: '#3A4824', nose: '#1E2814', leaf: '#3F8F2C' },
-  { body: '#3F5A2C', belly: '#9BC46A', ear: '#2E3C1C', nose: '#16200E', leaf: '#7CE05A', glow: '#A8E063' },
-]
-
 // ── 賽璐璐材質：三階漸層，顏色不會糊掉，看起來像上色的插畫 ──────────────────
 const GRADIENT = (() => {
   const tex = new THREE.DataTexture(new Uint8Array([80, 170, 255]), 3, 1, THREE.RedFormat)
@@ -125,9 +117,8 @@ function put(parent, geo, material, x, y, z, scale, rot) {
 }
 
 export function getPalette(petId, stage) {
-  const table = petId === 'arong' ? ARONG_EVO : EVO[petId]
   const s = Math.max(1, Math.min(4, stage || 1))
-  return table?.[s] ?? EVO.lulu[1]
+  return EVO[petId]?.[s] ?? EVO.lulu[1]
 }
 
 // 斑紋＝貼在球面上的一小片球殼（半徑比主體大一點點，所以會浮在表面）。
@@ -340,6 +331,9 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
         patch(head, headR, mMuzzle, FRONT, 0.34, 1.28, 0.78)
       }
 
+      // 門牙掛在哪：有嘴管的掛在嘴管最前端、沒有的貼臉前（實際值在 snout 區塊算完覆寫）
+      let toothY = -headR * 0.52
+      let toothZ = headR * 0.86
       if (spec.snout) {
         // 米格魯（史努比）的招牌是「明顯突出的嘴管」，不是臉上一個小凸起。
         // 原本只凸出頭部半徑的 27%，太含蓄；拉長到 41% 並「加上描邊」，
@@ -351,8 +345,17 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
         // 大鼻頭壓在嘴管前端的上緣（史努比的鼻子又大又圓）
         put(head, ball(headR * 0.19, 10), mDark, 0, -headR * 0.16,
           headR * 0.70 + snoutLen * 0.5 + snoutR * 0.72, [1.15, 0.95, 1])
+        // 嘴管前端最外緣（capsule 實際長度＝height + 2×radius；scale 的 0.95 壓的是厚度不是長度，別乘進來）
+        toothZ = headR * 0.70 + snoutLen * 0.5 + snoutR + headR * 0.04
+        toothY = -headR * 0.26 - snoutR * 0.55
       }
-      if (spec.teeth) put(head, new THREE.BoxGeometry(headR * 0.34, headR * 0.28, headR * 0.1), toon('#FFFBEA'), 0, -headR * 0.52, headR * 0.82)
+      // 河狸的門牙原本是一塊板子塞在 z=0.82headR，整個埋在嘴管裡看不到（本專案最常見的 bug）。
+      // 改掛到嘴管最前端再往下垂，並拆成左右兩顆＋描邊，俯視角才讀得出「兩顆大門牙」。
+      if (spec.teeth) for (const sx of [-1, 1]) {
+        const tw = headR * 0.17
+        outline(put(head, new THREE.BoxGeometry(tw, headR * 0.34, headR * 0.12), toon('#FFF6D8'),
+          sx * tw * 0.58, toothY, toothZ), 1.10)
+      }
       // 浣熊的眼罩：原本是一顆壓扁的球塞在頭裡（三個半軸都小於 headR），只有臉正前方擠出一條縫，
       // 而遊戲是俯視角＝整個看不到，偏偏眼罩正是浣熊最好認的特徵。
       // 改用 patch() 貼合頭部曲面，並把上緣拉到「眉毛以上」（theta 中心 1.24 比眼睛的 1.46 高），

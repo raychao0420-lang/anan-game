@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS, PET_ORDER } from '../data/pets'
 import { SHOP_ITEMS, SHOP_CATEGORIES } from '../data/shop'
-import { PLANT_KINDS, bloomKind } from '../data/garden'
+import { PLANT_KINDS, BLOOM_TRAITS, bloomKind } from '../data/garden'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
 import './BackpackScreen.css'
@@ -130,7 +130,7 @@ export default function BackpackScreen({ onNavigate }) {
                 <motion.div key={emoji} className="bag-item" initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
                   <div className="bag-item-art bag-flower-art">{emoji}</div>
-                  <div className="bag-item-name">×{n}</div>
+                  <div className="bag-item-name">{BLOOM_TRAITS[emoji]?.name} ×{n}</div>
                   {/* 先告訴安安誰喜歡這種花，送花才是「選擇」而不是亂猜 */}
                   <div className="bag-flower-love">
                     {lovers.length ? `${lovers.map((id) => PETS[id].name).join('、')} 喜歡` : '大家都可以收'}

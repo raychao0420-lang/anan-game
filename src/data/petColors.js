@@ -169,5 +169,14 @@ export const EVO = {
     { body:'#2E2E38', belly:'#D69A58', ear:'#1E1E26', nose:'#111118', mark:'#C4402E', scarf:true, pack:true },
     { body:'#2A2A34', belly:'#DDA25E', ear:'#1B1B24', nose:'#101018', mark:'#C4402E', scarf:true, pack:true, badge:true, glow:'#F0C878' },
   ],
+  // 阿榕：百年老榕樹靈（body=樹皮、belly=樹皮亮面、ear=樹皮暗面/描邊、leaf=樹冠葉色；
+  // 階段愈高樹冠愈翠綠，stage4 發出老樹靈的金綠光）
+  arong: [
+    null,
+    { body:'#6B7A4A', belly:'#8FA46A', ear:'#4E5C34', nose:'#2E3A1C', leaf:'#5FA347' },
+    { body:'#5E7040', belly:'#86A05F', ear:'#44522C', nose:'#26301A', leaf:'#4E9A38' },
+    { body:'#4F6436', belly:'#7C9A55', ear:'#3A4824', nose:'#1E2814', leaf:'#3F8F2C' },
+    { body:'#3F5A2C', belly:'#9BC46A', ear:'#2E3C1C', nose:'#16200E', leaf:'#7CE05A', glow:'#A8E063' },
+  ],
 }
 

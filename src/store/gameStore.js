@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import { ACHIEVEMENTS } from '../data/achievements'
 import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
-import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS, MAX_PLANTS, bloomKind, FLOWER_GIFT } from '../data/garden'
+import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS, MAX_PLANTS, MAX_FLOWER_DECOS, bloomKind, FLOWER_GIFT } from '../data/garden'
 import { habitatOfPet, MAX_PETS_PER_SCENE } from '../data/roomRules'
 
 const makeStages = () => {
@@ -73,6 +73,7 @@ export const useGameStore = create(
       fertilizer: 1,                               // 魔法肥料數量：撒一次立刻多長一天
       lastSeedDrop: null,                          // 最近一次過關掉的花苗種類（給結算畫面顯示）
       flowers: {},                                 // 採收下來的花：{ '🌷': 3, ... }，可以送給寵物
+      flowerDecos: [],                             // 擺出來當裝飾的花：{ key, emoji, x, y, sc }，收回來會還進 flowers
       gardenDex: [],                               // 花園圖鑑：採收過的花色（集滿給一次大獎）
       gardenDexDone: false,                        // 圖鑑全收集獎勵是否已發
       waterStreak: 0,                              // 連續澆水天數（溫和版：斷了只是重數，不處罰）
@@ -358,6 +359,34 @@ export const useGameStore = create(
       // 採收的花進背包（可堆疊）。原本採收只換金幣，那朵花什麼都沒留下。
       addFlower: (emoji) =>
         set((s) => (emoji ? { flowers: { ...(s.flowers || {}), [emoji]: ((s.flowers || {})[emoji] || 0) + 1 } } : s)),
+
+      // 花擺進場景當裝飾（花回饋線的第三段：採收 → 送寵物 → 擺起來看）。
+      // 花從背包扣一朵變成場景裡的裝飾，收回來就還一朵，總數不會憑空多也不會憑空少。
+      // 每個場景各自算上限（同寵物與植物的作法），滿了由呼叫端擋下並說明。
+      placeFlower: (emoji, x, y, sc) =>
+        set((s) => {
+          const have = (s.flowers || {})[emoji] || 0
+          if (have <= 0) return s
+          if ((s.flowerDecos || []).filter((f) => f.sc === sc).length >= MAX_FLOWER_DECOS) return s
+          const flowers = { ...s.flowers }
+          if (have > 1) flowers[emoji] = have - 1; else delete flowers[emoji]
+          return {
+            flowers,
+            flowerDecos: [...(s.flowerDecos || []),
+              { key: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, emoji, x, y, sc }],
+          }
+        }),
+
+      // 收回擺出來的花：花回到背包，可以改擺別的地方或改送寵物
+      takeFlowerBack: (key) =>
+        set((s) => {
+          const f = (s.flowerDecos || []).find((d) => d.key === key)
+          if (!f) return s
+          return {
+            flowerDecos: (s.flowerDecos || []).filter((d) => d.key !== key),
+            flowers: { ...(s.flowers || {}), [f.emoji]: ((s.flowers || {})[f.emoji] || 0) + 1 },
+          }
+        }),
 
       // 送花給寵物：喜歡這種花的收到會特別開心（love 名單沿用 PLANT_KINDS）。
       // 回傳 { loved, exp, mood } 給畫面做反應；沒花或寵物沒解鎖回 null。

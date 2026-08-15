@@ -1175,6 +1175,34 @@
   border-radius: 50%;
   filter: blur(3px);
 }
+/* 擺出來當裝飾的花：花瓶＋花，點一下收回背包。
+   純靜態，不掛任何常駐動畫（最多 12 朵，動畫一律走 CSS 的鐵則見檔案上方註解） */
+.room-flower-deco {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.room-flower-deco-emoji {
+  font-size: 1.35rem;
+  line-height: 1;
+  margin-bottom: -6px;
+  order: -1;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.22));
+}
+.room-flower-deco-vase { font-size: 1.15rem; line-height: 1; }
+.room-flower-deco-shadow {
+  position: absolute;
+  bottom: -3px;
+  width: 55%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 50%;
+  filter: blur(3px);
+}
+.room-flower-deco:active { transform-origin: bottom center; }
+
 .room-plant-ping {
   position: absolute;
   top: -10px; right: -8px;
@@ -1305,8 +1333,21 @@
   border-radius: 12px;
   background: #f0ecf7;
 }
-.garden-codex-cell.got { background: #fff3c4; box-shadow: inset 0 0 0 2px #ffd54a; }
+.garden-codex-cell.got { background: #fff3c4; box-shadow: inset 0 0 0 2px #ffd54a; cursor: pointer; }
+.garden-codex-cell.picked { background: #d8f3d0; box-shadow: inset 0 0 0 2px #5aab4a; }
 .garden-codex-tip { font-size: 0.8rem; color: #b8892b; font-weight: 700; }
+
+/* 植物小知識卡（比照寵物圖鑑的 🔍 小知識卡） */
+.garden-fact {
+  margin: 4px 0 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #eef8ea;
+  box-shadow: inset 0 0 0 2px #cfe8c4;
+  text-align: left;
+}
+.garden-fact-title { font-size: 0.92rem; font-weight: 900; color: #2f8a4f; margin-bottom: 4px; }
+.garden-fact-text { font-size: 0.85rem; line-height: 1.55; color: #4a5a44; font-weight: 600; }
 
 /* 小幫手選擇 */
 .garden-keeper-grid {

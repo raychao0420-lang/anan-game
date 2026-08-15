@@ -28,6 +28,11 @@ export const BOUNDS = { xMin: 6, xMax: 78, yMin: 42, yMax: 66 }
 // y 太小的花會縮到看不見，而且會種到天空去。
 export const PLANT_BOUNDS = { xMin: 5, xMax: 93, yMin: 44, yMax: 86 }
 
+// 採收的花擺出來當裝飾時，可以放在哪。庭園沿用種花範圍；
+// 室內窄一些，免得擺到牆上或門外（房間的地板比庭園的草地小一圈）。
+export const flowerDecoBounds = (scene) =>
+  (scene === 'indoor' ? { xMin: 8, xMax: 88, yMin: 46, yMax: 76 } : PLANT_BOUNDS)
+
 // 會去追球的寵物（其餘只對零食有興趣）
 export const BALL_CHASERS = ['lulu', 'monkey', 'hamster', 'dino', 'kotaro', 'hana', 'kitsune', 'seal', 'xiaohu']
 export const chasesToy = (petId, toy) => !!toy && (toy.kind === 'treat' || BALL_CHASERS.includes(petId))

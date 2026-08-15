@@ -4,8 +4,8 @@ import html2canvas from 'html2canvas'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
-import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, MAX_PLANTS, GARDEN_SCENES, isGardenScene, plantsOf, makeGardenQuestion } from '../data/garden'
-import { BOUNDS, PLANT_BOUNDS, ACTIVITY_RADIUS, chasesToy, habitatOfPet } from '../data/roomRules'
+import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, BLOOM_TRAITS, MAX_PLANTS, MAX_FLOWER_DECOS, GARDEN_SCENES, isGardenScene, plantsOf, makeGardenQuestion } from '../data/garden'
+import { BOUNDS, PLANT_BOUNDS, ACTIVITY_RADIUS, chasesToy, habitatOfPet, flowerDecoBounds } from '../data/roomRules'
 import { sfx, startAmbient, stopAmbient } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
@@ -543,7 +543,8 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
 export default function HomeRoomScreen({ onNavigate }) {
   const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins,
           seedlings, fertilizer, waterPlant, waterAll, useFertilizer, addSeedling, updateDailyProgress,
-          solveMagicPlant, recordBloom, registerWaterDay, gardenKeeper, setGardenKeeper, keeperTend, gardenDex, addFlower, petHabitat } = useGameStore()
+          solveMagicPlant, recordBloom, registerWaterDay, gardenKeeper, setGardenKeeper, keeperTend, gardenDex, addFlower, petHabitat,
+          flowers, flowerDecos, placeFlower, takeFlowerBack } = useGameStore()
   const containerRef = useRef(null)
 
   // 溫暖的家（室內）／ 秘密庭園（戶外）雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
@@ -605,6 +606,22 @@ export default function HomeRoomScreen({ onNavigate }) {
   // 直接吃百分比座標（2D 由滑鼠換算、3D 由射線打在地板上換算，兩邊共用這一份規則）
   const throwToyAt = (rawX, rawY) => {
     if (!tool) return
+    // 擺花當裝飾：工具是 'deco:🌷' 這種格式，冒號後面就是要擺的那朵花
+    if (tool.startsWith('deco:')) {
+      const emoji = tool.slice(5)
+      if ((flowers?.[emoji] || 0) <= 0) { setTool(null); return }
+      if (sceneFlowerDecos.length >= MAX_FLOWER_DECOS) {
+        say(`🌸 這裡已經擺 ${MAX_FLOWER_DECOS} 朵花了，先收回幾朵再擺吧！`)
+        return
+      }
+      const b = flowerDecoBounds(scene)
+      placeFlower(emoji,
+        Math.max(b.xMin, Math.min(b.xMax, rawX)),
+        Math.max(b.yMin, Math.min(b.yMax, rawY)), scene)
+      sfx.click()
+      if ((flowers?.[emoji] || 0) <= 1) setTool(null)   // 擺到最後一朵才收工具，連續擺更順手
+      return
+    }
     // 種花／種樹：點草地種下（庭園可種範圍比丟東西更廣）；沒花苗就不種
     if (SEED_KINDS.includes(tool)) {
       if ((seedlings?.[tool] || 0) <= 0) { setTool(null); return }
@@ -647,7 +664,9 @@ export default function HomeRoomScreen({ onNavigate }) {
   const [quiz, setQuiz]           = useState(null)  // 魔法花答題 {key,x,y,q,ans,choices,wrong}
   const [nameTag, setNameTag] = useState(null)      // 3D 版點到寵物時冒出的名字
   const [codexOpen, setCodexOpen] = useState(false) // 花園圖鑑彈窗
+  const [dexPick, setDexPick] = useState(null)      // 圖鑑裡點開的那朵花（看小知識）
   const [keeperOpen, setKeeperOpen] = useState(false) // 選小幫手彈窗
+  const [flowerPick, setFlowerPick] = useState(false)  // 「擺花」選哪一朵的彈窗
   const say = useCallback((msg) => setNotice({ msg, key: Date.now() }), [])
   const petFace = (id) => PETS[id]?.stages?.[1]?.emoji ?? '🐾'
 
@@ -917,6 +936,12 @@ export default function HomeRoomScreen({ onNavigate }) {
   // 目前這個庭園場景裡的植物。兩個庭園各自獨立（各自 24 株上限），
   // 舊存檔沒有 sc 欄位的一律算秘密庭園。
   const sceneGarden = useMemo(() => plantsOf(garden, scene), [garden, scene])
+  // 擺在這個場景的裝飾花（室內也可以擺，所以不限庭園）
+  // ⚠️ 這三個刻意「不」包 useMemo：資料量很小，手寫記憶化反而會讓 React Compiler
+  // 整個放棄最佳化這個元件（lint 的 "Compilation Skipped"），交給編譯器自動處理就好
+  const sceneFlowerDecos = (flowerDecos || []).filter((f) => f.sc === scene)
+  const flowerList  = Object.entries(flowers || {}).filter(([, n]) => n > 0)
+  const flowerTotal = flowerList.reduce((a, [, n]) => a + n, 0)
 
   // 歸屬吃安安在寵物圖鑑裡的搬家設定（petHabitat），沒設過的用預設
   const scenePets    = useMemo(() => unlockedPets.filter(([id]) => habitatOfPet(id, petHabitat) === scene), [unlockedPets, scene, petHabitat])
@@ -992,6 +1017,7 @@ export default function HomeRoomScreen({ onNavigate }) {
               petMoods={petMoods}
               decos={sceneDecos}
               garden={garden}
+              flowerDecos={flowerDecos}
               toy={toy}
               tool={tool}
               onPetClick={handlePetClick}
@@ -999,6 +1025,12 @@ export default function HomeRoomScreen({ onNavigate }) {
               onPlantTap={(key) => {
                 const p = garden.find((g) => g.key === key)
                 if (p) tapPlant(NO_EVENT, p, plantView(p))
+              }}
+              onFlowerTap={(key) => {
+                if (tool) return                   // 拿著工具時不要誤收
+                const f = (flowerDecos || []).find((d) => d.key === key)
+                sfx.click(); takeFlowerBack(key)
+                say(`🌸 把${BLOOM_TRAITS[f?.emoji]?.name || '花'}收回背包了`)
               }}
               onFloorTap={(pt) => throwToyAt(pt.x, pt.y)}
               onWindowTap={() => cycleWeather(NO_EVENT)}
@@ -1128,6 +1160,23 @@ export default function HomeRoomScreen({ onNavigate }) {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* 擺出來當裝飾的花：點一下收回背包（花回饋線第三段：採收 → 送寵物 → 擺起來看） */}
+          {sceneFlowerDecos.map((f) => (
+            <div key={f.key} className="room-flower-deco"
+              style={{ left: `${f.x}%`, top: `${f.y}%`, zIndex: Math.round(f.y),
+                transform: `translateX(-50%) scale(${getDepthScale(f.y)})`, transformOrigin: 'bottom center' }}
+              onClick={(e) => {
+                e.stopPropagation()
+                if (tool) return                    // 手上拿著工具時不要誤收
+                sfx.click(); takeFlowerBack(f.key)
+                say(`🌸 把${BLOOM_TRAITS[f.emoji]?.name || '花'}收回背包了`)
+              }}>
+              <div className="room-flower-deco-shadow" />
+              <span className="room-flower-deco-vase">🏺</span>
+              <span className="room-flower-deco-emoji">{f.emoji}</span>
+            </div>
+          ))}
 
           {/* 秘密庭園：種下的花草樹木，依真實時間長大→開花，開花後可點採收 */}
           {isGardenScene(scene) && sceneGarden.map((p) => {
@@ -1275,6 +1324,18 @@ export default function HomeRoomScreen({ onNavigate }) {
                 {t.emoji}
               </motion.button>
             ))}
+            {/* 擺花：背包裡有花才出現（室內、庭園都能擺） */}
+            {flowerTotal > 0 && (
+              <motion.button className={`room-toy-btn${tool?.startsWith('deco:') ? ' armed' : ''}`}
+                whileTap={{ scale: 0.85 }}
+                onClick={(e) => {
+                  e.stopPropagation(); sfx.click()
+                  if (tool?.startsWith('deco:')) setTool(null); else setFlowerPick(true)
+                }}
+                aria-label="擺一朵花當裝飾" data-tip="擺一朵花當裝飾">
+                🌸
+              </motion.button>
+            )}
           </div>
         )}
         {/* 秘密庭園：花苗／肥料／全部澆水按鈕（只在庭園場景出現） */}
@@ -1331,9 +1392,37 @@ export default function HomeRoomScreen({ onNavigate }) {
             {TOY_TOOLS[tool]?.hint
               || (tool === 'fert' ? '點一株植物撒肥料，立刻多長一天！'
               : SEED_KINDS.includes(tool) ? `點草地種下${PLANT_KINDS[tool].seedName}，每天澆水就會長大～`
+              : tool.startsWith('deco:') ? `點一個地方把 ${tool.slice(5)} 擺下去（擺好後點它可以收回背包）`
               : '')}
           </div>
         )}
+
+        {/* 擺花：選要擺哪一朵 */}
+        <AnimatePresence>
+          {flowerPick && (
+            <motion.div className="garden-modal" onClick={() => setFlowerPick(false)}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <motion.div className="garden-keeper" onClick={(e) => e.stopPropagation()}
+                initial={{ scale: 0.7, y: 30 }} animate={{ scale: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 220, damping: 18 }}>
+                <div className="garden-codex-title">🌸 擺一朵花</div>
+                <div className="garden-codex-sub">
+                  選一朵擺在這裡（{sceneFlowerDecos.length}/{MAX_FLOWER_DECOS}），不喜歡再點它收回來
+                </div>
+                <div className="garden-keeper-grid">
+                  {flowerList.map(([emoji, n]) => (
+                    <motion.button key={emoji} whileTap={{ scale: 0.9 }} className="garden-keeper-cell"
+                      onClick={() => { sfx.click(); setTool(`deco:${emoji}`); setFlowerPick(false) }}>
+                      <span className="gk-face">{emoji}</span>
+                      <span className="gk-name">{BLOOM_TRAITS[emoji]?.name || ''} ×{n}</span>
+                    </motion.button>
+                  ))}
+                </div>
+                <button className="garden-modal-close" onClick={() => { sfx.click(); setFlowerPick(false) }}>關閉</button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <AnimatePresence>
           {snapping && (
             <motion.div className="room-photo-flash"
@@ -1413,8 +1502,24 @@ export default function HomeRoomScreen({ onNavigate }) {
               <div className="garden-codex-grid">
                 {ALL_BLOOMS.map((e) => {
                   const got = (gardenDex || []).includes(e)
-                  return <span key={e} className={`garden-codex-cell${got ? ' got' : ''}`}>{got ? e : '❔'}</span>
+                  return (
+                    <span key={e}
+                      className={`garden-codex-cell${got ? ' got' : ''}${dexPick === e ? ' picked' : ''}`}
+                      onClick={got ? () => { sfx.click(); setDexPick(dexPick === e ? null : e) } : undefined}>
+                      {got ? e : '❔'}
+                    </span>
+                  )
                 })}
+              </div>
+              {/* 植物小知識：收集到的花點一下就認識它 */}
+              {dexPick && BLOOM_TRAITS[dexPick] && (
+                <div className="garden-fact">
+                  <div className="garden-fact-title">🔍 {dexPick} {BLOOM_TRAITS[dexPick].name}小知識</div>
+                  <div className="garden-fact-text">{BLOOM_TRAITS[dexPick].fact}</div>
+                </div>
+              )}
+              <div className="garden-codex-tip">
+                {dexPick ? '再點一次收起來，點別朵花看別的知識' : '點開過的花，可以看看它的小知識！'}
               </div>
               <div className="garden-codex-tip">全部收集完成可得 200 金幣大獎！</div>
               <button className="garden-modal-close" onClick={() => { sfx.click(); setCodexOpen(false) }}>關閉</button>
