@@ -86,6 +86,20 @@ export default function RoomWorld3D({
           parts.body.rotation.z = p.walking ? Math.sin(t * 7) * 0.05 : 0
         }
         if (parts?.head) parts.head.rotation.x = sit * 0.22       // 頭轉回水平，不然會朝天
+        // 貓頭鷹的招牌轉頭：不是連續左右搖，而是「啪」地轉過去、停一會兒、再啪地轉回來。
+        // 只有停下來發呆時才轉；走路時強制歸零，頭要朝著前進方向。
+        // 這個梗成立的前提是身體看得出正面（胸前那片圍兜），不然只會被看成整隻在原地打轉。
+        if (parts?.headTurn) {
+          p.htWait = (p.htWait ?? rnd(1, 4)) - dt
+          if (p.walking) { p.htGoal = 0; p.htWait = rnd(1.5, 4) }
+          else if (p.htWait <= 0) {
+            p.htGoal = p.htGoal ? 0 : (Math.random() < 0.5 ? -1 : 1) * rnd(1.9, 2.6)
+            p.htWait = p.htGoal ? rnd(1.4, 3) : rnd(3, 7)
+          }
+          p.htNow = (p.htNow ?? 0)
+          p.htNow += ((p.htGoal ?? 0) - p.htNow) * Math.min(dt * 11, 1)   // 11＝夠快才有「啪」的感覺
+          parts.head.rotation.y = p.htNow
+        }
         if (parts?.float) parts.float.position.y += (Math.sin(t * 1.4 + p.seed) * 0.0009)
         if (parts?.tail) {
           parts.tail.rotation.y = Math.sin(t * (p.walking ? 9 : 3)) * (p.walking ? 0.5 : 0.22)

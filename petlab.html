@@ -129,8 +129,19 @@
 
   rebuild()
   resize()
+  // 轉頭示範（貓頭鷹）：遊戲裡只會出現已解鎖的寵物，所以在這裡也重現一次，
+  // 沒解鎖貓頭鷹的人才看得到這個動作。節奏與 RoomWorld3D 一致（那邊改了這裡也要跟著改）。
+  const HT_HOLD = 2.2, HT_SNAP = 11
+  let htGoal = 0, htNow = 0, htNext = HT_HOLD, htLast = 0
   renderer.setAnimationLoop((ms) => {
     const t = ms / 1000
+    const dt = Math.min(0.05, t - htLast); htLast = t
+    const parts = pet?.userData.parts
+    if (parts?.headTurn) {
+      if (t > htNext) { htGoal = htGoal ? 0 : 2.2; htNext = t + HT_HOLD }
+      htNow += (htGoal - htNow) * Math.min(dt * HT_SNAP, 1)
+      parts.head.rotation.y = htNow
+    } else { htGoal = 0; htNow = 0; htNext = t + HT_HOLD }
     if (pet) pet.rotation.y = Math.atan2(CAM_DIR.x, CAM_DIR.z) + S.turn + (S.spin ? t * 0.7 : 0)
     renderer.render(scene, camera)
   })
