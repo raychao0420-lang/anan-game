@@ -92,11 +92,19 @@ export default function RoomWorld3D({
         // 只有停下來發呆時才轉；走路時強制歸零，頭要朝著前進方向。
         // 這個梗成立的前提是身體看得出正面（胸前那片圍兜），不然只會被看成整隻在原地打轉。
         if (parts?.headTurn) {
-          p.htWait = (p.htWait ?? rnd(1, 4)) - dt
-          if (p.walking) { p.htGoal = 0; p.htWait = rnd(1.5, 4) }
-          else if (p.htWait <= 0) {
-            p.htGoal = p.htGoal ? 0 : (Math.random() < 0.5 ? -1 : 1) * rnd(1.9, 2.6)
-            p.htWait = p.htGoal ? rnd(1.4, 3) : rnd(3, 7)
+          if (p.walking) {
+            // 走路時頭朝前，並把計時器壓到 0.25 秒 ——「停下來就轉」。
+            // 原本走路時每一幀都把計時器重設成 1.5~4 秒，但寵物一次只停 1.2~4 秒，
+            // 常常還沒等到就又走了，結果轉頭幾乎不會發生（使用者回報從沒看過）。
+            p.htGoal = 0
+            p.htWait = 0.25
+          } else {
+            p.htWait = (p.htWait ?? 0.25) - dt
+            if (p.htWait <= 0) {
+              p.htGoal = p.htGoal ? 0 : (Math.random() < 0.5 ? -1 : 1) * rnd(1.9, 2.6)
+              // 轉過去停一下、轉回來後很快再轉一次，站著發呆時才會一直有動作
+              p.htWait = p.htGoal ? rnd(1.2, 2.2) : rnd(0.6, 1.4)
+            }
           }
           p.htNow = (p.htNow ?? 0)
           p.htNow += ((p.htGoal ?? 0) - p.htNow) * Math.min(dt * 11, 1)   // 11＝夠快才有「啪」的感覺
