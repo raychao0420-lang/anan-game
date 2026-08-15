@@ -200,6 +200,14 @@ export default function RoomWorld3D({
     if (weather === 'rain') bg = phase === 'night' ? '#2A3040' : '#8FA6B8'
     if (weather === 'snow') bg = phase === 'night' ? '#3A3F55' : '#DDE6F0'
     if (W.env?.userData.sky) W.env.userData.sky.material.color.set(bg)
+    // 窗外的太陽／月亮與彩虹（2D 版窗戶本來就有，3D 補上）
+    if (W.env?.userData.winOrb) {
+      W.env.userData.winOrb.material.color.set(phase === 'night' ? '#F2F4FF'
+        : phase === 'evening' ? '#FF9A5B' : '#FFE27A')
+    }
+    if (W.env?.userData.winBow) {
+      W.env.userData.winBow.visible = weather === 'rainbow' && phase !== 'night'
+    }
 
 
     // 天氣特效重建
