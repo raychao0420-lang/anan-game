@@ -3,6 +3,22 @@
 // 座標一律沿用百分比系統（x 左右、y 前後），3D 只是換一種畫法。
 
 // 寵物可以走動的範圍
+// ── 室內外雙場景：寵物各自歸屬，一次只渲染一個場景 ──────────────────────
+// 戶外＝水生／星空／野外的孩子；沒列到的都算室內。這是「預設住哪」，
+// 安安可以在寵物圖鑑裡自己搬家（存在 store 的 petHabitat，覆蓋這份預設）。
+export const OUTDOOR_PETS = new Set(['hana', 'kotaro', 'seal', 'penguin', 'beaver', 'feifei', 'dino', 'monkey', 'twinkle', 'luna', 'pluto', 'mejiro'])
+export const defaultHabitat = (id) => (OUTDOOR_PETS.has(id) ? 'outdoor' : 'indoor')
+export const habitatOfPet = (id, overrides) => overrides?.[id] || defaultHabitat(id)
+
+// 每個場景最多住幾隻寵物 —— 這是效能上限，不是玩法限制。
+// 依據：實測每隻寵物平均 33.6 個 mesh（最多的浣熊 52、最少的小星 10），
+// 8 隻＝平均 269／最壞 416 個 draw call；再加上場景本身（草地色塊、遠景樹、
+// 最多 24 株植物、家具，粗估 150~250），總計約 420~520，是平板還撐得住的區間。
+// 兩個場景一次只渲染一個，所以是「每場景」而不是全域。
+// ⚠️ 真的卡的時候，第一個該砍的是「描邊」而不是這個數字 ——
+// 描邊佔了將近一半的 mesh（LULU 16→33 就是加描邊造成的）。
+export const MAX_PETS_PER_SCENE = 8
+
 // 寵物走動的範圍（不是種花範圍，兩者不同，別搞混）
 export const BOUNDS = { xMin: 6, xMax: 78, yMin: 42, yMax: 66 }
 

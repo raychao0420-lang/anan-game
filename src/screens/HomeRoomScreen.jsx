@@ -5,7 +5,7 @@ import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, MAX_PLANTS, makeGardenQuestion } from '../data/garden'
-import { BOUNDS, PLANT_BOUNDS, ACTIVITY_RADIUS, chasesToy } from '../data/roomRules'
+import { BOUNDS, PLANT_BOUNDS, ACTIVITY_RADIUS, chasesToy, habitatOfPet } from '../data/roomRules'
 import { sfx, startAmbient, stopAmbient } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
@@ -190,9 +190,9 @@ const EMPTY_ITEMS = []  // 穩定的空陣列參照，避免沒裝備的寵物�
 
 // ── 室內外雙場景：寵物與家具各自歸屬，一次只渲染一個場景 → 同時動畫的寵物數減半、另一半完全卸載 ──
 // 戶外＝水生/星空/野外的孩子與家具；沒列到的都算室內。要調整歸屬只改這兩個 Set。
-const OUTDOOR_PETS  = new Set(['hana', 'kotaro', 'seal', 'penguin', 'beaver', 'feifei', 'dino', 'monkey', 'twinkle', 'luna', 'pluto', 'mejiro'])
+
 const OUTDOOR_DECOS = new Set(['pool', 'hot_spring', 'tent', 'igloo', 'telescope', 'star_swing', 'moon_hammock', 'bamboo', 'plant', 'castle', 'trampoline', 'bird_perch', 'world_route_map', 'taiwan_puzzle_wall', 'rainbow'])
-const habitatOfPet  = (id) => (OUTDOOR_PETS.has(id) ? 'outdoor' : 'indoor')
+
 const habitatOfDeco = (id) => (OUTDOOR_DECOS.has(id) ? 'outdoor' : 'indoor')
 
 // ── 秘密庭園：種花種樹，每天澆水成長（規則見 data/garden.js）─────────────────
@@ -543,7 +543,7 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
 export default function HomeRoomScreen({ onNavigate }) {
   const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins,
           seedlings, fertilizer, waterPlant, waterAll, useFertilizer, addSeedling, updateDailyProgress,
-          solveMagicPlant, recordBloom, registerWaterDay, gardenKeeper, setGardenKeeper, keeperTend, gardenDex, addFlower } = useGameStore()
+          solveMagicPlant, recordBloom, registerWaterDay, gardenKeeper, setGardenKeeper, keeperTend, gardenDex, addFlower, petHabitat } = useGameStore()
   const containerRef = useRef(null)
 
   // 溫暖的家（室內）／ 秘密庭園（戶外）雙場景：一次只渲染一個，另一個完全卸載（省掉一半的寵物 SVG 與無限動畫）
@@ -907,7 +907,8 @@ export default function HomeRoomScreen({ onNavigate }) {
   )
 
   // 只留目前場景的寵物 / 家具 / 尋路點（另一場景整組不 render）
-  const scenePets    = useMemo(() => unlockedPets.filter(([id]) => habitatOfPet(id) === scene), [unlockedPets, scene])
+  // 歸屬吃安安在寵物圖鑑裡的搬家設定（petHabitat），沒設過的用預設
+  const scenePets    = useMemo(() => unlockedPets.filter(([id]) => habitatOfPet(id, petHabitat) === scene), [unlockedPets, scene, petHabitat])
   const sceneDecos   = useMemo(() => homeDecos.filter(({ item }) => habitatOfDeco(item.id) === scene), [homeDecos, scene])
   const scenePlaced  = useMemo(() => placedDecos.filter((d) => habitatOfDeco(d.id) === scene), [placedDecos, scene])
 

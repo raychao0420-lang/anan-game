@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS, PET_ORDER, EVOLVE_EXP, PET_SKILLS, PET_TRAITS, SKILL_COST, ENERGY_PER_QUESTION } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
+import { habitatOfPet, MAX_PETS_PER_SCENE } from '../data/roomRules'
 import PetAvatar from '../components/PetAvatar'
 import EvolveModal from '../components/EvolveModal'
 import { sfx } from '../utils/sound'
@@ -27,8 +28,32 @@ function getMoodColor(val) {
 }
 
 export default function PetScreen({ onNavigate }) {
-  const { coins, pets, activePet, evolvePetFood, unlockPet, setActivePet, petEquipment, petMoods } = useGameStore()
+  const { coins, pets, activePet, evolvePetFood, unlockPet, setActivePet, petEquipment, petMoods,
+          petHabitat, setPetHabitat } = useGameStore()
   const [selected, setSelected] = useState(activePet)
+  const [moveMsg, setMoveMsg] = useState('')
+
+  // 每個場景目前住了幾隻（只算已解鎖的）
+  const homeCount = useMemo(() => {
+    const c = { indoor: 0, outdoor: 0 }
+    for (const id of PET_ORDER) if (pets[id]?.unlocked) c[habitatOfPet(id, petHabitat)]++
+    return c
+  }, [pets, petHabitat])
+
+  const moveHome = (sc) => {
+    const r = setPetHabitat(selected, sc)
+    if (r === 'same') return
+    sfx.click()
+    setMoveMsg(r === 'full'
+      ? `⚠️ 那邊已經住滿 ${MAX_PETS_PER_SCENE} 隻了，要先把別隻搬過來這邊喔！`
+      : `✅ 搬好了！${PETS[selected].name} 現在住在${sc === 'indoor' ? '我的家' : '秘密庭園'}。`)
+  }
+  // 訊息 2.6 秒後消失
+  useEffect(() => {
+    if (!moveMsg) return
+    const t = setTimeout(() => setMoveMsg(''), 2600)
+    return () => clearTimeout(t)
+  }, [moveMsg])
   const [evolveModal, setEvolveModal] = useState(null)
 
   const petData = pets[selected]
@@ -152,6 +177,32 @@ export default function PetScreen({ onNavigate }) {
               <div className="pet-skill-desc">{PET_SKILLS[selected].desc}</div>
               <div className="pet-skill-note">
                 答題每題回復 ⚡{ENERGY_PER_QUESTION}，闖關或特訓時按下方技能鈕就能發動（一次只作用當下這一題）。
+              </div>
+            </div>
+          )}
+
+          {/* 搬家：安安可以把寵物改成住室內或戶外（覆蓋預設歸屬） */}
+          {petData.unlocked && (
+            <div className="pet-home-card">
+              <div className="pet-home-title">🏡 {petDef.name} 住在哪裡</div>
+              <div className="pet-home-btns">
+                {[['indoor', '🛋️', '我的家'], ['outdoor', '🌳', '秘密庭園']].map(([sc, icon, label]) => {
+                  const here = habitatOfPet(selected, petHabitat) === sc
+                  const full = !here && homeCount[sc] >= MAX_PETS_PER_SCENE
+                  return (
+                    <motion.button key={sc}
+                      className={`pet-home-btn${here ? ' on' : ''}${full ? ' full' : ''}`}
+                      whileTap={{ scale: here ? 1 : 0.92 }}
+                      onClick={() => moveHome(sc)}>
+                      <span className="pet-home-icon">{icon}</span>
+                      <span>{label}</span>
+                      <span className="pet-home-num">{homeCount[sc]}/{MAX_PETS_PER_SCENE}</span>
+                    </motion.button>
+                  )
+                })}
+              </div>
+              <div className="pet-home-note">
+                {moveMsg || `每個場景最多 ${MAX_PETS_PER_SCENE} 隻，這樣畫面才跑得順。`}
               </div>
             </div>
           )}

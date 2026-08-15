@@ -4,6 +4,7 @@ import { ACHIEVEMENTS } from '../data/achievements'
 import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
 import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS, MAX_PLANTS, bloomKind, FLOWER_GIFT } from '../data/garden'
+import { habitatOfPet, MAX_PETS_PER_SCENE } from '../data/roomRules'
 
 const makeStages = () => {
   const s = {}
@@ -77,6 +78,7 @@ export const useGameStore = create(
       waterStreak: 0,                              // 連續澆水天數（溫和版：斷了只是重數，不處罰）
       waterStreakBest: 0,
       lastWaterDay: null,                          // 最近一次澆水的日期（判斷連續）
+      petHabitat: {},                              // 寵物搬家：{ petId: 'indoor'|'outdoor' }，覆蓋預設歸屬
       gardenKeeper: null,                          // 指派的花園小幫手寵物 id
       keeperHelpedDay: null,                       // 小幫手今天是否已幫忙過
 
@@ -405,6 +407,20 @@ export const useGameStore = create(
           ...(reward ? { coins: prev.coins + reward, totalCoinsEarned: prev.totalCoinsEarned + reward } : {}),
         }))
         return { streak, reward }
+      },
+
+      // 寵物搬家：把牠改成住室內或戶外。每個場景有 MAX_PETS_PER_SCENE 的上限
+      // （效能考量，見 roomRules.js 的說明），滿了就不搬並回報原因給畫面顯示。
+      // 回傳 'ok' | 'full' | 'same'
+      setPetHabitat: (petId, scene) => {
+        const s = get()
+        if (habitatOfPet(petId, s.petHabitat) === scene) return 'same'
+        const count = Object.keys(s.pets).filter(
+          (id) => s.pets[id]?.unlocked && habitatOfPet(id, s.petHabitat) === scene
+        ).length
+        if (count >= MAX_PETS_PER_SCENE) return 'full'
+        set((prev) => ({ petHabitat: { ...prev.petHabitat, [petId]: scene } }))
+        return 'ok'
       },
 
       // 指派花園小幫手（喜歡某些花的寵物幫忙顧）
