@@ -308,7 +308,9 @@ export function startAmbient(kind) {
       src.connect(filt)
       filt.connect(g)
       src.start()
-      g.gain.linearRampToValueAtTime(kind === 'rain' ? 0.045 : 0.035, c.currentTime + 1.2)
+      // 音量減半（使用者回報雨聲的沙沙聲偏吵）：連續的白噪音比鳥叫蟲鳴那種
+      // 一聲一聲的離散音更容易聽膩，所以只降這兩個，birds／crickets 維持原樣
+      g.gain.linearRampToValueAtTime(kind === 'rain' ? 0.022 : 0.018, c.currentTime + 1.2)
       amb.nodes.push(src, filt)
     } else if (kind === 'birds') {
       // 每 5~12 秒一串上滑短鳴

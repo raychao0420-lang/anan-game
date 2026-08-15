@@ -72,12 +72,14 @@ export function buildRoom(theme) {
   const orb = new THREE.Mesh(new THREE.CircleGeometry(0.26, 20), new THREE.MeshBasicMaterial({ color: 0xffe27a }))
   flat(orb, -0.95, 0.6, 0.006)
   // 雲：每朵用三顆圓疊出蓬鬆感，一片扁的長方形做不出雲
+  const puffs = []
   for (const [cx, cy, cs] of [[0.5, 0.68, 1.15], [-0.25, 0.2, 0.85], [1.0, 0.0, 0.7]]) {
     const cloud = new THREE.Group()
     for (const [dx, dy, r] of [[-0.16, 0, 0.15], [0, 0.05, 0.2], [0.17, -0.01, 0.14]]) {
       const puff = new THREE.Mesh(new THREE.CircleGeometry(r, 14), M('#FFFFFF', { transparent: true, opacity: 0.92 }))
       puff.position.set(dx, dy, 0)
       cloud.add(puff)
+      puffs.push(puff)
     }
     cloud.scale.setScalar(cs)
     flat(cloud, cx, cy, 0.008)
@@ -102,6 +104,7 @@ export function buildRoom(theme) {
   sill.position.set(0, -WH / 2 - 0.1, 0.06)
   win.add(sill)
   g.userData.winHills = hills
+  g.userData.winPuffs = puffs
   g.userData.winOrb = orb
   g.userData.winBow = bow
   win.userData.pick = { type: 'window' }

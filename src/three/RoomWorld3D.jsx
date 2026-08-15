@@ -200,10 +200,18 @@ export default function RoomWorld3D({
     if (weather === 'rain') bg = phase === 'night' ? '#2A3040' : '#8FA6B8'
     if (weather === 'snow') bg = phase === 'night' ? '#3A3F55' : '#DDE6F0'
     if (W.env?.userData.sky) W.env.userData.sky.material.color.set(bg)
-    // 窗外的太陽／月亮與彩虹（2D 版窗戶本來就有，3D 補上）
+    // 窗外的太陽／月亮與彩虹（2D 版窗戶本來就有，3D 補上）。
+    // ⚠️ 天氣要跟環境音對得起來：房間裡放著雨聲、窗外卻是大太陽配白雲，是最出戲的組合。
+    const wet = weather === 'rain'
     if (W.env?.userData.winOrb) {
+      // 下雨時太陽／月亮被雲遮住，直接收起來
+      W.env.userData.winOrb.visible = !wet
       W.env.userData.winOrb.material.color.set(phase === 'night' ? '#F2F4FF'
         : phase === 'evening' ? '#FF9A5B' : '#FFE27A')
+    }
+    // 雲：晴天白、雨天壓成灰黑的雨雲、夜裡調暗
+    for (const c of W.env?.userData.winPuffs || []) {
+      c.material.color.set(wet ? '#7A8794' : phase === 'night' ? '#9AA4C0' : '#FFFFFF')
     }
     if (W.env?.userData.winBow) {
       W.env.userData.winBow.visible = weather === 'rainbow' && phase !== 'night'
@@ -211,6 +219,7 @@ export default function RoomWorld3D({
     // 雪景：光靠飄下來的粒子看不出「外面在下雪」，遠山要積雪才有雪景的感覺
     for (const h of W.env?.userData.winHills || []) {
       h.material.color.set(weather === 'snow' ? '#EEF4FA'
+        : wet ? '#5E7A56'                       // 雨天的山是濕的、暗的
         : phase === 'night' ? '#3E5C46' : '#8FBF7A')
     }
 
