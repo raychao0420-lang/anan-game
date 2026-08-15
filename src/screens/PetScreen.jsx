@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
-import { PETS, PET_ORDER, EVOLVE_EXP, PET_SKILLS, SKILL_COST, ENERGY_PER_QUESTION } from '../data/pets'
+import { PETS, PET_ORDER, EVOLVE_EXP, PET_SKILLS, PET_TRAITS, SKILL_COST, ENERGY_PER_QUESTION } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import PetAvatar from '../components/PetAvatar'
 import EvolveModal from '../components/EvolveModal'
@@ -153,6 +153,19 @@ export default function PetScreen({ onNavigate }) {
               <div className="pet-skill-note">
                 答題每題回復 ⚡{ENERGY_PER_QUESTION}，闖關或特訓時按下方技能鈕就能發動（一次只作用當下這一題）。
               </div>
+            </div>
+          )}
+
+          {/* 動物小知識：養寵物順便認識牠 */}
+          {petData.unlocked && PET_TRAITS[selected] && (
+            <div className="pet-trait-card">
+              <div className="pet-trait-title">🔍 {petDef.breed}小知識</div>
+              {PET_TRAITS[selected].map((fact, i) => (
+                <div className="pet-trait-row" key={i}>
+                  <span className="pet-trait-dot">•</span>
+                  <span className="pet-trait-text">{fact}</span>
+                </div>
+              ))}
             </div>
           )}
         </div>

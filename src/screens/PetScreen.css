@@ -444,3 +444,34 @@
   .pet-evolve-preview { font-size: 1.2rem; }
   .evo-dot { width: 60px; height: 60px; font-size: 1.7rem; }
 }
+
+/* 動物小知識卡：沿用技能卡的版型，改成綠色系跟技能卡（紫色）區分開 */
+.pet-trait-card {
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eef8ee, #e6f5ea);
+  border: 2px solid #bfe3c6;
+  text-align: left;
+}
+.pet-trait-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #2f8a4f;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.pet-trait-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 4px;
+}
+.pet-trait-dot { color: #2f8a4f; font-weight: 800; line-height: 1.5; }
+.pet-trait-text {
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: #4a5a4d;
+}
