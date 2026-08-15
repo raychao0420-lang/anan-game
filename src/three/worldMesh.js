@@ -50,28 +50,29 @@ export function buildRoom(theme) {
   sideWall.position.set(-W / 2, 1.6, CZ)
   g.add(sideWall)
 
-  // 窗戶：外框＋天空面（顏色由 applyPhase 控制）＋窗台
   // 窗戶。2D 版的窗戶裡有一整個世界（太陽/月亮、雲、遠山、彩虹、飛過的訪客、雨雪），
-  // 3D 版原本只有一片純色平面 —— 使用者回報「效果不明顯」，主因是裡面什麼都沒有，
-  // 其次才是太小（1.5 寬對上 9.6 的牆＝只佔 16%）。這裡放大到 2.4 並補上景物。
+  // 3D 版原本只有一片會隨晝夜換色的純色平面 —— 使用者回報「效果不明顯」，
+  // 主因是裡面什麼都沒有，其次才是太小（原本 1.5 寬對上 9.6 的牆＝只佔 16%）。
   const win = new THREE.Group()
   win.position.set(1.6, 1.85, CZ - D / 2 + 0.03)
-  const WW = 2.4, WH = 1.7
+  const WW = 3.2, WH = 2.2       // 佔後牆寬的 33%、高的 69%，才看得出是一扇窗而不是一塊補丁
   const sky = new THREE.Mesh(new THREE.PlaneGeometry(WW, WH), new THREE.MeshBasicMaterial({ color: 0xbfe6ff }))
   win.add(sky)
   // 窗外景物：z 往房間方向疊上去，數字越大越靠前
   const flat = (mesh, x, y, z) => { mesh.position.set(x, y, z); win.add(mesh); return mesh }
-  // 遠山：兩片壓扁的圓，貼在窗戶下緣
-  for (const [x, r, c] of [[-0.5, 0.62, '#8FBF7A'], [0.55, 0.78, '#7BAE68']]) {
-    const hill = new THREE.Mesh(new THREE.CircleGeometry(r, 18), M(c))
+  // 遠山：三片壓扁的圓，貼在窗戶下緣。下雪時整片換成雪白（由 RoomWorld3D 依天氣改色），
+  // 光靠飄下來的雪粒子看不出「外面在下雪」，地上要積雪才有雪景。
+  const hills = []
+  for (const [x, r] of [[-0.75, 0.85], [0.15, 1.0], [0.95, 0.8]]) {
+    const hill = new THREE.Mesh(new THREE.CircleGeometry(r, 18), M('#8FBF7A'))
     hill.scale.y = 0.45
-    flat(hill, x, -WH / 2 + 0.02, 0.004)
+    hills.push(flat(hill, x, -WH / 2 + 0.02, 0.004))
   }
   // 太陽／月亮：顏色由 applyPhase 換（白天暖黃、夜裡淡白）
   const orb = new THREE.Mesh(new THREE.CircleGeometry(0.26, 20), new THREE.MeshBasicMaterial({ color: 0xffe27a }))
-  flat(orb, -0.66, 0.42, 0.006)
+  flat(orb, -0.95, 0.6, 0.006)
   // 雲：每朵用三顆圓疊出蓬鬆感，一片扁的長方形做不出雲
-  for (const [cx, cy, cs] of [[0.35, 0.5, 1], [-0.15, 0.12, 0.75], [0.72, -0.05, 0.6]]) {
+  for (const [cx, cy, cs] of [[0.5, 0.68, 1.15], [-0.25, 0.2, 0.85], [1.0, 0.0, 0.7]]) {
     const cloud = new THREE.Group()
     for (const [dx, dy, r] of [[-0.16, 0, 0.15], [0, 0.05, 0.2], [0.17, -0.01, 0.14]]) {
       const puff = new THREE.Mesh(new THREE.CircleGeometry(r, 14), M('#FFFFFF', { transparent: true, opacity: 0.92 }))
@@ -100,6 +101,7 @@ export function buildRoom(theme) {
   const sill = new THREE.Mesh(new THREE.BoxGeometry(WW + 0.3, 0.08, 0.16), M('#E0CDB0'))
   sill.position.set(0, -WH / 2 - 0.1, 0.06)
   win.add(sill)
+  g.userData.winHills = hills
   g.userData.winOrb = orb
   g.userData.winBow = bow
   win.userData.pick = { type: 'window' }

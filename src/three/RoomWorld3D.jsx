@@ -208,6 +208,11 @@ export default function RoomWorld3D({
     if (W.env?.userData.winBow) {
       W.env.userData.winBow.visible = weather === 'rainbow' && phase !== 'night'
     }
+    // 雪景：光靠飄下來的粒子看不出「外面在下雪」，遠山要積雪才有雪景的感覺
+    for (const h of W.env?.userData.winHills || []) {
+      h.material.color.set(weather === 'snow' ? '#EEF4FA'
+        : phase === 'night' ? '#3E5C46' : '#8FBF7A')
+    }
 
 
     // 天氣特效重建
