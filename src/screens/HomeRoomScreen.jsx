@@ -627,6 +627,7 @@ export default function HomeRoomScreen({ onNavigate }) {
   // ── 花園第二彈：小提示浮條／圖鑑／魔法花答題／小幫手 ──
   const [notice, setNotice]       = useState(null)  // 畫面上方冒出的小提示
   const [quiz, setQuiz]           = useState(null)  // 魔法花答題 {key,x,y,q,ans,choices,wrong}
+  const [nameTag, setNameTag] = useState(null)      // 3D 版點到寵物時冒出的名字
   const [codexOpen, setCodexOpen] = useState(false) // 花園圖鑑彈窗
   const [keeperOpen, setKeeperOpen] = useState(false) // 選小幫手彈窗
   const say = useCallback((msg) => setNotice({ msg, key: Date.now() }), [])
@@ -734,6 +735,15 @@ export default function HomeRoomScreen({ onNavigate }) {
     const t = setTimeout(() => setNotice(null), 2600)
     return () => clearTimeout(t)
   }, [notice])
+
+  // 3D 版點到寵物時冒出牠的名字。2D 版每隻腳下本來就掛著常駐名牌，
+  // 但 3D 是畫布，常駐名牌得逐幀把世界座標投影回螢幕，成本高又會擋住畫面 ——
+  // 改成「點到誰、誰的名字才冒出來」，跟叫聲一起，剛好也教安安誰是誰。
+  useEffect(() => {
+    if (!nameTag) return
+    const t = setTimeout(() => setNameTag(null), 1700)
+    return () => clearTimeout(t)
+  }, [nameTag])
 
   const onToyReach = useCallback((petId, t) => {
     if (toyKeyRef.current === t.key) return
@@ -900,6 +910,7 @@ export default function HomeRoomScreen({ onNavigate }) {
   const handlePetClick = useCallback((petId) => {
     sfx.pet(petId)
     updatePetMood(petId, 2)   // 摸摸也會開心
+    setNameTag({ petId, key: Date.now() })
   }, [updatePetMood])
 
   // 相遇配對：任兩隻已解鎖寵物距離 < MEET_DIST
@@ -968,6 +979,19 @@ export default function HomeRoomScreen({ onNavigate }) {
               onPetPos={reportPos}
             />
           </Suspense>
+        )}
+
+        {/* 3D 版：點到寵物時在牠身上冒出名字（2D 版本來就有常駐名牌，不需要） */}
+        {use3D && nameTag && petPositions[nameTag.petId] && (
+          <motion.div className="room-nametag" key={nameTag.key}
+            style={{ left: `${petPositions[nameTag.petId].x}%`,
+              top: `${petPositions[nameTag.petId].y}%`,
+              zIndex: Math.round(petPositions[nameTag.petId].y) + 2 }}
+            initial={{ opacity: 0, y: 6, scale: 0.85 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 18 }}>
+            <span className="room-pet-name">{PETS[nameTag.petId]?.name}</span>
+          </motion.div>
         )}
 
         {!use3D && (<>

@@ -55,7 +55,6 @@ export default function RoomWorld3D({
           p.pos.y += (dy / dist) * step
           p.walking = true
           p.facing = Math.atan2(dx, dy)          // 面向前進方向
-          cb.current.onPetPos?.(id, { x: p.pos.x, y: p.pos.y })
         } else if (activeToy && chasesToy(id, activeToy)) {
           if (W.toy !== activeToy.key) { W.toy = activeToy.key; cb.current.onToyReach?.(id, activeToy) }
           p.walking = false
@@ -67,6 +66,9 @@ export default function RoomWorld3D({
 
         p.group.position.set(toWorldX(p.pos.x), 0, toWorldZ(p.pos.y))
         p.group.rotation.y = p.facing
+        // 每個 tick 都回報座標（不是只有走路時）——站著不動的寵物也要有座標，
+        // 點牠時才知道名牌該冒在哪。父層收到相同座標會回傳原物件，不會多一次重繪。
+        cb.current.onPetPos?.(id, { x: p.pos.x, y: p.pos.y })
         const parts = p.group.userData.parts
 
         // 停下來發呆一會兒就坐下（狗坐著的剪影比站著好認），要走了再站起來

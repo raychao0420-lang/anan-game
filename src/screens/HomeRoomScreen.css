@@ -1373,3 +1373,11 @@
   33%      { transform: translate(18px, -14px); opacity: 1; }
   66%      { transform: translate(-10px, -4px); opacity: 0.35; }
 }
+
+/* 3D 版點到寵物時冒出的名牌：位置用 onPetPos 回報的百分比座標，
+   跟 2D 的名牌共用 .room-pet-name 的外觀，兩邊看起來才是同一個東西 */
+.room-nametag {
+  position: absolute;
+  transform: translate(-50%, -140%);
+  pointer-events: none;
+}
