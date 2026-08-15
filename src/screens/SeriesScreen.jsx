@@ -8,6 +8,7 @@ import { SHOP_ITEMS } from '../data/shop'
 import PetAvatar from '../components/PetAvatar'
 import NumberPad from '../components/NumberPad'
 import NatureDiagram from '../components/NatureDiagram'
+import ComicStrip from '../components/ComicStrip'
 import SeasonMap from '../components/SeasonMap'
 import { sfx } from '../utils/sound'
 import { speakEnglish, stopSpeaking, isSpeechSupported } from '../utils/speech'
@@ -334,6 +335,8 @@ export default function SeriesScreen({ onBack }) {
             </div>
             {ep.no === 1 && season.seasonIntro?.map((line, i) => <Bi key={`s${i}`} t={line} />)}
             {ep.intro.map((line, i) => <Bi key={i} t={line} />)}
+            {/* 開場過場漫畫（第七季起才有；S1~S6 沒有這個欄位，自動不顯示） */}
+            <ComicStrip panels={ep.comicIntro} label="📖 開場漫畫 Opening" />
             {alreadySolved && <div className="dtv-replay-note">（這集破過囉，重玩不會再拿獎勵～ Replay: no new rewards）</div>}
             <button className="dtv-btn" onClick={() => { sfx.click(); setPhase('scene') }}>
               開始查案 Start 🔍
@@ -530,6 +533,8 @@ export default function SeriesScreen({ onBack }) {
               </motion.div>
             </div>
             {ep.solve.map((line, i) => <Bi key={i} t={line} />)}
+            {/* 破案過場漫畫（第七季起） */}
+            <ComicStrip panels={ep.comicSolve} label="📖 破案漫畫 Ending" />
 
             {gotCollectible && (
               <div className="srs-got-shard">

@@ -1,0 +1,33 @@
+<meta charset="utf-8">
+<title>過場漫畫實驗室</title>
+<style>
+  body { margin: 0; background: #EADFC8; font-family: system-ui, "Noto Sans TC", sans-serif; color: #5A4632; }
+  #root { max-width: 520px; margin: 0 auto; padding: 12px 12px 60px; }
+  h2 { font-size: 1rem; margin: 22px 0 6px; }
+  .lab-ep { background: rgba(255,255,255,.55); border-radius: 16px; padding: 10px 12px; margin-bottom: 14px; }
+  .lab-sub { font-size: .78rem; color: #8A7A63; margin-bottom: 6px; }
+</style>
+<div id="root"></div>
+<!-- 開發用檢視頁（不進 build）：一次看完第七季全部 48 格過場漫畫。
+     跟 petlab.html 同一個用途——不吃存檔、不用真的玩到那一集就能檢查畫面。
+     跑法：npm run dev 之後開 /anan-game/comiclab.html -->
+<script type="module">
+  import React from 'react'
+  import { createRoot } from 'react-dom/client'
+  import ComicStrip from './src/components/ComicStrip.jsx'
+  import { SEASON7 } from './src/data/series7.js'
+
+  const h = React.createElement
+  const app = h('div', null,
+    h('h2', null, `第七季《${SEASON7.title.zh}》過場漫畫 — 共 ${SEASON7.episodes.length} 集`),
+    ...SEASON7.episodes.map((e) =>
+      h('div', { className: 'lab-ep', key: e.id },
+        h('h2', null, `EP${e.no} ${e.emoji} ${e.title.zh}`),
+        h('div', { className: 'lab-sub' }, e.difficulty.zh),
+        h(ComicStrip, { panels: e.comicIntro, label: '📖 開場漫畫 Opening' }),
+        h(ComicStrip, { panels: e.comicSolve, label: '📖 破案漫畫 Ending' }),
+      )
+    )
+  )
+  createRoot(document.getElementById('root')).render(app)
+</script>

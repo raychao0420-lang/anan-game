@@ -37,6 +37,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP1 ───────────────────────────────────────
     {
       id: 's7ep1',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'oldstreet', cast: ['anan', 'xiaohu'],
+          say: { zh: '小虎繞著紅磚牌樓打轉：「到了！這條就是大溪老街，我小時候天天在這裡跑。」',
+                 en: 'Little Tiger circles the red-brick arcade: "We are here! This is Daxi Old Street. I ran around here every day as a pup."' } },
+        { bg: 'oldstreet', cast: ['anan', 'xiaohu', '🐕'],
+          say: { zh: '協盛號的阿盛急得跳腳：「偵探！掛了一百年的匾額不見了，只剩兩個釘孔！」',
+                 en: 'Ah-Sheng of the Xieshen Store is frantic: "Detective! Our 100-year-old plaque is gone, with only two nail holes left!"' } },
+      ],
+      comicSolve: [
+        { bg: 'oldstreet', cast: ['anan', '🪚'],
+          say: { zh: '安安舉起量尺：「阿陳師傅，你說沒去過，卻說得出「0.9 公尺」——那是我剛剛才量出來的。」',
+                 en: 'An-An holds up the ruler: "Master Chen, you said you were never there, yet you knew it was 0.9 m. I had only just measured it."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '老榕樹落下一片葉子，葉面慢慢浮出字：〈第一頁·大溪老街〉。',
+                 en: 'A leaf drifts down from the old banyan, words rising on it: Page 1, Daxi Old Street.' } },
+      ],
       no: 1,
       title: { zh: '老街消失的匾額', en: 'The Missing Plaque of the Old Street' },
       emoji: '🏮',
@@ -322,6 +339,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP2 ───────────────────────────────────────
     {
       id: 's7ep2',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'river', cast: ['anan', 'xiaohu'],
+          say: { zh: '小虎在河邊青草地上打滾：「這是大漢溪！岸邊一階一階的，都是水慢慢沖出來的。」',
+                 en: 'Little Tiger rolls in the riverside grass: "This is the Dahan River! Those steps on the bank were carved by water, slowly."' } },
+        { bg: 'river', cast: ['anan', 'xiaohu', '🐃'],
+          say: { zh: '張阿伯垂著頭：「我家祖傳的田，一個晚上好像就變小了……」',
+                 en: 'Uncle Zhang hangs his head: "My family field seems to have shrunk overnight."' } },
+      ],
+      comicSolve: [
+        { bg: 'river', cast: ['anan', '🐭'],
+          say: { zh: '安安指著界石：「阿倉，你說石頭「往張阿伯那邊歪 6 公尺」——那是我用面積除以寬才算出來的。」',
+                 en: 'An-An points at the marker stone: "Ah-Cang, you said it leaned 6 m toward Uncle Zhang. I got that by dividing area by width."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '葉子又飄下來一片：〈第二頁·大漢溪河階〉。',
+                 en: 'Another leaf floats down: Page 2, the Dahan River Terraces.' } },
+      ],
       no: 2,
       title: { zh: '大漢溪的河階密碼', en: 'The River-Terrace Cipher of the Dahan' },
       emoji: '🌊',
@@ -610,6 +644,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP3 ───────────────────────────────────────
     {
       id: 's7ep3',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'wetland', cast: ['anan', 'xiaohu', 'twinkle'],
+          say: { zh: '蘆葦沙沙作響，小星睜大眼睛：「哇——草會唱歌！」小虎：「這裡是月眉溼地，水鳥的家。」',
+                 en: 'The reeds rustle. Twinkle stares: "Wow, the grass sings!" Little Tiger: "This is Yuemei Wetland, home of the water birds."' } },
+        { bg: 'wetland', cast: ['anan', 'xiaohu', '🐦'],
+          say: { zh: '翠鳥小翠急急飛來：「調查名冊上的青蛙數字對不起來，有幾隻不見了！」',
+                 en: 'Kingfisher Cui rushes in: "The frog count on our survey does not add up. Some are missing!"' } },
+      ],
+      comicSolve: [
+        { bg: 'wetland', cast: ['anan', '🐰'],
+          say: { zh: '安安翻開紀錄：「阿寶，你說「才少 7 隻」——可是這個數字我一次都還沒說出口。」',
+                 en: 'An-An opens the record: "Ah-Bao, you said only 7 were missing. But I never said that number out loud."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '一片葉子停在故事書上：〈第三頁·月眉溼地〉。',
+                 en: 'A leaf settles on the storybook: Page 3, Yuemei Wetland.' } },
+      ],
       no: 3,
       title: { zh: '月眉溼地的失蹤名冊', en: 'The Missing Census of Yuemei Wetland' },
       emoji: '🦆',
@@ -898,6 +949,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP4 ───────────────────────────────────────
     {
       id: 's7ep4',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'lakenight', cast: ['anan', 'xiaohu', 'luna'],
+          say: { zh: '慈湖靜得像鏡子。小月抬頭：「今晚的月亮，比昨天晚了快一個小時才升起來。」',
+                 en: 'Cihu Lake is still as a mirror. Luna looks up: "Tonight the moon rose almost an hour later than yesterday."' } },
+        { bg: 'lakenight', cast: ['anan', 'xiaohu', '🦌'],
+          say: { zh: '梅花鹿阿慈跑來：「湖畔的月光鐘被人動過，指針全亂了！」',
+                 en: 'Ah-Ci the sika deer runs over: "Someone moved the moonlight clock. The hands are all wrong!"' } },
+      ],
+      comicSolve: [
+        { bg: 'lakenight', cast: ['anan', '🐿️'],
+          say: { zh: '安安看著錶：「阿旋，你說「往回倒轉 105 分鐘」——那是我剛用月亮推出來的時間。」',
+                 en: 'An-An checks the clock: "Ah-Xuan, you said it was turned back 105 minutes. I worked that out from the moon just now."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '月光裡飄下一片葉子：〈第四頁·慈湖月色〉。',
+                 en: 'A leaf drifts down in the moonlight: Page 4, Moonlight at Cihu.' } },
+      ],
       no: 4,
       title: { zh: '慈湖的月光鐘', en: 'The Moonlight Clock of Cihu' },
       emoji: '🌙',
@@ -1186,6 +1254,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP5 ───────────────────────────────────────
     {
       id: 's7ep5',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'woodshop', cast: ['anan', 'xiaohu'],
+          say: { zh: '小虎猛吸一口氣：「聞到沒？檜木的味道。大溪師傅做的神桌，全台灣都有名。」',
+                 en: 'Little Tiger takes a deep sniff: "Smell that? Cypress. Daxi craftsmen make altar tables famous all over Taiwan."' } },
+        { bg: 'woodshop', cast: ['anan', 'xiaohu', '🐒'],
+          say: { zh: '老木匠阿木攤開圖樣：「神桌右邊的雕花板少了幾塊，左右就對不起來了！」',
+                 en: 'Old carpenter Ah-Mu spreads out the plan: "Carved panels are missing from the right, so the two sides no longer match!"' } },
+      ],
+      comicSolve: [
+        { bg: 'woodshop', cast: ['anan', '🐦'],
+          say: { zh: '安安比著中線：「阿啄，你說「才少 5 塊」——左邊 16 減右邊 11，我剛剛才數完。」',
+                 en: 'An-An traces the center line: "Ah-Zhuo, you said only 5 were missing. 16 on the left minus 11 on the right. I had just counted."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '木屑之間飄來一片葉子：〈第五頁·木藝博物館〉。',
+                 en: 'A leaf floats in among the wood shavings: Page 5, the Wood Art Museum.' } },
+      ],
       no: 5,
       title: { zh: '木博館的對稱神桌', en: 'The Symmetric Altar of the Wood Museum' },
       emoji: '🪵',
@@ -1474,6 +1559,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP6 ───────────────────────────────────────
     {
       id: 's7ep6',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'factory', cast: ['anan', 'xiaohu'],
+          say: { zh: '滷鍋咕嘟咕嘟冒泡，小虎的鼻子都快貼上去了：「這個香味，飄了一百年！」',
+                 en: 'The braising pot bubbles away. Little Tiger almost touches it with his nose: "This smell has drifted here for a hundred years!"' } },
+        { bg: 'factory', cast: ['anan', 'xiaohu', '🐻'],
+          say: { zh: '老闆阿滷翻著帳本：「數字被改小了，倉庫裡的豆干怎麼算都對不起來。」',
+                 en: 'Boss Ah-Lu flips the ledger: "The numbers were made smaller. The stock in the warehouse never adds up."' } },
+      ],
+      comicSolve: [
+        { bg: 'factory', cast: ['anan', '🐿️'],
+          say: { zh: '安安亮出盤點單：「阿松，你說「才少 3 萬塊」——實際盤點減掉帳本，這個數字我還沒公布。」',
+                 en: 'An-An holds up the count sheet: "Ah-Song, you said only 30,000 were short. Real stock minus ledger. I had not announced it yet."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '蒸氣裡飄出一片葉子：〈第六頁·豆干工廠〉。',
+                 en: 'A leaf drifts out of the steam: Page 6, the Tofu-Jerky Factory.' } },
+      ],
       no: 6,
       title: { zh: '豆干工廠的大數帳', en: 'The Big-Number Ledger of the Tofu Works' },
       emoji: '🟫',
@@ -1762,6 +1864,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP7 ───────────────────────────────────────
     {
       id: 's7ep7',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'ponds', cast: ['anan', 'xiaohu', 'feifei'],
+          say: { zh: '飛飛在高空盤旋：「從上面看，一口一口的埤塘像撒在地上的鏡子！」',
+                 en: 'Feifei circles high above: "From up here, the ponds look like mirrors scattered across the land!"' } },
+        { bg: 'ponds', cast: ['anan', 'xiaohu', '🐢'],
+          say: { zh: '烏龜阿伯慢慢爬過來：「下游的水一天比一天少，是誰多引走了？」',
+                 en: 'Old Turtle inches over: "There is less water downstream every day. Who has been taking extra?"' } },
+      ],
+      comicSolve: [
+        { bg: 'ponds', cast: ['anan', '🐃'],
+          say: { zh: '安安指著水位線：「阿田，你說「才多引 1500 立方公尺」——8000 減 6500，剛好是這個數。」',
+                 en: 'An-An points at the water line: "Ah-Tian, you said only 1,500 cubic meters extra. 8,000 minus 6,500. Exactly that."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '水面漂來一片葉子：〈第七頁·千塘埤圳〉。',
+                 en: 'A leaf drifts across the water: Page 7, Land of a Thousand Ponds.' } },
+      ],
       no: 7,
       title: { zh: '千塘之鄉的水量謎', en: 'The Water Riddle of a Thousand Ponds' },
       emoji: '💧',
@@ -2050,6 +2169,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP8 ───────────────────────────────────────
     {
       id: 's7ep8',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'dam', cast: ['anan', 'xiaohu'],
+          say: { zh: '小虎抬頭看得脖子都酸了：「哇——這道牆，把整條大漢溪都攔下來了。」',
+                 en: 'Little Tiger cranes his neck: "Whoa. This wall holds back the whole Dahan River."' } },
+        { bg: 'dam', cast: ['anan', 'xiaohu', '🦌'],
+          say: { zh: '技師山羌指著閘門：「昨晚洩洪的量不對，下游差一點就淹了！」',
+                 en: 'The muntjac engineer points at the gates: "Last night the release was wrong. Downstream nearly flooded!"' } },
+      ],
+      comicSolve: [
+        { bg: 'dam', cast: ['anan', '🦦'],
+          say: { zh: '安安翻開紀錄本：「小溪，你說「才多洩 150 萬立方公尺」——750 萬減 600 萬，一點不差。」',
+                 en: 'An-An opens the log: "Xiaoxi, you said only 1.5 million extra. 7.5 million minus 6 million. Exactly right."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '水霧裡飄下一片葉子：〈第八頁·石門水庫〉。',
+                 en: 'A leaf drifts down through the mist: Page 8, Shimen Reservoir.' } },
+      ],
       no: 8,
       title: { zh: '石門水庫的滿水位', en: 'The Full Mark of Shimen Reservoir' },
       emoji: '🏞️',
@@ -2338,6 +2474,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP9 ───────────────────────────────────────
     {
       id: 's7ep9',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'temple', cast: ['anan', 'xiaohu', 'xiaoq'],
+          say: { zh: '鑼鼓聲隔了三條街都聽得到。小虎豎起耳朵：「大溪大拜拜開始了！」',
+                 en: 'Drums and gongs carry three streets away. Little Tiger perks up his ears: "The Daxi grand parade has begun!"' } },
+        { bg: 'temple', cast: ['anan', 'xiaohu', '🐦'],
+          say: { zh: '台灣藍鵲阿聖拍著翅膀：「遶境的路線被人改了，隊伍會走錯路！」',
+                 en: 'Ah-Sheng the blue magpie flaps hard: "Someone changed the parade route. The procession will go the wrong way!"' } },
+      ],
+      comicSolve: [
+        { bg: 'temple', cast: ['anan', '🐗'],
+          say: { zh: '安安攤開路線圖：「阿勇，你說「才抄近 180 公尺」——600 減 420，這是我最後才算出來的。」',
+                 en: 'An-An unfolds the route map: "Ah-Yong, you said only 180 m shorter. 600 minus 420. I worked that out last."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '燈籠下飄過一片葉子：〈第九頁·普濟堂遶境〉。',
+                 en: 'A leaf drifts past under the lanterns: Page 9, the Puji Temple Parade.' } },
+      ],
       no: 9,
       title: { zh: '大拜拜的遶境路線', en: 'The Route of the Grand Parade' },
       emoji: '🏮',
@@ -2624,6 +2777,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP10 ───────────────────────────────────────
     {
       id: 's7ep10',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'teafield', cast: ['anan', 'xiaohu'],
+          say: { zh: '小虎在茶壟間鑽來鑽去：「這面坡朝南，太陽照得久，茶才長得好。」',
+                 en: 'Little Tiger weaves between the tea rows: "This slope faces south. More sun, better tea."' } },
+        { bg: 'teafield', cast: ['anan', 'xiaohu', '🐂'],
+          say: { zh: '送花的黃牛遞來表格：「收成表上的籃數，跟實際採的差好多！」',
+                 en: 'The ox delivery driver hands over a form: "The baskets on the harvest sheet do not match what was picked!"' } },
+      ],
+      comicSolve: [
+        { bg: 'teafield', cast: ['anan', '🐦'],
+          say: { zh: '安安對著長條圖：「阿香，你說「才採 18 籃」——登記 60 減實際 42，我還沒公布這個數。」',
+                 en: 'An-An looks at the bar chart: "Ah-Xiang, you said only 18 baskets. 60 recorded minus 42 actual. I had not said it yet."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '花海上飄來一片葉子：〈第十頁·茶園花海〉。',
+                 en: 'A leaf floats over the flower fields: Page 10, Tea Hills and Flower Fields.' } },
+      ],
       no: 10,
       title: { zh: '茶園花海的收成表', en: 'The Harvest Chart of Tea and Flowers' },
       emoji: '🌸',
@@ -2912,6 +3082,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP11 ───────────────────────────────────────
     {
       id: 's7ep11',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'railway', cast: ['anan', 'xiaohu'],
+          say: { zh: '小虎踩上鏽掉的鐵軌：「一百年前，樟腦和木材就是從這條路推下山的。」',
+                 en: 'Little Tiger steps onto the rusted rail: "A century ago, camphor and timber were pushed down this line."' } },
+        { bg: 'railway', cast: ['anan', 'xiaohu', '🐦'],
+          say: { zh: '喜鵲導覽員舉起里程表：「昨晚有人推了台車出去，數字多了一截！」',
+                 en: 'The magpie guide holds up the odometer: "Someone took a trolley out last night. The reading jumped!"' } },
+      ],
+      comicSolve: [
+        { bg: 'railway', cast: ['anan', '🐃'],
+          say: { zh: '安安核對數字：「阿發伯，你說「才多跑 1.7 公里」——8.7 減 7.0，剛剛好。」',
+                 en: 'An-An checks the figures: "Uncle Ah-Fa, you said only 1.7 km extra. 8.7 minus 7.0. Exactly."' } },
+        { bg: 'banyan', cast: ['anan', 'arong'],
+          say: { zh: '鐵軌旁飄下一片葉子：〈第十一頁·輕便鐵道〉。',
+                 en: 'A leaf drifts down beside the rails: Page 11, the Push-Car Railway.' } },
+      ],
       no: 11,
       title: { zh: '輕便車的今昔時刻表', en: 'The Old & New Timetable of the Push-Car' },
       emoji: '🚋',
@@ -3199,6 +3386,23 @@ export const SEASON7 = {
     // ─────────────────────────────────────── S7 EP12 · 終章 ───────────────────────────────────────
     {
       id: 's7ep12',
+      // 過場漫畫（第七季起才有）：開場兩格、破案兩格，最後一格固定收在老榕樹下
+      comicIntro: [
+        { bg: 'plaza', cast: ['anan', 'xiaohu', 'arong'],
+          say: { zh: '八德的廣場張燈結綵，十二站遇過的鄉親全都來了，連老榕樹都在旁邊靜靜看著。',
+                 en: 'The Bade plaza is strung with lanterns. Everyone from all twelve stops has come, and even the old banyan watches quietly.' } },
+        { bg: 'plaza', cast: ['anan', '🦉'],
+          say: { zh: '阿基教授把故事書遞過來：「只剩最後一頁了。這一頁，你想寫誰？」',
+                 en: 'Professor Archie holds out the storybook: "Only one page left. Whose story will you write on it?"' } },
+      ],
+      comicSolve: [
+        { bg: 'plaza', cast: ['anan', 'arong'],
+          say: { zh: '安安轉身，向那棵百年老榕樹深深一鞠躬：「一路把家鄉故事寫給我的，是阿榕。」',
+                 en: 'An-An turns and bows deeply to the century-old banyan: "The one who wrote the hometown stories for me all along was Arong."' } },
+        { bg: 'banyan', cast: ['anan', 'arong', 'xiaohu'],
+          say: { zh: '大榕樹發出溫柔的金光：「謝謝你，把家鄉的故事聽完了。」故事書合上，十二頁，滿了。',
+                 en: 'The great banyan glows softly gold: "Thank you for listening to the whole story." The book closes. Twelve pages, complete.' } },
+      ],
       no: 12,
       title: { zh: '八德家鄉大會', en: 'The Bade Hometown Fair' },
       emoji: '🏡',

@@ -1,0 +1,105 @@
+/* 過場漫畫（S7 起）。純 CSS，不用 framer-motion —— 這裡是常駐內容，
+   逐幀 JS 動畫在平板上會卡（見 HomeRoomScreen 的教訓）。 */
+.comic-strip {
+  margin: 14px 0 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.comic-label {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #8a6a3a;
+  letter-spacing: 0.04em;
+}
+.comic-panel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #e8e2d4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16), inset 0 0 0 3px #fffdf6;
+  animation: comic-in 0.45s ease both;
+}
+.comic-panel:nth-child(3) { animation-delay: 0.12s; }
+.comic-panel:nth-child(4) { animation-delay: 0.24s; }
+@keyframes comic-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+.comic-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+/* 演員站在下緣，由左往右排 */
+.comic-cast {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  bottom: 2%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2%;
+}
+.comic-emoji {
+  line-height: 1;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.28));
+}
+/* 對白框：壓在上緣，中英各一行 */
+.comic-bubble {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 5%;
+  padding: 7px 11px;
+  border-radius: 12px;
+  background: rgba(255, 253, 246, 0.94);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.comic-bubble::after {           /* 對話框的小尾巴 */
+  content: '';
+  position: absolute;
+  left: 22px;
+  bottom: -7px;
+  border: 7px solid transparent;
+  border-top-color: rgba(255, 253, 246, 0.94);
+  border-bottom: 0;
+}
+.comic-zh {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #3a3026;
+  line-height: 1.4;
+}
+.comic-en {
+  font-size: 0.72rem;
+  color: #7a6a55;
+  line-height: 1.35;
+}
+.comic-no {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(58, 48, 38, 0.72);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .comic-zh { font-size: 0.95rem; }
+  .comic-en { font-size: 0.8rem; }
+}
