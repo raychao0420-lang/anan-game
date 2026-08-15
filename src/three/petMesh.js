@@ -122,8 +122,9 @@ const FRONT = Math.PI / 2
 // 背鞍＝披在背上的一片曲面。整齊的圓柱切片四邊都是直的，側看就像貼了塊方形膏藥，
 // 所以把每一圈的包覆角度依前後位置往正上方收窄，邊緣才變成有生物感的橄欖形。
 // straight＝身體膠囊的圓柱段長度，len＝背鞍要蓋多長（可以超出去蓋到半球帽上）
-function saddleGeo(r, straight, len, spread) {
-  const geo = new THREE.CylinderGeometry(r, r, len, 24, 16, true, Math.PI - spread / 2, spread)
+// mid＝要往哪個方向收窄：π＝local −z（米格魯背鞍、企鵝圍兜都用這個）、0＝local +z（小鳥的腹側）
+function saddleGeo(r, straight, len, spread, mid = Math.PI) {
+  const geo = new THREE.CylinderGeometry(r, r, len, 24, 16, true, mid - spread / 2, spread)
   const pos = geo.attributes.position
   const half = len / 2
   for (let i = 0; i < pos.count; i++) {
@@ -135,8 +136,12 @@ function saddleGeo(r, straight, len, spread) {
     // 超出圓柱段的部分要跟著半球帽一起縮半徑，不然會從身體裡穿出來變成一片飄布
     const over = Math.max(0, Math.abs(y) - straight / 2)
     const rr = r * Math.sqrt(Math.max(0, 1 - (over / r) ** 2))
-    const a = Math.atan2(pos.getX(i), pos.getZ(i))  // 目前角度（0＝正下方、π＝正上方）
-    const na = Math.PI + (a - Math.PI) * k          // 往正上方收
+    // ⚠️ atan2 的值域是 (-π, π]，而這片曲面正好跨在 π 上 —— 超過 π 的那半圈會被回報成負角
+    // （4.367 變 -1.916），接著收窄時就往反方向繞，中段的 k（約 0.4~0.7）會把頂點甩到正對面去。
+    // 先接回 [0, 2π) 讓角度連續，收窄才會乖乖往 mid 靠。
+    let a = Math.atan2(pos.getX(i), pos.getZ(i))    // 目前角度（0＝正下方、π＝正上方）
+    if (mid > Math.PI / 2 && a < 0) a += Math.PI * 2
+    const na = mid + (a - mid) * k                  // 往 mid 的方向收
     pos.setX(i, Math.sin(na) * rr)
     pos.setZ(i, Math.cos(na) * rr)
   }
