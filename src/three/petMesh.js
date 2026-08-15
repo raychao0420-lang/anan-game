@@ -100,7 +100,10 @@ const SPECIES = {
   feifei:  { kind: 'bird', beak: 1.5, beakR: 0.17, beakHook: true, brow: true, size: 1.05, wingspan: 1.45 },
   // 豆豆＝副櫛龍（鴨嘴龍類）：長頭冠＋寬扁的鴨嘴，兩者缺一就只是一隻泛用小恐龍
   dino:    { kind: 'biped', tail: 'thick', size: 1.00, crest: true, bill: true },
-  monkey:  { kind: 'biped', tail: 'curl',  size: 0.90, ear: 'round', snout: 0.6 },
+  // 皮皮（猴子）：長手臂＋抓握的手（原本套企鵝的短鰭）、奶油色臉、外推的大圓耳。
+  // 這三樣是「看得出是猴子」的最低配；缺了臉那片淺色，就只是一顆單色圓頭。
+  monkey:  { kind: 'biped', tail: 'curl',  size: 0.90, ear: 'round', snout: 0.6,
+             arm: 'long', face: 'cream' },
   twinkle: { kind: 'float', shape: 'star',   size: 0.85 },
   luna:    { kind: 'float', shape: 'moon',   size: 0.85 },
   pluto:   { kind: 'float', shape: 'planet', size: 0.85 },
@@ -637,9 +640,24 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
         parts.legs.push(makeLeg(body, mBody, mBody, s, sx * r * 0.5, bodyY - r * 0.9, 0, s * 0.3))
       }
       for (const sx of [-1, 1]) {
-        const a = put(body, capsule(s * 0.07, s * 0.18), mBody, sx * r * 0.94, bodyY + s * 0.02, s * 0.02, null, [0, 0, sx * 0.3])
-        outline(a, 1.1)
-        wing(parts, a)
+        if (spec.arm === 'long') {
+          // 猴子是「長手臂＋能抓握的手」。原本跟企鵝共用同一根短鰭 ——
+          // 那是鳥收起來的翅膀，掛在靈長類身上完全不對。
+          // 掛肩膀 Group 讓手臂從那裡垂下來（動畫端轉這個就會晃），末端加一顆手掌。
+          const sh = new THREE.Group()
+          sh.position.set(sx * r * 0.9, bodyY + s * 0.09, s * 0.02)
+          sh.rotation.set(0.12, 0, sx * 0.24)
+          body.add(sh)
+          const armLen = s * 0.30
+          outline(put(sh, capsule(s * 0.055, armLen), mBody, 0, -(armLen / 2 + s * 0.05), 0), 1.1)
+          // 手掌用 ear 色（2D 版的手腳也是 ear 色），稍微捏長一點才像手不像球
+          outline(put(sh, ball(s * 0.075, 10), mEar, 0, -(armLen + s * 0.11), s * 0.012, [0.85, 1.15, 1]), 1.1)
+          wing(parts, sh)
+        } else {
+          const a = put(body, capsule(s * 0.07, s * 0.18), mBody, sx * r * 0.94, bodyY + s * 0.02, s * 0.02, null, [0, 0, sx * 0.3])
+          outline(a, 1.1)
+          wing(parts, a)
+        }
       }
       const headR = s * 0.31
       head.position.set(0, bodyY + r + headR * 0.7, s * 0.03)
@@ -656,8 +674,17 @@ export function buildPet(petId, stage = 1, { mood = 100 } = {}) {
           put(head, ball(headR * 0.14, 10), mDark, 0, -headR * 0.14, headR * 0.96)
         }
       }
+      // 猴子的奶油色臉：2D 版用「上面一片寬扁 + 下面一球圓」兩片橢圓疊出來（`MonkeyBase`），
+      // 3D 照同一套邏輯用兩片貼合曲面的球殼疊。臉上有這片淺色，猴子才認得出來 ——
+      // 少了它就只是一顆單色的圓頭。眼睛在 theta 1.42，剛好落在上面那片裡（跟 2D 一樣）。
+      if (spec.face === 'cream') {
+        patch(head, headR, mBelly, FRONT, 1.40, 1.33, 0.80)   // 上：寬而扁，蓋住眉眼
+        patch(head, headR, mBelly, FRONT, 1.50, 1.85, 1.30)   // 下：圓而飽滿，蓋住口鼻
+      }
       if (spec.ear === 'round') for (const sx of [-1, 1]) {
-        outline(put(head, ball(headR * 0.34, 10), mEar, sx * headR * 0.9, headR * 0.14, 0, [0.45, 1, 1]), 1.1)
+        // 大圓耳往外推到 1.0 headR：原本 0.9 只露出 0.05，幾乎貼在頭上看不出是耳朵
+        outline(put(head, ball(headR * 0.34, 10), mBody, sx * headR * 1.0, headR * 0.14, 0, [0.45, 1, 1]), 1.1)
+        put(head, ball(headR * 0.19, 8), mBelly, sx * headR * 1.06, headR * 0.14, 0, [0.45, 1, 1])
       }
       // 副櫛龍的長頭冠：從後腦往後上方伸出的一根長管。牠的冠是「中空」的，
       // 學者推測可以像喇叭一樣吹出低沉的聲音跟同伴互相呼叫。
