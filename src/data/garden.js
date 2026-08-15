@@ -32,6 +32,11 @@ export const PLANT_KINDS = {
 
 export const SEED_KINDS = ['flower', 'rare', 'tree', 'magic']
 
+// 花園同時最多幾株。⚠️ 滿了要「擋下來並告訴玩家」，
+// 絕對不可以像以前那樣用 slice(-24) 默默把最舊的一株擠掉 ——
+// 那會讓安安養了好幾天的花無聲消失，畫面上完全沒有提示。
+export const MAX_PLANTS = 24
+
 export const FERTILIZER = {
   name: '魔法肥料', emoji: '💩', price: 30,
   desc: '撒一次立刻多長一天，不用等到明天！',

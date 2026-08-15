@@ -4,8 +4,8 @@ import html2canvas from 'html2canvas'
 import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
-import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, makeGardenQuestion } from '../data/garden'
-import { BOUNDS, ACTIVITY_RADIUS, chasesToy } from '../data/roomRules'
+import { PLANT_KINDS, SEED_KINDS, FERTILIZER, plantView, todayKey, ALL_BLOOMS, MAX_PLANTS, makeGardenQuestion } from '../data/garden'
+import { BOUNDS, PLANT_BOUNDS, ACTIVITY_RADIUS, chasesToy } from '../data/roomRules'
 import { sfx, startAmbient, stopAmbient } from '../utils/sound'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
@@ -597,6 +597,10 @@ export default function HomeRoomScreen({ onNavigate }) {
   const [toy, setToy]     = useState(null)   // 地上的零食/球 {kind,x,y,key,kicks}
   const [toyFx, setToyFx] = useState(null)   // 吃掉/踢完的表情特效
   const toyKeyRef = useRef(null)             // 防兩隻寵物同時搶到重複觸發
+  // 丟出去的零食／球需要一個唯一 key。原本用 Date.now()，那是不純的函式，
+  // React Compiler 會擋（"Cannot call impure function"）；改用遞增的計數器，
+  // 效果一樣而且純粹。ref 在事件處理函式裡改是允許的。
+  const toySeq = useRef(0)
 
   // 直接吃百分比座標（2D 由滑鼠換算、3D 由射線打在地板上換算，兩邊共用這一份規則）
   const throwToyAt = (rawX, rawY) => {
@@ -604,7 +608,14 @@ export default function HomeRoomScreen({ onNavigate }) {
     // 種花／種樹：點草地種下（庭園可種範圍比丟東西更廣）；沒花苗就不種
     if (SEED_KINDS.includes(tool)) {
       if ((seedlings?.[tool] || 0) <= 0) { setTool(null); return }
-      plantSeed(tool, Math.max(8, Math.min(90, rawX)), Math.max(46, Math.min(82, rawY)))
+      // 花園滿了要說出來，不能默默不種（以前是默默把最舊的一株擠掉，更糟）
+      if (garden.length >= MAX_PLANTS) {
+        say(`🌱 花園滿了（${MAX_PLANTS} 株），先採收一些開好的花再種吧！`)
+        return
+      }
+      plantSeed(tool,
+        Math.max(PLANT_BOUNDS.xMin, Math.min(PLANT_BOUNDS.xMax, rawX)),
+        Math.max(PLANT_BOUNDS.yMin, Math.min(PLANT_BOUNDS.yMax, rawY)))
       sfx.click()
       if ((seedlings?.[tool] || 0) <= 1) setTool(null)   // 種到最後一顆才收起工具，連種更順手
       return
@@ -613,7 +624,7 @@ export default function HomeRoomScreen({ onNavigate }) {
     if (tool === 'fert') return
     const x = Math.max(10, Math.min(74, rawX))
     const y = Math.max(45, Math.min(64, rawY))
-    setToy({ kind: tool, x, y, key: Date.now(), kicks: tool === 'ball' ? 3 : 0 })
+    setToy({ kind: tool, x, y, key: ++toySeq.current, kicks: tool === 'ball' ? 3 : 0 })
     ;(tool === 'ball' ? sfx.boing : sfx.click)()
     setTool(null)
   }
