@@ -51,7 +51,7 @@ export default function PetScreen({ onNavigate }) {
   // 訊息 2.6 秒後消失
   useEffect(() => {
     if (!moveMsg) return
-    const t = setTimeout(() => setMoveMsg(''), 2600)
+    const t = setTimeout(() => setMoveMsg(''), 3800)   // 小三要讀得完，別太快消失
     return () => clearTimeout(t)
   }, [moveMsg])
   const [evolveModal, setEvolveModal] = useState(null)

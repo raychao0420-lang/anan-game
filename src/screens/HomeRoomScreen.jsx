@@ -667,7 +667,7 @@ export default function HomeRoomScreen({ onNavigate }) {
       const emoji = tool.slice(5)
       if ((flowers?.[emoji] || 0) <= 0) { setTool(null); return }
       if (sceneFlowerDecos.length >= MAX_FLOWER_DECOS) {
-        say(`🌸 這裡已經擺 ${MAX_FLOWER_DECOS} 朵花了，先收回幾朵再擺吧！`)
+        say(`🌸 這裡已經擺滿 ${MAX_FLOWER_DECOS} 朵花了！點畫面上的花就能收回背包，花不會不見～`)
         return
       }
       const b = flowerDecoBounds(scene)
@@ -690,7 +690,7 @@ export default function HomeRoomScreen({ onNavigate }) {
       }
       // 花園滿了要說出來，不能默默不種（以前是默默把最舊的一株擠掉，更糟）
       if (sceneGarden.length >= MAX_PLANTS) {
-        say(`🌱 這個花園滿了（${MAX_PLANTS} 株），先採收一些開好的花再種吧！`)
+        say(`🌱 這個花園滿了（${MAX_PLANTS} 株）！先點開好的花採收，採收的花會進背包，位置就空出來了～`)
         return
       }
       plantSeed(tool,
@@ -834,7 +834,7 @@ export default function HomeRoomScreen({ onNavigate }) {
   // 小提示浮條 2.6 秒後自動消失
   useEffect(() => {
     if (!notice) return
-    const t = setTimeout(() => setNotice(null), 2600)
+    const t = setTimeout(() => setNotice(null), 3800)   // 小三要讀得完，別太快消失
     return () => clearTimeout(t)
   }, [notice])
 
@@ -1412,8 +1412,15 @@ export default function HomeRoomScreen({ onNavigate }) {
                   e.stopPropagation(); sfx.click()
                   if (tool?.startsWith('deco:')) setTool(null); else setFlowerPick(true)
                 }}
-                aria-label="擺一朵花當裝飾" data-tip="擺一朵花當裝飾">
+                aria-label="擺一朵花當裝飾"
+                data-tip={sceneFlowerDecos.length >= MAX_FLOWER_DECOS
+                  ? `這裡的花擺滿了（${MAX_FLOWER_DECOS} 朵），點花可以收回背包`
+                  : '擺一朵花當裝飾'}>
                 🌸
+                {/* 擺之前就要看得出來滿了沒 —— 等按下去才說會被當成壞掉 */}
+                <span className={`room-cap-badge${sceneFlowerDecos.length >= MAX_FLOWER_DECOS ? ' full' : ''}`}>
+                  {sceneFlowerDecos.length}/{MAX_FLOWER_DECOS}
+                </span>
               </motion.button>
             )}
           </div>
@@ -1421,15 +1428,25 @@ export default function HomeRoomScreen({ onNavigate }) {
         {/* 秘密庭園：花苗／肥料／全部澆水按鈕（只在庭園場景出現） */}
         {!snapping && isGardenScene(scene) && (
           <div className="room-seed-btns">
+            {/* 花園擺得下幾株：種之前就看得到，滿了轉紅並直接寫「滿了」 */}
+            <span className={`room-plant-cap${sceneGarden.length >= MAX_PLANTS ? ' full' : ''}`}
+              data-tip={sceneGarden.length >= MAX_PLANTS
+                ? `花園滿了，先採收開好的花再種`
+                : `這個花園還能種 ${MAX_PLANTS - sceneGarden.length} 株`}>
+              🌱 {sceneGarden.length}/{MAX_PLANTS}{sceneGarden.length >= MAX_PLANTS ? ' 滿了' : ''}
+            </span>
             {/* 只列出這個庭園收的花苗：魔法花園只有魔法花苗，秘密庭園沒有魔法花苗 */}
             {(GARDEN_SCENES[scene]?.seeds || SEED_KINDS).map((k) => {
               const count = seedlings?.[k] || 0
+              const gardenFull = sceneGarden.length >= MAX_PLANTS
               return (
-                <motion.button key={k} className={`room-seed-btn${tool === k ? ' armed' : ''}${count === 0 ? ' empty' : ''}`}
+                <motion.button key={k} className={`room-seed-btn${tool === k ? ' armed' : ''}${count === 0 ? ' empty' : ''}${gardenFull ? ' capped' : ''}`}
                   whileTap={count > 0 ? { scale: 0.85 } : {}}
                   disabled={count === 0}
                   onClick={(e) => { e.stopPropagation(); if (count === 0) return; sfx.click(); setTool(tool === k ? null : k) }}
-                  data-tip={count === 0 ? `${PLANT_KINDS[k].seedName}（沒有了）` : `種下${PLANT_KINDS[k].seedName}`}>
+                  data-tip={count === 0 ? `${PLANT_KINDS[k].seedName}（沒有了）`
+                    : gardenFull ? `花園滿了，先採收一些再種${PLANT_KINDS[k].seedName}`
+                    : `種下${PLANT_KINDS[k].seedName}`}>
                   {PLANT_KINDS[k].bagEmoji}
                   <span className="room-seed-count">{count}</span>
                 </motion.button>

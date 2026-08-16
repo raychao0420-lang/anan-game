@@ -1447,3 +1447,40 @@
 .scene-magic .room-floor-wrap { background: linear-gradient(180deg, #6a5aa8 0%, #4a3d7a 100%); }
 /* 場景頁籤變三個，字要縮一點才排得下 */
 .room-scene-tabs .room-scene-tab { font-size: 0.72rem; padding: 5px 9px; }
+
+/* ── 上限提示（2026-08-16）：滿了要「動手之前」就看得出來 ──
+   使用者鐵則：等按下去才說會被安安當成遊戲壞了。
+   同樣的規則已套用在寵物（PetScreen 的 n/8）與家具（背包的 n/8）。 */
+.room-plant-cap {
+  display: inline-flex;
+  align-items: center;
+  height: 46px;
+  padding: 0 12px;
+  border-radius: 23px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #5C7A4A;
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+.room-plant-cap.full { background: #FFE3DE; color: #D9432F; }
+
+/* 花園滿了：花苗鈕本身也要看得出來（仍可點，點了會有解釋，比按不動更不像壞掉） */
+.room-seed-btn.capped { filter: grayscale(0.55); opacity: 0.72; }
+
+/* 擺花鈕上的「已擺 n/12」小角標 */
+.room-cap-badge {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  background: #5C7A4A;
+  color: #fff;
+  font-size: 0.56rem;
+  font-weight: 800;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 9px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+.room-cap-badge.full { background: #D9432F; }
