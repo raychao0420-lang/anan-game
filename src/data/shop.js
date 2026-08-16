@@ -109,6 +109,18 @@ export const SHOP_ITEMS = [
   { id: 'moon_fountain', name: '月光噴泉', emoji: '🌙', category: 'home', price: 2000, desc: '流出來的不是水而是月光，濺起來的光點會慢慢飄上天空變成小星星。' },
   { id: 'star_gate',  name: '星光拱門',   emoji: '🌌', category: 'home', price: 1800, desc: '兩根星塵柱撐起的發光拱門，穿過去的孩子身上會沾到閃閃發亮的星屑。' },
 
+  // ── 寵物專屬的窩（2026-08-16 新增）────────────────────────────────
+  // 安安對寵物最有感，所以把「每隻孩子都有自己的床」做成高單價商品。
+  // 每一種窩都有明確的適性名單（見 DECO_ACTIVITIES），寵物會自己走過去睡。
+  { id: 'kennel',      name: '小狗屋',     emoji: '🏚️', category: 'home', price: 1200, desc: '尖屋頂的木頭狗屋，門口掛著寫了名字的小木牌，鑽進去就不想出來了。' },
+  { id: 'cat_tower',   name: '貓跳台',     emoji: '🗼', category: 'home', price: 1400, desc: '三層的貓跳台，最上面那層看得到整個房間，是貓咪的專屬瞭望台。' },
+  { id: 'otter_raft',  name: '水獺浮床',   emoji: '🛟', category: 'home', price: 1300, desc: '浮在水面上的軟軟小床，睡著了也不會漂走，因為手手會牽在一起。' },
+  { id: 'nest_house',  name: '鳥巢小屋',   emoji: '🪹', category: 'home', price: 1100, desc: '掛在高處的草編巢屋，圓圓的門口剛好塞得下一隻鳥，裡面鋪滿軟羽毛。' },
+  { id: 'tree_hollow', name: '樹洞床',     emoji: '🕳️', category: 'home', price: 1500, desc: '老樹幹挖出來的樹洞，鋪了乾草和落葉，愛躲起來的孩子最有安全感。' },
+  { id: 'dino_nest',   name: '恐龍蛋窩',   emoji: '🥚', category: 'home', price: 1600, desc: '用石頭圍起來的蛋窩，中間鋪滿溫熱的細沙，還放著幾顆假的恐龍蛋。' },
+  { id: 'moss_bed',    name: '苔蘚小床',   emoji: '🌿', category: 'home', price: 1000, desc: '厚厚一層綠苔蘚做成的天然床墊，摸起來像絨布，聞起來有雨後森林的味道。' },
+  { id: 'star_bed',    name: '星星床',     emoji: '⭐', category: 'home', price: 1800, desc: '躺上去會慢慢浮起來一點點的星星床，蓋的被子是銀河做的，翻身會撒下星屑。' },
+
   // ── 主題壁紙（整個房間換裝，一次只能貼一款；擺放後生效） ──
   { id: 'theme_forest', name: '森林小屋壁紙', emoji: '🌲', category: 'home', price: 600,  desc: '整個家變成森林小屋！LULU、雪狐、河狸、倉鼠都覺得像回到大自然' },
   { id: 'theme_ocean',  name: '海底世界壁紙', emoji: '🐚', category: 'home', price: 800,  desc: '整個家潛進海底！水獺、海豹、企鵝樂翻天，泡泡咕嚕咕嚕' },

@@ -424,6 +424,93 @@ const BUILD = {
     w.userData.ripple = true
     return g },
 
+  // ── 寵物專屬的窩（2026-08-16）。都是「有個凹進去的地方可以躺」的造型。 ──
+  kennel: () => { const g = new THREE.Group()
+    box(g, 0.5, 0.34, 0.44, '#C99A63', 0, 0.17, 0)                // 屋身
+    cone(g, 0.42, 0.24, '#C0563E', 0, 0.46, 0, 4, [0, Math.PI / 4, 0])
+    box(g, 0.2, 0.26, 0.03, '#4A3728', 0, 0.13, 0.225)            // 門洞
+    box(g, 0.16, 0.07, 0.02, '#F5E6C8', 0, 0.35, 0.235)           // 名牌
+    sph(g, 0.16, '#F0E4D0', 0, 0.06, 0.02, [1.1, 0.45, 1], 8)     // 裡面的軟墊
+    return g },
+
+  cat_tower: () => { const g = new THREE.Group()
+    box(g, 0.44, 0.05, 0.36, '#B98A5E', 0, 0.025, 0)              // 底座
+    cyl(g, 0.055, 0.055, 0.34, '#D8C6AE', -0.1, 0.2, 0, 10)       // 柱
+    box(g, 0.32, 0.05, 0.28, '#E8DCC8', 0.02, 0.39, 0)            // 第二層
+    cyl(g, 0.05, 0.05, 0.3, '#D8C6AE', 0.12, 0.55, 0, 10)
+    cyl(g, 0.2, 0.2, 0.07, '#F0E4D0', 0.06, 0.73, 0, 14)          // 頂層圓床
+    sph(g, 0.15, '#FFD9E0', 0.06, 0.78, 0, [1, 0.4, 1], 9)        // 軟墊
+    sph(g, 0.035, '#FF8FA3', -0.16, 0.5, 0.1, null, 7)            // 吊著的小球
+    return g },
+
+  otter_raft: () => { const g = new THREE.Group()
+    const w = cyl(g, 0.5, 0.5, 0.04, M('#7FC8E8', { transparent: true, opacity: 0.75 }), 0, 0.02, 0, 18)
+    w.userData.ripple = true
+    for (let i = 0; i < 6; i++) {                                  // 木頭浮排
+      cyl(g, 0.045, 0.045, 0.5, '#C99A63', -0.13 + i * 0.052, 0.08, 0, 8, [0, 0, Math.PI / 2])
+    }
+    sph(g, 0.17, '#FFF1C9', 0, 0.13, 0, [1.15, 0.4, 0.85], 9)     // 軟墊
+    cyl(g, 0.02, 0.02, 0.26, '#A0764C', 0.2, 0.2, 0, 6)           // 小旗桿
+    box(g, 0.11, 0.07, 0.01, '#FF8FA3', 0.26, 0.29, 0)
+    return g },
+
+  nest_house: () => { const g = new THREE.Group()
+    cyl(g, 0.05, 0.07, 0.5, '#8A6A44', 0, 0.25, 0, 8)             // 支柱
+    const bowl = new THREE.Mesh(new THREE.SphereGeometry(0.26, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2),
+      M('#C9A063', { side: THREE.DoubleSide }))
+    bowl.rotation.x = Math.PI; bowl.position.y = 0.58; g.add(bowl) // 碗狀巢（開口朝上）
+    for (let i = 0; i < 12; i++) {                                 // 編織的草
+      const a = (i / 12) * Math.PI * 2
+      cyl(g, 0.012, 0.012, 0.2, '#B08A50', Math.cos(a) * 0.25, 0.5, Math.sin(a) * 0.25, 5, [0.3, a, 0])
+    }
+    sph(g, 0.16, '#FFF6E0', 0, 0.5, 0, [1, 0.45, 1], 9)           // 羽毛墊
+    return g },
+
+  tree_hollow: () => { const g = new THREE.Group()
+    cyl(g, 0.26, 0.32, 0.62, '#8A6A44', 0, 0.31, 0, 12)           // 樹幹
+    sph(g, 0.3, '#6FBF5B', 0, 0.68, 0, [1, 0.55, 1], 9)           // 頂上的葉子
+    const hole = new THREE.Mesh(new THREE.SphereGeometry(0.16, 10, 8, 0, Math.PI * 2, 0, Math.PI / 2),
+      M('#3B2A1B', { side: THREE.DoubleSide }))
+    hole.rotation.x = -Math.PI / 2; hole.position.set(0, 0.3, 0.2); g.add(hole)   // 樹洞
+    sph(g, 0.12, '#C9A063', 0, 0.24, 0.22, [1, 0.4, 0.7], 8)      // 乾草
+    for (let i = 0; i < 3; i++) sph(g, 0.05, '#C0563E', -0.2 + i * 0.2, 0.06, 0.16, [1, 0.6, 1], 6)
+    return g },
+
+  dino_nest: () => { const g = new THREE.Group()
+    for (let i = 0; i < 11; i++) {                                 // 圍一圈石頭
+      const a = (i / 11) * Math.PI * 2
+      sph(g, 0.09, '#9E9384', Math.cos(a) * 0.4, 0.05, Math.sin(a) * 0.4, [1, 0.75, 1], 7)
+    }
+    cyl(g, 0.36, 0.36, 0.05, '#E8D8B0', 0, 0.035, 0, 16)          // 細沙
+    for (const [x, z, s] of [[-0.1, 0.05, 1], [0.11, -0.04, 0.9], [0.02, 0.14, 0.8]])
+      sph(g, 0.11 * s, '#F2E4C8', x, 0.11, z, [0.85, 1.15, 0.85], 9)  // 蛋
+    return g },
+
+  moss_bed: () => { const g = new THREE.Group()
+    box(g, 0.5, 0.06, 0.38, '#8A6A44', 0, 0.03, 0)                // 木框
+    sph(g, 0.25, '#6FBF5B', 0, 0.06, 0, [1.05, 0.42, 0.82], 10)   // 苔蘚墊
+    for (let i = 0; i < 7; i++) {                                  // 冒出來的小草
+      const a = (i / 7) * Math.PI * 2
+      cyl(g, 0.008, 0.012, 0.09, '#5EAE4C', Math.cos(a) * 0.16, 0.14, Math.sin(a) * 0.11, 5)
+    }
+    for (const [x, z] of [[-0.15, 0.1], [0.17, -0.07]])
+      sph(g, 0.035, '#FFD9E0', x, 0.13, z, [1, 0.8, 1], 6)        // 小花點綴
+    return g },
+
+  star_bed: () => { const g = new THREE.Group()
+    cyl(g, 0.34, 0.3, 0.07, glowMat('#8E7BD8', 0.85), 0, 0.05, 0, 16)   // 浮起的底盤
+    sph(g, 0.26, '#3B2E6B', 0, 0.08, 0, [1.05, 0.42, 0.85], 10)         // 銀河被
+    for (let i = 0; i < 9; i++) {                                        // 被子上的星星
+      const a = (i / 9) * Math.PI * 2, r = 0.1 + (i % 3) * 0.06
+      const s = sph(g, 0.022, glowMat('#FFF3C4'), Math.cos(a) * r, 0.16, Math.sin(a) * r * 0.8, null, 6)
+      s.userData.twinkle = i
+    }
+    for (const x of [-0.3, 0.3]) {                                       // 兩顆床角星
+      const s = sph(g, 0.06, glowMat('#FFE066'), x, 0.2, -0.16, null, 8)
+      s.userData.twinkle = x > 0 ? 3 : 6
+    }
+    return g },
+
   // ── 魔法花園 ──
   crystal_pond: () => { const g = new THREE.Group()
     for (let i = 0; i < 10; i++) {                                 // 水晶環

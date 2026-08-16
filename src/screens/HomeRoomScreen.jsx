@@ -172,6 +172,16 @@ const DECO_ACTIVITIES = {
   flower_arch: { pets: ['mejiro', 'hana', 'twinkle', 'luna', 'arong'],            motion: 'gaze',   emoji: '💐' },
   bird_bath:   { pets: ['mejiro', 'feifei', 'owl', 'penguin', 'xiaoq'],           motion: 'splash', emoji: '🕊️' },
   // 魔法花園
+  // ── 寵物專屬的窩：適性要窄一點才有「這是我的床」的感覺，全部都是 sleep ──
+  kennel:      { pets: ['lulu', 'xiaohu'],                                        motion: 'sleep',  emoji: '🏚️' },
+  cat_tower:   { pets: ['jiji', 'kitsune'],                                       motion: 'sleep',  emoji: '🗼' },
+  otter_raft:  { pets: ['hana', 'kotaro', 'seal'],                                motion: 'sleep',  emoji: '🛟' },
+  nest_house:  { pets: ['mejiro', 'feifei', 'owl', 'xiaoq'],                       motion: 'sleep',  emoji: '🪹' },
+  tree_hollow: { pets: ['raccoon', 'hamster', 'beaver', 'monkey'],                 motion: 'hide',   emoji: '🕳️' },
+  dino_nest:   { pets: ['dino', 'penguin'],                                        motion: 'sleep',  emoji: '🥚' },
+  moss_bed:    { pets: ['arong', 'beaver', 'dino'],                                motion: 'sleep',  emoji: '🌿' },
+  star_bed:    { pets: ['twinkle', 'luna', 'pluto'],                               motion: 'sleep',  emoji: '⭐' },
+
   crystal_pond:  { pets: ['luna', 'twinkle', 'pluto', 'seal', 'jiji'],            motion: 'gaze',   emoji: '💠' },
   moon_fountain: { pets: ['luna', 'pluto', 'jiji', 'seal', 'kotaro'],             motion: 'splash', emoji: '🌙' },
   star_gate:     { pets: ['twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'owl'],  motion: 'gaze',   emoji: '🌌' },
