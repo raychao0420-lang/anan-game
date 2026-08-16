@@ -4,7 +4,7 @@ import { ACHIEVEMENTS } from '../data/achievements'
 import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
 import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS, MAX_PLANTS, MAX_FLOWER_DECOS, bloomKind, FLOWER_GIFT } from '../data/garden'
-import { habitatOfPet, MAX_PETS_PER_SCENE } from '../data/roomRules'
+import { habitatOfPet, habitatOfDeco, MAX_PETS_PER_SCENE, MAX_DECOS_PER_SCENE } from '../data/roomRules'
 import { pickDailyChallenge } from '../data/dailyChallenge'
 
 const makeStages = () => {
@@ -277,17 +277,25 @@ export const useGameStore = create(
           return { petEquipment: { ...s.petEquipment, [petId]: next } }
         }),
 
-      toggleHomeItem: (itemId) =>
-        set((s) => {
-          if (s.equippedHomeItems.includes(itemId)) {
-            return { equippedHomeItems: s.equippedHomeItems.filter((id) => id !== itemId) }
-          }
-          // 主題壁紙一次只能貼一款：貼新的自動收起舊的
-          const base = itemId.startsWith('theme_')
-            ? s.equippedHomeItems.filter((id) => !id.startsWith('theme_'))
-            : s.equippedHomeItems
-          return { equippedHomeItems: [...base, itemId] }
-        }),
+      // 擺出來／收回來。滿了會擋下並回傳被擋的場景，讓畫面可以說明原因
+      // （沿用花園滿了的處理方式：擋下＋出聲，不要默默不動作）。
+      toggleHomeItem: (itemId) => {
+        const s = get()
+        if (s.equippedHomeItems.includes(itemId)) {
+          set({ equippedHomeItems: s.equippedHomeItems.filter((id) => id !== itemId) })
+          return { ok: true, removed: true }
+        }
+        // 主題壁紙一次只能貼一款：貼新的自動收起舊的（不佔家具數量）
+        if (itemId.startsWith('theme_')) {
+          set({ equippedHomeItems: [...s.equippedHomeItems.filter((id) => !id.startsWith('theme_')), itemId] })
+          return { ok: true }
+        }
+        const sc = habitatOfDeco(itemId)
+        const placed = s.equippedHomeItems.filter((id) => !id.startsWith('theme_') && habitatOfDeco(id) === sc)
+        if (placed.length >= MAX_DECOS_PER_SCENE) return { ok: false, full: sc }
+        set({ equippedHomeItems: [...s.equippedHomeItems, itemId] })
+        return { ok: true }
+      },
 
       moveHomeDeco: (itemId, x, y, scale) =>
         set((s) => ({

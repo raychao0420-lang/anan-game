@@ -4,6 +4,7 @@ import { useGameStore } from '../store/gameStore'
 import { PETS, PET_ORDER } from '../data/pets'
 import { SHOP_ITEMS, SHOP_CATEGORIES } from '../data/shop'
 import { PLANT_KINDS, BLOOM_TRAITS, bloomKind } from '../data/garden'
+import { HOME_SCENES, MAX_DECOS_PER_SCENE, habitatOfDeco } from '../data/roomRules'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
 import './BackpackScreen.css'
@@ -23,6 +24,20 @@ export default function BackpackScreen({ onNavigate }) {
   const [category, setCategory] = useState('hat')
   const [giving, setGiving] = useState(null)    // 正要送出的花（emoji），開啟選寵物的彈窗
   const [giveFx, setGiveFx] = useState(null)    // 送完之後的反應
+  const [bagMsg, setBagMsg] = useState(null)    // 擺不下之類的提示
+
+  useEffect(() => {
+    if (!bagMsg) return
+    const t = setTimeout(() => setBagMsg(null), 2600)
+    return () => clearTimeout(t)
+  }, [bagMsg])
+
+  // 每個場景擺了幾件（主題壁紙不算家具）
+  const placedCount = HOME_SCENES.reduce((acc, sc) => {
+    acc[sc.id] = equippedHomeItems.filter(
+      (id) => !id.startsWith('theme_') && habitatOfDeco(id) === sc.id).length
+    return acc
+  }, {})
 
   const petDef = PETS[activePet]
   const petData = pets[activePet]
@@ -67,6 +82,13 @@ export default function BackpackScreen({ onNavigate }) {
 
   return (
     <div className="bag-screen">
+      {bagMsg && (
+        <motion.div className="bag-toast"
+          initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+          {bagMsg}
+        </motion.div>
+      )}
+
       {/* Header */}
       <div className="bag-header">
         <motion.button className="btn-back" whileTap={{ scale: 0.9 }} onClick={() => onNavigate('home')}>
@@ -93,8 +115,17 @@ export default function BackpackScreen({ onNavigate }) {
           <div className="bag-preview-name">{petDef.name}</div>
           <div className="bag-preview-count">🎒 收藏 {totalOwned} 件道具</div>
           <div className="bag-preview-hint">
-            {category === 'home' ? '點道具「擺放」到家裡佈置' : '點寵物頭像幫他穿戴'}
+            {category === 'home' ? '點道具「擺放」到家裡佈置，再點一次收回背包' : '點寵物頭像幫他穿戴'}
           </div>
+          {category === 'home' && (
+            <div className="bag-placed-count">
+              {HOME_SCENES.map((sc) => (
+                <span key={sc.id} className={placedCount[sc.id] >= MAX_DECOS_PER_SCENE ? 'full' : ''}>
+                  {sc.icon} {placedCount[sc.id]}/{MAX_DECOS_PER_SCENE}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -173,7 +204,13 @@ export default function BackpackScreen({ onNavigate }) {
                   <motion.button
                     className={`bag-place-btn ${isHomePlaced(item) ? 'unplace' : ''}`}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => toggleHomeItem(item.id)}
+                    onClick={() => {
+                      const r = toggleHomeItem(item.id)
+                      if (r && r.ok === false && r.full) {
+                        const where = HOME_SCENES.find((s) => s.id === r.full)
+                        setBagMsg(`${where?.icon || '🏠'} ${where?.label || '這裡'}已經擺了 ${MAX_DECOS_PER_SCENE} 件，先收起一件再擺喔！`)
+                      }
+                    }}
                   >
                     {isHomePlaced(item) ? '✅ 已擺放' : '🏠 擺放'}
                   </motion.button>

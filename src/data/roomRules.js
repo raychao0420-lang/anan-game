@@ -35,6 +35,17 @@ export const habitatOfDeco = (id) =>
 // 描邊佔了將近一半的 mesh（LULU 16→33 就是加描邊造成的）。
 export const MAX_PETS_PER_SCENE = 8
 
+// 每個場景最多擺幾件家具。2026-08-16 訂：庭園配件從 15 件加到 27 件之後，
+// 原本「想擺幾件就擺幾件」會讓庭園又亂又慢（使用者反映）。
+// 實測 mesh 數（node 直接 buildDeco 出來量）：庭園 21 件全擺 208 mesh，
+// 最重的 flower_arch 21、bamboo 19、carousel 17。取最重的 8 件約 118 mesh。
+// ⚠️ 順帶查到的事實：秘密庭園**就算一件家具都不擺**，最壞情況也已經有
+//    692 mesh（寵物 8 隻最壞 416 ＋ 植物 24 株 96 ＋ 花裝飾 12 個 120 ＋ 場景 60），
+//    已經超過平板舒適區 420~520。所以家具上限只是止血，
+//    真要再壓，第一個該砍的仍然是「描邊」（佔寵物近一半的 mesh），不是件數。
+// 註：這是 3D 模式的成本；2D 模式的瓶頸是 DOM 節點與常駐動畫數量（見花園卡頓那次教訓）。
+export const MAX_DECOS_PER_SCENE = 8
+
 // 寵物走動的範圍（不是種花範圍，兩者不同，別搞混）
 export const BOUNDS = { xMin: 6, xMax: 78, yMin: 42, yMax: 66 }
 

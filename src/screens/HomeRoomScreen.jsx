@@ -212,7 +212,7 @@ const EMPTY_ITEMS = []  // 穩定的空陣列參照，避免沒裝備的寵物�
 
 // ── Draggable decoration ──────────────────────────────────────────────────────
 
-const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, containerRef }) {
+const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, onTakeBack, containerRef }) {
   const [localPos, setLocalPos]   = useState({ x: pos.x, y: pos.y })
   const [userScale, setUserScale] = useState(pos.scale ?? 1)
   const [dragging, setDragging]   = useState(false)
@@ -221,6 +221,9 @@ const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, container
   const pointersRef   = useRef(new Map())
   const dragStartRef  = useRef(null)
   const pinchStartRef = useRef(null)
+  // 按下到放開之間移動了多少：<10px 當成「點一下」＝收回背包，
+  // 超過就是在搬家具。跟寵物拖曳用同一個門檻，手感一致。
+  const movedRef      = useRef(0)
   const localPosRef   = useRef(localPos)
   const userScaleRef  = useRef(pos.scale ?? 1)
   const wheelTimerRef = useRef(null)
@@ -264,6 +267,7 @@ const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, container
     if (pointersRef.current.size === 1) {
       const rect = containerRef.current?.getBoundingClientRect()
       if (!rect) return
+      movedRef.current = 0
       setDragging(true)
       dragStartRef.current = {
         cx: e.clientX, cy: e.clientY,
@@ -291,6 +295,7 @@ const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, container
       setUserScale(next)
     } else if (dragging && dragStartRef.current) {
       const { cx, cy, px, py, rw, rh } = dragStartRef.current
+      movedRef.current = Math.max(movedRef.current, Math.hypot(e.clientX - cx, e.clientY - cy))
       const nx = Math.max(DECO_BOUNDS.xMin, Math.min(DECO_BOUNDS.xMax, px + (e.clientX - cx) / rw * 100))
       const ny = Math.max(DECO_BOUNDS.yMin, Math.min(DECO_BOUNDS.yMax, py + (e.clientY - cy) / rh * 100))
       setLocalPos({ x: nx, y: ny })
@@ -302,7 +307,9 @@ const DraggableDeco = memo(function DraggableDeco({ item, pos, onMove, container
     const remaining = pointersRef.current.size
 
     if (remaining === 0) {
-      if (dragging || pinching) save()
+      // 幾乎沒移動＝點一下＝收回背包（跟花的手感一致）；有移動才存新位置
+      if (!pinching && movedRef.current < 10 && onTakeBack) onTakeBack(item.id)
+      else if (dragging || pinching) save()
       setDragging(false)
       setPinching(false)
       dragStartRef.current  = null
@@ -590,7 +597,7 @@ const WanderingPet = memo(function WanderingPet({ petId, petDef, petData, equipp
 // ── Main screen ───────────────────────────────────────────────────────────────
 
 export default function HomeRoomScreen({ onNavigate }) {
-  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins,
+  const { pets, petEquipment, equippedHomeItems, homeDecoPositions, moveHomeDeco, toggleHomeItem, petMoods, updatePetMood, garden, plantSeed, collectPlant, addCoins,
           seedlings, fertilizer, waterPlant, waterAll, useFertilizer, addSeedling, updateDailyProgress,
           solveMagicPlant, recordBloom, registerWaterDay, gardenKeeper, setGardenKeeper, keeperTend, gardenDex, addFlower, petHabitat,
           flowers, flowerDecos, placeFlower, takeFlowerBack, petNests, setPetNest } = useGameStore()
@@ -1022,6 +1029,15 @@ export default function HomeRoomScreen({ onNavigate }) {
     setNameTag({ petId, key: Date.now() })
   }, [updatePetMood])
 
+  // 點一下家具＝收回背包（不是賣掉，隨時可以再擺出來）
+  const handleDecoTakeBack = useCallback((itemId) => {
+    if (tool) return                      // 手上拿著工具時不要誤收
+    sfx.click()
+    toggleHomeItem(itemId)
+    const it = SHOP_ITEMS.find((i) => i.id === itemId)
+    say(`📦 把「${it?.name || '家具'}」收回背包了，想擺回來再去背包點一下`)
+  }, [tool, toggleHomeItem, say])
+
   // 相遇配對：任兩隻已解鎖寵物距離 < MEET_DIST
   const meetings = []
   const meetPartner = {}
@@ -1174,6 +1190,7 @@ export default function HomeRoomScreen({ onNavigate }) {
               item={item}
               pos={pos}
               onMove={moveHomeDeco}
+              onTakeBack={handleDecoTakeBack}
               containerRef={containerRef}
             />
           ))}

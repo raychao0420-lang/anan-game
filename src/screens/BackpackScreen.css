@@ -278,3 +278,32 @@
   padding: 8px 16px; border-radius: 14px; font-size: 0.78rem; font-weight: 700;
   max-width: 88vw; text-align: center;
 }
+
+/* ── 擺放數量與提示（2026-08-16：家具加了場景上限）── */
+.bag-placed-count {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #7a6a55;
+}
+.bag-placed-count .full { color: #E5533D; }
+
+.bag-toast {
+  position: fixed;
+  left: 50%;
+  top: 12px;
+  transform: translateX(-50%);
+  z-index: 200;
+  max-width: 88vw;
+  background: #4A3728;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 10px 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.28);
+  text-align: center;
+}
