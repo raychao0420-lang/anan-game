@@ -159,6 +159,22 @@ const DECO_ACTIVITIES = {
   bamboo:      { pets: ['hamster', 'beaver', 'dino', 'mejiro'],          motion: 'gaze',   emoji: '😋' },
   plant:       { pets: ['mejiro', 'hamster', 'beaver'],                  motion: 'gaze',   emoji: '🌿' },
   bird_perch:  { pets: ['mejiro', 'owl', 'xiaoq', 'feifei'],                      motion: 'gaze',   emoji: '🐤' },
+
+  // ── 2026-08-16 新增的庭園大型配件 ──
+  // 每一件都要定好「哪些寵物喜歡」＋去了會做什麼，不然買回來只是擺著沒反應。
+  carousel:    { pets: ['lulu', 'monkey', 'hamster', 'dino', 'twinkle', 'mejiro'], motion: 'bounce', emoji: '🎠' },
+  treehouse:   { pets: ['monkey', 'hamster', 'raccoon', 'mejiro', 'kitsune'],     motion: 'hide',   emoji: '🏡' },
+  greenhouse:  { pets: ['mejiro', 'beaver', 'hamster', 'xiaoq', 'arong'],         motion: 'gaze',   emoji: '🌸' },
+  fountain:    { pets: ['hana', 'kotaro', 'seal', 'penguin', 'beaver', 'mejiro'], motion: 'splash', emoji: '⛲' },
+  windmill:    { pets: ['mejiro', 'feifei', 'owl', 'xiaoq'],                      motion: 'gaze',   emoji: '🌬️' },
+  swing:       { pets: ['monkey', 'hamster', 'lulu', 'mejiro', 'twinkle'],        motion: 'bounce', emoji: '🪅' },
+  sandbox:     { pets: ['dino', 'raccoon', 'hamster', 'xiaohu', 'lulu'],          motion: 'play',   emoji: '🏖️' },
+  flower_arch: { pets: ['mejiro', 'hana', 'twinkle', 'luna', 'arong'],            motion: 'gaze',   emoji: '💐' },
+  bird_bath:   { pets: ['mejiro', 'feifei', 'owl', 'penguin', 'xiaoq'],           motion: 'splash', emoji: '🕊️' },
+  // 魔法花園
+  crystal_pond:  { pets: ['luna', 'twinkle', 'pluto', 'seal', 'jiji'],            motion: 'gaze',   emoji: '💠' },
+  moon_fountain: { pets: ['luna', 'pluto', 'jiji', 'seal', 'kotaro'],             motion: 'splash', emoji: '🌙' },
+  star_gate:     { pets: ['twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'owl'],  motion: 'gaze',   emoji: '🌌' },
 }
 
 // 動作 → 上下擺動的幅度(px)與速度(秒)。讓不同活動看起來不一樣。

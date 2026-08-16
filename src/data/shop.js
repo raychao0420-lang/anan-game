@@ -90,6 +90,25 @@ export const SHOP_ITEMS = [
   { id: 'puzzle_board', name: '解謎小黑板', emoji: '🖍️', category: 'home', price: 260, desc: '掛在牆上的迷你黑板，畫滿數列跟問號。小Q最愛站在前面出題考大家，聰明的孩子們都搶著來解！' },
   { id: 'world_route_map', name: '環遊世界航線圖', emoji: '🗺️', category: 'home', price: 280, desc: '掛在牆上的大航線圖，十二枚郵票沿著航線一路貼回台灣。飛飛最愛停在前面，跟大家講每一站的故事～' },
   { id: 'taiwan_puzzle_wall', name: '台灣地圖拼圖牆', emoji: '🧩', category: 'home', price: 280, desc: '掛在牆上的十二片台灣拼圖，每一片都貼著那一站的名產小貼紙。小虎最愛站在前面，一站一站介紹家鄉的美～' },
+  // ── 秘密庭園大型配件（2026-08-16 新增）──────────────────────────────
+  // 安安對花園配件最有興趣、也最願意花錢，但這一櫃原本只有 12 件、最貴才 500，
+  // 全買光只花掉她存款的 4.7% —— 想買的東西太少也太便宜，金幣才會一直堆著。
+  // 所以這批刻意開到 1500~3000 的價位，讓存款真的有地方去。
+  { id: 'carousel',   name: '旋轉木馬',   emoji: '🎠', category: 'home', price: 3000, desc: '會轉圈圈的華麗旋轉木馬！音樂一放，大家排隊搶著坐上去，笑聲整個庭園都聽得到。' },
+  { id: 'treehouse',  name: '大樹屋',     emoji: '🏡', category: 'home', price: 2800, desc: '蓋在大樹上的祕密基地，有小梯子跟瞭望窗。愛爬高的孩子一溜煙就鑽進去了！' },
+  { id: 'greenhouse', name: '玻璃溫室',   emoji: '🏛️', category: 'home', price: 2400, desc: '透明的玻璃小溫室，裡面暖暖的一年四季都開花，下雨天也能躲進去賞花。' },
+  { id: 'fountain',   name: '大噴泉',     emoji: '⛲', category: 'home', price: 2200, desc: '三層石雕大噴泉，水花在陽光下閃閃發亮，愛玩水的孩子整天泡在裡面不肯走。' },
+  { id: 'windmill',   name: '小風車',     emoji: '🌬️', category: 'home', price: 1200, desc: '紅屋頂的荷蘭小風車，風一吹葉片就慢慢轉，會飛的孩子最愛停在上面看風景。' },
+  { id: 'swing',      name: '木鞦韆',     emoji: '🪅', category: 'home', price: 900,  desc: '掛在樹枝上的木頭鞦韆，盪起來會有咿呀咿呀的聲音，盪得越高笑得越大聲。' },
+  { id: 'sandbox',    name: '沙坑',       emoji: '🏖️', category: 'home', price: 700,  desc: '軟軟的細沙坑，附小水桶跟鏟子。愛挖洞的孩子一進去就挖個不停，挖到滿身沙。' },
+  { id: 'flower_arch', name: '花拱門',    emoji: '💐', category: 'home', price: 600,  desc: '爬滿藤蔓與小花的白色拱門，走過去像走進童話故事的入口。' },
+  { id: 'bird_bath',  name: '鳥澡盆',     emoji: '🕊️', category: 'home', price: 450,  desc: '石頭做的淺淺澡盆，小鳥們排隊來洗澡、拍翅膀甩水，可愛得不得了。' },
+
+  // ── 魔法花園大型配件（原本只有 3 件）──
+  { id: 'crystal_pond', name: '水晶湖',   emoji: '💠', category: 'home', price: 2600, desc: '會發光的水晶湖，湖面倒映著整片星空。夜裡靠近，連毛都會染上淡淡的藍光。' },
+  { id: 'moon_fountain', name: '月光噴泉', emoji: '🌙', category: 'home', price: 2000, desc: '流出來的不是水而是月光，濺起來的光點會慢慢飄上天空變成小星星。' },
+  { id: 'star_gate',  name: '星光拱門',   emoji: '🌌', category: 'home', price: 1800, desc: '兩根星塵柱撐起的發光拱門，穿過去的孩子身上會沾到閃閃發亮的星屑。' },
+
   // ── 主題壁紙（整個房間換裝，一次只能貼一款；擺放後生效） ──
   { id: 'theme_forest', name: '森林小屋壁紙', emoji: '🌲', category: 'home', price: 600,  desc: '整個家變成森林小屋！LULU、雪狐、河狸、倉鼠都覺得像回到大自然' },
   { id: 'theme_ocean',  name: '海底世界壁紙', emoji: '🐚', category: 'home', price: 800,  desc: '整個家潛進海底！水獺、海豹、企鵝樂翻天，泡泡咕嚕咕嚕' },

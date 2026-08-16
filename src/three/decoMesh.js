@@ -305,6 +305,167 @@ const BUILD = {
       box(g, 0.2, 0.14, 0.015, cols[i % 6], -0.11 + cI * 0.22, 0.44 + r * 0.16, 0.02); i++
     }
     return g },
+
+  // ── 庭園大型配件（2026-08-16）。單價 600~3000，不能用 emoji 立牌打發。 ──
+  carousel: () => { const g = new THREE.Group()
+    cyl(g, 0.52, 0.56, 0.08, '#E8DCC8', 0, 0.04, 0, 16)          // 底盤
+    // ⚠️ userData.spin 要放「速度數字」而且掛在**要轉的那個節點**上
+    //    （RoomWorld3D 是 n.rotation.y += n.userData.spin * dt）。
+    //    塞 Group 進去會變成 rotation.y += NaN，整個模型會消失。
+    const spin = new THREE.Group(); spin.position.y = 0.08; g.add(spin)
+    spin.userData.spin = 0.55
+    cyl(spin, 0.05, 0.05, 0.72, '#F2C14E', 0, 0.36, 0, 10)        // 中柱
+    const horse = ['#FF8FA3', '#8ED8F8', '#FFD166', '#B6E36B']
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2, x = Math.cos(a) * 0.34, z = Math.sin(a) * 0.34
+      cyl(spin, 0.012, 0.012, 0.6, '#D9CBB2', x, 0.4, z, 6)       // 吊桿
+      sph(spin, 0.1, horse[i], x, 0.3, z, [1.35, 0.85, 0.7], 8)   // 馬身
+      sph(spin, 0.065, horse[i], x + 0.1, 0.4, z, null, 8)        // 馬頭
+    }
+    cone(spin, 0.62, 0.26, '#FF6B6B', 0, 0.85, 0, 12)             // 頂棚
+    sph(spin, 0.05, glowMat('#FFE066'), 0, 1.02, 0, null, 8)
+    return g },
+
+  treehouse: () => { const g = new THREE.Group()
+    cyl(g, 0.13, 0.19, 0.72, '#8A6A44', 0, 0.36, 0, 10)           // 樹幹
+    sph(g, 0.34, '#6FBF5B', -0.16, 0.9, 0.1, [1, 0.8, 1], 9)      // 樹冠
+    sph(g, 0.28, '#5EAE4C', 0.2, 1.0, -0.08, [1, 0.8, 1], 9)
+    box(g, 0.46, 0.05, 0.4, '#B08050', 0.05, 0.66, 0)             // 平台
+    box(g, 0.36, 0.3, 0.32, '#C99A63', 0.08, 0.83, 0)             // 小屋
+    cone(g, 0.32, 0.2, '#C0563E', 0.08, 1.06, 0, 4, [0, Math.PI / 4, 0])
+    box(g, 0.11, 0.13, 0.02, '#5B4632', 0.08, 0.8, 0.17)          // 窗
+    for (let i = 0; i < 4; i++) box(g, 0.16, 0.02, 0.02, '#8A6A44', -0.2, 0.14 + i * 0.15, 0.14)
+    return g },
+
+  greenhouse: () => { const g = new THREE.Group()
+    const glass = M('#CFEFEA', { transparent: true, opacity: 0.42 })
+    box(g, 0.66, 0.04, 0.5, '#B9A98C', 0, 0.02, 0)                // 地基
+    box(g, 0.62, 0.5, 0.46, glass, 0, 0.29, 0)                    // 玻璃體
+    for (const x of [-0.31, 0.31]) box(g, 0.03, 0.5, 0.03, '#8FA88F', x, 0.29, 0.23)
+    cone(g, 0.47, 0.22, glass, 0, 0.65, 0, 4, [0, Math.PI / 4, 0])// 屋頂
+    box(g, 0.03, 0.5, 0.5, '#8FA88F', 0, 0.29, 0)                 // 中脊
+    for (const [x, z, c] of [[-0.16, 0.1, '#FF8FA3'], [0.16, -0.1, '#FFD166'], [0.05, 0.15, '#B6E36B']]) {
+      cyl(g, 0.06, 0.07, 0.08, '#C0764A', x, 0.08, z, 8)          // 盆栽
+      sph(g, 0.07, c, x, 0.16, z, [1, 0.8, 1], 8)
+    }
+    return g },
+
+  fountain: () => { const g = new THREE.Group()
+    cyl(g, 0.56, 0.6, 0.12, '#C9C2B4', 0, 0.06, 0, 18)            // 外池
+    const w1 = cyl(g, 0.48, 0.48, 0.06, M('#7FC8E8', { transparent: true, opacity: 0.85 }), 0, 0.13, 0, 18)
+    w1.userData.ripple = true
+    cyl(g, 0.1, 0.12, 0.28, '#D6CFC0', 0, 0.28, 0, 10)            // 柱
+    cyl(g, 0.3, 0.26, 0.06, '#D6CFC0', 0, 0.44, 0, 14)            // 二層盤
+    cyl(g, 0.06, 0.08, 0.2, '#D6CFC0', 0, 0.56, 0, 8)
+    cyl(g, 0.16, 0.13, 0.05, '#D6CFC0', 0, 0.68, 0, 12)           // 三層盤
+    for (let i = 0; i < 5; i++) {                                  // 水花（閃爍，不用 steam）
+      // steam 的處理會把 y 強制設成 0.2~0.7，水花會穿過噴泉柱身，所以改用 twinkle
+      const a = (i / 5) * Math.PI * 2
+      const d = sph(g, 0.035, M('#BFE9FF', { transparent: true, opacity: 0.75 }),
+                    Math.cos(a) * 0.12, 0.78, Math.sin(a) * 0.12, null, 6)
+      d.userData.twinkle = i
+    }
+    return g },
+
+  windmill: () => { const g = new THREE.Group()
+    cyl(g, 0.17, 0.26, 0.66, '#EFE3C8', 0, 0.33, 0, 12)           // 塔身
+    cone(g, 0.3, 0.24, '#C0563E', 0, 0.78, 0, 12)                 // 屋頂
+    box(g, 0.1, 0.14, 0.02, '#6B4A2E', 0, 0.22, 0.25)             // 門
+    // 葉片做成靜態：渲染器只支援繞 Y 軸轉（rotation.y），
+    // 而風車葉片要繞 Z 軸才對，硬套會變成整片葉子像轉盤一樣平轉。
+    const fan = new THREE.Group(); fan.position.set(0, 0.72, 0.3); g.add(fan)
+    for (let i = 0; i < 4; i++) {
+      const arm = new THREE.Group(); arm.rotation.z = (i / 4) * Math.PI * 2
+      fan.add(arm)
+      box(arm, 0.06, 0.42, 0.02, '#F5F0E2', 0, 0.21, 0)
+    }
+    cyl(fan, 0.04, 0.04, 0.06, '#8A6A44', 0, 0, 0, 8, [Math.PI / 2, 0, 0])
+    return g },
+
+  swing: () => { const g = new THREE.Group()
+    for (const x of [-0.34, 0.34]) {
+      cyl(g, 0.028, 0.036, 0.78, '#A0764C', x, 0.39, 0, 8)
+      cyl(g, 0.02, 0.02, 0.3, '#A0764C', x, 0.72, 0.12, 6, [0.5, 0, 0])
+    }
+    cyl(g, 0.03, 0.03, 0.76, '#8A6A44', 0, 0.78, 0, 8, [0, 0, Math.PI / 2])
+    const sw = new THREE.Group(); sw.position.y = 0.78; g.add(sw); g.userData.swing = sw
+    for (const x of [-0.13, 0.13]) cyl(sw, 0.008, 0.008, 0.44, '#C9B79C', x, -0.22, 0, 5)
+    box(sw, 0.34, 0.04, 0.16, '#C99A63', 0, -0.44, 0)
+    return g },
+
+  sandbox: () => { const g = new THREE.Group()
+    box(g, 0.7, 0.09, 0.56, '#C99A63', 0, 0.045, 0)               // 木框
+    box(g, 0.6, 0.06, 0.46, '#EFDFB8', 0, 0.08, 0)                // 沙
+    for (const [x, z] of [[-0.36, 0.3], [0.36, -0.3], [0.36, 0.3], [-0.36, -0.3]])
+      box(g, 0.1, 0.13, 0.1, '#B0834F', x, 0.065, z)              // 四角座位
+    cyl(g, 0.07, 0.055, 0.1, '#4DABF7', 0.16, 0.16, 0.1, 10)      // 小水桶
+    cyl(g, 0.008, 0.008, 0.18, '#FF922B', -0.12, 0.17, -0.05, 5, [0, 0, 0.7])
+    box(g, 0.07, 0.02, 0.06, '#FF922B', -0.18, 0.25, -0.05)       // 鏟子
+    return g },
+
+  flower_arch: () => { const g = new THREE.Group()
+    const cols = ['#FF8FA3', '#FFD166', '#B6E36B', '#C9A7EB', '#8ED8F8']
+    for (const x of [-0.3, 0.3]) cyl(g, 0.035, 0.045, 0.62, '#F5F0E2', x, 0.31, 0, 8)
+    const arc = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.035, 8, 18, Math.PI), M('#F5F0E2'))
+    arc.position.y = 0.62; g.add(arc)
+    for (let i = 0; i <= 10; i++) {                                // 拱上的花
+      const a = (i / 10) * Math.PI
+      sph(g, 0.05, cols[i % 5], Math.cos(a) * 0.3, 0.62 + Math.sin(a) * 0.3, 0, [1, 0.8, 0.8], 7)
+    }
+    for (const x of [-0.3, 0.3]) for (let i = 0; i < 3; i++)
+      sph(g, 0.04, cols[(i + 2) % 5], x, 0.14 + i * 0.17, 0.04, [1, 0.8, 0.8], 6)
+    return g },
+
+  bird_bath: () => { const g = new THREE.Group()
+    cyl(g, 0.14, 0.2, 0.07, '#B9B2A4', 0, 0.035, 0, 12)           // 底座
+    cyl(g, 0.07, 0.09, 0.34, '#C9C2B4', 0, 0.24, 0, 10)           // 柱
+    cyl(g, 0.28, 0.22, 0.08, '#D6CFC0', 0, 0.45, 0, 16)           // 盆
+    const w = cyl(g, 0.24, 0.24, 0.03, M('#8ED8F8', { transparent: true, opacity: 0.8 }), 0, 0.49, 0, 16)
+    w.userData.ripple = true
+    return g },
+
+  // ── 魔法花園 ──
+  crystal_pond: () => { const g = new THREE.Group()
+    for (let i = 0; i < 10; i++) {                                 // 水晶環
+      const a = (i / 10) * Math.PI * 2
+      cone(g, 0.06, 0.2 + (i % 3) * 0.07, glowMat('#9AD8FF', 0.75),
+           Math.cos(a) * 0.48, 0.1, Math.sin(a) * 0.48, 5)
+    }
+    const w = cyl(g, 0.44, 0.44, 0.05, M('#5AA6D8', { transparent: true, opacity: 0.7 }), 0, 0.05, 0, 20)
+    w.userData.ripple = true
+    for (let i = 0; i < 6; i++) {                                  // 浮起的光點
+      const a = (i / 6) * Math.PI * 2
+      const s = sph(g, 0.03, glowMat('#DDF3FF'), Math.cos(a) * 0.22, 0.2 + (i % 3) * 0.08, Math.sin(a) * 0.22, null, 6)
+      s.userData.twinkle = i
+    }
+    return g },
+
+  moon_fountain: () => { const g = new THREE.Group()
+    cyl(g, 0.46, 0.5, 0.1, '#C4C8DA', 0, 0.05, 0, 16)
+    const w = cyl(g, 0.4, 0.4, 0.05, M('#CBD8FF', { transparent: true, opacity: 0.72 }), 0, 0.11, 0, 18)
+    w.userData.ripple = true
+    cyl(g, 0.08, 0.1, 0.34, '#D6D9E8', 0, 0.28, 0, 10)
+    const moon = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.05, 8, 16, Math.PI * 1.3), glowMat('#FFF6C8'))
+    moon.position.y = 0.6; moon.rotation.z = -0.6; g.add(moon)
+    for (let i = 0; i < 5; i++) {
+      const s = sph(g, 0.028, glowMat('#FFF6C8'), (i - 2) * 0.09, 0.74 + (i % 2) * 0.08, 0, null, 6)
+      s.userData.twinkle = i
+    }
+    return g },
+
+  star_gate: () => { const g = new THREE.Group()
+    for (const x of [-0.32, 0.32]) {
+      cyl(g, 0.05, 0.07, 0.72, glowMat('#B79CFF', 0.8), x, 0.36, 0, 8)
+      sph(g, 0.06, glowMat('#FFE9A8'), x, 0.74, 0, null, 8)
+    }
+    const arc = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.045, 8, 18, Math.PI), glowMat('#B79CFF', 0.8))
+    arc.position.y = 0.72; g.add(arc)
+    for (let i = 0; i <= 8; i++) {                                 // 拱上的星屑
+      const a = (i / 8) * Math.PI
+      const s = sph(g, 0.032, glowMat('#FFF3C4'), Math.cos(a) * 0.32, 0.72 + Math.sin(a) * 0.32, 0, null, 6)
+      s.userData.twinkle = i
+    }
+    return g },
 }
 
 // 主題壁紙不是家具，由場景整室換色處理

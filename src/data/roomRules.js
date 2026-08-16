@@ -19,8 +19,10 @@ export const HOME_SCENES = [
 
 // 家具擺在哪個場景。星空系的三件（望遠鏡／星星鞦韆／月亮吊床）改歸魔法花園 ——
 // 那裡本來就是紫色星空，這幾件擺在那邊比擺在草地上的秘密庭園更合。
-export const MAGIC_DECOS = new Set(['telescope', 'star_swing', 'moon_hammock'])
-export const OUTDOOR_DECOS = new Set(['pool', 'hot_spring', 'tent', 'igloo', 'bamboo', 'plant', 'castle', 'trampoline', 'bird_perch', 'world_route_map', 'taiwan_puzzle_wall', 'rainbow'])
+export const MAGIC_DECOS = new Set(['telescope', 'star_swing', 'moon_hammock',
+  'crystal_pond', 'moon_fountain', 'star_gate'])
+export const OUTDOOR_DECOS = new Set(['pool', 'hot_spring', 'tent', 'igloo', 'bamboo', 'plant', 'castle', 'trampoline', 'bird_perch', 'world_route_map', 'taiwan_puzzle_wall', 'rainbow',
+  'carousel', 'treehouse', 'greenhouse', 'fountain', 'windmill', 'swing', 'sandbox', 'flower_arch', 'bird_bath'])
 export const habitatOfDeco = (id) =>
   (MAGIC_DECOS.has(id) ? 'magic' : OUTDOOR_DECOS.has(id) ? 'outdoor' : 'indoor')
 
