@@ -3,10 +3,11 @@ import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { PETS, PET_ORDER } from '../data/pets'
 import { SHOP_ITEMS, SHOP_CATEGORIES } from '../data/shop'
-import { PLANT_KINDS, BLOOM_TRAITS, bloomKind } from '../data/garden'
+import { CROSS_BLOOMS, CROSS_COST, bloomInfo, flowerLovers } from '../data/garden'
 import { HOME_SCENES, MAX_DECOS_PER_SCENE, habitatOfDeco } from '../data/roomRules'
 import PetAvatar from '../components/PetAvatar'
 import DecoArt from '../components/DecoArt'
+import { sfx } from '../utils/sound'
 import './BackpackScreen.css'
 
 // 背包只放「可收藏／可使用」的道具（食物是消耗品，不進背包）
@@ -14,11 +15,81 @@ import './BackpackScreen.css'
 const FLOWER_CAT = { id: 'flower', icon: '🌸', label: '花' }
 const BAG_CATEGORIES = [...SHOP_CATEGORIES.filter(c => c.id !== 'food'), FLOWER_CAT]
 
+// ── 花的配種：選兩朵不同的花 ＋ 金幣 → 一朵新的花 ──────────────────────
+// 種花原本的循環是「種→澆水→採收→換金幣」，金幣早就沒意義所以沒目標；
+// 配種給花一個新用途，也順便當金幣出口。
+function CrossPanel({ flowers, coins, onCross, onMsg }) {
+  const [pick, setPick] = useState([])          // 選到的兩朵
+  const [result, setResult] = useState(null)
+  const list = Object.entries(flowers || {}).filter(([, n]) => n > 0)
+
+  const toggle = (emoji) => {
+    setResult(null)
+    setPick((p) => p.includes(emoji) ? p.filter((e) => e !== emoji)
+      : p.length >= 2 ? [p[1], emoji] : [...p, emoji])
+  }
+
+  const ready = pick.length === 2 && coins >= CROSS_COST
+  const run = () => {
+    const r = onCross(pick[0], pick[1])
+    if (r?.error === 'coins') { onMsg(`💰 配種要 ${CROSS_COST} 金幣，先去闖關賺一點再來～`); return }
+    if (r?.error) { onMsg('🧬 要選兩朵「不一樣」的花才能配種喔！'); return }
+    sfx.coins()
+    setResult(r)
+    setPick([])
+  }
+
+  if (list.length < 2) return null               // 只有一種花時不用出現，免得占版面
+  return (
+    <div className="bag-cross">
+      <div className="bag-cross-title">🧬 花的配種
+        <span className="bag-cross-cost">每次 {CROSS_COST} 💰</span>
+      </div>
+      <div className="bag-cross-hint">
+        選兩朵<b>不一樣</b>的花合合看！有些組合會開出只有配種才拿得到的稀有花～
+        配錯也不會白費，一定會拿到一朵普通花。
+      </div>
+      <div className="bag-cross-picker">
+        {list.map(([emoji, n]) => (
+          <button key={emoji}
+            className={`bag-cross-flower${pick.includes(emoji) ? ' on' : ''}`}
+            onClick={() => toggle(emoji)}>
+            {emoji}<span className="bag-cross-n">{n}</span>
+          </button>
+        ))}
+      </div>
+      <div className="bag-cross-slots">
+        <span className="bag-cross-slot">{pick[0] || '？'}</span>
+        <span className="bag-cross-plus">＋</span>
+        <span className="bag-cross-slot">{pick[1] || '？'}</span>
+        <span className="bag-cross-plus">＝</span>
+        <span className={`bag-cross-slot out${result ? ' got' : ''}`}>{result?.emoji || '？'}</span>
+      </div>
+      <motion.button className="bag-cross-btn" whileTap={{ scale: 0.94 }}
+        disabled={!ready} onClick={run}>
+        {pick.length < 2 ? '選兩朵花'
+          : coins < CROSS_COST ? `金幣不夠（要 ${CROSS_COST}）`
+          : `🧬 配種看看（${CROSS_COST} 💰）`}
+      </motion.button>
+      {result && (
+        <motion.div className="bag-cross-result" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+          {result.known
+            ? `✨ 配出了「${bloomInfo(result.emoji)?.name}」！${result.firstTime ? '第一次配出來，已記進圖鑑～' : ''}`
+            : `🌱 這兩朵配不出特別的花，拿到一朵「${bloomInfo(result.emoji)?.name}」`}
+          {result.known && bloomInfo(result.emoji)?.fact && (
+            <div className="bag-cross-fact">🔍 {bloomInfo(result.emoji).fact}</div>
+          )}
+        </motion.div>
+      )}
+    </div>
+  )
+}
+
 export default function BackpackScreen({ onNavigate }) {
   const {
     coins, activePet, pets,
     ownedItems, petEquipment, equippedHomeItems,
-    equipToPet, toggleHomeItem, flowers, giveFlower,
+    equipToPet, toggleHomeItem, flowers, giveFlower, crossFlowers,
   } = useGameStore()
 
   const [category, setCategory] = useState('hat')
@@ -154,15 +225,19 @@ export default function BackpackScreen({ onNavigate }) {
             <p className="bag-empty-sub">到「我的家 → 秘密庭園」種花，開花後點一下就能採收</p>
           </div>
         ) : (
+          <>
+          <CrossPanel flowers={flowers} coins={coins} onCross={crossFlowers} onMsg={setBagMsg} />
           <div className="bag-grid">
             {flowerList.map(([emoji, n]) => {
-              const kind = bloomKind(emoji)
-              const lovers = (PLANT_KINDS[kind]?.love || []).filter((id) => pets[id]?.unlocked)
+              const lovers = flowerLovers(emoji).filter((id) => pets[id]?.unlocked)
+              const info = bloomInfo(emoji)
               return (
-                <motion.div key={emoji} className="bag-item" initial={{ opacity: 0, y: 8 }}
+                <motion.div key={emoji} className={`bag-item${CROSS_BLOOMS[emoji] ? ' cross' : ''}`}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
+                  {CROSS_BLOOMS[emoji] && <span className="bag-cross-tag">🧬 配種</span>}
                   <div className="bag-item-art bag-flower-art">{emoji}</div>
-                  <div className="bag-item-name">{BLOOM_TRAITS[emoji]?.name} ×{n}</div>
+                  <div className="bag-item-name">{info?.name} ×{n}</div>
                   {/* 先告訴安安誰喜歡這種花，送花才是「選擇」而不是亂猜 */}
                   <div className="bag-flower-love">
                     {lovers.length ? `${lovers.map((id) => PETS[id].name).join('、')} 喜歡` : '大家都可以收'}
@@ -175,6 +250,7 @@ export default function BackpackScreen({ onNavigate }) {
               )
             })}
           </div>
+          </>
         )
       ) : ownedInCategory.length === 0 ? (
         <div className="bag-empty">
@@ -258,7 +334,7 @@ export default function BackpackScreen({ onNavigate }) {
             <div className="bag-give-title">把 {giving} 送給誰？</div>
             <div className="bag-give-pets">
               {unlockedPetIds
-                .map((id) => ({ id, loved: (PLANT_KINDS[bloomKind(giving)]?.love || []).includes(id) }))
+                .map((id) => ({ id, loved: flowerLovers(giving).includes(id) }))
                 .sort((a, b) => Number(b.loved) - Number(a.loved))
                 .map(({ id, loved }) => (
                   <motion.button key={id} className={`bag-give-pet${loved ? ' loved' : ''}`}

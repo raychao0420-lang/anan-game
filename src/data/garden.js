@@ -62,7 +62,65 @@ export const FERTILIZER = {
 }
 
 // 花園圖鑑：集滿所有花種／樹的花色就完成（給一次性大獎）
+// ⚠️ 配種花（CROSS_BLOOMS）刻意**不**放進來：放進去會讓既有存檔的圖鑑
+//    突然變成未完成、獎勵拿不到，等於回頭改動已經給過的東西。
 export const ALL_BLOOMS = [...new Set(SEED_KINDS.flatMap((k) => PLANT_KINDS[k].blooms))]
+
+// ── 花的配種（2026-08-16）─────────────────────────────────────────────
+// 為什麼做：原本種花的循環是「種→澆水→採收→換金幣」，而金幣早就多到沒意義，
+// 所以種花沒有目標。配種給花一個新用途：兩朵不同的花可以合出一朵**只能配種取得**的稀有花。
+// 順便當金幣出口（每次要花 CROSS_COST）。
+export const CROSS_COST = 300
+
+// 配種專屬花色。love＝哪些寵物收到會特別開心（比照 PLANT_KINDS.love）。
+// fact 的寫法同 BLOOM_TRAITS：一則講一個具體記得住的事、小三看得懂、台灣慣用詞。
+export const CROSS_BLOOMS = {
+  '🪻': { name: '風信子', love: ['mejiro', 'hana', 'twinkle'],
+    fact: '風信子的香味很濃，一盆放在房間裡整間都聞得到，所以常被拿來當年節的擺飾。' },
+  '🌾': { name: '稻穗', love: ['hamster', 'mejiro', 'xiaohu'],
+    fact: '我們吃的白米就是稻穗裡的種子，把外面那層殼和米糠磨掉之後剩下的部分。' },
+  '💮': { name: '白梅', love: ['jiji', 'kitsune', 'owl'],
+    fact: '梅花在最冷的冬天開，還沒長葉子就先開花，所以雪地裡看得到一整棵白花。' },
+  '🍀': { name: '四葉幸運草', love: ['lulu', 'monkey', 'raccoon', 'xiaohu'],
+    fact: '幸運草通常是三片葉子，第四片是長的時候出錯才多出來的，大約一萬株才有一株。' },
+  '🪴': { name: '小盆栽', love: ['beaver', 'dino', 'arong', 'hamster'],
+    fact: '盆栽要定期換盆，因為根長滿了整個盆子之後就吸不到養分，會愈長愈小。' },
+  '🎋': { name: '七夕竹', love: ['twinkle', 'luna', 'pluto', 'xiaoq'],
+    fact: '竹子長得特別快，有些品種一天可以長高將近一公尺，因為它的莖是一節一節同時變長。' },
+}
+
+// 配方：兩朵花 → 一朵配種花。左右順序不影響（查表前會先排序）。
+const key = (a, b) => [a, b].sort().join('')
+export const CROSS_RECIPES = {
+  [key('🌷', '🌸')]: '🪻',
+  [key('🌻', '🌼')]: '🌾',
+  [key('🌹', '🌺')]: '💮',
+  [key('🪷', '💐')]: '🍀',
+  [key('🌳', '🌴')]: '🪴',
+  [key('🌈', '🌟')]: '🎋',
+}
+
+/**
+ * 配種結果。查不到配方也**一定有東西拿**（隨機一朵普通花）——
+ * 對小孩來說「花了金幣又消耗兩朵花卻什麼都沒有」太挫折。
+ * 回傳 { emoji, known }；known=false 代表是亂配出來的普通花。
+ */
+export function crossResult(a, b) {
+  const hit = CROSS_RECIPES[key(a, b)]
+  if (hit) return { emoji: hit, known: true }
+  const commons = PLANT_KINDS.flower.blooms
+  return { emoji: commons[Math.floor(Math.random() * commons.length)], known: false }
+}
+
+// 花（含配種花）的名字與知識查詢，畫面一律走這裡，不要各自判斷
+export const bloomInfo = (emoji) => BLOOM_TRAITS[emoji] || CROSS_BLOOMS[emoji] || null
+
+// 哪些寵物喜歡這朵花：一般花看它屬於哪種花苗，配種花有自己的 love 名單
+export const flowerLovers = (emoji) => {
+  if (CROSS_BLOOMS[emoji]) return CROSS_BLOOMS[emoji].love || []
+  const k = SEED_KINDS.find((s) => PLANT_KINDS[s].blooms.includes(emoji))
+  return k ? (PLANT_KINDS[k].love || []) : []
+}
 
 // 植物小知識：比照寵物的 PET_TRAITS，讓「收集」變成「認識」——
 // 圖鑑裡點一格開出來的花，就看得到它的名字和一則真的知識。

@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import { ACHIEVEMENTS } from '../data/achievements'
 import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
-import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS, MAX_PLANTS, MAX_FLOWER_DECOS, bloomKind, FLOWER_GIFT } from '../data/garden'
+import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS, MAX_PLANTS, MAX_FLOWER_DECOS, FLOWER_GIFT, flowerLovers, crossResult, CROSS_COST } from '../data/garden'
 import { habitatOfPet, habitatOfDeco, MAX_PETS_PER_SCENE, MAX_DECOS_PER_SCENE } from '../data/roomRules'
 import { pickDailyChallenge } from '../data/dailyChallenge'
 
@@ -417,8 +417,8 @@ export const useGameStore = create(
         if (!emoji || !petId) return null
         if (((s.flowers || {})[emoji] || 0) <= 0) return null
         if (!s.pets[petId]?.unlocked) return null
-        const kind = bloomKind(emoji)
-        const loved = !!(kind && (PLANT_KINDS[kind].love || []).includes(petId))
+        // 配種花不屬於任何花苗，bloomKind 查不到 → 一律走 flowerLovers
+        const loved = flowerLovers(emoji).includes(petId)
         const gain = loved ? FLOWER_GIFT.loved : FLOWER_GIFT.plain
         set((prev) => {
           const left = (prev.flowers[emoji] || 0) - 1
@@ -432,6 +432,28 @@ export const useGameStore = create(
           }
         })
         return { loved, ...gain }
+      },
+
+      // 花的配種：兩朵不同的花 ＋ CROSS_COST 金幣 → 一朵新的花。
+      // 回傳 { emoji, known } 或失敗原因 { error }。查不到配方也一定有東西拿（見 crossResult）。
+      crossFlowers: (a, b) => {
+        const s = get()
+        if (!a || !b || a === b) return { error: 'same' }
+        const have = s.flowers || {}
+        if ((have[a] || 0) <= 0 || (have[b] || 0) <= 0) return { error: 'missing' }
+        if (s.coins < CROSS_COST) return { error: 'coins' }
+        const out = crossResult(a, b)
+        set((prev) => {
+          const flowers = { ...prev.flowers }
+          for (const e of [a, b]) {
+            const left = (flowers[e] || 0) - 1
+            if (left > 0) flowers[e] = left; else delete flowers[e]
+          }
+          flowers[out.emoji] = (flowers[out.emoji] || 0) + 1
+          return { flowers, coins: prev.coins - CROSS_COST }
+        })
+        const dex = get().recordBloom(out.emoji)      // 新花色記進圖鑑
+        return { ...out, firstTime: !!dex }
       },
 
       recordBloom: (emoji) => {

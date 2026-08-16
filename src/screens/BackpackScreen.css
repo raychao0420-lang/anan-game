@@ -299,3 +299,64 @@
   color: #A08E76;
   border-color: #D6C9B4;
 }
+
+/* ── 花的配種（2026-08-16）── */
+.bag-cross {
+  margin: 8px 12px 12px;
+  padding: 12px 14px;
+  background: linear-gradient(150deg, #FFF6FB 0%, #F3F0FF 100%);
+  border: 2px solid #E3D2F5;
+  border-radius: 16px;
+}
+.bag-cross-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.94rem; font-weight: 900; color: #6B4A8A;
+}
+.bag-cross-cost {
+  margin-left: auto; font-size: 0.72rem; font-weight: 800;
+  color: #8A6AAE; background: #EDE3FA; border-radius: 10px; padding: 2px 8px;
+}
+.bag-cross-hint { margin-top: 5px; font-size: 0.7rem; line-height: 1.6; color: #7a6a80; }
+.bag-cross-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.bag-cross-flower {
+  position: relative; width: 42px; height: 42px; font-size: 1.35rem;
+  background: #fff; border: 2px solid #E6DCF2; border-radius: 12px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.bag-cross-flower.on { border-color: #9B6FD6; background: #F3E9FF; box-shadow: 0 0 0 3px rgba(155,111,214,.22); }
+.bag-cross-n {
+  position: absolute; right: -3px; bottom: -3px;
+  background: #9B6FD6; color: #fff; font-size: 0.54rem; font-weight: 800;
+  border-radius: 8px; padding: 1px 4px; line-height: 1;
+}
+.bag-cross-slots {
+  display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;
+}
+.bag-cross-slot {
+  width: 46px; height: 46px; font-size: 1.5rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #fff; border: 2px dashed #D8C8EE; border-radius: 12px; color: #C6B6DC;
+}
+.bag-cross-slot.out { border-style: solid; border-color: #9B6FD6; }
+.bag-cross-slot.out.got { background: #F3E9FF; }
+.bag-cross-plus { font-size: 0.95rem; font-weight: 900; color: #9B6FD6; }
+.bag-cross-btn {
+  width: 100%; margin-top: 10px; padding: 10px;
+  background: #9B6FD6; color: #fff; border: none; border-radius: 12px;
+  font-size: 0.88rem; font-weight: 800; cursor: pointer;
+}
+.bag-cross-btn:disabled { background: #D8CCE8; color: #fff; cursor: default; }
+.bag-cross-result {
+  margin-top: 9px; padding: 9px 11px; background: #fff;
+  border-radius: 12px; font-size: 0.78rem; font-weight: 700; color: #5C4570; line-height: 1.5;
+}
+.bag-cross-fact { margin-top: 5px; font-size: 0.7rem; font-weight: 600; color: #7a6a80; line-height: 1.6; }
+
+/* 配種花在背包裡標一下，讓她知道這是特別的 */
+.bag-item.cross { border-color: #C9A7EB; background: linear-gradient(160deg, #FFF9FE 0%, #F6F0FF 100%); }
+.bag-cross-tag {
+  position: absolute; top: -7px; left: 6px;
+  background: #9B6FD6; color: #fff; font-size: 0.56rem; font-weight: 800;
+  border-radius: 8px; padding: 2px 6px;
+}
