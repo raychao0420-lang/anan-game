@@ -1,13 +1,31 @@
+/* ⚠️ 手機版「按不到數字鍵」的根因與修法（2026-08-16 安安手機實際回報）
+   原本是 `position:absolute; inset:0; overflow:hidden`。
+   iOS Safari 的 absolute + inset:0 會對齊「**大視窗**」（工具列收起時的高度），
+   所以版面底部整段躲在 Safari 底部工具列後面；又因為 html/body 與本容器都是
+   overflow:hidden，使用者**捲不到**，meta viewport 還有 user-scalable=no
+   （縮小畫面去按也不行）→ 數字鍵盤最後一排（0／清除／送出）完全按不到。
+   修法三層：
+   1. 高度改用 100svh＝工具列**展開**時的可見高度，任何時候都塞得下（100vh 當舊瀏覽器 fallback）
+   2. 底部 padding 加 env(safe-area-inset-bottom)，避開 home indicator
+   3. overflow-y:auto 當安全網 —— 萬一哪天內容又變高，至少捲得到，不會再「按不到」
+   同一套做法 DetectiveScreen.css 早就用過（height:100dvh + overflow-y:auto）。 */
 .game-screen {
   position: absolute;
-  inset: 0;
-  overflow: hidden;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  height: 100vh;
+  height: 100svh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: linear-gradient(160deg, #FFF5E6 0%, #F0F4FF 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px 10px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
 }
 
 .game-header {
@@ -89,9 +107,11 @@
   flex-shrink: 0;
 }
 
+/* 高度跟著可見視窗縮放，矮螢幕自動變小 —— 比死板的 max-height 斷點可靠，
+   因為 iOS 的 media query 高度也可能回報成大視窗，斷點根本不會觸發 */
 .game-pet-bubble {
-  width: 80px;
-  height: 104px;
+  width: clamp(62px, 9.2svh, 80px);
+  height: clamp(80px, 12svh, 104px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -134,7 +154,7 @@
 /* ── Vertical question ── */
 .vq {
   font-family: 'Courier New', Courier, monospace;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4.4svh, 2rem);
   font-weight: 900;
   color: #333;
   line-height: 1.3;

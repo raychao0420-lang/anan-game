@@ -18,7 +18,8 @@
   text-align: center;
   padding: 6px 0;
   color: #333;
-  min-height: 50px;
+  /* 高度跟著可見視窗縮放，確保四排按鍵＋送出鍵一定塞得進畫面（2026-08-16 手機按不到的修法之一） */
+  min-height: clamp(38px, 6svh, 50px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,7 +44,7 @@
   font-weight: 700;
   color: #333;
   padding: 0;
-  height: 58px;
+  height: clamp(42px, 7svh, 58px);
   cursor: pointer;
   touch-action: manipulation;
   user-select: none;
@@ -71,7 +72,7 @@
   font-weight: 700;
   color: white;
   padding: 0;
-  height: 52px;
+  height: clamp(40px, 6.4svh, 52px);
   cursor: pointer;
   touch-action: manipulation;
   user-select: none;
@@ -92,13 +93,15 @@
   font-size: 1.3rem;
 }
 
-/* ── Compact mode for short phones (< 700px viewport height) ── */
+/* ── 矮螢幕：只收緊間距與圓角，高度交給上面的 clamp(svh) ──
+   ⚠️ 不要在這裡再寫死 height —— iOS Safari 的 media query 高度可能回報成「大視窗」，
+   斷點不一定會觸發（2026-08-16 手機按不到就是這樣：畫面明明很擠卻沒進 compact 模式）。 */
 @media (max-height: 700px) and (max-width: 639px) {
   .numpad-wrap    { gap: 5px; }
-  .numpad-display { min-height: 38px; font-size: 1.6rem; padding: 3px 0; border-width: 2px; border-radius: 10px; }
+  .numpad-display { font-size: 1.6rem; padding: 3px 0; border-width: 2px; border-radius: 10px; }
   .numpad-grid    { gap: 5px; }
-  .numpad-btn     { height: 46px; font-size: 1.3rem; border-radius: 10px; }
-  .numpad-confirm { height: 44px; font-size: 1.1rem; border-radius: 10px; }
+  .numpad-btn     { font-size: 1.3rem; border-radius: 10px; }
+  .numpad-confirm { font-size: 1.1rem; border-radius: 10px; }
 }
 
 @media (min-width: 640px) {
