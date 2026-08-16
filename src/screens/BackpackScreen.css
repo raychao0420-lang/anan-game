@@ -290,20 +290,12 @@
 }
 .bag-placed-count .full { color: #E5533D; }
 
-.bag-toast {
-  position: fixed;
-  left: 50%;
-  top: 12px;
-  transform: translateX(-50%);
-  z-index: 200;
-  max-width: 88vw;
-  background: #4A3728;
-  color: #fff;
-  font-size: 0.82rem;
-  font-weight: 700;
-  line-height: 1.4;
-  padding: 10px 16px;
-  border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.28);
-  text-align: center;
+/* 滿了的提示訊息比送花那個久一點、寬一點，讓小孩讀得完 */
+.bag-msg { bottom: 100px; font-size: 0.8rem; line-height: 1.5; padding: 10px 18px; }
+
+/* 場景已滿：按鈕本身就要看得出來，不能等按下去才說 */
+.bag-place-btn.full {
+  background: #E9E2D6;
+  color: #A08E76;
+  border-color: #D6C9B4;
 }

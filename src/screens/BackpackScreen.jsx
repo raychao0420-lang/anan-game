@@ -28,7 +28,7 @@ export default function BackpackScreen({ onNavigate }) {
 
   useEffect(() => {
     if (!bagMsg) return
-    const t = setTimeout(() => setBagMsg(null), 2600)
+    const t = setTimeout(() => setBagMsg(null), 3800)   // 小三要讀得完，別太快消失
     return () => clearTimeout(t)
   }, [bagMsg])
 
@@ -82,9 +82,10 @@ export default function BackpackScreen({ onNavigate }) {
 
   return (
     <div className="bag-screen">
+      {/* 沿用送花那組的提示樣式，不要多做一套不一致的 */}
       {bagMsg && (
-        <motion.div className="bag-toast"
-          initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+        <motion.div className="bag-give-fx bag-msg"
+          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
           {bagMsg}
         </motion.div>
       )}
@@ -200,21 +201,28 @@ export default function BackpackScreen({ onNavigate }) {
                 </div>
                 <div className="bag-item-name">{item.name}</div>
 
-                {isHome ? (
+                {isHome ? (() => {
+                  // 按之前就要看得出來放不放得進去 —— 不然按了沒反應會被當成壞掉
+                  const placed = isHomePlaced(item)
+                  const sc = item.id.startsWith('theme_') ? null : habitatOfDeco(item.id)
+                  const full = !placed && sc && placedCount[sc] >= MAX_DECOS_PER_SCENE
+                  const where = HOME_SCENES.find((s) => s.id === sc)
+                  return (
                   <motion.button
-                    className={`bag-place-btn ${isHomePlaced(item) ? 'unplace' : ''}`}
+                    className={`bag-place-btn ${placed ? 'unplace' : ''} ${full ? 'full' : ''}`}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => {
                       const r = toggleHomeItem(item.id)
                       if (r && r.ok === false && r.full) {
-                        const where = HOME_SCENES.find((s) => s.id === r.full)
-                        setBagMsg(`${where?.icon || '🏠'} ${where?.label || '這裡'}已經擺了 ${MAX_DECOS_PER_SCENE} 件，先收起一件再擺喔！`)
+                        const w = HOME_SCENES.find((s) => s.id === r.full)
+                        setBagMsg(`${w?.icon || '🏠'}${w?.label || '這裡'}已經擺滿 ${MAX_DECOS_PER_SCENE} 件了！先收起一件再擺，收起來的東西還在背包不會不見～`)
                       }
                     }}
                   >
-                    {isHomePlaced(item) ? '✅ 已擺放' : '🏠 擺放'}
+                    {placed ? '✅ 已擺放' : full ? `🈵 ${where?.label || '這裡'}滿了` : '🏠 擺放'}
                   </motion.button>
-                ) : (
+                  )
+                })() : (
                   /* 幫每隻已解鎖寵物裝備 */
                   <div className="bag-pet-btns">
                     {unlockedPetIds.map(petId => {
