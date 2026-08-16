@@ -2,31 +2,36 @@
 // 成長靠「澆水次數」推進（溫和版）：每天可澆一次，澆滿 need 次就開花／長成大樹。
 // 沒澆水只是暫停成長，不會枯死。肥料可立刻多長一次，不必等隔天。
 // love：這種花開花時，會讓這幾隻寵物（若已解鎖）心情變好 → 呼應寵物適性。
+// ⚠️ reward（採收給的金幣）刻意壓低到大約原本的 1/3（2026-08-16）：
+//    花苗過關會免費掉，採收又有 35% 機率把花苗掉回來 →「免費花苗 → 採收領錢 → 又拿回花苗」
+//    等於一台永動印鈔機（樹苗那條線期望值原本高達 85 金幣/顆）。
+//    採收真正的回饋是「花進背包可以送寵物」＋圖鑑收集，不是金幣。
+//    金幣經濟盤點見 [[project_anan_game]]。
 export const PLANT_KINDS = {
   flower: {
-    seedName: '普通花苗', bagEmoji: '🌷', price: 20, need: 2, reward: 15,
+    seedName: '普通花苗', bagEmoji: '🌷', price: 20, need: 2, reward: 5,
     grow: '🌿', blooms: ['🌷', '🌻', '🌸', '🌼', '🌺'],
     love: ['mejiro', 'twinkle', 'hana'],
     desc: '種下後每天澆水，2 天就開出漂亮小花',
   },
   rare: {
-    seedName: '稀有花苗', bagEmoji: '🌟', price: 60, need: 3, reward: 35,
+    seedName: '稀有花苗', bagEmoji: '🌟', price: 60, need: 3, reward: 12,
     grow: '🌿', bud: '🌸', blooms: ['🌹', '🪷', '💐', '🏵️'],
     love: ['luna', 'kitsune', 'pluto'],
     desc: '照顧 3 天，開出稀有又美麗的花',
   },
   tree: {
-    seedName: '樹苗', bagEmoji: '🌰', price: 80, need: 3, reward: 55,
+    seedName: '樹苗', bagEmoji: '🌰', price: 80, need: 3, reward: 18,
     grow: ['🌿', '🌲'], blooms: ['🌳', '🌴'],
     love: ['beaver', 'hamster', 'monkey', 'dino', 'xiaohu'],
-    desc: '照顧 3 天長成大樹，金幣獎勵最多',
+    desc: '照顧 3 天長成大樹，最多小動物喜歡',
   },
   // 魔法花：照顧到最後一步會冒問號🔮，要答對一題數學才會盛開，金幣最多！
   magic: {
-    seedName: '魔法花苗', bagEmoji: '🔮', price: 100, need: 2, reward: 90,
+    seedName: '魔法花苗', bagEmoji: '🔮', price: 100, need: 2, reward: 30,
     grow: '🌿', ready: '🔮', blooms: ['🌈', '✨', '🌟'], magic: true,
     love: ['owl', 'xiaoq', 'jiji', 'twinkle', 'luna'],
-    desc: '澆到最後要答對一題數學才盛開，金幣最多！',
+    desc: '澆到最後要答對一題數學才盛開，開出最稀有的花！',
   },
 }
 
