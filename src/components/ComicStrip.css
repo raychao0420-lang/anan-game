@@ -13,12 +13,9 @@
   letter-spacing: 0.04em;
 }
 .comic-panel {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
   border-radius: 14px;
   overflow: hidden;
-  background: #e8e2d4;
+  background: #fffdf6;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16), inset 0 0 0 3px #fffdf6;
   animation: comic-in 0.45s ease both;
 }
@@ -27,6 +24,13 @@
 @keyframes comic-in {
   from { opacity: 0; transform: translateY(10px) scale(0.98); }
   to   { opacity: 1; transform: none; }
+}
+/* 畫面本體：圖完整露出，字幕移到下方，不再蓋在圖上 */
+.comic-art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
 }
 .comic-bg {
   position: absolute;
@@ -49,28 +53,24 @@
   line-height: 1;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.28));
 }
-/* 對白框：壓在上緣，中英各一行 */
-.comic-bubble {
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  top: 5%;
-  padding: 7px 11px;
-  border-radius: 12px;
-  background: rgba(255, 253, 246, 0.94);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+/* 字幕條：獨立在圖片下方，只佔文字需要的高度 */
+.comic-caption {
+  position: relative;
+  padding: 6px 11px 7px;
+  background: #fffdf6;
+  border-top: 1px solid rgba(58, 48, 38, 0.1);
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-.comic-bubble::after {           /* 對話框的小尾巴 */
+.comic-caption::before {         /* 指向畫面的小尖角，暗示這是畫面的台詞 */
   content: '';
   position: absolute;
   left: 22px;
-  bottom: -7px;
-  border: 7px solid transparent;
-  border-top-color: rgba(255, 253, 246, 0.94);
-  border-bottom: 0;
+  top: -6px;
+  border: 6px solid transparent;
+  border-bottom-color: #fffdf6;
+  border-top: 0;
 }
 .comic-zh {
   font-size: 0.86rem;
