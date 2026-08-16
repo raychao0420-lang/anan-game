@@ -5,6 +5,7 @@ import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
 import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS, MAX_PLANTS, MAX_FLOWER_DECOS, bloomKind, FLOWER_GIFT } from '../data/garden'
 import { habitatOfPet, MAX_PETS_PER_SCENE } from '../data/roomRules'
+import { pickDailyChallenge } from '../data/dailyChallenge'
 
 const makeStages = () => {
   const s = {}
@@ -84,6 +85,15 @@ export const useGameStore = create(
       gardenKeeper: null,                          // 指派的花園小幫手寵物 id
       keeperHelpedDay: null,                       // 小幫手今天是否已幫忙過
 
+      // M10: 關卡冷落追蹤（給「當日限定挑戰」挑關用；舊存檔沒有就當 0／從沒玩過）
+      stagePlays: {},        // { [stageId]: 玩過幾次 }
+      stageLastPlay: {},     // { [stageId]: 'YYYY-MM-DD' }
+
+      // M10: 當日限定挑戰
+      challengeDate: null,   // 這筆挑戰算給哪一天的
+      challengeStage: null,  // 今天的挑戰關卡 id（null＝今天沒有挑戰）
+      challengeDone: false,  // 今天的加倍是否已經領過
+
       // M3: daily tasks
       dailyDate: null,
       dailyProgress: {},
@@ -160,6 +170,9 @@ export const useGameStore = create(
             perfectStages: s.perfectStages + (isPerfect ? 1 : 0),
             seedlings,
             lastSeedDrop: drop,
+            // 記錄遊玩次數與日期，讓「當日限定挑戰」抓得到哪些關卡被冷落
+            stagePlays: { ...s.stagePlays, [stageId]: (s.stagePlays?.[stageId] || 0) + 1 },
+            stageLastPlay: { ...s.stageLastPlay, [stageId]: todayKey() },
             stages: {
               ...s.stages,
               [stageId]: {
@@ -493,6 +506,34 @@ export const useGameStore = create(
         })
         set({ garden, keeperHelpedDay: today })
         return helped > 0 ? { petId: keeper, count: helped } : null
+      },
+
+      // ── M10: 當日限定挑戰 ──
+      // 每天算一次就存起來：候選關卡的狀態會在一天之內變動，
+      // 每次重算會讓挑戰在玩到一半時換掉，所以只在跨日時重算。
+      initDailyChallenge: (today) => {
+        const s = get()
+        if (s.challengeDate === today) return
+        set({
+          challengeDate: today,
+          challengeStage: pickDailyChallenge(today, s),
+          challengeDone: false,
+        })
+      },
+
+      // 領取加倍獎勵：回傳加碼掉落物給結算畫面顯示，沒領到回 null
+      claimDailyChallenge: (stageId) => {
+        const s = get()
+        if (s.challengeStage !== stageId || s.challengeDone) return null
+        // 保證掉一個：八成花苗、兩成幸運蛋
+        const egg = Math.random() < 0.2
+        const seed = egg ? null : rollSeedDrop(3)
+        set({
+          challengeDone: true,
+          luckyEggs: s.luckyEggs + (egg ? 1 : 0),
+          seedlings: seed ? { ...s.seedlings, [seed]: (s.seedlings?.[seed] || 0) + 1 } : s.seedlings,
+        })
+        return egg ? { egg: true } : { seed }
       },
 
       // ── M3: Daily tasks ──
@@ -853,6 +894,11 @@ export const useGameStore = create(
             xiaohu:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
           },
           stages: makeStages(),
+          stagePlays: {},
+          stageLastPlay: {},
+          challengeDate: null,
+          challengeStage: null,
+          challengeDone: false,
           ownedItems:        [],
           petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [], dino: [], monkey: [], raccoon: [] },
           equippedHomeItems: [],

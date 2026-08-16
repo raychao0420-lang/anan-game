@@ -254,6 +254,35 @@
   letter-spacing: 1px;
 }
 
+/* ── 當日限定挑戰橫幅 ── */
+.home-challenge {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  margin-bottom: 10px;
+  padding: 10px 16px;
+  border: 2px solid #B98CFF;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #7a4fd0 0%, #a06fe8 100%);
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(122, 79, 208, 0.38);
+  animation: home-challenge-pulse 2s ease-in-out infinite;
+}
+@keyframes home-challenge-pulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(122, 79, 208, 0.38); }
+  50%      { box-shadow: 0 4px 24px rgba(122, 79, 208, 0.62); }
+}
+.home-challenge-tag  { font-size: 0.66rem; font-weight: 800; letter-spacing: 1px; opacity: 0.9; }
+.home-challenge-main { font-size: 0.98rem; font-weight: 900; line-height: 1.35; }
+.home-challenge-sub  { font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.8); }
+@media (prefers-reduced-motion: reduce) {
+  .home-challenge { animation: none; }
+}
+
 /* ── 區塊卡片：玻璃感白卡 ── */
 .home-card {
   display: flex;

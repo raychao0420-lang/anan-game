@@ -4,6 +4,7 @@ import { useGameStore } from '../store/gameStore'
 import { PETS } from '../data/pets'
 import { PLANT_KINDS } from '../data/garden'
 import { STAGE_NAMES } from '../data/questions'
+import { CHALLENGE_COIN_MULT } from '../data/dailyChallenge'
 import { sfx } from '../utils/sound'
 import './ResultScreen.css'
 
@@ -15,7 +16,7 @@ function calcStars(correctCount) {
 }
 
 export default function ResultScreen({ stageId, results, onRetry, onNext, onHome, onBoss }) {
-  const { completeStage, addCoins, activePet, pets, bossCleared, updateDailyProgress, stampPlayTime } = useGameStore()
+  const { completeStage, addCoins, activePet, pets, bossCleared, updateDailyProgress, stampPlayTime, claimDailyChallenge } = useGameStore()
   const pet = PETS[activePet]
   const petData = pets[activePet]
   const petStage = pet.stages[petData.evolutionStage]
@@ -27,21 +28,31 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
   const savedData = useGameStore(s => s.stages[stageId])
   const isReplay = savedData?.completed
   const replayCoins = Math.floor(totalCoins / 4)
-  const displayCoins = isReplay ? replayCoins : totalCoins
+  const baseCoins = isReplay ? replayCoins : totalCoins
+
+  // 當日限定挑戰：一定要在 effect 領獎前先快照，
+  // 否則 claimDailyChallenge 把 challengeDone 設成 true 後重新渲染，金幣數字會當場少一半
+  const [isChallenge] = useState(() => {
+    const s = useGameStore.getState()
+    return s.challengeStage === stageId && !s.challengeDone
+  })
+  const displayCoins = isChallenge ? baseCoins * CHALLENGE_COIN_MULT : baseCoins
 
   // 過關可能掉花苗 → 顯示在結算卡上
   const [seedDrop, setSeedDrop] = useState(null)
+  const [challengeBonus, setChallengeBonus] = useState(null)
 
   useEffect(() => {
     stampPlayTime()
     if (!isReplay) {
-      completeStage(stageId, stars, totalCoins)
+      completeStage(stageId, stars, displayCoins)
       updateDailyProgress('stages', 1)
       if (stars === 3) updateDailyProgress('stars3', 1)
     } else {
       // Always update stars so the stage list shows the highest stars achieved
-      completeStage(stageId, stars, replayCoins)
+      completeStage(stageId, stars, displayCoins)
     }
+    if (isChallenge) setChallengeBonus(claimDailyChallenge(stageId))
     setSeedDrop(useGameStore.getState().lastSeedDrop)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -111,9 +122,25 @@ export default function ResultScreen({ stageId, results, onRetry, onNext, onHome
             <span className="result-val">{correctCount} / {results.length}</span>
           </div>
           <div className="result-row">
-            <span>獲得金幣{isReplay && <span className="replay-badge">重複挑戰 ×¼</span>}</span>
+            <span>
+              獲得金幣
+              {isReplay && <span className="replay-badge">重複挑戰 ×¼</span>}
+              {isChallenge && <span className="challenge-badge">✨ 限定挑戰 ×{CHALLENGE_COIN_MULT}</span>}
+            </span>
             <span className="result-val coins">+{displayCoins} 💰</span>
           </div>
+          {challengeBonus && (
+            <motion.div className="result-row"
+              initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, type: 'spring', stiffness: 300 }}>
+              <span>✨ 挑戰加碼</span>
+              <span className="result-val">
+                {challengeBonus.egg
+                  ? '🥚 幸運蛋 ×1'
+                  : `${PLANT_KINDS[challengeBonus.seed]?.bagEmoji || '🌱'} ${PLANT_KINDS[challengeBonus.seed]?.seedName || '花苗'} ×1`}
+              </span>
+            </motion.div>
+          )}
           {seedDrop && PLANT_KINDS[seedDrop] && (
             <motion.div className="result-row"
               initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}

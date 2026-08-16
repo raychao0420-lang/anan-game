@@ -75,6 +75,17 @@
   color: #CC8800;
 }
 
+.challenge-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  background: #7a4fd0;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
 .replay-badge {
   display: inline-block;
   margin-left: 6px;

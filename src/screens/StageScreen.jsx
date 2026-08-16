@@ -2,23 +2,8 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { STAGE_NAMES } from '../data/questions'
+import { CHAPTERS, isStageUnlocked } from '../data/stages'
 import './StageScreen.css'
-
-const CHAPTERS = [
-  { label: '加減法',       range: [1,  10], icon: '➕', cat: 'addsub'  },
-  { label: '加減進階',     range: [41, 55], icon: '⚡', cat: 'addsub'  },
-  { label: '兩位加減進階', range: [71, 80], icon: '💪', cat: 'addsub'  },
-  { label: '三位數',       range: [11, 20], icon: '🔢', cat: 'digits3' },
-  { label: '乘法',         range: [21, 30], icon: '✖️',  cat: 'muldiv'  },
-  { label: '一位乘兩位',   range: [101, 105], icon: '✳️', cat: 'muldiv'  },
-  { label: '一位乘三位',   range: [106, 110], icon: '🔟', cat: 'muldiv'  },
-  { label: '除法',         range: [31, 40], icon: '➗', cat: 'muldiv'  },
-  { label: '乘除進階',     range: [86, 95], icon: '🎯', cat: 'muldiv'  },
-  { label: '兩位數乘法',   range: [96, 100], icon: '🧮', cat: 'muldiv'  },
-  { label: '三位數除法',   range: [111, 115], icon: '➗', cat: 'muldiv'  },
-  { label: '四位數加減',   range: [116, 120], icon: '🔢', cat: 'digits3' },
-  { label: '綜合進階',     range: [56, 70], icon: '🚀', cat: 'mixed'   },
-]
 
 const CAT_TABS = [
   { id: 'all',     label: '全部' },
@@ -27,9 +12,6 @@ const CAT_TABS = [
   { id: 'digits3', label: '🔢 三位數' },
   { id: 'mixed',   label: '🚀 綜合' },
 ]
-
-// chapter-first-stage → prerequisite stage
-const CHAPTER_PREREQS = { 41: 10, 11: 55, 71: 55, 86: 40, 96: 30, 101: 30, 111: 40, 116: 20 }
 
 const CHAPTER_LOCK_HINT = {
   11:  '完成加減進階第55關才能挑戰！',
@@ -53,14 +35,10 @@ function Stars({ count }) {
 }
 
 export default function StageScreen({ onNavigate, onStartStage }) {
-  const { stages, coins } = useGameStore()
+  const { stages, coins, challengeStage, challengeDone } = useGameStore()
   const [cat, setCat] = useState('all')
 
-  const isUnlocked = (id) => {
-    if (id === 1) return true
-    const prereq = CHAPTER_PREREQS[id] ?? id - 1
-    return stages[prereq]?.completed
-  }
+  const isUnlocked = (id) => isStageUnlocked(stages, id)
 
   const visibleChapters = cat === 'all' ? CHAPTERS : CHAPTERS.filter(c => c.cat === cat)
 
@@ -100,14 +78,16 @@ export default function StageScreen({ onNavigate, onStartStage }) {
                 const id = range[0] + i
                 const unlocked = isUnlocked(id)
                 const s = stages[id]
+                const isChallenge = id === challengeStage && !challengeDone
                 return (
                   <motion.button
                     key={id}
-                    className={`stage-btn ${!unlocked ? 'locked' : ''} ${s?.completed ? 'done' : ''}`}
+                    className={`stage-btn ${!unlocked ? 'locked' : ''} ${s?.completed ? 'done' : ''} ${isChallenge ? 'challenge' : ''}`}
                     whileTap={unlocked ? { scale: 0.9 } : {}}
                     onClick={() => unlocked && onStartStage(id)}
                     disabled={!unlocked}
                   >
+                    {isChallenge && <span className="stage-challenge-tag">✨×2</span>}
                     <span className="stage-num">{id}</span>
                     {unlocked ? (
                       s?.completed

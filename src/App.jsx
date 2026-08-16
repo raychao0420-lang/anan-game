@@ -40,6 +40,7 @@ export default function App() {
   const [gameResults, setGameResults] = useState(null)
 
   const initDaily = useGameStore(s => s.initDaily)
+  const initDailyChallenge = useGameStore(s => s.initDailyChallenge)
   const checkMoodDecay = useGameStore(s => s.checkMoodDecay)
   const claimDailyGift = useGameStore(s => s.claimDailyGift)
 
@@ -47,9 +48,10 @@ export default function App() {
     const today = new Date().toISOString().slice(0, 10)
     const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10)
     initDaily(today)
+    initDailyChallenge(today)
     checkMoodDecay()
     claimDailyGift(today, yesterday)
-  }, [initDaily, checkMoodDecay, claimDailyGift])
+  }, [initDaily, initDailyChallenge, checkMoodDecay, claimDailyGift])
 
   const handleStartStage = (id) => {
     setActiveStage(id)

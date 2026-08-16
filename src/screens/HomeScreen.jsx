@@ -4,6 +4,8 @@ import { useGameStore } from '../store/gameStore'
 import { PETS, PET_ORDER } from '../data/pets'
 import { SHOP_ITEMS } from '../data/shop'
 import { getTodayTasks } from '../data/dailyTasks'
+import { CHALLENGE_COIN_MULT, challengeReason } from '../data/dailyChallenge'
+import { STAGE_NAMES } from '../data/questions'
 import MuteButton from '../components/MuteButton'
 import SaveModal from '../components/SaveModal'
 import LoginGiftModal from '../components/LoginGiftModal'
@@ -13,7 +15,8 @@ import { sfx } from '../utils/sound'
 import './HomeScreen.css'
 
 export default function HomeScreen({ onNavigate }) {
-  const { coins, activePet, pets, petEquipment, dailyTasksDone, achievements, setActivePet, petMoods, luckyEggs, pendingLoginGift } = useGameStore()
+  const { coins, activePet, pets, petEquipment, dailyTasksDone, achievements, setActivePet, petMoods, luckyEggs, pendingLoginGift,
+          stages, challengeStage, challengeDone } = useGameStore()
   const [showSave, setShowSave] = useState(false)
   const [showEggs, setShowEggs] = useState(false)
   const today = new Date().toISOString().slice(0, 10)
@@ -108,6 +111,25 @@ export default function HomeScreen({ onNavigate }) {
             <span className="home-hero-sub">18 個案件等你破解</span>
           </motion.button>
         </div>
+
+        {/* 當日限定挑戰：把安安冷落的關卡推到她眼前，今天去打就加倍 */}
+        {challengeStage && !challengeDone && (
+          <motion.button
+            className="home-challenge"
+            whileTap={{ scale: 0.96 }}
+            onClick={() => nav('stages')}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <span className="home-challenge-tag">✨ 今日限定</span>
+            <span className="home-challenge-main">
+              第 {challengeStage} 關「{STAGE_NAMES[challengeStage] || `關卡${challengeStage}`}」金幣 ×{CHALLENGE_COIN_MULT}
+            </span>
+            <span className="home-challenge-sub">
+              {challengeReason(challengeStage, { stages })} · 還送花苗或幸運蛋
+            </span>
+          </motion.button>
+        )}
 
         <motion.button
           className="btn-primary btn-lg"
