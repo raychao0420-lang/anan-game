@@ -768,16 +768,31 @@ const BG = {
 }
 
 // 安安：全遊戲唯一需要新畫的角色（其餘都重用寵物或 emoji）。偵探帽＋放大鏡最好認。
+// ⚠️ 2026-08-24 安安本人回報：「主角是我嗎？頭髮太短」——安安是小女生，要長髮。
+//    畫法：後方髮量（在身體之前畫）＋兩束長髮垂到肩膀以下（在身體之後畫，才會蓋在肩上）。
+const HAIR = '#3d2b1d'
+const HAIR_HI = '#54402d'
 function Anan({ size = 54 }) {
   return (
     <svg width={size} height={size * 1.25} viewBox="0 0 60 75" style={{ overflow: 'visible', display: 'block' }}>
       <ellipse cx="30" cy="70" rx="15" ry="3.5" fill="rgba(0,0,0,0.16)" />
+      {/* 後方髮量：讓頭型飽滿，並從臉的兩側露出來 */}
+      <ellipse cx="30" cy="30" rx="20" ry="20" fill={HAIR} />
       <rect x="19" y="42" width="22" height="26" rx="8" fill="#5b8fd6" />
       <rect x="24" y="52" width="12" height="16" rx="4" fill="#7aa8e6" />
+      {/* 兩束長髮垂過肩膀，末端微微外翹 */}
+      <path d="M13,28 C7,40 7,54 10,63 q5,3 9,-0.5 C16,54 15,40 18,29 Z" fill={HAIR} />
+      <path d="M47,28 C53,40 53,54 50,63 q-5,3 -9,-0.5 C44,54 45,40 42,29 Z" fill={HAIR} />
+      <path d="M12,34 C9,44 9,54 11,60" stroke={HAIR_HI} strokeWidth="1.2" fill="none" opacity="0.8" />
+      <path d="M48,34 C51,44 51,54 49,60" stroke={HAIR_HI} strokeWidth="1.2" fill="none" opacity="0.8" />
       <circle cx="30" cy="28" r="17" fill="#f7d3ae" />
-      <path d="M13,24 q17,-14 34,0 q-6,-16 -17,-16 q-11,0 -17,16 Z" fill="#3d2b1d" />
+      {/* 瀏海 */}
+      <path d="M13,24 q17,-14 34,0 q-6,-16 -17,-16 q-11,0 -17,16 Z" fill={HAIR} />
       <path d="M9,22 q21,-9 42,0 q2,-7 -21,-7 q-23,0 -21,7 Z" fill="#b4643f" />
       <ellipse cx="30" cy="12" rx="13" ry="7" fill="#c8734a" />
+      {/* 帽子上的小蝴蝶結 */}
+      <path d="M42,13 l4,-3 v6 Z M42,13 l-4,-3 v6 Z" fill="#e8737f" />
+      <circle cx="42" cy="13" r="1.6" fill="#f5a3ab" />
       <circle cx="24" cy="29" r="2.6" fill="#2c2118" />
       <circle cx="36" cy="29" r="2.6" fill="#2c2118" />
       <circle cx="24.9" cy="28.1" r="0.9" fill="#fff" />
