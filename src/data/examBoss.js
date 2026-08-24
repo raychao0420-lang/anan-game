@@ -12,35 +12,90 @@ export const EXAM_BOSS_CONFIG = {
 }
 
 // type: 'number' → 輸入數字  |  type: 'choice' → 四選一選項
+//
+// ⚠️ 2026-08-24 使用者回報：「期中考被拿來刷金幣了，避免閉著眼睛刷」。
+//    原本 52 題全是固定題目，安安整池背起來就能閉眼過關。兩個漏洞一起修：
+//    ① 數學題改成「題型工廠」——每題帶 gen()，抽到時現場產生數字，背答案沒用。
+//    ② 選擇題的正確答案原本固定在同一個位置，她可能是在背「這題選第 3 個」。
+//       改成抽題時打亂選項順序，answer 索引跟著換算。
+//    兩者都在抽題階段（materialize）處理完才送出，畫面端完全不用改。
+
+const R = (a, b) => a + Math.floor(Math.random() * (b - a + 1))
+const D1 = (tenths) => (tenths / 10).toFixed(1)   // 一位小數顯示用
 
 export const EXAM_QUESTIONS = [
-  // ── 數學：小數 ──────────────────────────────────────────
-  { id: 'e01', category: '數學', type: 'number', question: '8.0 + 0.2 = ?', answer: 8.2, unit: '' },
-  { id: 'e02', category: '數學', type: 'number', question: '8.6 − 0.4 = ?', answer: 8.2, unit: '' },
-  { id: 'e03', category: '數學', type: 'number', question: '57.4 − 43.4 = ?', answer: 14,  unit: '' },
-  { id: 'e04', category: '數學', type: 'number', question: '7.5 + 0.5 = ?',   answer: 8,   unit: '' },
-  { id: 'e05', category: '數學', type: 'number', question: '3.7 + 0.5 = ?',   answer: 4.2, unit: '' },
-  { id: 'e06', category: '數學', type: 'number', question: '9.8 − 1.5 = ?',   answer: 8.3, unit: '' },
-  // ── 數學：除法 ──────────────────────────────────────────
-  { id: 'e07', category: '數學', type: 'number', question: '42 ÷ 6 = ?',   answer: 7,   unit: '' },
-  { id: 'e08', category: '數學', type: 'number', question: '216 ÷ 8 = ?',  answer: 27,  unit: '' },
-  { id: 'e09', category: '數學', type: 'number', question: '120 ÷ 5 = ?',  answer: 24,  unit: '' },
-  { id: 'e10', category: '數學', type: 'number', question: '133 ÷ 7 = ?',  answer: 19,  unit: '' },
-  { id: 'e11', category: '數學', type: 'number', question: '408 ÷ 8 = ?',  answer: 51,  unit: '' },
-  { id: 'e12', category: '數學', type: 'number', question: '565 ÷ 5 = ?',  answer: 113, unit: '' },
+  // ── 數學：小數（gen 每次現場出數字）────────────────────────
+  { id: 'e01', category: '數學', type: 'number', unit: '',
+    gen: () => { const a = R(11, 84), b = R(1, 9)          // 一位小數加法（不進位）
+      return { question: `${D1(a)} + ${D1(b)} = ?`, answer: (a + b) / 10 } } },
+  { id: 'e02', category: '數學', type: 'number', unit: '',
+    gen: () => { const a = R(25, 98), b = R(1, a % 10)     // 一位小數減法（不退位）
+      return { question: `${D1(a)} − ${D1(b)} = ?`, answer: (a - b) / 10 } } },
+  { id: 'e03', category: '數學', type: 'number', unit: '',
+    gen: () => { const a = R(400, 990), b = R(100, 390)    // 兩位數的一位小數減法
+      return { question: `${D1(a)} − ${D1(b)} = ?`, answer: (a - b) / 10 } } },
+  { id: 'e04', category: '數學', type: 'number', unit: '',
+    gen: () => { const a = R(11, 94), b = 10 - (a % 10)    // 湊成整數
+      return { question: `${D1(a)} + ${D1(b)} = ?`, answer: (a + b) / 10 } } },
+  { id: 'e05', category: '數學', type: 'number', unit: '',
+    gen: () => { const a = R(11, 89), b = R(10 - (a % 10) + 1, 9)   // 小數進位加法
+      return { question: `${D1(a)} + ${D1(b)} = ?`, answer: (a + b) / 10 } } },
+  { id: 'e06', category: '數學', type: 'number', unit: '',
+    gen: () => { const a = R(21, 98), b = R((a % 10) + 1, 9)        // 小數退位減法
+      return { question: `${D1(a)} − ${D1(b)} = ?`, answer: (a - b) / 10 } } },
+  // ── 數學：除法（先定除數與商，再回推被除數，保證整除）──────
+  { id: 'e07', category: '數學', type: 'number', unit: '',
+    gen: () => { const d = R(3, 9), q = R(4, 9)
+      return { question: `${d * q} ÷ ${d} = ?`, answer: q } } },
+  { id: 'e08', category: '數學', type: 'number', unit: '',
+    gen: () => { const d = R(6, 9), q = R(20, 40)
+      return { question: `${d * q} ÷ ${d} = ?`, answer: q } } },
+  { id: 'e09', category: '數學', type: 'number', unit: '',
+    gen: () => { const d = R(4, 9), q = R(15, 30)
+      return { question: `${d * q} ÷ ${d} = ?`, answer: q } } },
+  { id: 'e10', category: '數學', type: 'number', unit: '',
+    gen: () => { const d = R(6, 9), q = R(15, 25)
+      return { question: `${d * q} ÷ ${d} = ?`, answer: q } } },
+  { id: 'e11', category: '數學', type: 'number', unit: '',
+    gen: () => { const d = R(6, 9), q = R(40, 70)
+      return { question: `${d * q} ÷ ${d} = ?`, answer: q } } },
+  { id: 'e12', category: '數學', type: 'number', unit: '',
+    gen: () => { const d = R(4, 6), q = R(90, 140)
+      return { question: `${d * q} ÷ ${d} = ?`, answer: q } } },
   // ── 數學：面積 ──────────────────────────────────────────
-  { id: 'e13', category: '數學', type: 'number', question: '邊長 4 公分的正方形，面積是多少？',       answer: 16, unit: '平方公分' },
-  { id: 'e14', category: '數學', type: 'number', question: '長 7 公分、寬 2 公分的長方形，面積是多少？', answer: 14, unit: '平方公分' },
-  { id: 'e15', category: '數學', type: 'number', question: '邊長 5 公分的正方形，面積是多少？',       answer: 25, unit: '平方公分' },
+  { id: 'e13', category: '數學', type: 'number', unit: '平方公分',
+    gen: () => { const s = R(3, 20)
+      return { question: `邊長 ${s} 公分的正方形，面積是多少？`, answer: s * s } } },
+  { id: 'e14', category: '數學', type: 'number', unit: '平方公分',
+    gen: () => { const l = R(5, 15), w = R(2, 9)
+      return { question: `長 ${l} 公分、寬 ${w} 公分的長方形，面積是多少？`, answer: l * w } } },
+  { id: 'e15', category: '數學', type: 'number', unit: '公分',
+    gen: () => { const l = R(4, 14), w = R(2, 9)   // 換個角度問：周長
+      return { question: `長 ${l} 公分、寬 ${w} 公分的長方形，周長是多少？`, answer: (l + w) * 2 } } },
   // ── 數學：時間 ──────────────────────────────────────────
-  { id: 'e16', category: '數學', type: 'number', question: '134 分鐘 = 2 小時又幾分？',                     answer: 14, unit: '分' },
-  { id: 'e17', category: '數學', type: 'number', question: '1 小時 31 分鐘 = 幾分鐘？',                    answer: 91, unit: '分鐘' },
-  { id: 'e18', category: '數學', type: 'number', question: '上午 8 時 50 分再過 1 小時 50 分，是上午 10 時幾分？', answer: 40, unit: '分' },
+  { id: 'e16', category: '數學', type: 'number', unit: '分',
+    gen: () => { const h = R(2, 4), m = R(5, 55)
+      return { question: `${h * 60 + m} 分鐘 = ${h} 小時又幾分？`, answer: m } } },
+  { id: 'e17', category: '數學', type: 'number', unit: '分鐘',
+    gen: () => { const h = R(1, 3), m = R(10, 59)
+      return { question: `${h} 小時 ${m} 分鐘 = 幾分鐘？`, answer: h * 60 + m } } },
+  { id: 'e18', category: '數學', type: 'number', unit: '分',
+    gen: () => { const sh = R(6, 8), sm = R(10, 55), dh = R(1, 2), dm = R(10, 55)
+      const t = sm + dm, eh = sh + dh + Math.floor(t / 60)
+      return { question: `上午 ${sh} 時 ${sm} 分再過 ${dh} 小時 ${dm} 分，是上午 ${eh} 時幾分？`, answer: t % 60 } } },
   // ── 數學：應用題 ────────────────────────────────────────
-  { id: 'e19', category: '數學', type: 'number', question: '133 顆橘子，每 7 顆一袋，可以裝幾袋？',     answer: 19,  unit: '袋' },
-  { id: 'e20', category: '數學', type: 'number', question: '43 個小朋友分組，每組 8 人，可分幾組？',   answer: 5,   unit: '組' },
-  { id: 'e21', category: '數學', type: 'number', question: '每盒放 27 個，共 8 盒，一共幾個？',       answer: 216, unit: '個' },
-  { id: 'e22', category: '數學', type: 'number', question: '每天做 5 題，做了 23 天，共做幾題？',     answer: 115, unit: '題' },
+  { id: 'e19', category: '數學', type: 'number', unit: '袋',
+    gen: () => { const per = R(4, 9), bags = R(12, 25)
+      return { question: `${per * bags} 顆橘子，每 ${per} 顆一袋，可以裝幾袋？`, answer: bags } } },
+  { id: 'e20', category: '數學', type: 'number', unit: '組',
+    gen: () => { const kids = R(30, 70), per = R(6, 9)   // 有餘數，只問可分幾組
+      return { question: `${kids} 個小朋友分組，每組 ${per} 人，可以分成幾組？`, answer: Math.floor(kids / per) } } },
+  { id: 'e21', category: '數學', type: 'number', unit: '個',
+    gen: () => { const per = R(12, 35), box = R(4, 9)
+      return { question: `每盒放 ${per} 個，共 ${box} 盒，一共幾個？`, answer: per * box } } },
+  { id: 'e22', category: '數學', type: 'number', unit: '題',
+    gen: () => { const n = R(4, 12), d = R(14, 30)
+      return { question: `每天做 ${n} 題，做了 ${d} 天，共做幾題？`, answer: n * d } } },
 
   // ── 社會 ────────────────────────────────────────────────
   { id: 's01', category: '社會', type: 'choice',
@@ -167,7 +222,76 @@ export const EXAM_QUESTIONS = [
     question: '「春眠不覺曉，處處聞啼鳥」描述哪個季節？',
     options: ['夏天', '秋天', '冬天', '春天'],
     answer: 4 },
+
+  // ── 擴充題（2026-08-24 加，稀釋背題效果）────────────────────
+  { id: 's11', category: '社會', type: 'choice',
+    question: '地圖上的「比例尺」是用來做什麼的？',
+    options: ['標示方向', '把圖上距離換算成實際距離', '標示海拔高低', '標示人口多少'], answer: 2 },
+  { id: 's12', category: '社會', type: 'choice',
+    question: '在地圖上，一般來說「上方」代表哪個方位？',
+    options: ['東方', '南方', '北方', '西方'], answer: 3 },
+  { id: 's13', category: '社會', type: 'choice',
+    question: '下列哪一項屬於「公共規則」，大家都應該遵守？',
+    options: ['自己家裡幾點睡覺', '在圖書館保持安靜', '喜歡吃什麼食物', '假日想去哪裡玩'], answer: 2 },
+  { id: 's14', category: '社會', type: 'choice',
+    question: '「古蹟」為什麼需要保存？',
+    options: ['因為很值錢可以賣', '因為記錄了地方的歷史', '因為蓋新的比較貴', '因為法律規定不能拆'], answer: 2 },
+  { id: 's15', category: '社會', type: 'choice',
+    question: '家鄉的地名常常和什麼有關？',
+    options: ['當地的地形或早期居民', '現任市長的名字', '隨機取的', '外國的城市'], answer: 1 },
+  { id: 's16', category: '社會', type: 'choice',
+    question: '下列哪一種是「再生」的資源使用方式？',
+    options: ['寶特瓶回收做成衣服', '把垃圾丟到河裡', '一次性餐具用完就丟', '長時間開著冷氣'], answer: 1 },
+
+  { id: 'n11', category: '自然', type: 'choice',
+    question: '一天當中，什麼時候的竿影最短？',
+    options: ['清晨', '正午', '傍晚', '半夜'], answer: 2 },
+  { id: 'n12', category: '自然', type: 'choice',
+    question: '水變成水蒸氣的現象叫做什麼？',
+    options: ['凝結', '蒸發', '凝固', '融化'], answer: 2 },
+  { id: 'n13', category: '自然', type: 'choice',
+    question: '月亮從哪個方向升起？',
+    options: ['西方', '北方', '東方', '南方'], answer: 3 },
+  { id: 'n14', category: '自然', type: 'choice',
+    question: '下列哪一種材料可以導電？',
+    options: ['塑膠尺', '玻璃杯', '木頭筷子', '鐵釘'], answer: 4 },
+  { id: 'n15', category: '自然', type: 'choice',
+    question: '植物行光合作用會放出什麼氣體？',
+    options: ['氧氣', '二氧化碳', '氮氣', '水蒸氣'], answer: 1 },
+  { id: 'n16', category: '自然', type: 'choice',
+    question: '磁鐵可以吸住下列哪一種東西？',
+    options: ['鋁罐', '迴紋針', '橡皮擦', '紙張'], answer: 2 },
+
+  { id: 'c11', category: '國語', type: 'choice',
+    question: '「一舉兩得」的意思是？',
+    options: ['做兩件事都失敗', '做一件事得到兩種好處', '一次舉起兩樣東西', '兩個人一起做一件事'], answer: 2 },
+  { id: 'c12', category: '國語', type: 'choice',
+    question: '下列哪個字的部首是「艹」（草字頭）？',
+    options: ['清', '茶', '明', '林'], answer: 2 },
+  { id: 'c13', category: '國語', type: 'choice',
+    question: '「守株待兔」比喻什麼？',
+    options: ['很有耐心地等待', '不肯努力只想僥倖', '認真照顧兔子', '守著自己的家'], answer: 2 },
+  { id: 'c14', category: '國語', type: 'choice',
+    question: '下列哪組是「反義詞」（意思相反）？',
+    options: ['美麗—漂亮', '快樂—開心', '寬廣—狹窄', '聰明—伶俐'], answer: 3 },
+  { id: 'c15', category: '國語', type: 'choice',
+    question: '「絡繹不絕」形容什麼情形？',
+    options: ['人來人往不間斷', '完全沒有人', '大家都很安靜', '東西賣完了'], answer: 1 },
+  { id: 'c16', category: '國語', type: 'choice',
+    question: '「胸有成竹」比喻什麼？',
+    options: ['心裡種了竹子', '事前已有把握', '喜歡畫竹子', '個子長得很高'], answer: 2 },
 ]
+
+// ── 反刷金幣：抽題時「現場長出來」──────────────────────────────
+// ① 數學題呼叫 gen() 換一組新數字 ② 選擇題打亂選項順序並換算答案索引
+// 全部在這裡處理完才送出，畫面端拿到的仍是原本的 { question, answer, options } 格式。
+function materialize(q) {
+  const base = q.gen ? { ...q, ...q.gen() } : q
+  if (base.type !== 'choice') return base
+  const correct = base.options[base.answer - 1]
+  const options = [...base.options].sort(() => Math.random() - 0.5)
+  return { ...base, options, answer: options.indexOf(correct) + 1 }
+}
 
 // 每次抽題：數學4題、社會2題、自然2題、國語2題，共10題
 export function pickExamQuestions() {
@@ -180,7 +304,7 @@ export function pickExamQuestions() {
     ...pick('社會', 2),
     ...pick('自然', 2),
     ...pick('國語', 2),
-  ].sort(() => Math.random() - 0.5)
+  ].sort(() => Math.random() - 0.5).map(materialize)
 }
 
 // ── 各科單獨挑戰 ──────────────────────────────────────────────
@@ -201,7 +325,7 @@ export const SUBJECT_CONFIGS = [
 
 export function pickSubjectQuestions(category, n) {
   const pool = EXAM_QUESTIONS.filter(q => q.category === category)
-  return [...pool].sort(() => Math.random() - 0.5).slice(0, n)
+  return [...pool].sort(() => Math.random() - 0.5).slice(0, n).map(materialize)
 }
 
 export function getSubjectQuestionIds(category) {
@@ -209,5 +333,5 @@ export function getSubjectQuestionIds(category) {
 }
 
 export function getQuestionsByIds(ids) {
-  return ids.map(id => EXAM_QUESTIONS.find(q => q.id === id)).filter(Boolean)
+  return ids.map(id => EXAM_QUESTIONS.find(q => q.id === id)).filter(Boolean).map(materialize)
 }
