@@ -8,6 +8,7 @@ import { SEASON5, PASSPORT_BOARD } from './series5'
 import { SEASON6, PUZZLE_BOARD } from './series6'
 import { SEASON7, STORYBOOK_BOARD } from './series7'
 import { SEASON8, ARCHIVE_BOARD } from './series8'
+import { SEASON9, TRAVEL_BOARD } from './series9'
 import { SERIES_TEACH } from './seriesTeach'
 
 function normalize(season, extra) {
@@ -103,5 +104,14 @@ export const SEASONS = [
     clueLabel: { zh: '阿藍的藍羽毛', en: "Blue Magpie's Feathers" },
     clueIcon: '🐦',
     subtitle: { zh: '第八季 · 連載中', en: 'Season 8 · Ongoing' },
+  }),
+  normalize(SEASON9, {
+    key: 'season9',
+    board: TRAVEL_BOARD,
+    collType: 'sticker',                                 // 每集 ep.sticker.id 收進 store.seriesStickers
+    collLabel: { zh: '旅行手帳', en: 'Travel Notebook' },
+    clueLabel: { zh: '圓圓的腳印', en: "Yuan-Yuan's Paw Prints" },
+    clueIcon: '🐈',
+    subtitle: { zh: '第九季 · 行前導覽', en: 'Season 9 · Before We Go' },
   }),
 ]
