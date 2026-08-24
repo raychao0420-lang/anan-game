@@ -355,9 +355,11 @@ export const SEASON9 = {
 // 旅行手帳貼紙板（12 張＝羅馬 6 站＋芬蘭 6 站）；集滿＝信物《安安的旅行手帳》
 // ⭐ 設計原則一：每一張都要能在現場「真的核對到」
 // ⭐ 設計原則二（2026-08-24 使用者指示）：芬蘭不能只有雪／馴鹿／極光這種常見主題，
-//    要跟羅馬一樣有城市歷史與文化。故芬蘭六站＝獨立建國、三度易主的要塞、鑿進岩盤的教堂、
-//    被燒光後重建成馴鹿角形狀的城市、薩米族把名字拿回來、最後才是極光。
+//    要跟羅馬一樣有城市歷史與文化。
 //    （雪、馴鹿、桑拿、永夜不獨立成站，融進各站的場景裡。）
+//    芬蘭六站：芬蘭堡三度易主＋1917獨立／岩石教堂鑿進岩盤／羅瓦涅米1944燒毀後
+//    由 Alvar Aalto 重建成馴鹿角街道／聖誕老人是怎麼搬來的／薩米族把名字拿回來／極光。
+//    第 9、10 站連起來＝「一座城市怎麼從灰燼裡靠一個故事活過來」的完整弧線。
 export const TRAVEL_BOARD = [
   // ── 第一幕 · 羅馬 ──
   { id: 'pantheon',    emoji: '🏛️', name: { zh: '萬神殿',       en: 'The Pantheon' } },
@@ -367,10 +369,10 @@ export const TRAVEL_BOARD = [
   { id: 'vatican',     emoji: '⛪', name: { zh: '最小的國家',   en: 'The Smallest Country' } },
   { id: 'romecats',    emoji: '🐈', name: { zh: '羅馬的貓',     en: 'The Cats of Rome' } },
   // ── 第二幕 · 芬蘭 ──
-  { id: 'helsinki',    emoji: '🇫🇮', name: { zh: '一九一七',     en: 'The Year 1917' } },
   { id: 'suomenlinna', emoji: '🏰', name: { zh: '換過三次主人', en: 'Three Owners' } },
   { id: 'rockchurch',  emoji: '🪨', name: { zh: '鑿進岩石的教堂', en: 'The Church in the Rock' } },
   { id: 'rovaniemi',   emoji: '🦌', name: { zh: '馴鹿角的城市', en: 'The Reindeer-Antler City' } },
+  { id: 'santa',       emoji: '🎅', name: { zh: '聖誕老人是怎麼搬來的', en: 'How Santa Moved In' } },
   { id: 'sami',        emoji: '🪶', name: { zh: '把名字拿回來', en: 'Taking Back the Name' } },
   { id: 'aurora',      emoji: '🌌', name: { zh: '極光',         en: 'The Aurora' } },
 ]

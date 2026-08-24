@@ -702,6 +702,44 @@ const BG = {
       ))}
     </g>
   ),
+  // 聖誕老人村：北極圈標線（畫的是 1865 年的位置）＋木屋郵局＋雪
+  santa: (
+    <g>
+      <rect width="160" height="90" fill="#2f4160" />
+      <path d="M0,18 q40,-10 80,-1 t80,-5 v9 q-40,8 -80,0 t-80,5 Z" fill={C.auroraG} opacity="0.16" />
+      {[[22, 8], [58, 5], [98, 9], [134, 6]].map(([x, y]) => (
+        <circle key={x} cx={x} cy={y} r="0.9" fill="#fff" opacity="0.85" />
+      ))}
+      <rect y="56" width="160" height="34" fill={C.snow} />
+      <path d="M0,56 q30,-5 60,0 t50,-2 q26,-2 50,4 v4 H0 Z" fill="#e4eef6" />
+      {[[16, 34], [118, 36]].map(([x, y]) => (
+        <g key={x}>
+          <rect x={x} y={y} width="26" height={56 - y} fill={C.terracotta} />
+          <path d={`M${x - 3},${y} h32 l-16,-10 Z`} fill="#f2f7fb" />
+          <rect x={x + 5} y={y + 8} width="7" height="7" fill={C.gold} opacity="0.9" />
+          <rect x={x + 15} y={y + 8} width="7" height="7" fill={C.gold} opacity="0.9" />
+        </g>
+      ))}
+      {/* 北極圈標線：白線＋牌子（真正的北極圈其實在它北邊 700 公尺，而且每年會移動） */}
+      <path d="M0,70 q40,-4 80,0 t80,-2" stroke="#8fd4bb" strokeWidth="2.4" fill="none" opacity="0.95" />
+      <path d="M0,70 q40,-4 80,0 t80,-2" stroke="#fff" strokeWidth="0.9" fill="none" opacity="0.8" />
+      <g>
+        <rect x="66" y="44" width="28" height="12" rx="1.6" fill="#f4efe2" stroke={C.wood2} strokeWidth="1" />
+        <path d="M70,48 h20 M70,52 h14" stroke="#8d8168" strokeWidth="1.2" />
+        <rect x="78" y="56" width="3.5" height="14" fill={C.wood2} />
+      </g>
+      {[[50, 78], [104, 82], [138, 76]].map(([x, y]) => (
+        <ellipse key={x} cx={x} cy={y} rx="7" ry="1.7" fill="#d5e3ee" />
+      ))}
+      {[[8, 56, 13], [148, 55, 14]].map(([x, base, h]) => (
+        <g key={x}>
+          <path d={`M${x},${base} L${x + h * 0.42},${base - h} L${x + h * 0.84},${base} Z`} fill="#22452f" />
+          <path d={`M${x + h * 0.18},${base - h * 0.72} L${x + h * 0.42},${base - h} L${x + h * 0.66},${base - h * 0.72} Z`}
+            fill={C.snow} opacity="0.9" />
+        </g>
+      ))}
+    </g>
+  ),
   // 極光：北極圈的夜空整片亮起來（終章畫面）
   aurora: (
     <g>
