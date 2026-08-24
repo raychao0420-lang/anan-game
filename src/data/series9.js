@@ -51,6 +51,22 @@ export const SEASON9 = {
     // ─────────────────────────────────────── S9 EP1 ───────────────────────────────────────
     {
       id: 's9ep1',
+      comicIntro: [
+        { bg: 'romestreet', cast: ['anan', 'feifei'],
+          say: { zh: '飛機落地羅馬。石板路又窄又舊，十一月的天空卻藍得發亮。',
+                 en: 'The plane lands in Rome. The cobbled lanes are narrow and old, yet the November sky is dazzling blue.' } },
+        { bg: 'pantheon', cast: ['anan', '🧔', '🐈'],
+          say: { zh: '導遊爺爺急著說：「四十年來光圈都落在門口，今天卻跑掉了！」光圈裡蹲著一隻橘貓。',
+                 en: 'The old guide frets: "For forty years the light circle fell at the doorway — today it wandered off!" A ginger cat sits inside the light.' } },
+      ],
+      comicSolve: [
+        { bg: 'pantheon', cast: ['anan', '☀️'],
+          say: { zh: '安安指著照片牆：「爺爺，你四十年只在夏天拍——十一月的太陽低了 38 度啊。」',
+                 en: 'An-An points at the photo wall: "Grandpa, for forty years you only shot in summer — the November sun sits 38 degrees lower."' } },
+        { bg: 'pantheon', cast: ['anan', '🐈'],
+          say: { zh: '橘貓圓圓走到門檻前停住，望著外面的天空，輕輕喵了一聲。〈手帳貼紙 1 · 萬神殿〉',
+                 en: 'Yuan-Yuan stops at the threshold, gazing at the sky outside, and gives the softest mew. Sticker 1 — The Pantheon.' } },
+      ],
       no: 1,
       title: { zh: '會走路的光圈', en: 'The Circle of Light That Walks' },
       emoji: '🏛️',
@@ -337,18 +353,24 @@ export const SEASON9 = {
 }
 
 // 旅行手帳貼紙板（12 張＝羅馬 6 站＋芬蘭 6 站）；集滿＝信物《安安的旅行手帳》
-// ⭐ 設計原則：每一張都要能在現場「真的核對到」
+// ⭐ 設計原則一：每一張都要能在現場「真的核對到」
+// ⭐ 設計原則二（2026-08-24 使用者指示）：芬蘭不能只有雪／馴鹿／極光這種常見主題，
+//    要跟羅馬一樣有城市歷史與文化。故芬蘭六站＝獨立建國、三度易主的要塞、鑿進岩盤的教堂、
+//    被燒光後重建成馴鹿角形狀的城市、薩米族把名字拿回來、最後才是極光。
+//    （雪、馴鹿、桑拿、永夜不獨立成站，融進各站的場景裡。）
 export const TRAVEL_BOARD = [
-  { id: 'pantheon',   emoji: '🏛️', name: { zh: '萬神殿',     en: 'The Pantheon' } },
-  { id: 'colosseum',  emoji: '🏟️', name: { zh: '圓形競技場', en: 'The Colosseum' } },
-  { id: 'forum',      emoji: '🏺', name: { zh: '古羅馬廣場', en: 'The Roman Forum' } },
-  { id: 'trevi',      emoji: '⛲', name: { zh: '許願池',     en: 'The Trevi Fountain' } },
-  { id: 'vatican',    emoji: '⛪', name: { zh: '梵蒂岡',     en: 'Vatican City' } },
-  { id: 'gelato',     emoji: '🍨', name: { zh: '義大利冰淇淋', en: 'Gelato' } },
-  { id: 'flight',     emoji: '✈️', name: { zh: '飛越阿爾卑斯', en: 'Over the Alps' } },
-  { id: 'snow',       emoji: '❄️', name: { zh: '第一次看到雪', en: 'First Snow' } },
-  { id: 'reindeer',   emoji: '🦌', name: { zh: '馴鹿',       en: 'Reindeer' } },
-  { id: 'polarnight', emoji: '🌒', name: { zh: '永夜',       en: 'The Polar Night' } },
-  { id: 'sauna',      emoji: '🧖', name: { zh: '桑拿',       en: 'The Sauna' } },
-  { id: 'aurora',     emoji: '🌌', name: { zh: '極光',       en: 'The Aurora' } },
+  // ── 第一幕 · 羅馬 ──
+  { id: 'pantheon',    emoji: '🏛️', name: { zh: '萬神殿',       en: 'The Pantheon' } },
+  { id: 'colosseum',   emoji: '🏟️', name: { zh: '圓形競技場',   en: 'The Colosseum' } },
+  { id: 'forum',       emoji: '🏺', name: { zh: '疊起來的廣場', en: 'The Layered Forum' } },
+  { id: 'trevi',       emoji: '⛲', name: { zh: '兩千年的水',   en: 'Two-Thousand-Year Water' } },
+  { id: 'vatican',     emoji: '⛪', name: { zh: '最小的國家',   en: 'The Smallest Country' } },
+  { id: 'romecats',    emoji: '🐈', name: { zh: '羅馬的貓',     en: 'The Cats of Rome' } },
+  // ── 第二幕 · 芬蘭 ──
+  { id: 'helsinki',    emoji: '🇫🇮', name: { zh: '一九一七',     en: 'The Year 1917' } },
+  { id: 'suomenlinna', emoji: '🏰', name: { zh: '換過三次主人', en: 'Three Owners' } },
+  { id: 'rockchurch',  emoji: '🪨', name: { zh: '鑿進岩石的教堂', en: 'The Church in the Rock' } },
+  { id: 'rovaniemi',   emoji: '🦌', name: { zh: '馴鹿角的城市', en: 'The Reindeer-Antler City' } },
+  { id: 'sami',        emoji: '🪶', name: { zh: '把名字拿回來', en: 'Taking Back the Name' } },
+  { id: 'aurora',      emoji: '🌌', name: { zh: '極光',         en: 'The Aurora' } },
 ]

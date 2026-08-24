@@ -18,6 +18,10 @@ const C = {
   green: '#6ea85a', green2: '#4f8442', water: '#7cbcd8', water2: '#5a9dc0',
   stone: '#b9b2a4', paper: '#f7f1e4', red: '#c8443a', gold: '#e8b84b',
   white: '#ffffff', dark: '#4a4133',
+  // S9《羅馬與極光》：羅馬的赭石與大理石、北歐的雪與極光
+  travertine: '#d9c9a8', travertine2: '#bfa87f', ochre: '#c98a4b', terracotta: '#b5613c',
+  snow: '#eef4f8', snow2: '#cfdfe9', nordNight: '#141d33', seaCold: '#4a7fa8',
+  auroraG: '#5ef2a8', auroraV: '#a06ee0', copper: '#6fbfa0',
 }
 
 // 每張背景 viewBox 0 0 160 90。畫的是「一眼看得出是哪裡」的剪影，不求寫實。
@@ -412,6 +416,315 @@ const BG = {
       <path d="M100,44 q3,3 0,6 q3,2 0,5" stroke="#c9a24a" strokeWidth="1.6" fill="none" opacity="0.7" />
       <rect x="96" y="60" width="18" height="12" rx="2" fill={C.paper} stroke={C.wood2} strokeWidth="1.5" />
       <path d="M105,60 v12" stroke={C.wood2} strokeWidth="0.8" opacity="0.5" />
+    </g>
+  ),
+
+  // ───────────── S9 第一幕 · 羅馬 ─────────────
+  // 萬神殿內部：半圓頂＋藻井＋正中央的圓洞＋斜射下來的光柱與地板光圈（EP1 核心畫面）
+  pantheon: (
+    <g>
+      <rect width="160" height="90" fill="#8a7a63" />
+      <path d="M4,66 A76,60 0 0 1 156,66 Z" fill={C.travertine} />
+      {[52, 40, 28].map((ry, i) => (
+        <path key={ry} d={`M${80 - ry * 1.27},66 A${ry * 1.27},${ry} 0 0 1 ${80 + ry * 1.27},66`}
+          fill="none" stroke={C.travertine2} strokeWidth="0.8" opacity={0.75 - i * 0.12} />
+      ))}
+      {[-52, -26, 0, 26, 52].map((dx) => (
+        <path key={dx} d={`M${80 + dx * 1.3},66 Q${80 + dx * 0.55},22 80,14`}
+          fill="none" stroke={C.travertine2} strokeWidth="0.7" opacity="0.5" />
+      ))}
+      <circle cx="80" cy="14" r="7.5" fill="#fffaea" />
+      <circle cx="80" cy="14" r="7.5" fill="none" stroke={C.travertine2} strokeWidth="1.2" />
+      <path d="M73,16 L87,16 L114,66 L94,66 Z" fill="#fff8e0" opacity="0.42" />
+      <rect y="66" width="160" height="24" fill="#a2937b" />
+      <path d="M0,66 h160 M0,74 h160 M0,82 h160" stroke="#8d7f69" strokeWidth="0.6" opacity="0.6" />
+      <ellipse cx="104" cy="70" rx="11" ry="3.6" fill="#fff6d8" opacity="0.9" />
+      <ellipse cx="104" cy="70" rx="6" ry="2" fill="#fffdf2" />
+      {[18, 38, 122, 142].map((x) => (
+        <rect key={x} x={x} y="46" width="7" height="20" fill={C.travertine2} opacity="0.7" />
+      ))}
+    </g>
+  ),
+  // 羅馬街景：窄石板巷、赭紅色老公寓、百葉窗、曬衣繩
+  romestreet: (
+    <g>
+      <rect width="160" height="90" fill="#bfe0f2" />
+      <rect x="0" y="8" width="52" height="62" fill={C.terracotta} />
+      <rect x="108" y="4" width="52" height="66" fill={C.ochre} />
+      <rect x="52" y="20" width="24" height="50" fill="#cf9a5e" />
+      <rect x="84" y="24" width="24" height="46" fill="#c08050" />
+      {[[10, 18], [30, 18], [10, 40], [30, 40], [118, 16], [138, 16], [118, 38], [138, 38]].map(([x, y]) => (
+        <g key={`${x}-${y}`}>
+          <rect x={x} y={y} width="12" height="15" fill="#5c4a3a" />
+          <rect x={x} y={y} width="5.5" height="15" fill="#7fa86e" />
+          <rect x={x + 6.5} y={y} width="5.5" height="15" fill="#6e9760" />
+        </g>
+      ))}
+      <path d="M42,26 Q80,34 118,26" stroke="#e8e0cf" strokeWidth="0.8" fill="none" />
+      {[56, 70, 84, 98].map((x, i) => (
+        <rect key={x} x={x} y={28 + (i % 2)} width="7" height="9" rx="1" fill={i % 2 ? '#f2efe6' : '#dfe9f2'} />
+      ))}
+      <rect y="70" width="160" height="20" fill="#9a9384" />
+      {[0, 16, 32, 48, 64, 80, 96, 112, 128, 144].map((x) => (
+        <g key={x}>
+          <rect x={x} y="70" width="15" height="9" rx="2" fill="#a8a191" />
+          <rect x={x + 8} y="80" width="15" height="9" rx="2" fill="#8f8879" />
+        </g>
+      ))}
+    </g>
+  ),
+  // 圓形競技場：三層拱門的橢圓外牆，右側崩塌
+  colosseum: (
+    <g>
+      <rect width="160" height="90" fill="#bfe0f2" />
+      <ellipse cx="30" cy="14" rx="12" ry="3.6" fill="#fff" opacity="0.7" />
+      <rect y="70" width="160" height="20" fill="#a89c80" />
+      <path d="M14,70 L14,18 Q80,6 128,20 L128,70 Z" fill={C.travertine} />
+      <path d="M128,20 L128,70 L146,70 L146,44 Z" fill={C.travertine2} opacity="0.8" />
+      {[24, 40, 56].map((y, row) => (
+        <g key={y}>
+          {[20, 36, 52, 68, 84, 100, 114].map((x) => (
+            <path key={x} d={`M${x},${y + 12} v-6 q0,-4 4,-4 q4,0 4,4 v6 Z`}
+              fill={row === 2 ? '#6f6350' : '#7b6e59'} opacity={row === 0 ? 0.65 : 0.85} />
+          ))}
+          <rect x="14" y={y + 12} width="114" height="1.6" fill={C.travertine2} opacity="0.8" />
+        </g>
+      ))}
+      <path d="M14,70 h132" stroke="#8d8168" strokeWidth="1.4" />
+      {[[136, 62], [150, 66]].map(([x, y]) => (
+        <rect key={x} x={x} y={y} width="6" height="8" fill={C.travertine2} opacity="0.7" />
+      ))}
+    </g>
+  ),
+  // 古羅馬廣場：斷柱與凱旋門的廢墟，草從石縫長出來
+  forum: (
+    <g>
+      <rect width="160" height="90" fill="#cfe7f7" />
+      <ellipse cx="128" cy="14" rx="10" ry="3" fill="#fff" opacity="0.7" />
+      <rect y="66" width="160" height="24" fill="#b0a487" />
+      <path d="M96,66 V30 h36 V66 Z" fill={C.travertine} />
+      <path d="M104,66 V44 q10,-10 20,0 V66 Z" fill="#8a7d66" />
+      <rect x="94" y="24" width="40" height="7" fill={C.travertine2} />
+      {[16, 34, 52, 70].map((x, i) => (
+        <g key={x}>
+          <rect x={x} y={38 + i * 5} width="9" height={28 - i * 5} fill={C.travertine} />
+          <rect x={x - 1.5} y={36 + i * 5} width="12" height="3" fill={C.travertine2} />
+          {[0, 1, 2].map((k) => (
+            <line key={k} x1={x + 2 + k * 2.5} y1={41 + i * 5} x2={x + 2 + k * 2.5} y2="66"
+              stroke={C.travertine2} strokeWidth="0.5" opacity="0.6" />
+          ))}
+        </g>
+      ))}
+      {[[8, 64], [88, 63], [140, 64], [60, 65]].map(([x, y]) => (
+        <path key={x} d={`M${x},${y} q3,-6 6,0 q-3,3 -6,0 Z`} fill={C.green} opacity="0.8" />
+      ))}
+      {[[24, 70], [46, 74], [120, 71]].map(([x, y]) => (
+        <ellipse key={x} cx={x} cy={y} rx="5" ry="1.6" fill="#9d9179" />
+      ))}
+    </g>
+  ),
+  // 許願池：巴洛克噴泉立面＋水池＋池底的硬幣
+  trevi: (
+    <g>
+      <rect width="160" height="90" fill="#cfe7f7" />
+      <rect x="18" y="6" width="124" height="52" fill={C.travertine} />
+      <path d="M52,6 h56 v-2 h-56 Z" fill={C.travertine2} />
+      <path d="M60,58 V22 q20,-14 40,0 V58 Z" fill="#c3b291" />
+      <path d="M68,58 V28 q12,-9 24,0 V58 Z" fill="#a4977c" />
+      {[26, 38, 118, 130].map((x) => (
+        <g key={x}>
+          <rect x={x} y="18" width="8" height="40" fill="#c9b998" />
+          <rect x={x - 1} y="16" width="10" height="3" fill={C.travertine2} />
+        </g>
+      ))}
+      <rect x="18" y="4" width="124" height="4" fill={C.travertine2} />
+      <rect y="58" width="160" height="32" fill={C.water} />
+      <path d="M0,58 h160 v5 H0 Z" fill="#a8dcef" opacity="0.8" />
+      <path d="M8,68 q10,-4 20,0 M52,74 q10,-4 20,0 M104,70 q10,-4 20,0 M130,80 q10,-4 20,0"
+        stroke={C.water2} strokeWidth="1.8" fill="none" />
+      {[[40, 82], [72, 85], [96, 80], [118, 86]].map(([x, y]) => (
+        <circle key={x} cx={x} cy={y} r="2.2" fill={C.gold} opacity="0.9" />
+      ))}
+      <path d="M74,44 q6,-4 12,0 q-6,6 -12,0 Z" fill={C.white} opacity="0.6" />
+    </g>
+  ),
+  // 梵蒂岡：聖伯多祿大殿的大圓頂與環抱的柱廊廣場、方尖碑
+  vatican: (
+    <g>
+      <rect width="160" height="90" fill="#bfe0f2" />
+      <ellipse cx="26" cy="12" rx="11" ry="3.2" fill="#fff" opacity="0.7" />
+      <rect y="70" width="160" height="20" fill="#c3bba8" />
+      <rect x="44" y="46" width="72" height="24" fill={C.travertine} />
+      <rect x="44" y="44" width="72" height="4" fill={C.travertine2} />
+      {[50, 62, 74, 86, 98, 108].map((x) => (
+        <rect key={x} x={x} y="50" width="6" height="20" fill="#c9b998" />
+      ))}
+      <path d="M60,46 A20,22 0 0 1 100,46 Z" fill="#dcd2ba" />
+      <path d="M60,46 A20,22 0 0 1 100,46" fill="none" stroke={C.travertine2} strokeWidth="1" />
+      {[70, 80, 90].map((x) => (
+        <path key={x} d={`M${x},46 Q${x + (80 - x) * 0.3},30 80,25`} fill="none" stroke={C.travertine2} strokeWidth="0.7" opacity="0.6" />
+      ))}
+      <rect x="74" y="20" width="12" height="6" rx="1" fill="#cfc4a9" />
+      <path d="M80,20 v-5 M77.5,17 h5" stroke={C.gold} strokeWidth="1.4" />
+      <rect x="78" y="52" width="4" height="10" fill="#8d8168" />
+      {[16, 28, 132, 144].map((x) => (
+        <g key={x}>
+          <rect x={x} y="56" width="6" height="14" fill="#cfc7b2" />
+          <rect x={x - 1} y="54" width="8" height="2.4" fill={C.travertine2} />
+        </g>
+      ))}
+      <path d="M4,70 q76,-8 152,0" fill="none" stroke="#b0a68f" strokeWidth="1.2" />
+    </g>
+  ),
+
+  // ───────────── S9 第二幕 · 芬蘭 ─────────────
+  // 赫爾辛基：白色大教堂＋綠圓頂＋長階梯＋港邊的海
+  helsinki: (
+    <g>
+      <rect width="160" height="90" fill="#c6dced" />
+      <ellipse cx="34" cy="12" rx="12" ry="3.4" fill="#fff" opacity="0.75" />
+      <rect y="72" width="160" height="18" fill={C.seaCold} />
+      <path d="M0,76 q16,-3 32,0 t32,0 t32,0 t32,0" stroke="#3f6f95" strokeWidth="1.2" fill="none" opacity="0.6" />
+      <rect x="40" y="42" width="80" height="30" fill="#f4f2ec" />
+      <rect x="40" y="40" width="80" height="3.6" fill="#e2ded2" />
+      {[46, 58, 70, 82, 94, 108].map((x) => (
+        <rect key={x} x={x} y="46" width="6" height="26" fill="#e8e5db" />
+      ))}
+      <path d="M52,40 L80,26 L108,40 Z" fill="#f7f5ef" />
+      <path d="M64,26 A16,17 0 0 1 96,26 Z" fill={C.copper} />
+      <rect x="76" y="8" width="8" height="5" rx="1" fill={C.copper} />
+      <path d="M80,8 v-4 M78,6 h4" stroke={C.gold} strokeWidth="1.2" />
+      {[[46, 30], [114, 30]].map(([x, y]) => (
+        <g key={x}>
+          <path d={`M${x},${y + 10} A8,9 0 0 1 ${x + 16},${y + 10} Z`} fill={C.copper} opacity="0.9" />
+          <rect x={x + 5} y={y + 10} width="6" height="4" fill="#e8e5db" />
+        </g>
+      ))}
+      {[0, 1, 2, 3].map((i) => (
+        <rect key={i} x={44 - i * 3} y={72 + i * 0} width={72 + i * 6} height="0" fill="none" />
+      ))}
+      <path d="M38,72 h84 M36,70 h88" stroke="#dcd8cc" strokeWidth="2" />
+    </g>
+  ),
+  // 芬蘭堡：海上的石造稜堡、城牆與老砲、海鷗
+  suomenlinna: (
+    <g>
+      <rect width="160" height="90" fill="#bcd4e6" />
+      <ellipse cx="120" cy="14" rx="12" ry="3.4" fill="#fff" opacity="0.7" />
+      <rect y="62" width="160" height="28" fill={C.seaCold} />
+      <path d="M0,66 q14,-3 28,0 t28,0 t28,0 t28,0 t28,0" stroke="#3f6f95" strokeWidth="1.2" fill="none" opacity="0.6" />
+      <path d="M0,62 L0,44 L34,38 L96,38 L128,46 L160,44 L160,62 Z" fill="#8d8a7e" />
+      <path d="M0,44 L34,38 L96,38 L128,46 L160,44" fill="none" stroke="#6f6c62" strokeWidth="1.6" />
+      {[6, 20, 34, 48, 62, 76, 90, 104, 118, 132, 146].map((x, i) => (
+        <rect key={x} x={x} y={i < 6 ? 36 : 40} width="7" height="5" fill="#9d9a8d" />
+      ))}
+      <path d="M40,48 h44 v14 h-44 Z" fill="#7d7a6f" />
+      <path d="M52,62 V52 q10,-7 20,0 V62 Z" fill="#5f5d55" />
+      <g>
+        <rect x="98" y="32" width="16" height="4" rx="1.6" fill="#4a4740" transform="rotate(-14 106 34)" />
+        <circle cx="98" cy="37" r="3" fill="#39362f" />
+      </g>
+      <path d="M22,20 q4,-4 8,-1 q-3,-1 -4,2 q3,-1 5,1 q-5,1 -9,-2 Z" fill={C.white} opacity="0.9" />
+      <path d="M60,26 q3,-3 6,-1 q-2,-1 -3,1.5 q2,-1 4,0.5 q-4,1 -7,-1 Z" fill={C.white} opacity="0.8" />
+    </g>
+  ),
+  // 岩石教堂：直接鑿進岩盤的圓形石牆＋銅圓頂＋從天窗灑下的光
+  rockchurch: (
+    <g>
+      <rect width="160" height="90" fill="#5d5750" />
+      <path d="M0,90 L0,52 Q40,34 80,32 Q120,34 160,52 L160,90 Z" fill="#7a7269" />
+      {[[16, 58], [40, 50], [70, 44], [100, 46], [130, 52], [150, 60]].map(([x, y]) => (
+        <path key={x} d={`M${x},${y} l7,-5 l7,5 l-4,7 l-7,0 Z`} fill="#8b8378" opacity="0.9" />
+      ))}
+      <path d="M34,34 A46,30 0 0 1 126,34 Z" fill={C.copper} />
+      {[44, 58, 72, 86, 100, 114].map((x) => (
+        <line key={x} x1={x} y1="34" x2={80 + (x - 80) * 0.18} y2="14" stroke="#5aa78a" strokeWidth="1.1" />
+      ))}
+      <ellipse cx="80" cy="13" rx="9" ry="3" fill="#8fd4bb" />
+      {[[46, 34], [72, 30], [98, 31], [120, 35]].map(([x, y], i) => (
+        <path key={x} d={`M${x},${y} L${x - 10 + i * 4},74 L${x + 4 - i * 2},74 Z`} fill="#fff7dd" opacity="0.22" />
+      ))}
+      <rect y="74" width="160" height="16" fill="#6a6259" />
+      {[20, 60, 108, 140].map((x) => (
+        <rect key={x} x={x} y="76" width="14" height="3" rx="1.5" fill="#8a8177" />
+      ))}
+    </g>
+  ),
+  // 拉普蘭雪林：積雪的針葉林、雪地、淡淡的極光底色
+  snowforest: (
+    <g>
+      <rect width="160" height="90" fill="#2c3c58" />
+      <path d="M0,26 q40,-12 80,-2 t80,-6 v14 q-40,10 -80,2 t-80,6 Z" fill={C.auroraG} opacity="0.2" />
+      {[[18, 8], [46, 5], [92, 9], [126, 6], [150, 11], [64, 14], [110, 16]].map(([x, y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r="0.9" fill="#fff" opacity="0.85" />
+      ))}
+      <rect y="62" width="160" height="28" fill={C.snow} />
+      <path d="M0,62 q26,-6 52,-1 t54,-2 q28,-3 54,3 v6 H0 Z" fill="#dfeaf3" />
+      {[[14, 62, 15], [36, 60, 19], [62, 63, 13], [86, 59, 21], [112, 62, 16], [138, 61, 18]].map(([x, base, h]) => (
+        <g key={x}>
+          <path d={`M${x},${base} L${x + h * 0.42},${base - h} L${x + h * 0.84},${base} Z`} fill="#22452f" />
+          <path d={`M${x + 2},${base - h * 0.42} L${x + h * 0.42},${base - h} L${x + h * 0.84 - 2},${base - h * 0.42} Z`} fill="#2d5a3d" />
+          <path d={`M${x + h * 0.2},${base - h * 0.75} L${x + h * 0.42},${base - h} L${x + h * 0.64},${base - h * 0.75} Z`} fill={C.snow} opacity="0.85" />
+        </g>
+      ))}
+      {[[28, 74], [70, 80], [120, 76], [96, 86]].map(([x, y]) => (
+        <ellipse key={x} cx={x} cy={y} rx="8" ry="1.8" fill="#d5e3ee" />
+      ))}
+    </g>
+  ),
+  // 羅瓦涅米：雪中的北國小城；天空用五條放射狀街道暗示「馴鹿角」都市計畫
+  rovaniemi: (
+    <g>
+      <rect width="160" height="90" fill="#2b3a56" />
+      <path d="M0,20 q40,-10 80,0 t80,-4 v10 q-40,8 -80,0 t-80,4 Z" fill={C.auroraG} opacity="0.18" />
+      {[-40, -20, 0, 20, 40].map((dx) => (
+        <line key={dx} x1="80" y1="58" x2={80 + dx * 1.6} y2={30 - Math.abs(dx) * 0.15}
+          stroke="#8fd4bb" strokeWidth="0.8" opacity="0.35" />
+      ))}
+      <circle cx="80" cy="58" r="2.6" fill="#8fd4bb" opacity="0.5" />
+      <rect y="58" width="160" height="32" fill={C.snow} />
+      <path d="M0,58 q30,-5 60,0 t50,-2 q26,-2 50,4 v4 H0 Z" fill="#e4eef6" />
+      {[[10, 40], [30, 44], [52, 38], [74, 43], [96, 40], [118, 45], [140, 41]].map(([x, y]) => (
+        <g key={x}>
+          <rect x={x} y={y} width="15" height={58 - y} fill="#586b8a" />
+          <path d={`M${x - 1.5},${y} h18 l-2,-4 h-14 Z`} fill={C.snow} />
+          {[0, 1].map((r) => [0, 1].map((c) => (
+            <rect key={`${r}-${c}`} x={x + 3 + c * 7} y={y + 5 + r * 7} width="4" height="4" fill={C.gold} opacity="0.85" />
+          )))}
+        </g>
+      ))}
+      {[[24, 78], [104, 82]].map(([x, y]) => (
+        <g key={x}>
+          <path d={`M${x},${y} l3,-5 l4,0 l3,5 Z`} fill="#5a4a3a" />
+          <path d={`M${x + 3},${y - 5} l-2,-5 m2,3 l3,-2 M${x + 7},${y - 5} l2,-5 m-2,3 l-3,-2`}
+            stroke="#7a6650" strokeWidth="1" fill="none" />
+        </g>
+      ))}
+    </g>
+  ),
+  // 極光：北極圈的夜空整片亮起來（終章畫面）
+  aurora: (
+    <g>
+      <rect width="160" height="90" fill={C.nordNight} />
+      {[[12, 10], [30, 6], [58, 12], [88, 5], [118, 10], [142, 7], [70, 20], [104, 22], [24, 24], [150, 20]].map(([x, y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r={y % 3 === 0 ? 1.1 : 0.8} fill="#fff" opacity="0.9" />
+      ))}
+      <path d="M-6,34 q30,-22 62,-6 q34,17 66,-12 q20,-18 44,-4 l0,16 q-26,-10 -44,8 q-32,30 -68,10 q-30,-16 -60,4 Z"
+        fill={C.auroraG} opacity="0.5" />
+      <path d="M-6,46 q34,-18 66,0 q32,17 62,-10 q18,-16 40,-2 l0,12 q-24,-8 -40,6 q-30,26 -64,8 q-32,-16 -64,2 Z"
+        fill={C.auroraV} opacity="0.32" />
+      <path d="M-6,40 q32,-20 64,-3 q33,17 64,-11 q19,-17 42,-3 l0,7 q-25,-9 -42,7 q-31,28 -66,9 q-31,-16 -62,3 Z"
+        fill="#9ff9d0" opacity="0.35" />
+      <rect y="64" width="160" height="26" fill="#e6eef6" />
+      <path d="M0,64 q28,-6 56,-1 t52,-3 q28,-2 52,4 v4 H0 Z" fill="#f4f8fc" />
+      {[[16, 64, 14], [42, 62, 17], [116, 63, 15], [142, 61, 18]].map(([x, base, h]) => (
+        <g key={x}>
+          <path d={`M${x},${base} L${x + h * 0.42},${base - h} L${x + h * 0.84},${base} Z`} fill="#1c3a2a" />
+          <path d={`M${x + h * 0.18},${base - h * 0.72} L${x + h * 0.42},${base - h} L${x + h * 0.66},${base - h * 0.72} Z`}
+            fill="#dfeaf3" opacity="0.9" />
+        </g>
+      ))}
+      <path d="M56,78 q24,-5 48,0" stroke="#cddcea" strokeWidth="1" fill="none" opacity="0.8" />
     </g>
   ),
 }
