@@ -7,6 +7,7 @@ import { SEASON4, LICENSE_BOARD } from './series4'
 import { SEASON5, PASSPORT_BOARD } from './series5'
 import { SEASON6, PUZZLE_BOARD } from './series6'
 import { SEASON7, STORYBOOK_BOARD } from './series7'
+import { SEASON8, ARCHIVE_BOARD } from './series8'
 import { SERIES_TEACH } from './seriesTeach'
 
 function normalize(season, extra) {
@@ -93,5 +94,14 @@ export const SEASONS = [
     clueIcon: '🍃',
     subtitle: { zh: '第七季 · 已完結', en: 'Season 7 · Complete' },
     done: true,
+  }),
+  normalize(SEASON8, {
+    key: 'season8',
+    board: ARCHIVE_BOARD,
+    collType: 'card',                                    // 每集 ep.card.id 收進 store.seriesCards
+    collLabel: { zh: '史料卡', en: 'Archive Cards' },
+    clueLabel: { zh: '阿藍的藍羽毛', en: "Blue Magpie's Feathers" },
+    clueIcon: '🐦',
+    subtitle: { zh: '第八季 · 連載中', en: 'Season 8 · Ongoing' },
   }),
 ]

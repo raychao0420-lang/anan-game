@@ -151,6 +151,7 @@ export const useGameStore = create(
       seriesStamps: [],
       seriesPieces: [],
       seriesPages: [],
+      seriesCards: [],
 
       // ── Core actions ──
       addCoins: (amount) => set((s) => ({ coins: s.coins + amount })),
@@ -786,8 +787,8 @@ export const useGameStore = create(
 
       // ── M8: 長篇連續劇 ──
       // 破案一集：首次破案給金幣＋收集碎片(S1)/星座徽章(S2)，重玩不重複發。
-      // 終章的寵物／擺飾另由畫面呼叫 grantPet/grantItem。shard=S1碎片色、badge=S2星座id、gem=S3寶石id、seal=S4金印id、stamp=S5紀念章id、piece=S6台灣拼圖id、page=S7家鄉故事書頁id。
-      solveEpisode: (episodeId, coinsReward, shard, badge, gem, seal, stamp, piece, page) => {
+      // 終章的寵物／擺飾另由畫面呼叫 grantPet/grantItem。shard=S1碎片色、badge=S2星座id、gem=S3寶石id、seal=S4金印id、stamp=S5紀念章id、piece=S6台灣拼圖id、page=S7家鄉故事書頁id、card=S8史料卡id。
+      solveEpisode: (episodeId, coinsReward, shard, badge, gem, seal, stamp, piece, page, card) => {
         set((s) => {
           if (s.seriesSolved?.[episodeId]) return s
           const badges = s.seriesBadges || []
@@ -796,6 +797,7 @@ export const useGameStore = create(
           const stamps = s.seriesStamps || []
           const pieces = s.seriesPieces || []
           const pages = s.seriesPages || []
+          const cards = s.seriesCards || []
           return {
             seriesSolved: { ...s.seriesSolved, [episodeId]: true },
             seriesShards: (shard && !s.seriesShards.includes(shard)) ? [...s.seriesShards, shard] : s.seriesShards,
@@ -805,6 +807,7 @@ export const useGameStore = create(
             seriesStamps: (stamp && !stamps.includes(stamp)) ? [...stamps, stamp] : stamps,
             seriesPieces: (piece && !pieces.includes(piece)) ? [...pieces, piece] : pieces,
             seriesPages: (page && !pages.includes(page)) ? [...pages, page] : pages,
+            seriesCards: (card && !cards.includes(card)) ? [...cards, card] : cards,
             coins: s.coins + coinsReward,
             totalCoinsEarned: s.totalCoinsEarned + coinsReward,
           }
@@ -981,6 +984,7 @@ export const useGameStore = create(
           seriesStamps: [],
           seriesPieces: [],
           seriesPages: [],
+          seriesCards: [],
         }),
     }),
     {
@@ -1066,6 +1070,7 @@ export const useGameStore = create(
         if (!state.seriesStamps) state.seriesStamps = []
         if (!state.seriesPieces) state.seriesPieces = []
         if (!state.seriesPages) state.seriesPages = []
+        if (!state.seriesCards) state.seriesCards = []
         // 秘密庭園
         if (!state.garden) state.garden = []
       },
