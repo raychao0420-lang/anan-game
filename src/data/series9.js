@@ -2982,8 +2982,317 @@ export const SEASON9 = {
       ],
       arcClue: { zh: '爭吵平息之後，安安終於輪到自己站上那條白線了。她一腳踩在線的南邊、一腳踩在北邊，張開雙手，笑得很大。可是拍完照，她做了一件別人都沒做的事——她轉過身，面向北方，安靜地看著遠處那片沒有任何標記的雪地。圓圓也跟著轉過去，坐得直挺挺的。安安在手帳寫下第十張貼紙的說明：「真正的線在那邊，沒有人排隊。**不是他們畫錯，是它自己在走。**」',
                  en: 'When the argument dies down, An-An finally gets her turn on the white line. One foot south, one foot north, arms flung wide, grinning enormously. But once the photo is taken she does something nobody else does — she turns to face north, and looks quietly out at that unmarked stretch of snow in the distance. Yuan-Yuan turns with her and sits bolt upright. Beneath the tenth sticker An-An writes: "The real line is out there, with nobody queuing for it. **They did not draw it wrong — it walked away.**"' },
-      nextPreview: { zh: '再往北，安安會遇見拉普蘭真正的主人——薩米族。他們的語言曾經被禁止在學校裡說，很多人因此失去了自己原本的名字。可是這一次的結局，跟你在大溪聽過的那個故事**不一樣**：他們正在把名字一個一個拿回來。這一回要用統計圖和分數，看清楚一種語言是怎麼快要消失、又是怎麼被接回來的。',
-                     en: 'Further north, An-An will meet the true people of Lapland — the Sámi. Their language was once forbidden in schools, and many lost the names they were born with. But this time the ending is **not** the one she heard back in Daxi: they are taking those names back, one at a time. This round uses charts and fractions to see how a language nearly vanished, and how it is being carried home.' },
+      nextPreview: { zh: '再往北，安安會遇見拉普蘭真正的主人——薩米族。曾經有很長一段時間，小孩在學校裡不可以說自己的語言。有一份舊報導甚至預測：再過一代，這個語言就會消失。這一回要用統計圖和除法，看清楚一件事——**預測，到底算不算事實？**',
+                     en: 'Further north, An-An will meet the true people of Lapland — the Sámi. For a long time children were not allowed to speak their own language at school, and one old news report even predicted that within a generation the language would be gone. This round uses charts and division to examine one question: **is a prediction the same thing as a fact?**' },
+      reward: 500,
+    },
+
+    // ─────────────────────────────────────── S9 EP11 ───────────────────────────────────────
+    // 芬蘭篇第五站：印納里（Inari），芬蘭薩米族的中心。
+    // 🔴 族群再現鐵則（沿用 S8 劇本第四節，實作時不可違反）：
+    //    薩米族在故事裡就是【人】，有臉、有名字、有立場，被尊重地描寫。
+    //    絕對不做成可愛動物精靈（那等於把真實存在的族群變成幻想生物）。
+    //    歷史傷痛輕描淡寫但不迴避：只寫「小孩在學校不可以說自己的話」，不寫細節、不寫任何一方是天生壞人。
+    // 數字全部查證（2026-08-25）：芬蘭境內通行三種薩米語，全部列為瀕危——
+    //    北薩米語（芬蘭境內約 2000 人）、印納里薩米語（約 400 人，【唯一只在芬蘭通行】的薩米語）、
+    //    斯科特薩米語（約 300 人）。1997 年芬蘭第一個薩米語「語言巢」在印納里開辦（Anarâškielâ servi），
+    //    靈感來自【紐西蘭毛利人】的模式，是全日沉浸式的幼兒園；頭十年造就約 40 位新使用者。
+    //    印納里薩米語 1990 年代不到 350 人，現在約 400 人（部分資料寫到 500，故遊戲內一律寫「大約」）。
+    // 案件手法第五種（前四種都用過了）：前面四集都在追究【已經發生的事被怎麼講】，
+    //    這一集追究的是【對還沒發生的事的預測】——而且那個預測是被人親手改掉的。
+    //    ⭐ 關鍵不在於舊報導有沒有惡意（它當時看起來是對的），而在於「預測 ≠ 事實，而且預測可以被改變」。
+    {
+      id: 's9ep11',
+      comicIntro: [
+        { bg: 'snowforest', cast: ['anan', 'feifei', '🐈'],
+          say: { zh: '再往北開，路邊的森林越來越矮。小Q說：「這裡是印納里——拉普蘭真正的主人住的地方。」',
+                 en: 'Driving further north, the roadside forest grows low and sparse. Little Q says: "This is Inari — where the true people of Lapland live."' } },
+        { bg: 'rovaniemi', cast: ['anan', '👵', '🧒'],
+          say: { zh: '艾莉奶奶牽著孫女瑪芮：「我小時候，在學校不可以說我們自己的話。可是你聽——」瑪芮開口了。',
+                 en: 'Áile holds her granddaughter Máret’s hand. "When I was small, we were not allowed to speak our own language at school. But listen—" And Máret begins to speak.' } },
+      ],
+      comicSolve: [
+        { bg: 'rovaniemi', cast: ['anan', '📰'],
+          say: { zh: '安安放下那張舊報紙：「它寫的不是謊話，是**預測**。而預測——是可以被改掉的。」',
+                 en: 'An-An sets down the old newspaper. "It didn’t print a lie. It printed a **prediction** — and a prediction can be changed."' } },
+        { bg: 'snowforest', cast: ['anan', '🧒', '🐈'],
+          say: { zh: '瑪芮教安安用印納里薩米語說「雪」，圓圓在旁邊聽得耳朵一動一動。〈手帳貼紙 11 · 把名字拿回來〉',
+                 en: 'Máret teaches An-An the Inari Sámi word for snow, Yuan-Yuan’s ears twitching as she listens. Sticker 11 — Taking Back the Name.' } },
+      ],
+      no: 11,
+      title: { zh: '把名字拿回來', en: 'Taking Back the Name' },
+      emoji: '🪶',
+      accent: '#4f7fa8',
+      difficulty: { zh: '統計圖·加法·除法（四上）', en: 'Charts · addition · division (Grade 4-1)' },
+      sticker: { id: 'sami', emoji: '🪶', name: { zh: '手帳貼紙 11 · 把名字拿回來', en: 'Sticker 11 · Taking Back the Name' } },
+      intro: [
+        { zh: '車子繼續往北開，路邊的森林越來越矮、越來越稀疏。小Q🦉說：「安安，我們現在要去的地方叫印納里。前面幾站我們看的都是『後來搬過來的人』蓋的東西——芬蘭堡、教堂、城市、聖誕老人村。可是拉普蘭真正的主人，是**薩米族**，他們在這裡已經住了非常非常久。」',
+          en: 'The car drives on north, the roadside forest growing lower and thinner. Little Q 🦉 says: "An-An, the place we are going is called Inari. Everything we have seen so far was built by people who came later — the fortress, the church, the city, the village. But the true people of Lapland are the **Sámi**, and they have lived here a very, very long time."' },
+        { zh: '在一間木造的小屋裡，一位叫**艾莉奶奶**的老太太正在縫東西。她的孫女**瑪芮**趴在桌上寫作業。艾莉奶奶抬起頭，很平靜地說：「你們是從很遠的地方來的吧？坐。」她指指窗外的雪：「我小的時候，在學校裡**不可以說我們自己的話**。那時候大家都覺得，說我們的話是丟臉的事。」安安不知道該說什麼。艾莉奶奶卻笑了，指指孫女：「可是你聽聽她。」瑪芮抬起頭，說了一句安安完全聽不懂、可是很好聽的話。「她說：『奶奶，這個字我又忘了怎麼寫。』」艾莉奶奶眼睛彎起來：「**她在學。有時候還是她教我。**」',
+          en: 'In a small wooden house, an old woman called **Áile** is sewing. Her granddaughter **Máret** is sprawled over the table doing homework. Áile looks up, quite calm. "You have come a long way. Sit." She nods at the snow outside. "When I was small, we were **not allowed to speak our own language at school.** Back then everyone thought speaking our language was something to be ashamed of." An-An does not know what to say. But Áile smiles and gestures at her granddaughter: "Listen to her, though." Máret looks up and says something An-An cannot understand at all, but that sounds lovely. "She says: ‘Grandma, I’ve forgotten how to spell this word again.’" Áile’s eyes crinkle. "**She is learning it. And sometimes she is the one teaching me.**"' },
+      ],
+      scenes: [
+        // 1 📊 統計圖：三種薩米語（讀圖找最少）
+        {
+          place: { zh: '📊 芬蘭的三種薩米語', en: '📊 Three Sámi Languages in Finland' },
+          emoji: '📊',
+          chart: {
+            type: 'bar',
+            title: '芬蘭境內薩米語使用人數',
+            data: [
+              { label: '北薩米', v: 2000 },
+              { label: '印納里', v: 400 },
+              { label: '斯科特', v: 300 },
+            ],
+            highlight: 2,
+            caption: '三種都被列為瀕危語言',
+          },
+          story: { zh: '瑪芮把作業本推過來給安安看，上面是她自己畫的長條圖。「老師說，芬蘭境內有三種薩米語。」她指著三根長條：北薩米語約 {2000} 人、印納里薩米語約 {400} 人、斯科特薩米語約 {300} 人。「三種**都是瀕危語言**。」小Q：「安安，先看圖回答——使用人數最少的那一種，大約有幾人？」',
+                   en: 'Máret pushes her exercise book across for An-An to see: a bar chart she drew herself. "Our teacher says there are three Sámi languages in Finland." She points at the three bars: North Sámi about {2000}, Inari Sámi about {400}, Skolt Sámi about {300}. "**All three are endangered.**" Little Q: "An-An, read the chart first — the smallest of them has about how many speakers?"' },
+          clueNote: { zh: '芬蘭三種薩米語：北薩米約2000／印納里約400／斯科特約300，三種都瀕危；最少的是斯科特約300人', en: 'Three Sámi languages in Finland: North ~2000, Inari ~400, Skolt ~300 — all endangered. The smallest is Skolt, about 300' },
+          puzzle: {
+            text: { zh: '看長條圖：北薩米 {2000}、印納里 {400}、斯科特 {300}。[最少]的那一種大約幾人？',
+                    en: 'Read the chart: North {2000}, Inari {400}, Skolt {300}. About how many speakers has the [smallest]?' },
+            answer: 300, unit: { zh: '人', en: 'speakers' },
+            hint: { zh: '找最矮的那一根長條，看它對到的數字！', en: 'Find the shortest bar and read its number!' },
+            teach: [
+              { zh: '看長條圖找「最少」：**哪一根最矮**，就是數量最少的那一個。',
+                en: 'To find the smallest on a bar chart: **the shortest bar** is the smallest amount.' },
+              { zh: '三根裡面，斯科特那一根明顯最矮。',
+                en: 'Of the three, the Skolt bar is clearly the shortest.' },
+              { zh: '順著那根的頂端看過去……換你讀出是幾人！',
+                en: 'Trace the top of that bar across… you read off the number!' },
+            ],
+            reward: { zh: '📊 大約 300 人！瑪芮補了一句：「印納里薩米語比較特別——它是**唯一只在芬蘭說**的薩米語。全世界沒有別的地方有。」',
+                      en: '📊 About 300! Máret adds: "Inari Sámi is special — it is the **only Sámi language spoken nowhere but Finland.** There is no other place in the world that has it."' },
+          },
+        },
+        // 2 ➕ 加法：三種加起來
+        {
+          place: { zh: '➕ 三種加起來', en: '➕ All Three Together' },
+          emoji: '🧮',
+          story: { zh: '小Q：「把三種加起來看看——北薩米 {2000}、印納里 {400}、斯科特 {300}，芬蘭境內一共大約幾人在說薩米語？」艾莉奶奶在旁邊縫著東西，沒有抬頭，只是輕輕說了一句：「不多吧。」',
+                   en: 'Little Q: "Add all three — North {2000}, Inari {400}, Skolt {300}. About how many people in Finland speak a Sámi language in all?" Áile sews on without looking up, and says quietly: "Not many, is it."' },
+          clueNote: { zh: '芬蘭境內薩米語使用者合計約2700人（2000＋400＋300）', en: 'About 2700 Sámi-language speakers in Finland in total (2000 + 400 + 300)' },
+          puzzle: {
+            text: { zh: '{2000} ＋ {400} ＋ {300} ＝ [一共]幾人？',
+                    en: '{2000} + {400} + {300} = how many [in all]?' },
+            answer: 2700, unit: { zh: '人', en: 'speakers' },
+            hint: { zh: '先加後面兩個：400 ＋ 300 ＝ 700，再加 2000！', en: 'Add the last two first: 400 + 300 = 700, then add 2000!' },
+            teach: [
+              { zh: '三個數相加，可以挑好加的先加。', en: 'Adding three numbers — start with the easiest pair.' },
+              { zh: '400 ＋ 300 ＝ 700。', en: '400 + 300 = 700.' },
+              { zh: '700 ＋ 2000……換你算出一共幾人！', en: '700 + 2000… you find the total!' },
+            ],
+            reward: { zh: '🧮 大約 2700 人！安安愣了一下——這個數字比她們學校全校的人還少。艾莉奶奶終於抬起頭：「所以每一個會說的人，都很重要。」',
+                      en: '🧮 About 2700! An-An pauses — that is fewer people than her whole school. Áile finally looks up: "Which is why every single person who speaks it matters."' },
+          },
+        },
+        // 3 📅 減法：語言巢開辦幾年了
+        {
+          place: { zh: '📅 一九九七年，他們做了一件事', en: '📅 In 1997, They Did Something' },
+          emoji: '🪺',
+          story: { zh: '瑪芮翻到作業本的下一頁：「{1997} 年，我們這裡開了芬蘭第一個『**語言巢**』。」安安問：「語言巢是什麼？」「是一種幼兒園，」瑪芮說，「老師整天只說薩米語，小孩就整天泡在裡面，像回到自己的家一樣。」她指著課本上的一行字：「這個做法是跟**紐西蘭的毛利人**學的喔。」小Q：「從 {1997} 年到今年 {2026} 年，幾年了？」',
+                   en: 'Máret turns the page. "In {1997}, the first **language nest** in Finland opened right here." An-An asks: "What’s a language nest?" "A kind of kindergarten," says Máret. "The teachers speak only Sámi all day, so the children are soaked in it, like being at home." She points to a line in her textbook: "And the idea was learned from the **Māori people in New Zealand.**" Little Q: "From {1997} to this year, {2026} — how many years?"' },
+          clueNote: { zh: '⭐ 1997年芬蘭第一個薩米語言巢在印納里開辦，全日沉浸式幼兒園，做法學自紐西蘭毛利人；至今29年', en: '⭐ Finland’s first Sámi language nest opened in Inari in 1997 — a full-immersion kindergarten modelled on the Māori of New Zealand; 29 years ago' },
+          puzzle: {
+            text: { zh: '{1997} 年開辦，今年 {2026} 年。幾年了？',
+                    en: 'Opened in {1997}; this year is {2026}. How many years?' },
+            answer: 29, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代相差用減法：2026 − 1997！', en: 'Subtract the years: 2026 − 1997!' },
+            teach: [
+              { zh: '一樣的算法：今年減掉開辦那一年。', en: 'Same method: this year minus the year it opened.' },
+              { zh: '2026 − 1997：先算 2026 − 2000 ＝ 26，再加回多減的 3。', en: '2026 − 1997: try 2026 − 2000 = 26, then add back the extra 3.' },
+              { zh: '26 ＋ 3……換你算出語言巢辦了幾年！', en: '26 + 3… you work out how long the nest has run!' },
+            ],
+            reward: { zh: '🪺 29 年！安安在手帳寫下：「地球另一邊的毛利人先想到的辦法，被拉普蘭的人接了過來。」她忽然覺得，世界上好像有一條看不見的線，把很遠很遠的人連在一起。',
+                      en: '🪺 29 years! An-An writes in her notebook: "An idea the Māori had on the other side of the world, carried all the way to Lapland." And it strikes her that there is some invisible thread tying together people very far apart.' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 12）
+        {
+          kind: 'choice',
+          place: { zh: '瑪芮想給你看兩樣東西', en: 'Máret Has Two Things to Show You' },
+          emoji: '🔀',
+          story: { zh: '瑪芮忽然跳起來：「你要不要看我做的東西？」她指指兩邊：「左邊是我在語言巢畫的圖，每一張背面都寫了一個薩米語的字；右邊是奶奶正在縫的傳統服裝，上面的彩帶顏色都有意思的。」艾莉奶奶把針放下，笑著讓開位子。',
+                   en: 'Máret jumps up. "Do you want to see the things I made?" She points both ways: "Left, the drawings I did at the language nest — each one has a Sámi word written on the back; right, the traditional dress Grandma is sewing, where every colour of braid means something." Áile sets down her needle and shifts aside, smiling.' },
+          question: { zh: '★ 你來決定！要先看哪一邊？（兩邊都行，選你喜歡的！）',
+                      en: '★ You decide! Which first? (Either works — pick your favourite!)' },
+          options: [
+            {
+              id: 'drawings',
+              label: { zh: '🎨 語言巢畫的圖', en: '🎨 The Language-Nest Drawings' },
+              scene: {
+                place: { zh: '瑪芮的圖畫', en: 'Máret’s Drawings' },
+                emoji: '🎨',
+                story: { zh: '瑪芮把一疊圖畫攤在地上，每一張背面都用鉛筆歪歪扭扭寫著一個字。「我排成 {3} 排，每排 {4} 張。」她認真地說：「每一張都是一個我學會的字喔。」',
+                         en: 'Máret spreads a stack of drawings on the floor, each with a wobbly pencilled word on the back. "I laid them out in {3} rows of {4}." She says it very seriously: "Every one of them is a word I learned."' },
+                clueNote: { zh: '瑪芮的圖畫共12張（3排×4張），每張背面寫一個她學會的薩米語單字', en: '12 drawings (3 rows × 4), each with a Sámi word she has learned on the back' },
+                puzzle: {
+                  text: { zh: '圖畫 {3} 排，每排 {4} 張，[一共]幾張？', en: '{3} rows, {4} drawings each. How many [in all]?' },
+                  answer: 12, unit: { zh: '張', en: 'drawings' },
+                  hint: { zh: '每排一樣多，用乘法：4 × 3！', en: 'Equal rows — multiply: 4 × 3!' },
+                  teach: [
+                    { zh: '一排一排一樣多，用乘法：每排 4 張，有 3 排。', en: 'Equal rows — multiply: 4 drawings, 3 rows.' },
+                    { zh: '就是 4 × 3（或 3 × 4，答案一樣）。', en: 'That is 4 × 3 (or 3 × 4 — same answer).' },
+                    { zh: '4 × 3……換你算出一共幾張！', en: '4 × 3… you count the drawings!' },
+                  ],
+                  reward: { zh: '🎨 12 張！安安拿起最上面那張翻到背面，看著那個陌生的字，忽然很想學會唸它。', en: '🎨 12! An-An picks up the top one and turns it over, looking at the unfamiliar word, and suddenly very much wants to learn how to say it.' },
+                },
+              },
+            },
+            {
+              id: 'braids',
+              label: { zh: '🧵 傳統服裝的彩帶', en: '🧵 The Braids on the Dress' },
+              scene: {
+                place: { zh: '艾莉奶奶的針線', en: 'Áile’s Sewing' },
+                emoji: '🧵',
+                story: { zh: '艾莉奶奶把衣服攤開。深藍色的布上，一條一條鮮豔的彩帶整齊排著。「{4} 排，每排 {3} 條。」她說：「顏色跟花樣不是隨便選的——看得懂的人，一眼就知道穿的人是哪裡來的。」',
+                         en: 'Áile spreads the garment out. Bright braids run in neat lines across deep blue cloth. "{4} rows, {3} braids each," she says. "The colours and patterns are not chosen at random — someone who can read them knows at a glance where the wearer comes from."' },
+                clueNote: { zh: '彩帶共12條（4排×3條）；顏色與花樣看得出穿的人來自哪裡', en: '12 braids (4 rows × 3); the colours and patterns show where the wearer is from' },
+                puzzle: {
+                  text: { zh: '彩帶 {4} 排，每排 {3} 條，[一共]幾條？', en: '{4} rows, {3} braids each. How many [in all]?' },
+                  answer: 12, unit: { zh: '條', en: 'braids' },
+                  hint: { zh: '每排一樣多，用乘法：3 × 4！', en: 'Equal rows — multiply: 3 × 4!' },
+                  teach: [
+                    { zh: '一排一排一樣多，用乘法：每排 3 條，有 4 排。', en: 'Equal rows — multiply: 3 braids, 4 rows.' },
+                    { zh: '就是 3 × 4（或 4 × 3，答案一樣）。', en: 'That is 3 × 4 (or 4 × 3 — same answer).' },
+                    { zh: '3 × 4……換你算出一共幾條！', en: '3 × 4… you count the braids!' },
+                  ],
+                  reward: { zh: '🧵 12 條！安安輕輕摸了摸那些彩帶：「所以這件衣服，也是一種名字。」艾莉奶奶看了她一眼，點點頭：「你懂了。」', en: '🧵 12! An-An touches the braids gently: "So this dress is a kind of name too." Áile glances at her and nods: "You understand."' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 ➗ 除法：語言巢頭十年平均一年幾個新使用者
+        {
+          place: { zh: '➗ 頭十年，教出了多少人', en: '➗ How Many in the First Ten Years' },
+          emoji: '🌱',
+          story: { zh: '瑪芮翻出一本紀念冊：「語言巢開辦的頭 {10} 年，大約教出了 {40} 位新的使用者。」小Q：「平均一年幾位？」艾莉奶奶在旁邊補了一句：「聽起來很少對不對？可是我們只有幾百個人啊。」',
+                   en: 'Máret digs out a commemorative booklet. "In its first {10} years, the language nest produced about {40} new speakers." Little Q: "How many per year, on average?" Áile adds: "It sounds like very few, doesn’t it? But there are only a few hundred of us to begin with."' },
+          clueNote: { zh: '語言巢頭十年造就約40位新使用者，平均一年4位', en: 'The language nest produced about 40 new speakers in its first decade — 4 a year on average' },
+          puzzle: {
+            text: { zh: '{10} 年教出 {40} 位，[平均]一年幾位？',
+                    en: '{40} new speakers in {10} years. How many per year [on average]?' },
+            answer: 4, unit: { zh: '位', en: 'speakers' },
+            hint: { zh: '平均用除法：40 ÷ 10！', en: 'Averages use division: 40 ÷ 10!' },
+            teach: [
+              { zh: '「平均一年幾位」＝總人數 ÷ 年數。', en: '"How many per year" = total ÷ number of years.' },
+              { zh: '40 ÷ 10：除以 10，把末位的 0 拿掉。', en: '40 ÷ 10: dividing by 10 drops the final zero.' },
+              { zh: '換你算出平均一年幾位！', en: 'You work out the yearly average!' },
+            ],
+            reward: { zh: '🌱 一年 4 位！安安本來想說「才 4 個」，可是話到嘴邊停住了——一共只有幾百個人在說的語言，一年多 4 個小孩，其實是很大的事。',
+                      en: '🌱 4 a year! An-An almost says "only four" — and stops. For a language with just a few hundred speakers, four more children a year is an enormous thing.' },
+          },
+        },
+        // 6 📈 折線圖：印納里薩米語使用人數的變化
+        {
+          place: { zh: '📈 人數往哪邊走', en: '📈 Which Way the Number Goes' },
+          emoji: '📈',
+          chart: {
+            type: 'line',
+            title: '印納里薩米語使用人數',
+            data: [
+              { label: '1990年代', v: 350 },
+              { label: '現在', v: 400 },
+            ],
+            caption: '線往上走＝人數在增加',
+          },
+          story: { zh: '小Q把資料畫成折線圖：「印納里薩米語，{1990} 年代不到 {350} 人在說。」牠把筆往右移：「現在大約 {400} 人。」安安看著那條往上的線，睜大了眼睛。小Q：「增加了幾人？」',
+                   en: 'Little Q plots the data as a line: "Inari Sámi had fewer than {350} speakers in the {1990}s." He moves his pen right. "Today, about {400}." An-An stares at the rising line, eyes wide. Little Q: "How many more?"' },
+          clueNote: { zh: '⭐ 印納里薩米語1990年代不到350人→現在約400人，增加50人；折線往上＝人數在增加，不是減少', en: '⭐ Inari Sámi: fewer than 350 in the 1990s → about 400 today, a rise of 50. The line goes **up** — the number is growing, not shrinking' },
+          puzzle: {
+            text: { zh: '從 {350} 人變成 {400} 人。[增加]了幾人？',
+                    en: 'From {350} speakers to {400}. How many [more]?' },
+            answer: 50, unit: { zh: '人', en: 'speakers' },
+            hint: { zh: '增加多少用減法：400 − 350！', en: 'To find the increase, subtract: 400 − 350!' },
+            teach: [
+              { zh: '看折線圖算增加，就是把後面的數減掉前面的數。',
+                en: 'To find a rise on a line chart, subtract the earlier value from the later one.' },
+              { zh: '400 − 350：想成 40 個十減 35 個十，剩 5 個十。',
+                en: '400 − 350: think forty tens minus thirty-five tens, leaving five tens.' },
+              { zh: '換你算出增加了幾人！', en: 'You work out the increase!' },
+            ],
+            reward: { zh: '📈 增加 50 人！安安指著那條線，聲音有點抖：「它……是往上的。」小Q點點頭：「對。這條線是往上的。」（有的統計寫得比 400 更多，但重點不是精確數字——重點是**方向**。）',
+                      en: '📈 Up by 50! An-An points at the line, her voice unsteady: "It’s… going up." Little Q nods: "Yes. This line goes up." (Some counts put it higher than 400, but the precise figure is not the point — the **direction** is.)' },
+          },
+        },
+        // 7 ➗ 除法：每幾個使用者裡有一個來自語言巢
+        {
+          place: { zh: '➗ 每幾個人裡有一個', en: '➗ One in How Many' },
+          emoji: '🔟',
+          story: { zh: '小Q把兩個數字並排：「現在大約 {400} 人在說印納里薩米語，其中大約 {40} 位，是語言巢頭十年教出來的小孩。」牠推推眼鏡：「那麼，**每幾個使用者裡，就有一個是語言巢教出來的？**」',
+                   en: 'Little Q sets two numbers side by side: "About {400} people speak Inari Sámi today, and about {40} of them are children taught in the language nest’s first decade." He pushes up his glasses. "So — **one in how many speakers came from the nest?**"' },
+          clueNote: { zh: '400位使用者÷40位語言巢教出來的＝每10個使用者裡就有1個來自語言巢', en: '400 speakers ÷ 40 from the nest = one in every ten speakers came from the language nest' },
+          puzzle: {
+            text: { zh: '{400} 人裡有 {40} 位來自語言巢。每幾個人裡有一個？',
+                    en: '{40} of {400} speakers came from the nest. One in how many?' },
+            answer: 10, unit: { zh: '人', en: 'speakers' },
+            hint: { zh: '用除法：400 ÷ 40！', en: 'Divide: 400 ÷ 40!' },
+            teach: [
+              { zh: '「每幾個裡有一個」＝總人數 ÷ 那一群的人數。',
+                en: '"One in how many" = the total divided by the size of that group.' },
+              { zh: '400 ÷ 40：可以先把兩邊的 0 各去掉一個，變成 40 ÷ 4。',
+                en: '400 ÷ 40: cancel a zero from each, giving 40 ÷ 4.' },
+              { zh: '40 ÷ 4……換你算出每幾個人裡有一個！', en: '40 ÷ 4… you work out one in how many!' },
+            ],
+            reward: { zh: '🔟 每 10 個人裡就有 1 個！而且這還只算頭十年的。艾莉奶奶把針線收起來，忽然說：「那本舊報紙，你們拿去看看吧。」她指指櫃子上一份泛黃的剪報。',
+                      en: '🔟 One in every ten! And that counts only the first decade. Áile puts away her sewing and says suddenly: "That old newspaper — take a look at it." She nods towards a yellowed clipping on the cabinet.' },
+          },
+        },
+        // 8 🔍 破案：當年語言巢的小孩，現在幾歲
+        {
+          place: { zh: '🔍 當年那些小孩，現在幾歲', en: '🔍 How Old Are Those Children Now' },
+          emoji: '👨‍👩‍👧',
+          story: { zh: '安安打開那份泛黃的剪報。上面是 1990 年代的一則報導，標題寫著：**「這個語言只剩下老人在說，再過一代就會消失。」**安安握著報紙，心裡忽然很不舒服。小Q輕聲說：「安安，別急著生氣。先算一題。」牠指著剛才的數字：「語言巢是 {29} 年前開的。假設當年在語言巢裡最小的孩子是 {4} 歲——他們現在幾歲了？」',
+                   en: 'An-An opens the yellowed clipping. It is a report from the 1990s, headlined: **"Only the old still speak this language; within a generation it will be gone."** Holding the paper, An-An feels something twist inside her. Little Q says softly: "Don’t rush to be angry. Work one thing out first." He points at the earlier numbers: "The nest opened {29} years ago. Say the youngest child there was {4} years old — how old are they now?"' },
+          clueNote: { zh: '⭐ 語言巢29年前開辦，當年4歲的孩子現在33歲——已經是成年人、可能自己也有小孩了；「再過一代就消失」的那一代已經過完了', en: '⭐ The nest opened 29 years ago; a 4-year-old then is 33 now — an adult, quite possibly with children of their own. The "one generation" in that prediction has already passed' },
+          puzzle: {
+            text: { zh: '當年 {4} 歲，過了 {29} 年。現在幾歲？',
+                    en: '{4} years old then, {29} years ago. How old now?' },
+            answer: 33, unit: { zh: '歲', en: 'years old' },
+            hint: { zh: '年紀增加用加法：4 ＋ 29！', en: 'Ages add up: 4 + 29!' },
+            teach: [
+              { zh: '過了幾年，年紀就加幾歲。', en: 'However many years pass, that many years are added to the age.' },
+              { zh: '4 ＋ 29：先算 4 ＋ 30 ＝ 34，再減掉多加的 1。', en: '4 + 29: try 4 + 30 = 34, then take back the extra 1.' },
+              { zh: '34 − 1……換你算出他們現在幾歲！', en: '34 − 1… you work out how old they are now!' },
+            ],
+            reward: { zh: '👨‍👩‍👧 33 歲！安安慢慢抬起頭：「等一下……33 歲，那他們已經是大人了，說不定自己也有小孩了。」小Q點點頭：「所以那份報導說的『再過一代』——**那一代，已經過完了。**」牠把三份說法排開：「說吧，安安。哪一份講不通？」',
+                      en: '👨‍👩‍👧 33! An-An lifts her head slowly. "Wait… thirty-three. They’re grown-ups. Some of them might have children of their own by now." Little Q nods: "So the ‘one generation’ that report spoke of — **that generation has already passed.**" He lays out the three accounts: "Speak, An-An. Which one does not hold?"' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'oldnews', name: { zh: '📰 一九九〇年代的舊報導', en: '📰 A News Report from the 1990s' }, emoji: '📰',
+          say: { zh: '「這個語言只剩下老人在說了。**再過一代，它就會消失。**」',
+                 en: '"Only the old still speak this language. **Within a generation, it will be gone.**"' } },
+        { id: 'teacher', name: { zh: '👩‍🏫 語言巢的老師', en: '👩‍🏫 The Language-Nest Teacher' }, emoji: '👩‍🏫',
+          say: { zh: '「我們不是在『教一門科目』。我們是讓小孩整天泡在這個語言裡——像回到自己家一樣。」',
+                 en: '"We are not ‘teaching a subject.’ We soak the children in the language all day long — like coming home."' } },
+        { id: 'aile', name: { zh: '👵 艾莉奶奶', en: '👵 Áile' }, emoji: '👵',
+          say: { zh: '「我小時候，在學校不可以說我們的話。現在我孫女會說——**而且是她在教我一些我忘掉的字。**」',
+                 en: '"When I was small we could not speak our language at school. Now my granddaughter speaks it — **and she is the one teaching me words I had forgotten.**"' } },
+      ],
+      culprit: 'oldnews',
+      accuse: { zh: '你剛剛算出那個 33：語言巢開了 {29} 年，當年在裡面的四歲小孩，現在已經 33 歲了——是大人，說不定自己也當爸媽了。**那份報導說的「再過一代」，那一代已經過完了**，而這個語言不但還在，使用人數還從不到 350 增加到大約 400，每 10 個使用者裡就有 1 個是語言巢教出來的。三份說法裡，被這些數字推翻的是哪一份？',
+                en: 'You worked out that 33 yourself: the nest has run {29} years, so a four-year-old from its first days is thirty-three now — an adult, perhaps a parent. **The "one generation" that report spoke of has already passed** — and the language is still here, grown from fewer than 350 speakers to about 400, with one in every ten taught at the nest. Which of the three accounts do those numbers overturn?' },
+      wrongAccuse: { zh: '再想一次——👩‍🏫老師講的是她每天在做的事，👵艾莉奶奶講的是她自己親身經歷的事，兩份都沒有被任何數字推翻。被推翻的是那個**預測**：「再過一代就會消失」。可是一代已經過去了，語言還在，人數還變多了。是哪一份？📰',
+                     en: 'Think again — the 👩‍🏫 teacher describes what she does every day, and 👵 Áile describes what she lived through; no number contradicts either. What the numbers overturn is the **prediction**: "within a generation it will be gone." A generation has passed, the language is still here, and the speakers have grown in number. Which one? 📰' },
+      solve: [
+        { zh: '被推翻的是📰那份 1990 年代的舊報導：「再過一代，它就會消失。」可是你算出來了——語言巢裡當年四歲的孩子，現在 33 歲。**一代已經過完了，語言還在。**而且折線是往上的：不到 350 → 大約 400。',
+          en: 'What the numbers overturn is the 📰 report from the 1990s: "within a generation it will be gone." But you did the arithmetic — the four-year-olds from the nest are thirty-three now. **That generation has passed, and the language is still here.** And the line rises: fewer than 350 → about 400.' },
+        { zh: '⭐ **可是這裡要很小心：那份報導並不是在說謊。**寫它的人看著當時的數字，那個預測在當時看起來是對的。它跟前面幾集不一樣——前面我們抓的是「有人漏講了一段」「有人把費工說成偷懶」「有人把原因排在結果後面」「數字自己過期了」，那些講的都是**已經發生的事**。可是這一次，被檢查的是一句**關於還沒發生的事的話**。',
+          en: '⭐ **But be careful here: that report was not lying.** Whoever wrote it looked at the numbers of the time, and the prediction looked right. This case differs from all the others — before, we caught someone leaving out a chapter, someone calling painstaking work laziness, someone putting an effect before its cause, and numbers quietly expiring. All of those concerned **things that had already happened.** This time, what is under examination is a sentence about **something that had not happened yet.**' },
+        { zh: '小Q合上筆記本，很慢地說：「安安，這是這一整趟旅行裡最重要的一件事：**預測不是事實。**而且——**預測是可以被改掉的。**改掉它的不是什麼厲害的大人物，是 1997 年那幾個大人，決定開一間整天只說薩米語的幼兒園；是像瑪芮這樣的小孩，每天在圖畫背面歪歪扭扭寫下一個字。」艾莉奶奶在旁邊靜靜地聽，然後說了一句：「有些地方的名字，是真的找不回來了。」她摸摸孫女的頭：「**可是我們的，還在。**」',
+          en: 'Little Q closes his notebook and says, very slowly: "An-An, this is the most important thing on the whole journey: **a prediction is not a fact.** And more than that — **a prediction can be changed.** Not by anyone grand, but by the few adults who in 1997 decided to open a kindergarten where only Sámi is spoken; and by children like Máret, penciling one wobbly word at a time onto the backs of drawings." Áile listens quietly, then says: "In some places, the names really are gone for good." She strokes her granddaughter’s hair. "**But ours is still here.**"' },
+        { zh: '⭐ 現場可以自己驗證：到了拉普蘭，看看路牌——很多地方會同時寫芬蘭語和薩米語兩種地名。那不是裝飾，那是把名字寫回去。小知識：芬蘭境內通行三種薩米語（北薩米、印納里、斯科特），三種都被列為瀕危；其中**印納里薩米語是唯一只在芬蘭通行的薩米語**。1997 年芬蘭第一個薩米語「語言巢」在印納里開辦，是全日沉浸式的幼兒園，做法學自紐西蘭的毛利人，頭十年造就約 40 位新使用者。',
+          en: '⭐ Verify it yourself: once you are in Lapland, look at the road signs — many carry place names in both Finnish and Sámi. That is not decoration; that is a name being written back. Facts: three Sámi languages are spoken in Finland (North, Inari and Skolt), all classed as endangered, and **Inari Sámi is the only one spoken nowhere but Finland.** Finland’s first Sámi language nest opened in Inari in 1997 — a full-immersion kindergarten modelled on the Māori of New Zealand — and produced about 40 new speakers in its first decade.' },
+      ],
+      arcClue: { zh: '要離開的時候，瑪芮追出來，在雪地裡教安安唸一個字。安安學了三次才唸對——那是印納里薩米語的「雪」。瑪芮笑得很開心：「你現在也會一個了！」安安在手帳貼上第十一張貼紙，旁邊寫下：「預測不是事實。而且預測可以被改掉。」寫完她想了想，又加了一行小小的字：「**我今天學會了一個字。四百零一個。**」圓圓蹲在雪地上，尾巴繞著腳，安安靜靜地聽著兩個小孩說話。',
+                 en: 'As they leave, Máret runs out after them and teaches An-An a word, right there in the snow. It takes An-An three tries to say it properly — the Inari Sámi word for snow. Máret beams: "Now you know one too!" An-An sticks the eleventh sticker into her notebook and writes beside it: "A prediction is not a fact. And a prediction can be changed." Then she thinks for a moment and adds one more small line: "**I learned one word today. Four hundred and one.**" Yuan-Yuan sits in the snow, tail curled round her paws, listening quietly to the two children talk.' },
+      nextPreview: { zh: '最後一站了。安安會在一個沒有燈、沒有聲音的地方，等一件不一定會發生的事——極光。而圓圓，那隻在萬神殿的光圈裡坐了七千三百天、望著北方的橘貓，終於要看見牠等了一輩子的東西。手帳只剩最後一頁。',
+                     en: 'The last stop. In a place with no lights and no sound, An-An will wait for something that may not happen at all — the aurora. And Yuan-Yuan, the ginger cat who sat seven thousand three hundred days in a circle of light watching north, is finally about to see the thing she has waited her whole life for. One page of the notebook remains.' },
       reward: 500,
     },
   ],
