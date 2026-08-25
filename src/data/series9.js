@@ -2413,6 +2413,291 @@ export const SEASON9 = {
                      en: 'Flying north, they land in a city on the edge of the Arctic Circle — Rovaniemi. But this city was, in truth, rebuilt from nothing: a great fire nearly burned it to the ground, and an architect redesigned its very streets in the shape of one animal’s antlers. Which animal? Walk the map, and you will see the answer laid out before you.' },
       reward: 500,
     },
+
+    // ─────────────────────────────────────── S9 EP9 ───────────────────────────────────────
+    // 芬蘭篇第三站：羅瓦涅米（北極圈邊上的城市）。
+    // 數字全部查證（2026-08-25）：1944 年拉普蘭戰爭中市中心約九成建物被摧毀；1945 年 1 月委託芬蘭建築師
+    // 公會重建，由 Alvar Aalto 主持；1946 年通過「馴鹿角計畫」（Poronsarvikaava），五條主幹道構成鹿角形狀，
+    // 中央運動場＝鹿的眼睛；1953 年建物數量已超過戰前。阿爾托中心三棟：圖書館 1965、Lappia 廳 1975、
+    // 市政廳 1988（Aalto 1976 過世，市政廳是他過世 12 年後才完工的，Lappia 廳是他生前看到落成的最後一棟）。
+    // 1950 年羅斯福總統夫人 Eleanor Roosevelt 造訪，成為拉普蘭觀光的起點。
+    // ⚠️ 老奶奶「我們那條街原本有 50 棟」是角色個人回憶（非史料統計），刻意寫在街道層級，不當史實數字用。
+    // 案件手法第三種：不是漏講、也不是難易說反，而是【時間順序證明因果不可能】——
+    // 部落格說「蓋成鹿角是為了吸引觀光客」，但計畫比觀光的起點還早 4 年，那時根本還沒有觀光客。
+    // ⭐ 也是 EP10 聖誕老人村（1980 年代才開幕）的前置伏筆。
+    {
+      id: 's9ep9',
+      comicIntro: [
+        { bg: 'snowforest', cast: ['anan', 'feifei', '🐈'],
+          say: { zh: '飛機再往北飛，窗外整片變成白色的森林。圓圓整隻趴在窗上，尾巴翹得直直的。',
+                 en: 'The plane flies further north, the world outside turning into white forest. Yuan-Yuan presses flat against the window, tail straight up.' } },
+        { bg: 'rovaniemi', cast: ['anan', '👵', '🐈'],
+          say: { zh: '在羅瓦涅米，一位老奶奶指著地圖說：「這座城市的街道，是照著一隻馴鹿的角畫出來的喔。」',
+                 en: 'In Rovaniemi an old woman points at a map: "The streets of this city were drawn in the shape of a reindeer’s antlers."' } },
+      ],
+      comicSolve: [
+        { bg: 'rovaniemi', cast: ['anan', '📅'],
+          say: { zh: '安安指著兩個年份：「計畫比觀光客還早四年——那時候根本還沒有人來拍照啊。」',
+                 en: 'An-An points at two years: "The plan came four years before the tourists — there was nobody here to take photographs yet."' } },
+        { bg: 'snowforest', cast: ['anan', '🐈'],
+          say: { zh: '圓圓第一次踩進雪裡，愣了一下，然後整隻滾進去。〈手帳貼紙 9 · 馴鹿角的城市〉',
+                 en: 'Yuan-Yuan steps into snow for the first time, freezes — then rolls right into it. Sticker 9 — The Reindeer-Antler City.' } },
+      ],
+      no: 9,
+      title: { zh: '馴鹿角的城市', en: 'The Reindeer-Antler City' },
+      emoji: '🦌',
+      accent: '#7796b0',
+      difficulty: { zh: '除法·乘法·角度·併式（四上）', en: 'Division · times · angles · combined operations (Grade 4-1)' },
+      sticker: { id: 'rovaniemi', emoji: '🦌', name: { zh: '手帳貼紙 9 · 馴鹿角的城市', en: 'Sticker 9 · The Reindeer-Antler City' } },
+      intro: [
+        { zh: '飛機再往北飛，越過一整片結冰的湖和白色的森林，降落在北極圈邊上的城市——羅瓦涅米。一走出機場，冷空氣「唰」地灌進鼻子裡，安安整個人縮了一下。圓圓從帽子裡探出頭，兩隻耳朵動了動，然後——牠第一次看見了雪。',
+          en: 'The plane flies further north, over frozen lakes and white forest, and lands in a city on the rim of the Arctic Circle — Rovaniemi. Stepping out of the airport the cold rushes in, and An-An flinches. Yuan-Yuan pokes her head from the hood, ears twitching — and then, for the first time in her life, she sees snow.' },
+        { zh: '在市區的一間小咖啡店裡，一位白髮的老奶奶正在看報紙。她抬起頭，笑著對安安說：「你們是來看聖誕老人的吧？」她把桌上的城市地圖轉過來，用手指沿著幾條大馬路慢慢畫了一圈：「先看看這個。這座城市的街道，是照著一隻**馴鹿的角**畫出來的喔。」安安愣住了——地圖上那幾條路，真的像一對張開的鹿角。',
+          en: 'In a small café in town, a white-haired woman is reading the newspaper. She looks up and smiles at An-An: "Here to see Santa, are you?" She turns the city map on the table towards them and traces the main roads slowly with a finger. "Look at this first. The streets of this city were drawn in the shape of **a reindeer’s antlers.**" An-An stares — those roads really do fan out like a pair of antlers.' },
+      ],
+      scenes: [
+        // 1 ➗ 除法：一成是幾棟（老奶奶的街道回憶）
+        {
+          place: { zh: '➗ 那條街上的一成', en: '➗ One Tenth of That Street' },
+          emoji: '🏚️',
+          story: { zh: '老奶奶把報紙折起來，聲音低了下來：「不過在那之前，這裡什麼都沒有了。{1944} 年的冬天，整個市中心被燒掉了九成。」她指指窗外：「我小時候住的那條街，原本有 {50} 棟房子。」小Q輕聲問：「奶奶，九成是十份裡的九份。那『一成』是幾棟呢？」',
+                   en: 'The old woman folds her newspaper, her voice dropping. "But before that, there was nothing left here. In the winter of {1944}, about nine tenths of the town centre burned." She nods at the window. "The street I grew up on had {50} houses." Little Q asks softly: "Nine tenths is nine parts out of ten. So how many houses is one tenth?"' },
+          clueNote: { zh: '1944年市中心約九成建物被摧毀；老奶奶那條街原本50棟，一成＝5棟', en: 'In 1944 about nine tenths of the town centre was destroyed; the old woman’s street had 50 houses, one tenth = 5' },
+          puzzle: {
+            text: { zh: '那條街原本 {50} 棟房子。平分成 {10} 份，[一成]是幾棟？',
+                    en: 'The street had {50} houses. Split into {10} equal parts — how many is [one tenth]?' },
+            answer: 5, unit: { zh: '棟', en: 'houses' },
+            hint: { zh: '一成就是十份裡的一份：50 ÷ 10！', en: 'One tenth is one part in ten: 50 ÷ 10!' },
+            teach: [
+              { zh: '「成」是把東西平分成 10 份，一成就是其中 1 份。',
+                en: 'A "tenth" means splitting something into 10 equal parts; one tenth is one of them.' },
+              { zh: '所以要用除法：50 ÷ 10。除以 10，把末位的 0 拿掉就好。',
+                en: 'So divide: 50 ÷ 10. Dividing by 10 just drops the final zero.' },
+              { zh: '換你算出一成是幾棟房子！', en: 'You work out how many houses one tenth is!' },
+            ],
+            reward: { zh: '🏚️ 5 棟！老奶奶點點頭：「對，一成是五棟。」她停頓了一下：「那你算算看，九成是幾棟。」',
+                      en: '🏚️ 5 houses! The old woman nods. "Yes — one tenth is five." She pauses. "Now work out what nine tenths comes to."' },
+          },
+        },
+        // 2 ✖️ 乘法：燒掉幾棟
+        {
+          place: { zh: '✖️ 燒掉的九成', en: '✖️ The Nine Tenths That Burned' },
+          emoji: '🔥',
+          story: { zh: '安安握著鉛筆，忽然有點不敢算。老奶奶看出來了，輕輕拍拍她的手：「沒關係，算吧。算清楚了，才記得住。」一成是 {5} 棟，燒掉的是 {9} 成。',
+                   en: 'An-An grips her pencil, suddenly reluctant. The old woman notices and pats her hand gently: "It’s all right. Work it out. Only what we count clearly do we truly remember." One tenth is {5} houses, and {9} tenths burned.' },
+          clueNote: { zh: '一成5棟×9成＝燒掉45棟，50棟裡只剩5棟', en: '5 houses × 9 tenths = 45 burned; of 50 houses only 5 remained' },
+          puzzle: {
+            text: { zh: '一成是 {5} 棟，燒掉了 {9} 成。[一共]燒掉幾棟？',
+                    en: 'One tenth is {5} houses; {9} tenths burned. How many burned [in all]?' },
+            answer: 45, unit: { zh: '棟', en: 'houses' },
+            hint: { zh: '一成 5 棟，九成就是 9 個 5：5 × 9！', en: 'Five per tenth, nine tenths: 5 × 9!' },
+            teach: [
+              { zh: '九成＝9 個「一成」，每一成都是 5 棟。', en: 'Nine tenths = nine lots of one tenth, and each tenth is 5 houses.' },
+              { zh: '一份一份一樣多，用乘法：5 × 9。', en: 'Equal parts — multiply: 5 × 9.' },
+              { zh: '5 × 9……換你算出一共燒掉幾棟！', en: '5 × 9… you work out how many burned!' },
+            ],
+            reward: { zh: '🔥 45 棟……安安小小聲地說：「五十棟只剩五棟。」老奶奶望著窗外的雪：「對。那年冬天很冷，我們什麼都沒有了。」小Q悄悄靠過來，把毛茸茸的翅膀搭在安安手臂上。',
+                      en: '🔥 45… An-An says quietly: "Fifty houses, and only five left." The old woman looks out at the snow. "Yes. That winter was very cold, and we had nothing at all." Little Q edges closer and rests a downy wing on An-An’s arm.' },
+          },
+        },
+        // 3 📅 減法：重建到超過戰前花了幾年
+        {
+          place: { zh: '📅 蓋回來要多久', en: '📅 How Long to Build It Back' },
+          emoji: '🔨',
+          story: { zh: '老奶奶忽然笑了：「不過啊，你猜怎麼樣？」她翻開報紙背面的老照片：「到了 {1953} 年，這座城市的房子，已經比燒掉之前**還要多**了。」小Q：「從 {1944} 年到 {1953} 年，一共花了幾年？」',
+                   en: 'Then the old woman smiles. "But guess what happened?" She turns the newspaper to an old photograph on the back. "By {1953}, this city had **more** buildings than before the fire." Little Q: "From {1944} to {1953} — how many years was that?"' },
+          clueNote: { zh: '1944燒毀～1953建物數量已超過戰前＝9年重建', en: '1944 destroyed to 1953 when buildings exceeded pre-war numbers = 9 years of rebuilding' },
+          puzzle: {
+            text: { zh: '{1944} 年燒毀，{1953} 年房子比戰前還多。花了幾年？',
+                    en: 'Burned in {1944}; by {1953} there were more buildings than before. How many years?' },
+            answer: 9, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代相差用減法：1953 − 1944！', en: 'Subtract the years: 1953 − 1944!' },
+            teach: [
+              { zh: '算「花了幾年」，用晚的年份減早的年份。', en: 'To find the span, subtract the earlier year from the later one.' },
+              { zh: '1953 − 1944 ＝ 9。', en: '1953 − 1944 = 9.' },
+              { zh: '換你算出重建花了幾年！', en: 'You work out how many years the rebuilding took!' },
+            ],
+            reward: { zh: '🔨 9 年！安安瞪大眼睛：「九年就蓋回來，而且還更多？」老奶奶得意地挑了挑眉：「因為有人先幫我們畫好了一張圖。」',
+                      en: '🔨 9 years! An-An’s eyes widen: "Nine years, and even more than before?" The old woman raises an eyebrow proudly: "Because somebody drew us a plan first."' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 54）
+        {
+          kind: 'choice',
+          place: { zh: '阿爾托中心的兩棟樓', en: 'Two Buildings at the Aalto Centre' },
+          emoji: '🔀',
+          story: { zh: '老奶奶把地圖折好塞進安安手裡：「去看看那個人留下來的東西吧。廣場那邊有三棟白色的房子，都是他設計的。」她指指兩邊：「左邊是圖書館，右邊是那棟屋頂彎彎的表演廳。」圓圓已經跑到門口，鼻子貼著玻璃看雪。',
+                   en: 'The old woman folds the map into An-An’s hands. "Go and see what that man left behind. Three white buildings around the plaza, all his design." She points both ways: "Left, the library; right, the concert hall with the wavy roof." Yuan-Yuan is already at the door, nose to the glass, watching the snow.' },
+          question: { zh: '★ 你來決定！要先去哪一棟？（兩邊都行，選你喜歡的！）',
+                      en: '★ You decide! Which building first? (Either works — pick your favourite!)' },
+          options: [
+            {
+              id: 'library',
+              label: { zh: '📚 圖書館', en: '📚 The Library' },
+              scene: {
+                place: { zh: '圖書館', en: 'The Library' },
+                emoji: '📚',
+                story: { zh: '館內好安靜，高處的窗把冬天的白光灑進來。館員說：「這一區都是拉普蘭的書，{6} 排書架，每排 {9} 本。」',
+                         en: 'The library is hushed, high windows spilling winter light. A librarian says: "This section is all Lapland books — {6} shelves, {9} books each."' },
+                clueNote: { zh: '拉普蘭專區共54本（6排×9本）；圖書館1965年落成，是三棟裡最早的', en: '54 Lapland books (6 shelves × 9); the library opened 1965, the earliest of the three' },
+                puzzle: {
+                  text: { zh: '書架 {6} 排，每排 {9} 本，[一共]幾本？', en: '{6} shelves, {9} books each. How many [in all]?' },
+                  answer: 54, unit: { zh: '本', en: 'books' },
+                  hint: { zh: '每排一樣多，用乘法：9 × 6！', en: 'Equal shelves — multiply: 9 × 6!' },
+                  teach: [
+                    { zh: '一排一排一樣多，用乘法：每排 9 本，有 6 排。', en: 'Equal shelves — multiply: 9 books, 6 shelves.' },
+                    { zh: '就是 9 × 6（或 6 × 9，答案一樣）。', en: 'That is 9 × 6 (or 6 × 9 — same answer).' },
+                    { zh: '9 × 6……換你算出一共幾本！', en: '9 × 6… you count the books!' },
+                  ],
+                  reward: { zh: '📚 54 本！館員小聲說：「這棟是三棟裡最早蓋好的，1965 年。」', en: '📚 54! The librarian says quietly: "This was the first of the three, back in 1965."' },
+                },
+              },
+            },
+            {
+              id: 'lappia',
+              label: { zh: '🎭 屋頂彎彎的表演廳', en: '🎭 The Hall with the Wavy Roof' },
+              scene: {
+                place: { zh: 'Lappia 表演廳', en: 'Lappia Hall' },
+                emoji: '🎭',
+                story: { zh: '這棟樓的屋頂一波一波起伏，像遠方的山稜線。工作人員說：「這一區的座位，{9} 排，每排 {6} 個。」',
+                         en: 'The roof of this building rises and falls in waves, like distant fells. A staff member says: "This block of seats is {9} rows of {6}."' },
+                clueNote: { zh: '這一區座位共54個（9排×6個）；Lappia廳1975年落成，是Aalto生前看到落成的最後一棟', en: '54 seats in this block (9 rows × 6); Lappia Hall opened 1975, the last building Aalto saw completed' },
+                puzzle: {
+                  text: { zh: '座位 {9} 排，每排 {6} 個，[一共]幾個？', en: '{9} rows, {6} seats each. How many [in all]?' },
+                  answer: 54, unit: { zh: '個', en: 'seats' },
+                  hint: { zh: '每排一樣多，用乘法：6 × 9！', en: 'Equal rows — multiply: 6 × 9!' },
+                  teach: [
+                    { zh: '一排一排一樣多，用乘法：每排 6 個，有 9 排。', en: 'Equal rows — multiply: 6 seats, 9 rows.' },
+                    { zh: '就是 6 × 9（或 9 × 6，答案一樣）。', en: 'That is 6 × 9 (or 9 × 6 — same answer).' },
+                    { zh: '6 × 9……換你算出一共幾個座位！', en: '6 × 9… you count the seats!' },
+                  ],
+                  reward: { zh: '🎭 54 個！工作人員指指屋頂：「這個形狀是照拉普蘭的山畫的。1975 年落成的。」', en: '🎭 54! The staff member points at the roof: "That shape follows the Lapland fells. It opened in 1975."' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 🧭 角度：五條主幹道
+        {
+          place: { zh: '🧭 鹿角的五條路', en: '🧭 The Five Roads of the Antlers' },
+          emoji: '🦌',
+          diagram: 'map-compass',
+          story: { zh: '安安把地圖攤在廣場的雪地上。小Q用翅膀尖點著地圖中央：「你看，這個計畫叫『馴鹿角計畫』，{5} 條主幹道從市中心散出去，構成鹿角的形狀，中間那個運動場就是鹿的眼睛。」牠畫了一個圓：「我們來做個簡單的練習——如果這 {5} 條路是平均散開的，繞一圈 {360} 度，每兩條路之間會差幾度？」',
+                   en: 'An-An spreads the map on the snowy plaza. Little Q taps its centre with a wingtip: "See — the plan is called the Reindeer Antler Plan. {5} arterial roads fan out from the centre in the shape of antlers, and the sports field in the middle is the reindeer’s eye." He draws a circle. "Let’s try a simple exercise — if those {5} roads were spaced evenly around the full {360} degrees, how many degrees between each pair?"' },
+          clueNote: { zh: '⭐ 馴鹿角計畫：5條主幹道構成鹿角，中央運動場＝鹿的眼睛；平均散開的話360÷5＝72度', en: '⭐ The Reindeer Antler Plan: 5 arterial roads form the antlers, the central sports field is the eye; spaced evenly, 360 ÷ 5 = 72°' },
+          puzzle: {
+            text: { zh: '繞一圈 {360} 度，平均分給 {5} 條路。每兩條之間差幾度？',
+                    en: 'A full turn is {360}°, shared evenly by {5} roads. How many degrees between each pair?' },
+            answer: 72, unit: { zh: '度', en: '°' },
+            hint: { zh: '平分用除法：360 ÷ 5！', en: 'Sharing equally means dividing: 360 ÷ 5!' },
+            teach: [
+              { zh: '一整圈是 360 度，要平均分給 5 條路，用除法。',
+                en: 'A full turn is 360°, shared evenly among 5 roads — so divide.' },
+              { zh: '360 ÷ 5：先算 350 ÷ 5 ＝ 70，再加 10 ÷ 5 ＝ 2。',
+                en: '360 ÷ 5: try 350 ÷ 5 = 70, then add 10 ÷ 5 = 2.' },
+              { zh: '70 ＋ 2……換你算出每兩條路之間差幾度！',
+                en: '70 + 2… you work out the degrees between each pair!' },
+            ],
+            reward: { zh: '🦌 72 度！小Q補了一句：「真正的路當然不是量角器畫出來的，是順著河和地形長出來的——可是『從中間散開』這個想法，就是這樣來的。」安安低頭看著地圖，忽然覺得整座城市都在對她眨眼睛。',
+                      en: '🦌 72 degrees! Little Q adds: "The real roads weren’t drawn with a protractor, of course — they follow the river and the land. But the idea of fanning out from a centre? That is exactly it." An-An looks down at the map and suddenly feels the whole city winking at her.' },
+          },
+        },
+        // 6 📅 減法：Aalto 沒看到的那一棟
+        {
+          place: { zh: '📅 他沒看到的那一棟', en: '📅 The One He Never Saw' },
+          emoji: '🕯️',
+          story: { zh: '廣場另一邊是白色的市政廳。管理員說：「這棟是三棟裡最後蓋好的，{1988} 年。」他停了一下，聲音放輕：「可是設計它的那位建築師，{1976} 年就過世了。」安安愣住：「所以……他沒有看到？」管理員點點頭。小Q輕聲說：「安安，算算看差幾年。」',
+                   en: 'On the far side of the plaza stands the white town hall. The caretaker says: "This was the last of the three, finished in {1988}." He pauses, softening. "But the architect who designed it died in {1976}." An-An freezes. "So… he never saw it?" The caretaker nods. Little Q says quietly: "An-An. Work out the gap."' },
+          clueNote: { zh: 'Aalto 1976年過世，市政廳1988年完工＝他過世12年後；他生前看到落成的最後一棟是1975年的Lappia廳', en: 'Aalto died 1976; the town hall was completed 1988 — 12 years after his death. The last he saw completed was Lappia Hall in 1975' },
+          puzzle: {
+            text: { zh: '建築師 {1976} 年過世，市政廳 {1988} 年完工。差幾年？',
+                    en: 'The architect died in {1976}; the town hall was finished in {1988}. What is the gap?' },
+            answer: 12, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代相差用減法：1988 − 1976！', en: 'Subtract the years: 1988 − 1976!' },
+            teach: [
+              { zh: '一樣的算法：完工年份減過世年份。', en: 'Same method: completion year minus the year he died.' },
+              { zh: '1988 − 1976 ＝ 12。', en: '1988 − 1976 = 12.' },
+              { zh: '換你算出他過世幾年之後，這棟才蓋好！', en: 'You work out how many years after his death it was finished!' },
+            ],
+            reward: { zh: '🕯️ 12 年！安安安靜了很久，然後小小聲說：「他畫了一張圖，然後別人幫他把它蓋完。」小Q點點頭：「而且蓋完的時候，他已經不在了十二年。」圓圓不知道什麼時候繞到安安腳邊，靠著她坐了下來。',
+                      en: '🕯️ 12 years! An-An is quiet for a long moment, then says softly: "He drew a plan, and other people finished it for him." Little Q nods: "And by the time it was done, he had been gone twelve years." Somewhere along the way Yuan-Yuan has crept to An-An’s feet, and settles against her.' },
+          },
+        },
+        // 7 🧮 併式：三棟之間的間隔相加
+        {
+          place: { zh: '🧮 三棟樓之間', en: '🧮 Between the Three Buildings' },
+          emoji: '🏛️',
+          story: { zh: '安安把三棟樓的年份抄進手帳：圖書館 {1965}、Lappia 廳 {1975}、市政廳 {1988}。小Q：「圖書館蓋好之後 {10} 年，Lappia 廳落成；再過 {13} 年，市政廳才落成。用併式算算看——從第一棟到最後一棟，一共經過幾年？」',
+                   en: 'An-An copies the three years into her notebook: library {1965}, Lappia Hall {1975}, town hall {1988}. Little Q: "Ten years after the library came Lappia Hall; {13} years after that, the town hall. Write it as one calculation — how many years from the first building to the last?"' },
+          clueNote: { zh: '10＋13＝23年（1965圖書館→1975 Lappia廳→1988市政廳）', en: '10 + 13 = 23 years (1965 library → 1975 Lappia Hall → 1988 town hall)' },
+          puzzle: {
+            text: { zh: '先隔 {10} 年，再隔 {13} 年。從第一棟到最後一棟[一共]幾年？',
+                    en: 'First a gap of {10} years, then {13} more. How many years [in all] from first to last?' },
+            answer: 23, unit: { zh: '年', en: 'years' },
+            hint: { zh: '兩段時間接起來，用加法：10 ＋ 13！', en: 'Join the two spans with addition: 10 + 13!' },
+            teach: [
+              { zh: '兩段時間接在一起，就把它們加起來。', en: 'Two spans one after the other — add them together.' },
+              { zh: '寫成併式就是 10 ＋ 13。', en: 'As one calculation: 10 + 13.' },
+              { zh: '10 ＋ 13……換你算出一共經過幾年！', en: '10 + 13… you find the total years!' },
+            ],
+            reward: { zh: '🏛️ 23 年！安安檢查了一下：1965 加 23 就是 1988，剛好對上。「一個廣場，蓋了二十三年。」',
+                      en: '🏛️ 23 years! An-An checks: 1965 plus 23 is 1988 — it matches exactly. "One plaza. Twenty-three years to build."' },
+          },
+        },
+        // 8 🔍 破案：計畫比觀光起點早幾年
+        {
+          place: { zh: '🔍 是先有鹿角，還是先有觀光客', en: '🔍 Antlers First, or Tourists First?' },
+          emoji: '📅',
+          story: { zh: '回到咖啡店，安安把手機上查到的一篇旅遊部落格念給老奶奶聽：「羅瓦涅米把街道蓋成馴鹿角，是為了吸引觀光客來拍照。」老奶奶聽完，慢慢地搖頭，但沒有說話，只是又翻開報紙背面：「你自己看年份吧。」上面寫著：**馴鹿角計畫 {1946} 年通過**。旁邊另一則舊剪報寫著：**{1950} 年，美國第一夫人造訪羅瓦涅米，全世界的報紙都報導了，拉普蘭的觀光從那一年開始。**小Q：「安安，算算看——計畫比那次來訪，早了幾年？」',
+                   en: 'Back at the café, An-An reads out a travel blog from her phone: "Rovaniemi built its streets as reindeer antlers to attract tourists for photographs." The old woman shakes her head slowly, saying nothing, and turns the newspaper over again: "Look at the years yourself." It reads: **the Reindeer Antler Plan was approved in {1946}.** Beside it, another old clipping: **in {1950} an American First Lady visited Rovaniemi; newspapers worldwide reported it, and Lapland’s tourism began that year.** Little Q: "An-An — how many years did the plan come before that visit?"' },
+          clueNote: { zh: '⭐ 馴鹿角計畫1946年通過；1950年美國第一夫人來訪才是拉普蘭觀光起點——計畫早了4年', en: '⭐ The Antler Plan was approved 1946; the American First Lady’s 1950 visit began Lapland tourism — the plan came 4 years earlier' },
+          puzzle: {
+            text: { zh: '計畫 {1946} 年通過，第一夫人 {1950} 年來訪。計畫早了幾年？',
+                    en: 'The plan was approved in {1946}; the First Lady visited in {1950}. How many years earlier was the plan?' },
+            answer: 4, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代相差用減法：1950 − 1946！', en: 'Subtract the years: 1950 − 1946!' },
+            teach: [
+              { zh: '要比「誰比較早」，就把兩個年份相減。', en: 'To see which came first, subtract the two years.' },
+              { zh: '1950 − 1946 ＝ 4。', en: '1950 − 1946 = 4.' },
+              { zh: '換你算出計畫比觀光客早了幾年！', en: 'You work out how many years the plan came before the tourists!' },
+            ],
+            reward: { zh: '📅 4 年！安安慢慢抬起頭：「等一下……計畫通過的時候，還沒有觀光客？」小Q把三份說法排開：「說吧。哪一份講不通？」',
+                      en: '📅 4 years! An-An looks up slowly: "Wait… when the plan was approved, there were no tourists yet?" Little Q lays out the three accounts: "Speak. Which one does not hold?"' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'blog', name: { zh: '📱 熱門旅遊部落格', en: '📱 A Popular Travel Blog' }, emoji: '📱',
+          say: { zh: '「羅瓦涅米把街道蓋成馴鹿角的形狀，**是為了吸引觀光客來拍照**。北極圈最好拍的城市！」',
+                 en: '"Rovaniemi shaped its streets like reindeer antlers **to attract tourists for photographs.** The most photogenic city in the Arctic!"' } },
+        { id: 'archive', name: { zh: '🏛️ 市立圖書館的舊檔案', en: '🏛️ The City Library Archive' }, emoji: '🏛️',
+          say: { zh: '「1946 年，戰後重建計畫通過。五條主幹道構成馴鹿角形狀，中央運動場為鹿之眼。」',
+                 en: '"1946: post-war reconstruction plan approved. Five arterial roads form the shape of reindeer antlers; the central sports field forms the eye."' } },
+        { id: 'granny', name: { zh: '👵 咖啡店的老奶奶', en: '👵 The Old Woman in the Café' }, emoji: '👵',
+          say: { zh: '「那時候我們什麼都沒有了。有人願意重新幫我們畫一張城市的圖——光是這件事，就已經很了不起了。」',
+                 en: '"We had nothing left back then. Somebody was willing to draw us a whole city again — that alone was an extraordinary thing."' } },
+      ],
+      culprit: 'blog',
+      accuse: { zh: '你剛剛算出那個 4：**馴鹿角計畫 1946 年就通過了，比讓拉普蘭紅起來的 1950 年那次來訪，還早了整整 4 年。**計畫通過的時候，這座城市剛被燒光、還在重建，根本還沒有觀光客會來。三份說法裡，有一份把先後順序完全弄反了——它說的「原因」，其實是 4 年後才發生的事。是哪一份？',
+                en: 'You worked out that 4 yourself: **the Reindeer Antler Plan was approved in 1946, four full years before the 1950 visit that put Lapland on the map.** When the plan passed, the city had just burned down and was still being rebuilt — there were no tourists to attract. One of the three accounts has the order completely backwards: the "reason" it gives happened four years later. Which one?' },
+      wrongAccuse: { zh: '再想一次——🏛️舊檔案只是照實寫下年份和形狀，👵老奶奶講的是她自己經歷過的事，兩份都沒有講錯順序。問題出在那份說「**是為了**吸引觀光客」的說法：如果那是原因，它應該發生在計畫**之前**，可是它整整晚了 4 年。是哪一份？📱',
+                     en: 'Think again — the 🏛️ archive simply records the year and the shape, and the 👵 old woman speaks of what she lived through; neither gets the order wrong. The problem is the one claiming it was done **in order to** attract tourists: a cause must come *before* its effect, yet that came four years later. Which one? 📱' },
+      solve: [
+        { zh: '講不通的是📱那篇旅遊部落格。它說街道蓋成鹿角「是為了吸引觀光客」——可是你自己算出來了，計畫 1946 年就通過，觀光要到 1950 年那次來訪之後才開始，整整晚了 4 年。**原因不可能發生在結果的後面。**',
+          en: 'The one that fails is the 📱 travel blog. It says the antler streets were shaped "to attract tourists" — but you worked it out yourself: the plan passed in 1946, and tourism only began after the 1950 visit, a full four years later. **A cause cannot come after its effect.**' },
+        { zh: '真正的原因，🏛️舊檔案和👵老奶奶合起來就講完了：1944 年整個市中心被燒掉九成，1945 年委託建築師重新規劃，1946 年通過了那張圖。五條主幹道從市中心散開，中間的運動場是鹿的眼睛——那不是給觀光客看的造型，那是**一座被燒光的城市，重新站起來時替自己畫的樣子**。',
+          en: 'The real reason is told by the 🏛️ archive and the 👵 old woman together: in 1944 about nine tenths of the town centre burned; in 1945 an architect was commissioned to replan it; in 1946 that drawing was approved. Five roads fanning from the centre, a sports field for an eye — not a shape made for tourists, but **the shape a burned-down city drew for itself as it stood back up.**' },
+        { zh: '老奶奶把最後一口咖啡喝完，看著窗外：「觀光客後來才來的。他們喜歡這裡，我們也很高興。」她轉過頭來，眼睛亮亮的：「可是小朋友，你要記得順序——我們不是為了給人拍照才蓋這座城市的。**我們是為了活下去才蓋的。**」安安把這句話一字不漏抄進手帳，抄完手還在抖。',
+          en: 'The old woman drains her coffee and looks out the window. "The tourists came later. They love it here, and that makes us happy." She turns back, eyes bright. "But child, remember the order — we did not build this city so people could photograph it. **We built it so we could live.**" An-An copies the words into her notebook, every one of them, her hand still trembling as she finishes.' },
+        { zh: '⭐ 現場可以自己驗證：拿一張羅瓦涅米的市區地圖，找出從市中心散出去的幾條大馬路，看看它們是不是真的張開成一對鹿角——中間那塊運動場，就是鹿的眼睛。小知識：1944 年拉普蘭戰爭中，市中心約九成的建築被摧毀；重建計畫由芬蘭建築師 Alvar Aalto 主持，1946 年通過，芬蘭文叫 Poronsarvikaava，就是「馴鹿角計畫」。到 1953 年，這裡的房子已經比戰前還多了。',
+          en: '⭐ Verify it yourself: take a street map of Rovaniemi, find the main roads fanning out from the centre, and see whether they really open like a pair of antlers — with the sports field in the middle for an eye. Fact: in the 1944 Lapland War about nine tenths of the town centre was destroyed; the reconstruction plan, led by Finnish architect Alvar Aalto, was approved in 1946 and is called Poronsarvikaava — the Reindeer Antler Plan. By 1953 the city had more buildings than before the war.' },
+      ],
+      arcClue: { zh: '走出咖啡店，天已經黑了——北方的冬天，下午三點就天黑。安安在手帳貼上第九張貼紙，旁邊寫下：「1946 比 1950 早四年。原因不能排在結果後面。」寫完她抬起頭，發現圓圓已經自己走進雪地裡去了。橘色的貓站在一片白色中間，愣愣地看著自己的腳印，然後回頭看安安，喵了一聲——那一聲聽起來，好像在說「原來雪是這樣的」。',
+                 en: 'Outside the café it is already dark — in the northern winter, night falls at three in the afternoon. An-An sticks the ninth sticker into her notebook and writes beside it: "1946 is four years before 1950. A cause cannot come after its effect." Looking up, she finds Yuan-Yuan has walked out into the snow by herself. The ginger cat stands in all that white, staring blankly at her own paw prints, then turns back and mews once — and it sounds very much like *so this is what snow is.*' },
+      nextPreview: { zh: '下一站還在羅瓦涅米——這一次要問一個更奇怪的問題：聖誕老人**是怎麼搬來這裡的**？他原本在芬蘭不是送禮物的，還是一隻山羊；他的家是一個廣播節目「宣布」的；而觀光客排隊拍照的那條北極圈白線……其實畫錯地方了。這一回，要用小數和長度換算，找出真正的北極圈在哪裡。',
+                     en: 'The next stop is still Rovaniemi — but with a stranger question: how exactly did Santa Claus *move here*? In Finland he was not originally a gift-giver at all, but a goat; his home address was announced by a radio programme; and that white Arctic Circle line the tourists queue to photograph… is drawn in the wrong place. This time, decimals and length conversion will find where the real Arctic Circle lies.' },
+      reward: 500,
+    },
   ],
 }
 
