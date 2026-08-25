@@ -768,6 +768,51 @@ const DIAGRAMS = {
       <text x="80" y="97" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">8 × 2 ＋ 12 ＝ 三棟連起來幾公尺</text>
     </g>
   ),
+
+  // 四捨五入到萬位（S8 EP6）：930489 → 93 萬，決定權在「千位」那一格
+  'round-wan': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="14" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">四捨五入到「萬位」</text>
+      {['9', '3', '0', '4', '8', '9'].map((d, i) => {
+        const x = 20 + i * 20
+        const keep = i < 2
+        const key = i === 2
+        return (
+          <g key={i}>
+            <rect x={x} y="24" width="20" height="22" fill={keep ? '#e6f0dc' : key ? '#ffe8a3' : '#f0f2f4'} stroke={C.sub} strokeWidth="0.8" />
+            <text x={x + 10} y="40" fontSize="13" fill={key ? '#d98a00' : keep ? C.ink : C.sub} textAnchor="middle" fontWeight="bold">{d}</text>
+            <text x={x + 10} y="54" fontSize="6" fill={C.sub} textAnchor="middle">{['十萬', '萬', '千', '百', '十', '個'][i]}</text>
+          </g>
+        )
+      })}
+      <text x="40" y="66" fontSize="6.5" fill={C.green} textAnchor="middle" fontWeight="bold">留下來</text>
+      <path d="M70,57 v7" stroke="#d98a00" strokeWidth="1.2" />
+      <path d="M70,64 l-3,-4 h6 z" fill="#d98a00" />
+      <text x="70" y="74" fontSize="6.8" fill="#d98a00" textAnchor="middle" fontWeight="bold">看這一位</text>
+      <text x="80" y="88" fontSize="7.6" fill={C.ink} textAnchor="middle">千位是 0，比 5 小 → 後面全部捨去</text>
+      <text x="80" y="100" fontSize="8.5" fill={C.green} textAnchor="middle" fontWeight="bold">930489 ≈ 93 萬</text>
+    </g>
+  ),
+
+  // 十七個坑（S8 EP6）：山裡曾經有 17 個坑口，今天一個都看不到
+  'seventeen-pits': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="14" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">大溪全盛時期的 17 個礦坑</text>
+      {/* 山的剖面 */}
+      <path d="M8,74 Q34,34 62,50 Q92,66 118,38 Q138,22 152,32 V74 Z" fill="#8a9470" />
+      <path d="M8,74 Q40,58 76,64 Q114,70 152,58 V74 Z" fill="#6f7a5c" />
+      <rect x="8" y="74" width="144" height="8" fill="#4a4133" />
+      {/* 17 個虛線坑口 */}
+      {Array.from({ length: 17 }).map((_, i) => {
+        const x = 14 + (i % 9) * 16.5
+        const y = i < 9 ? 60 : 71
+        return <circle key={i} cx={x} cy={y} r="3.4" fill="#211d18" opacity="0.25" stroke={C.sub} strokeWidth="0.8" strokeDasharray="2 1.6" />
+      })}
+      <text x="80" y="94" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">17 個坑 · 今天一個都看不到</text>
+    </g>
+  ),
 }
 
 // ── 資料驅動圖表：題目給哪些數字，就照那些數字現場畫，孩子看到的圖和題目一模一樣 ──
