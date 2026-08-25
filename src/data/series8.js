@@ -2199,6 +2199,321 @@ export const SEASON8 = {
                      en: 'Next — seven yen a day! “The gentry funded a school” is a moving story: a group of Daxi men pooled their money so the children could learn. But in a company’s articles An-An finds one small line: “Seven yen daily to be drawn from camphor.” Seven yen a day is more than two and a half thousand a year. Where did the donated money come from? This time we use multiplication and big numbers to trace a gift back, one day at a time.' },
       reward: 500,
     },
+
+    // ─────────────────────────────────────── S8 EP8 ───────────────────────────────────────
+    // 案件來自 daxi-history/docs/大溪仕紳敘事考.md「補強1：樟腦利潤，白紙黑字寫進公司章程捐給學校」：
+    //   呂鷹揚 1913 年與簡阿牛等人組萬基公司，從事樟腦製造與大溪內山開墾；
+    //   蘭室官網記載，公司章程規定「樟腦每日抽出金 7 圓捐贈」給各公學校。
+    //   ・1899–1902 公學校另獲渡船頭「利益收得權」，年收約 7、800 圓
+    //   ・簡阿牛捐款 2,000 圓；板橋林家捐校地（接回 EP4）
+    //   ・三井在海山、大溪一帶經營超過 1,000 甲茶園
+    //   → 大溪國小早期經費＝渡船頭（河）＋學田（山地開墾）＋樟腦（萬基公司），
+    //     正好是《大溪地點史觀》「第1層河、第2層城區、第3層山」資源鏈全部匯流到同一所學校。
+    // ★ 破案數字完全來自真實史料：7 × 365 ＝ 2555 圓，比簡阿牛那筆有名字的 2000 圓捐款還多，
+    //   而且每天都在流。捐款有名字、會刻在碑上；抽出金沒名字、寫在章程裡沒人看。
+    // ⚠️ 誠實鐵則：本集不否定辦學這件事（solve 第 4 段明講「一個好結果，不代表過程裡沒有別人」）。
+    // ⚠️「內山番地」四個字只點到「那是別人住的地方」，隘勇線與 1907 留給 EP9／EP10，層層推進。
+    // ⚠️ 腦寮灶數、日產斤數為劇中粗估，故事裡明講；7×12＝84 的分支刻意都用 7 呼應主題。
+    {
+      id: 's8ep8',
+      comicIntro: [
+        { bg: 'school', cast: ['anan', '🧑‍🏫'],
+          say: { zh: '校史室的牆上寫著：「仕紳無私奉獻，出錢出力，為下一代辦了學校。」',
+                 en: 'The school history room reads: "The gentry gave selflessly of money and effort, founding a school for the next generation."' } },
+        { bg: 'oldstreet', cast: ['anan', '📙'],
+          say: { zh: '小Q翻開一份公司章程，指著其中一行：「樟腦每日抽出金七圓。」',
+                 en: 'Little Q opens a company\'s articles and points at one line: "Seven yen daily, drawn from camphor."' } },
+      ],
+      comicSolve: [
+        { bg: 'camphor', cast: ['anan', '💰'],
+          say: { zh: '安安算完抬起頭：「一年兩千五百五十五圓。比那筆有名字的捐款還多。」',
+                 en: 'An-An looks up from the sum: "Two thousand five hundred and fifty-five a year. More than the gift that has a name on it."' } },
+        { bg: 'banyan', cast: ['anan', 'arong', '🐦'],
+          say: { zh: '藍鵲的第八根羽毛落下。〈史料卡 8 · 每天七圓〉',
+                 en: 'The magpie\'s eighth feather falls. Archive Card 8 — Seven Yen a Day.' } },
+      ],
+      no: 8,
+      title: { zh: '每天七圓', en: 'Seven Yen a Day' },
+      emoji: '🌿',
+      accent: '#6a8f5c',
+      difficulty: { zh: '乘法·大數·有餘數除法（四上）', en: 'Multiplication · big numbers · division with remainder (Grade 4-1)' },
+      card: { id: 'camphor-yen', emoji: '🌿', name: { zh: '史料卡 8 · 每天七圓', en: 'Archive Card 8 · Seven Yen a Day' } },
+      intro: [
+        { zh: '這一次沒有委託人。是小Q自己把安安帶回大溪國小的——回到 EP4 那塊石碑旁邊，不過這次他們走進了校史室。牆上有一整面光榮榜，最上面那一行字，寫得又大又漂亮：「**仕紳無私奉獻，出錢出力，為下一代辦了學校。作育英才，功在鄉里。**」下面掛著幾張泛黃的老照片，一排穿著長袍的人，表情很嚴肅。',
+          en: 'This time there is no client. Little Q has brought An-An back to Daxi Primary himself — back beside the stone tablet from before, though today they go inside, to the school history room. One whole wall is an honour board, and its top line is written large and handsomely: “**The gentry gave selflessly of money and effort, founding a school for the next generation. Nurturing talent; a service to our township.**” Below hang yellowed photographs: a row of men in long robes, their faces very serious.' },
+        { zh: '安安看得很認真：「他們真好耶。出錢讓小孩有學校念。」小Q沒有反駁，牠只是很輕地說：「是啊。這件事是真的，而且值得感謝——大溪國小到今天還在，你阿嬤那一輩就是在這裡念書的。」牠停了一下，從背包裡拿出一份影印的舊文件，攤在窗台上：「可是安安，這一季我們問過『地從哪來』了。今天要問另一個問題。」牠用爪子點著文件上一行小小的字：「💰**錢從哪來？**」安安低頭看過去，那一行寫著：「**樟腦每日抽出金七圓捐贈。**」',
+          en: 'An-An reads it earnestly: “They were so kind. Paying so children could go to school.” Little Q does not contradict her; he only says softly: “They were. That much is true, and it deserves thanks — Daxi Primary is still here, and your grandmother’s generation learned in this very place.” He pauses, draws a photocopied old document from his bag and spreads it on the sill: “But An-An, this season we have already asked where the land came from. Today we ask the other question.” He taps one small line with a claw: “💰 **Where did the money come from?**” An-An looks down. The line reads: “**Seven yen daily, drawn from camphor, to be donated.**”' },
+      ],
+      scenes: [
+        // 1 📘 導覽版：學校多老了
+        {
+          place: { zh: '📘 一百二十九年', en: '📘 A Hundred and Twenty-Nine Years' },
+          emoji: '🏫',
+          story: { zh: '小Q先把好的那一面講清楚：「大溪國小創立於 {1897} 年，是大溪最早的現代學校。」牠指著牆上的老照片：「這件事沒有人可以抹掉——這所學校教了一代又一代的大溪小孩。」安安問：「那它現在幾歲了？」小Q：「今年 {2026} 年。你自己算。」',
+                   en: 'Little Q begins with the good side: “Daxi Primary was founded in {1897}, the first modern school in the town.” He points at the old photographs: “Nobody can take that away — this school has taught one generation of Daxi children after another.” An-An asks: “How old is it now?” Little Q: “This year is {2026}. Work it out yourself.”' },
+          clueNote: { zh: '大溪國小 1897 年創立，至今 129 年——辦學這件事是真的，值得感謝', en: 'Daxi Primary founded 1897 — 129 years. The school is real and deserves its thanks' },
+          puzzle: {
+            text: { zh: '大溪國小 {1897} 年創立，今年 {2026} 年。學校幾歲了？',
+                    en: 'Daxi Primary was founded in {1897}; this year is {2026}. How old is the school?' },
+            answer: 129, unit: { zh: '歲', en: 'years old' },
+            hint: { zh: '年代差用減法：2026 − 1897！', en: 'Subtract: 2026 − 1897!' },
+            teach: [
+              { zh: '算學校幾歲，就是今年減掉創校那一年。',
+                en: 'The school’s age is this year minus its founding year.' },
+              { zh: '2026 − 1897 可以先湊整：2026 − 1900 ＝ 126。',
+                en: '2026 − 1897: round first — 2026 − 1900 = 126.' },
+              { zh: '剛剛多減了 3，要加回來：126 ＋ 3；換你算！',
+                en: 'You took off 3 too many, so add them back: 126 + 3 — your turn!' },
+            ],
+            reward: { zh: '🏫 129 歲！小Q在證據板最上面寫下第一條，還特地畫了個圈：「**先記住這一條：學校是真的，好處也是真的。**」牠轉過頭看安安：「等一下我們會查到一些沒那麼好聽的事。可是不管查到什麼，這一條都不會被推翻。答應我，記住這件事。」安安用力點頭。',
+                      en: '🏫 129! Little Q writes the first line at the top of the evidence board and rings it: “**Hold on to this one: the school is real, and so is the good it did.**” He turns to her: “We are about to find things that sound less pleasant. But whatever we find, this line still stands. Promise me you will remember it.” An-An nods hard.' },
+          },
+        },
+        // 2 📙 第一層·河：渡船頭的利益收得權
+        {
+          place: { zh: '📙 第一筆錢·渡船頭', en: '📙 The First Purse · The Ferry' },
+          emoji: '⛵',
+          story: { zh: '小Q把文件翻到經費那一頁：「學校要錢。老師要薪水、教室要蓋、桌椅要買。那錢從哪來？」牠指著第一行：「{1899} 年到 {1902} 年，公學校拿到了**渡船頭的『利益收得權』**——就是渡船的收入，撥給學校。」安安眨眨眼：「渡船？那不是 EP2 那條河嗎？」小Q點頭：「一年大約 {750} 圓，一共拿了 {4} 年。」',
+                   en: 'Little Q turns to the finances: “A school needs money. Teachers must be paid, classrooms built, desks bought. So where did it come from?” He points at the first line: “From {1899} to {1902}, the school held the **ferry’s right of proceeds** — the crossing’s takings were assigned to it.” An-An blinks: “The ferry? That is the river from before!” Little Q nods: “About {750} yen a year, for {4} years.”' },
+          clueNote: { zh: '第一層錢＝河：1899–1902 公學校領渡船頭利益收得權，年約 750 圓、共 4 年＝3000 圓', en: 'Purse one, the river: 1899–1902 the school held the ferry proceeds, about 750 yen a year for 4 years = 3,000' },
+          puzzle: {
+            text: { zh: '渡船頭一年約 {750} 圓，領了 {4} 年。[一共]約幾圓？',
+                    en: 'The ferry yielded about {750} yen a year for {4} years. How many [in all]?' },
+            answer: 3000, unit: { zh: '圓', en: 'yen' },
+            hint: { zh: '每年 750 圓，領 4 年：750 × 4！', en: '750 a year, 4 years: 750 × 4!' },
+            teach: [
+              { zh: '每年一樣多，用乘法：一年 750 圓，領了 4 年。',
+                en: 'The same each year — multiply: 750 yen, 4 years.' },
+              { zh: '750 × 4 可以拆開：700 × 4 ＝ 2800，50 × 4 ＝ 200。',
+                en: '750 × 4 splits up: 700 × 4 = 2800, and 50 × 4 = 200.' },
+              { zh: '2800 ＋ 200……換你算出一共幾圓！',
+                en: '2800 + 200… you find the total!' },
+            ],
+            reward: { zh: '⛵ 約 3000 圓！小Q在證據板寫下：「**第一層錢：河。**」牠看著安安：「還記得 EP2 嗎？那條河運了樟腦、茶葉、木材出去。現在連過河的船錢，都拿來養學校了。」牠頓了一下，聲音低了些：「而這只是第一層。」',
+                      en: '⛵ About 3,000 yen! Little Q writes: “**Purse one: the river.**” He looks at her: “Remember the river? It carried camphor, tea and timber out. Now even the fare for crossing it is feeding a school.” He pauses, his voice lower: “And this is only the first layer.”' },
+          },
+        },
+        // 3 📙 第三層·山：萬基公司章程
+        {
+          place: { zh: '📙 章程裡的那一行', en: '📙 That One Line in the Articles' },
+          emoji: '🌿',
+          diagram: 'seven-yen',
+          story: { zh: '小Q把那份影印文件推到安安面前。「{1913} 年，呂鷹揚和簡阿牛他們合組了一家公司，叫**萬基公司**，做的是**樟腦製造**。」牠指著章程裡的一行小字，那行字擠在很多條文中間，一點都不顯眼：「**樟腦每日抽出金七圓捐贈**——捐給各公學校。」安安唸了一遍：「每天七圓……」小Q：「先算小的。一個月 {30} 天，一個月是幾圓？」',
+                   en: 'Little Q pushes the photocopy across. “In {1913}, Lü Ying-yang and Jian A-niu and others founded a company called **Wan-Ji**, in the business of **camphor.**” He points at a small line squeezed among the clauses, entirely unremarkable: “**Seven yen daily, drawn from camphor, to be donated** — to the public schools.” An-An reads it aloud: “Seven yen a day…” Little Q: “Start small. A month of {30} days — how many yen?”' },
+          clueNote: { zh: '⭐ 萬基公司（1913，呂鷹揚＋簡阿牛）章程：樟腦每日抽出金 7 圓捐給公學校；一個月 210 圓', en: '⭐ Wan-Ji Co. (1913) articles: seven yen a day from camphor to the schools — 210 a month' },
+          puzzle: {
+            text: { zh: '每日抽出金 {7} 圓，一個月 {30} 天。一個月[一共]幾圓？',
+                    en: '{7} yen a day, {30} days in a month. How many yen [in all] per month?' },
+            answer: 210, unit: { zh: '圓', en: 'yen' },
+            hint: { zh: '每天 7 圓，30 天：7 × 30！', en: '7 yen a day, 30 days: 7 × 30!' },
+            teach: [
+              { zh: '每天一樣多，用乘法：一天 7 圓，有 30 天。',
+                en: 'The same each day — multiply: 7 yen, 30 days.' },
+              { zh: '7 × 30 有捷徑：先算 7 × 3 ＝ 21，再把 0 補回去。',
+                en: '7 × 30 is quick: 7 × 3 = 21, then put the zero back.' },
+              { zh: '換你算出一個月一共幾圓！',
+                en: 'You work out the monthly total!' },
+            ],
+            reward: { zh: '🌿 210 圓！小Q在證據板寫下：「**第三層錢：山。**」安安愣住了：「等一下，第二層呢？」小Q：「第二層是學田——那是山地開墾，下一集才講。」牠用爪子敲了敲桌面：「安安，注意這一條跟前面不一樣的地方：渡船頭是**一次講定的**，這一條是**每一天**。它寫在章程裡，只要公司還在，錢就一直流。」',
+                      en: '🌿 210 yen! Little Q writes: “**Purse three: the mountains.**” An-An stops: “Wait — what about the second?” Little Q: “The second is the school-land, and that is mountain clearance. Next time.” He raps the table: “An-An, note how this differs from the ferry: the ferry was settled once. This one is **every single day.** It is written into the articles, and so long as the company stands, the money flows.”' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 84，刻意都用 7）
+        {
+          kind: 'choice',
+          place: { zh: '樟腦的兩頭', en: 'The Two Ends of Camphor' },
+          emoji: '🔀',
+          story: { zh: '小Q合上文件：「這條金流有兩頭。想看**出錢那一頭**，去山裡——樟腦寮的遺址還在，灶都還在。想看**收錢那一頭**，去蘭室——呂鷹揚的故居，就是 EP5 那條街上大溪第一座牌樓的那間。」安安猶豫了一下。小Q難得地補了一句：「兩邊我都想帶你去。可是今天只夠走一趟。」窗外，藍鵲叫了一聲，聲音朝著山的方向。',
+                   en: 'Little Q closes the file: “This flow has two ends. To see **where the money came out**, go up into the hills — the camphor sheds still stand, and so do their furnaces. To see **where it came in**, go to Lan Shi: Lü Ying-yang’s house, the one with Daxi’s first decorated façade on that street.” An-An hesitates. Unusually, Little Q adds: “I should like to take you to both. But there is only time for one today.” Outside, the magpie calls, and the sound goes towards the mountains.' },
+          question: { zh: '★ 你來決定！要上山看樟腦寮，還是去蘭室？（兩邊都查得到，選你喜歡的！）',
+                      en: '★ You decide! The camphor shed in the hills, or Lan Shi? (Both work — pick your favourite!)' },
+          options: [
+            {
+              id: 'shed',
+              label: { zh: '🌿 山裡的樟腦寮', en: '🌿 The Camphor Shed' },
+              scene: {
+                place: { zh: '山裡的樟腦寮遺址', en: 'The Camphor Shed in the Hills' },
+                emoji: '🌿',
+                story: { zh: '山路走了很久才到。草寮早就塌了，只剩下地上一整排圓圓的灶口，長滿了青苔。空氣裡好像還有一點點樟腦的味道——涼涼的、衝衝的。帶路的老先生說：「這一排，{12} 個灶。每個灶上面架 {7} 個腦鍋。」安安蹲下來摸那些灶口，冰冰的。',
+                         en: 'It is a long climb. The shed collapsed generations ago; only a row of round furnace mouths remains in the ground, thick with moss. There is still a trace of camphor in the air — cool, and sharp. The old man guiding them says: “This row, {12} furnaces. Seven pots to a furnace.” An-An crouches and touches one of the openings; it is cold.' },
+                clueNote: { zh: '樟腦寮遺址：12 個灶 × 每灶 7 個腦鍋＝84 個鍋，全部朝著山裡', en: 'Camphor shed ruins: 12 furnaces × 7 pots = 84, all facing into the hills' },
+                puzzle: {
+                  text: { zh: '{12} 個灶，每個灶 {7} 個腦鍋，[一共]幾個鍋？', en: '{12} furnaces, {7} pots each — how many [in all]?' },
+                  answer: 84, unit: { zh: '個', en: 'pots' },
+                  hint: { zh: '每灶 7 個，有 12 灶：7 × 12！', en: '7 per furnace, 12 furnaces: 7 × 12!' },
+                  teach: [
+                    { zh: '每個灶一樣多，用乘法：每灶 7 個鍋，有 12 個灶。',
+                      en: 'Each furnace the same — multiply: 7 pots, 12 furnaces.' },
+                    { zh: '7 × 12 可以拆開：7 × 10 ＝ 70，7 × 2 ＝ 14。',
+                      en: '7 × 12 splits up: 7 × 10 = 70, and 7 × 2 = 14.' },
+                    { zh: '70 ＋ 14……換你算出一共幾個鍋！',
+                      en: '70 + 14… you count the pots!' },
+                  ],
+                  reward: { zh: '🌿 84 個！安安忽然「咦」了一聲：「小Q，每個灶**七**個鍋……又是七。」小Q笑了：「巧合。」牠說得很快，可是安安注意到，牠說完之後看了那些灶很久。老先生指著更深的山：「再進去還有，這裡以前整片都是。」',
+                            en: '🌿 84! An-An gives a start: “Little Q — **seven** pots to a furnace. Seven again.” Little Q smiles: “Coincidence.” He says it quickly; but An-An notices that afterwards he looks at the furnaces for a long time. The old man points deeper into the hills: “There are more further in. This was all sheds, once.”' },
+                },
+              },
+            },
+            {
+              id: 'lanshi',
+              label: { zh: '🏛️ 蘭室·呂鷹揚故居', en: '🏛️ Lan Shi · Lü Ying-yang’s House' },
+              scene: {
+                place: { zh: '蘭室·呂鷹揚故居', en: 'Lan Shi · Lü Ying-yang’s House' },
+                emoji: '🏛️',
+                story: { zh: '「蘭室」兩個字掛在山牆上，取自「與善人居，如入芝蘭之室」。屋裡很安靜，木頭地板走起來會響。牆上一整排展櫃，放著呂鷹揚的文件、印章、還有他兒子呂鐵州的畫。導覽員說：「這裡 {12} 排展櫃，每排 {7} 件。」安安一件一件看過去，在其中一個櫃子裡，看到了萬基公司的章程原件。',
+                         en: 'The two characters “Lan Shi” hang on the gable, from the saying that to live among good people is to enter a room of orchids. Inside it is very quiet, the wooden floor sounding underfoot. Along the wall runs a bank of cases holding Lü Ying-yang’s papers, his seals, and paintings by his son Lü Tie-zhou. The guide says: “{12} rows of cases here, {7} pieces to a row.” An-An works along them — and in one case finds the original articles of the Wan-Ji company.' },
+                clueNote: { zh: '蘭室展櫃 12 排 × 每排 7 件＝84 件；萬基公司章程原件就在其中一櫃', en: 'Lan Shi: 12 rows × 7 pieces = 84; the original Wan-Ji articles sit in one of the cases' },
+                puzzle: {
+                  text: { zh: '展櫃 {12} 排，每排 {7} 件，[一共]幾件？', en: '{12} rows, {7} pieces each — how many [in all]?' },
+                  answer: 84, unit: { zh: '件', en: 'pieces' },
+                  hint: { zh: '每排 7 件，有 12 排：7 × 12！', en: '7 per row, 12 rows: 7 × 12!' },
+                  teach: [
+                    { zh: '每排一樣多，用乘法：每排 7 件，有 12 排。',
+                      en: 'Equal rows — multiply: 7 pieces, 12 rows.' },
+                    { zh: '7 × 12 可以拆開：7 × 10 ＝ 70，7 × 2 ＝ 14。',
+                      en: '7 × 12 splits up: 7 × 10 = 70, and 7 × 2 = 14.' },
+                    { zh: '70 ＋ 14……換你算出一共幾件！',
+                      en: '70 + 14… you count the pieces!' },
+                  ],
+                  reward: { zh: '🏛️ 84 件！安安忽然「咦」了一聲：「小Q，每排**七**件……又是七。」小Q笑了：「巧合。」牠說得很快，可是安安注意到，牠說完之後盯著那份章程看了很久。導覽員在旁邊補了一句：「這位呂先生啊，是清朝的秀才呢。」',
+                            en: '🏛️ 84! An-An gives a start: “Little Q — **seven** to a row. Seven again.” Little Q smiles: “Coincidence.” He says it quickly; but An-An notices that afterwards he stares at the articles for a long time. The guide adds: “That Mr Lü, you know — he passed the imperial examinations under the Qing.”' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 📗 官方版：有名字的那筆捐款（有餘數除法）
+        {
+          place: { zh: '📗 有名字的那一筆', en: '📗 The Gift with a Name On It' },
+          emoji: '🏅',
+          story: { zh: '回到校史室，小Q指著光榮榜上一行特別大的字：「這裡寫著——**簡阿牛，捐款 {2000} 圓**。」安安看著那個名字：「兩千圓好多喔！」小Q：「是很多。這筆錢有名字、有金額、被寫在牆上，一百年後你還看得到。」牠忽然轉頭：「安安，算一件事給我看。這兩千圓，如果換成每天七圓的抽出金，可以流幾天？除不盡就寫商跟餘數。」',
+                   en: 'Back in the history room, Little Q points at a line in larger characters: “Here — **Jian A-niu, a gift of {2000} yen.**” An-An looks at the name: “Two thousand is a lot!” Little Q: “It is a great deal. And this money has a name, a figure, and a place on the wall where you can still read it a century later.” He turns suddenly: “An-An, show me something. If those two thousand yen were the seven-a-day levy instead, how many days would that be? Give the quotient and the remainder.”' },
+          clueNote: { zh: '簡阿牛捐款 2000 圓 ÷ 每日 7 圓＝285 天餘 5；一筆有名字的捐款＝抽出金流 285 天', en: 'Jian A-niu’s 2,000-yen gift ÷ 7 a day = 285 days remainder 5 — a named gift equals 285 days of the levy' },
+          puzzle: {
+            text: { zh: '捐款 {2000} 圓，每天抽出金 {7} 圓。可以流幾天？（[只寫商]）',
+                    en: 'A gift of {2000} yen against a levy of {7} a day — how many days? ([quotient only])' },
+            answer: 285, unit: { zh: '天', en: 'days' },
+            hint: { zh: '2000 ÷ 7：7 × 200 ＝ 1400，剩 600；7 × 80 ＝ 560，再剩 40！', en: '2000 ÷ 7: 7 × 200 = 1400, leaving 600; 7 × 80 = 560, leaving 40!' },
+            teach: [
+              { zh: '要問「可以流幾天」，就是把總數平分給每天的金額——用除法。',
+                en: '“How many days” means sharing the total by the daily amount — division.' },
+              { zh: '一步一步來：7 × 200 ＝ 1400，2000 − 1400 ＝ 600；7 × 80 ＝ 560，600 − 560 ＝ 40。',
+                en: 'Step by step: 7 × 200 = 1400, leaving 600; 7 × 80 = 560, leaving 40.' },
+              { zh: '40 裡面有 5 個 7（餘 5）。所以商是 200 ＋ 80 ＋ 5；換你算！',
+                en: 'There are five sevens in 40, remainder 5. So the quotient is 200 + 80 + 5 — your turn!' },
+            ],
+            reward: { zh: '🏅 285 天！小Q把兩個東西並排寫在證據板上：**「捐款 2000 圓——有名字，刻在牆上」**、**「抽出金每日 7 圓——沒有名字，寫在章程第幾條」**。牠看著安安：「這兩千圓，等於抽出金流兩百八十五天。安安，你先別急著下結論。我們再算一件事。」',
+                      en: '🏅 285 days! Little Q writes two things side by side on the board: **“a gift of 2,000 — named, carved on the wall”** and **“a levy of 7 a day — unnamed, buried in a clause.”** He looks at her: “Two thousand yen is two hundred and eighty-five days of the levy. Do not conclude anything yet, An-An. There is one more sum.”' },
+          },
+        },
+        // 6 🌳 阿榕的記憶碎片：腦丁
+        {
+          place: { zh: '🌳 阿榕的記憶碎片', en: '🌳 Ah-Rong’s Fragment of Memory' },
+          emoji: '🍃',
+          story: { zh: '老榕樹下，一片葉子飄下來，葉面浮出一格畫面：天還沒亮，一排人揹著鍋子和斧頭，沉默地往山裡走。阿榕的聲音很輕：「那些人叫『**腦丁**』——熬樟腦的人。他們要在山裡待很久很久才下來一次。」小Q粗估了一下：「山裡的腦寮很多。假設一個腦寮一天出 {45} 斤樟腦，山裡有 {16} 個腦寮——一天一共幾斤？」',
+                   en: 'Beneath the old banyan a leaf drifts down, and a scene surfaces: before dawn, a line of men with pots and axes on their backs, walking silently up into the hills. Ah-Rong’s voice is quiet: “Those men were called **camphor hands.** They stayed up there a long while before coming down.” Little Q makes a rough estimate: “There were many sheds. Suppose one yielded {45} catties a day and there were {16} sheds — how much in a day?”' },
+          clueNote: { zh: '（粗估）一個腦寮一天 45 斤 × 16 個腦寮＝720 斤；熬樟腦的人叫「腦丁」', en: '(Estimate) 45 catties a day × 16 sheds = 720; the men who boiled it were called camphor hands' },
+          puzzle: {
+            text: { zh: '（粗估）一個腦寮一天 {45} 斤，有 {16} 個腦寮。一天[一共]幾斤？',
+                    en: '(Estimate) {45} catties a day per shed, {16} sheds. How many [in all] per day?' },
+            answer: 720, unit: { zh: '斤', en: 'catties' },
+            hint: { zh: '每個 45 斤，有 16 個：45 × 16！', en: '45 each, 16 sheds: 45 × 16!' },
+            teach: [
+              { zh: '每個腦寮出一樣多，用乘法：一個 45 斤，有 16 個。',
+                en: 'Each shed the same — multiply: 45 catties, 16 sheds.' },
+              { zh: '45 × 16 可以拆開：45 × 10 ＝ 450，45 × 6 ＝ 270。',
+                en: '45 × 16 splits up: 45 × 10 = 450, and 45 × 6 = 270.' },
+              { zh: '450 ＋ 270……換你算出一天一共幾斤！',
+                en: '450 + 270… you find the daily total!' },
+            ],
+            reward: { zh: '🍃 720 斤！葉子上的畫面停住了。安安盯著那排往山裡走的背影，忽然問：「阿榕，這些腦丁……他們叫什麼名字？」老榕樹沉默了很久很久，久到安安以為牠不會回答了。然後阿榕說：「安安，我跟你說過的——**我看不見山的那邊。**」風停了。樹梢上，藍鵲一動也不動。',
+                      en: '🍃 720 catties! The picture on the leaf holds still. An-An stares at the backs of the men climbing into the hills and asks suddenly: “Ah-Rong, these camphor hands… what were their names?” The old banyan is silent for so long that she thinks it will not answer. Then Ah-Rong says: “An-An, I told you once — **I cannot see the other side of the mountain.**” The wind stops. In the branches the magpie does not move at all.' },
+          },
+        },
+        // 7 📙 樟腦是從哪裡來的（大數乘法，連回 EP4 通議第）
+        {
+          place: { zh: '📙 樟腦從哪裡來', en: '📙 Where the Camphor Came From' },
+          emoji: '🗺️',
+          story: { zh: '安安追問下去：「那樟腦到底是在哪裡做的？」小Q把章程翻到第一條，慢慢唸出來：「『本公司經營樟腦製造，與**大溪內山開墾**。』」牠又抽出另一份資料：「而同一個時期，日本的三井會社，在海山、大溪這一帶經營超過 {1000} 甲的茶園。」小Q在紙上寫換算：「一甲大約 {1} 公頃，一公頃大約 {10000} 平方公尺。安安，一千甲大約是幾平方公尺？」',
+                   en: 'An-An presses on: “But where was the camphor actually made?” Little Q turns to the first clause and reads slowly: “‘This company engages in camphor manufacture and **the clearance of Daxi’s inner mountains.**’” He draws out another file: “And in that same period the Japanese Mitsui company worked more than {1000} *jia* of tea plantation across Haishan and Daxi.” He writes the conversion: “One *jia* is about {1} hectare, and a hectare is about {10000} square metres. An-An — how many square metres is a thousand *jia*?”' },
+          clueNote: { zh: '章程第一條：樟腦製造＋「大溪內山開墾」；同期三井在此經營逾 1000 甲茶園＝約一千萬平方公尺', en: 'Clause one: camphor and “clearance of Daxi’s inner mountains.” Mitsui worked 1,000+ jia of tea here — some ten million square metres' },
+          puzzle: {
+            text: { zh: '{1000} 甲，一甲約 {1} 公頃，一公頃約 {10000} 平方公尺。大約幾平方公尺？',
+                    en: '{1000} jia, one jia ≈ {1} hectare, one hectare ≈ {10000} m². About how many square metres?' },
+            answer: 10000000, unit: { zh: '平方公尺', en: 'm²' },
+            hint: { zh: '1000 × 10000：把兩個數字後面的 0 全部接起來！', en: '1000 × 10000: put all the zeros together!' },
+            teach: [
+              { zh: '一甲約一公頃，所以 1000 甲約 1000 公頃。再把公頃換成平方公尺。',
+                en: 'A jia is about a hectare, so 1,000 jia is about 1,000 hectares. Now convert to square metres.' },
+              { zh: '1000 × 10000：先算 1 × 1 ＝ 1，再數一數兩邊一共幾個 0（三個加四個）。',
+                en: '1000 × 10000: work out 1 × 1 = 1, then count the zeros — three plus four.' },
+              { zh: '1 後面接七個 0，就是一千萬；換你寫出來！',
+                en: 'One followed by seven zeros is ten million — your turn to write it!' },
+            ],
+            reward: { zh: '🗺️ 一千萬平方公尺！小Q抬起頭：「安安，還記得通議第多大嗎？」安安脫口而出：「三萬一千一百零四平方公尺！」小Q：「一千萬除以三萬一千，大約**三百二十座通議第**。」安安倒抽一口氣。小Q很輕地說：「這麼大的一片山，本來是誰的地？」安安張開嘴，可是說不出話來。',
+                      en: '🗺️ Ten million square metres! Little Q looks up: “An-An, how large was the Tongyi Mansion?” She answers at once: “Thirty-one thousand one hundred and four!” Little Q: “Ten million divided by thirty-one thousand is about **three hundred and twenty Tongyi Mansions.**” An-An draws in her breath. Little Q says very quietly: “A stretch of mountain that size. Whose land was it, before?” An-An opens her mouth and finds she cannot answer.' },
+          },
+        },
+        // 8 🔍 破案：一年是幾圓（7 × 365 ＝ 2555，比 2000 還多）
+        {
+          place: { zh: '🔍 一年是多少', en: '🔍 What a Year Comes To' },
+          emoji: '💰',
+          diagram: 'seven-yen',
+          story: { zh: '小Q把所有東西攤在校史室的桌上：光榮榜的照片、渡船頭的紀錄、萬基公司的章程、三井的茶園面積。「最後一題。」牠指著章程上那行小字：「每日抽出金 {7} 圓。一年 {365} 天。安安——**一年，是幾圓？**」安安拿起筆。她算得很慢，因為她已經隱約知道，這個數字算出來以後，牆上那面光榮榜就不會跟剛才一樣了。',
+                   en: 'Little Q lays everything on the table in the history room: the photograph of the honour board, the ferry records, the Wan-Ji articles, Mitsui’s acreage. “One last sum.” He points at the small line: “{7} yen a day. {365} days in a year. An-An — **what does a year come to?**” She picks up her pen. She works slowly, because she half knows already that once this number exists, the honour board on the wall will not look the same.' },
+          clueNote: { zh: '⭐ 每日 7 圓 × 365 天＝一年 2555 圓，比簡阿牛那筆刻在牆上的 2000 圓捐款還多', en: '⭐ 7 yen × 365 days = 2,555 a year — more than the 2,000-yen gift carved on the wall' },
+          puzzle: {
+            text: { zh: '每日抽出金 {7} 圓，一年 {365} 天。一年[一共]幾圓？',
+                    en: '{7} yen a day, {365} days a year. How many yen [in all] in a year?' },
+            answer: 2555, unit: { zh: '圓', en: 'yen' },
+            hint: { zh: '365 × 7：拆成 300 × 7 ＋ 60 × 7 ＋ 5 × 7！', en: '365 × 7: split into 300 × 7 + 60 × 7 + 5 × 7!' },
+            teach: [
+              { zh: '每天一樣多，用乘法：一天 7 圓，一年 365 天。',
+                en: 'The same each day — multiply: 7 yen, 365 days.' },
+              { zh: '365 × 7 拆開比較好算：300 × 7 ＝ 2100，60 × 7 ＝ 420，5 × 7 ＝ 35。',
+                en: '365 × 7 is easier split: 300 × 7 = 2100, 60 × 7 = 420, 5 × 7 = 35.' },
+              { zh: '2100 ＋ 420 ＋ 35……換你算出一年一共幾圓！',
+                en: '2100 + 420 + 35… you find the yearly total!' },
+            ],
+            reward: { zh: '💰 2555 圓！安安寫完最後一個數字，筆停在紙上，沒有抬頭。小Q輕輕地說：「兩千五百五十五圓。**一年。**」牠指了指光榮榜：「而牆上那筆有名字、刻得最大的捐款，是兩千圓。」校史室裡很安靜。小Q把三份說法一字排開：「安安，說吧——哪一份說了『出錢出力』，卻沒說那是什麼錢？」',
+                      en: '💰 2,555 yen! An-An writes the last digit and leaves her pen on the paper without looking up. Little Q says softly: “Two thousand five hundred and fifty-five. **In one year.**” He gestures at the board: “And the largest named gift up there is two thousand.” The room is very quiet. Little Q lays the three accounts in a row: “Say it, An-An — which one spoke of giving money, and never said what money it was?”' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'schoolstory', name: { zh: '📘 校史故事·光榮榜', en: '📘 The School Story · Honour Board' }, emoji: '📘',
+          say: { zh: '「本校創立之初，地方仕紳無私奉獻、出錢出力，為下一代辦了學校。作育英才，功在鄉里。」',
+                 en: '“At its founding, the gentry of this place gave selflessly of money and effort, building a school for the next generation. Nurturing talent; a service to our township.”' } },
+        { id: 'award', name: { zh: '📗 教育功勞者表彰狀', en: '📗 The Commendation for Services to Education' }, emoji: '📗',
+          say: { zh: '「呂鷹揚，熱心教育，貢獻卓著。大正十年獲臺灣教育會表彰為教育功勞者；大正十二年皇太子訪臺，再獲表彰。」',
+                 en: '“Lü Ying-yang, for zealous and distinguished service to education. Commended by the Taiwan Education Association in 1921; commended again on the Crown Prince’s visit in 1923.”' } },
+        { id: 'articles', name: { zh: '📙 萬基公司章程', en: '📙 The Wan-Ji Company Articles' }, emoji: '📙',
+          say: { zh: '「本公司經營樟腦製造，與大溪內山開墾。章程訂明：樟腦每日抽出金七圓，捐贈各公學校。」',
+                 en: '“This company engages in camphor manufacture and the clearance of Daxi’s inner mountains. The articles provide: seven yen daily, drawn from camphor, to be donated to the public schools.”' } },
+      ],
+      culprit: 'schoolstory',
+      accuse: { zh: '這一回一樣沒有壞人，而且要特別小心——**學校是真的，好處也是真的**，這一條我們一開始就先記住了。可是有一份說法，**主動講了錢**：它說「出錢出力」。既然講了錢，就該講清楚是什麼錢。你自己算過：每日七圓，一年兩千五百五十五圓，比牆上那筆刻得最大的捐款還多；而那筆錢的來源，章程第一條寫著「樟腦製造，與大溪內山開墾」。哪一份，說了「出錢」，卻沒說那是什麼錢？',
+                en: 'Again there is no villain, and here we must take particular care — **the school is real and so is the good it did**; we wrote that down first of all. But one account **raises the money itself:** it says they gave of their money. Having raised it, it owed us an account of what money. You did the sums: seven yen a day is 2,555 a year, more than the largest gift carved on that wall; and clause one names its source — camphor, and the clearance of Daxi’s inner mountains. Which account spoke of giving money, and never said what money?' },
+      wrongAccuse: { zh: '再想一次喔——📗那是一張**表彰狀**。獎狀本來就只寫功績，不會寫財務報表，那不叫漏掉，那是它的形式。📙萬基公司章程更是把「樟腦每日抽出金七圓」白紙黑字寫出來了，連錢從哪來都寫了「內山開墾」——它就是我們的硬證據。我們要找的是：**自己說了「出錢出力」，卻沒交代那是什麼錢的那一份。**📘',
+                     en: 'Think again — 📗 is a **commendation.** A citation records service, not accounts; that is its form, not an omission. 📙 the Wan-Ji articles state the seven-yen levy in black and white, and even name the source: the clearance of the inner mountains. They are our hard evidence. We want the one that **spoke of giving money and never accounted for it.** 📘' },
+      solve: [
+        { zh: '答案是📘校史故事的光榮榜！「無私奉獻、出錢出力」——他們確實出了錢，學校也確實辦起來了。可是那筆錢有名字：**樟腦每日抽出金七圓**，白紙黑字寫在萬基公司的章程裡。一天七圓，一個月兩百一十圓，**一年兩千五百五十五圓**。',
+          en: 'The answer is 📘 the school’s honour board! “Selfless giving of money and effort” — they did give, and the school was indeed built. But that money has a name: **seven yen a day, drawn from camphor,** written plainly into the Wan-Ji company’s articles. Seven a day, 210 a month, **2,555 a year.**' },
+        { zh: '小Q把兩種錢並排放好：「**捐款**是一次的、有名字的、金額寫得大大的、會被刻在牆上，一百年後小朋友還讀得到。**抽出金**是每一天的、沒有名字的、擠在章程第幾條裡、沒有人會去看。」牠停了一下：「安安，你剛剛算過了——哪一種比較多？」安安小小聲說：「……抽出金。一年就比那筆捐款還多。而且它**每天都在流**。」',
+          en: 'Little Q sets the two kinds of money side by side: “**A gift** is once, and named, and written large, and carved on a wall where children will read it a century later. **A levy** is every day, and unnamed, and buried in a numbered clause that nobody reads.” He pauses: “An-An, you have done the arithmetic. Which is larger?” She says quietly: “…The levy. One year of it beats that gift. And it **ran every single day.**”' },
+        { zh: '💰**錢從哪來？**小Q把三筆錢排成一列：「渡船頭的收入——那是**河**。學田的收益——那是**山地開墾**。萬基公司的樟腦抽出金——那也是**山**。」牠抬起頭：「安安，你發現了嗎？大溪國小早期的三筆錢，**一筆比一筆更往山裡去**。而章程第一條寫著四個字：『**內山開墾**』。」安安問：「小Q，『內山』是什麼意思？」小Q沒有回答。',
+          en: '💰 **Where did the money come from?** Little Q lines the three purses up: “The ferry’s takings — that is **the river.** The school-land’s yield — that is **mountain clearance.** The camphor levy — **the mountains** again.” He looks up: “Do you see it, An-An? The school’s three early purses run **further into the hills with each one.** And clause one uses four words: ‘**clearance of the inner mountains.**’” An-An asks: “Little Q, what does ‘inner mountains’ mean?” Little Q does not answer.' },
+        { zh: '小Q把光榮榜的照片放回桌上，語氣忽然很認真：「安安，聽好。**這不是要否定他們。**他們確實辦了學校、確實修了路，大溪國小到今天還在，你阿嬤就是在那裡學會寫字的。」牠停了很久：「可是——**一個好結果，不代表過程裡沒有別人。**牆上寫著六個人的名字。而那筆每天七圓的錢，是從一片沒有名字的山裡，一天一天流出來的。」',
+          en: 'Little Q sets the photograph down and his tone turns serious: “An-An, listen. **This is not about denying them.** They built a school and they built roads; Daxi Primary stands to this day, and your grandmother learned to write in it.” He is quiet a long time. “But — **a good ending does not mean nobody else was in the story.** There are six names on that wall. And the seven yen a day came, day after day, out of a stretch of mountain with no name at all.”' },
+        { zh: '⭐ 大溪小知識：呂鷹揚 1913 年與簡阿牛等人合組**萬基公司**，經營樟腦製造與大溪內山開墾；依蘭室的記載，公司章程規定「**樟腦每日抽出金七圓捐贈**」給各公學校——一年就是 2,555 圓。此外 1899–1902 年公學校曾獲**渡船頭的「利益收得權」**（年約七、八百圓），校地由板橋林家捐贈（就是 EP4 那座通議第的地），簡阿牛另捐款 2,000 圓。也就是說，大溪國小早期的經費結構是**渡船頭（河）＋學田（山地開墾）＋樟腦（萬基公司）**三層，全部匯流到同一所學校。第八張史料卡，到手！',
+          en: '⭐ Daxi fact: in 1913 Lü Ying-yang and Jian A-niu founded the **Wan-Ji company**, in camphor manufacture and the clearance of Daxi’s inner mountains; according to Lan Shi’s records its articles provided for **seven yen daily from camphor to be donated** to the public schools — 2,555 yen a year. Between 1899 and 1902 the school also held the **ferry’s right of proceeds** (some seven or eight hundred a year); the school land was given by the Banqiao Lin family (the very ground of the Tongyi Mansion); and Jian A-niu gave a further 2,000 yen. Daxi Primary’s early funding thus rested on three layers — **the ferry (river), the school-land (mountain clearance) and camphor (Wan-Ji)** — all flowing into one school. Archive Card eight — acquired!' },
+      ],
+      arcClue: { zh: '離開校史室的時候天已經黑了。安安一路上都沒說話，走到老榕樹下才停下來，抬頭問：「阿榕，『內山番地』是什麼意思？」風忽然停了。老榕樹的葉子一片都沒動，好像整棵樹在想事情。過了很久很久，阿榕才開口，聲音很小很小：「……那是**別人住的地方**。」安安站在原地，一動也不動。然後她感覺肩膀上一沉——阿藍落下來了，第八根羽毛掉在故事書上。那一整行名字，這一次整個亮了起來。安安看見最前面那一個，有**三個音節**。她試著念出來。這一次，阿藍沒有叫，牠只是把頭輕輕靠在安安的手上。',
+                 en: 'It is dark when they leave the history room. An-An says nothing the whole way, and only stops beneath the old banyan to ask: “Ah-Rong, what does ‘the inner mountains’ mean?” The wind drops. Not a leaf moves; the whole tree seems to be thinking. It is a long time before Ah-Rong answers, very small: “…It means **where other people lived.**” An-An stands quite still. Then she feels a weight on her shoulder — Ah-Lan has come down, and an eighth feather falls on the storybook. This time the whole line of names lights up. An-An sees that the first of them has **three syllables.** She tries to say it. This time Ah-Lan does not call out; she only rests her head lightly against An-An’s hand.' },
+      nextPreview: { zh: '下一站——四十八甲地！「六君子捐出四十八甲學田」是大溪最有名的一段美談。可是安安查到一件事：那六個人，是**各自拿自己的產業去抵押、跟銀行借了五千圓**，才有錢去開墾那塊地的。這不是捐出閒置的土地，是一樁有風險的投資。那塊地又是從哪裡來的？這一回要用面積單位和除法，把一筆貸款分攤到六個人身上。',
+                     en: 'Next — forty-eight jia! “The six gentlemen gave forty-eight jia of school-land” is Daxi’s best-loved story. But An-An finds something: those six men **pledged their own businesses and borrowed five thousand yen from the bank** to fund the clearing of that land. This was not the gift of idle acres; it was a venture, and a risky one. And where had the land itself come from? This time we use land measures and division to share one loan among six men.' },
+      reward: 500,
+    },
   ],
 }
 

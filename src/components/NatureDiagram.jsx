@@ -862,6 +862,34 @@ const DIAGRAMS = {
       <text x="80" y="101" fontSize="7.6" fill={C.green} textAnchor="middle" fontWeight="bold">大溪的是右邊那一種</text>
     </g>
   ),
+
+  // 每天七圓（S8 EP8）：萬基公司章程寫死的固定金流，樟腦 → 每日 7 圓 → 公學校
+  'seven-yen': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="14" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">萬基公司章程·寫死的一條金流</text>
+      {/* 左：樟腦鍋 */}
+      <ellipse cx="30" cy="56" rx="16" ry="5" fill="#7a5b34" />
+      <path d="M14,56 v-9 a16,9 0 0 1 32,0 v9 Z" fill="#8a6a45" stroke="#5d4426" strokeWidth="1" />
+      {[22, 30, 38].map((x, i) => (
+        <path key={x} d={`M${x},40 q-3,-6 0,-11 q3,-5 0,-9`} fill="none" stroke="#cfd8dd" strokeWidth="1.6" opacity={0.85 - i * 0.15} />
+      ))}
+      <text x="30" y="72" fontSize="7.5" fill={C.ink} textAnchor="middle" fontWeight="bold">樟腦</text>
+      <text x="30" y="82" fontSize="6.2" fill={C.sub} textAnchor="middle">（來自山裡）</text>
+      {/* 中：每日 7 圓 */}
+      <line x1="50" y1="52" x2="104" y2="52" stroke={C.red} strokeWidth="2" />
+      <path d="M104,52 l-6,-3.4 v6.8 z" fill={C.red} />
+      <circle cx="77" cy="38" r="11" fill="#ffe8a3" stroke="#d98a00" strokeWidth="1.4" />
+      <text x="77" y="42" fontSize="11" fill="#a86a00" textAnchor="middle" fontWeight="bold">7</text>
+      <text x="77" y="64" fontSize="7.5" fill={C.red} textAnchor="middle" fontWeight="bold">每日抽出金 7 圓</text>
+      {/* 右：公學校 */}
+      <rect x="110" y="42" width="38" height="20" fill="#f0e2c2" stroke="#b9ab90" strokeWidth="1" />
+      <path d="M108,42 h42 l-5,-7 h-32 Z" fill="#c96f52" stroke="#8e4c30" strokeWidth="1" />
+      {[0, 1, 2].map((i) => <rect key={i} x={115 + i * 11} y="47" width="6" height="7" fill={C.water2} opacity="0.7" />)}
+      <text x="129" y="72" fontSize="7.5" fill={C.ink} textAnchor="middle" fontWeight="bold">公學校</text>
+      <text x="80" y="95" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">一天 7 圓 × 一年 365 天 ＝ ?</text>
+    </g>
+  ),
 }
 
 // ── 資料驅動圖表：題目給哪些數字，就照那些數字現場畫，孩子看到的圖和題目一模一樣 ──

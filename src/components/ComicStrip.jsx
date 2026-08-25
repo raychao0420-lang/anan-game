@@ -439,6 +439,28 @@ const BG = {
       <path d="M126,74 q10,-14 22,0 Z" fill="#241f1a" />
     </g>
   ),
+  // 樟腦寮（S8 EP8 起）：山裡的草寮＋大灶＋白煙，樟腦錢的源頭
+  camphor: (
+    <g>
+      <rect width="160" height="90" fill={C.skyDusk} />
+      <path d="M0,90 V40 Q34,16 68,28 Q104,42 134,20 Q150,10 160,16 V90 Z" fill="#6f7a5c" />
+      <path d="M0,90 V56 Q42,44 84,52 Q124,60 160,50 V90 Z" fill="#57604a" />
+      <rect y="76" width="160" height="14" fill="#5d5340" />
+      {/* 草寮 */}
+      <path d="M34,76 v-18 h48 v18 Z" fill="#8a6a45" />
+      <path d="M28,58 h60 l-8,-13 h-44 Z" fill="#b39a68" stroke="#8a7648" strokeWidth="1" />
+      {[0, 1, 2, 3].map((i) => <line key={i} x1={32 + i * 14} y1="58" x2={38 + i * 14} y2="45" stroke="#8a7648" strokeWidth="0.8" />)}
+      <rect x="52" y="64" width="12" height="12" fill="#4a4133" />
+      {/* 大灶＋白煙 */}
+      <ellipse cx="108" cy="74" rx="15" ry="4.5" fill="#5d4426" />
+      <path d="M93,74 v-8 a15,8 0 0 1 30,0 v8 Z" fill="#7a5b34" stroke="#4f3a20" strokeWidth="1" />
+      {[100, 108, 116].map((x, i) => (
+        <path key={x} d={`M${x},62 q-4,-8 0,-14 q4,-7 0,-12`} fill="none" stroke="#e8eef1" strokeWidth="2" opacity={0.8 - i * 0.18} />
+      ))}
+      {/* 堆著的樟木 */}
+      {[0, 1, 2].map((i) => <ellipse key={i} cx={136 + (i % 2) * 7} cy={72 - i * 5} rx="7" ry="3.4" fill="#9a7a4e" stroke="#6d5230" strokeWidth="0.8" />)}
+    </g>
+  ),
   // 大溪國小（S8 EP4）：米黃校舍＋跑道操場＋校門邊那塊「林家捐地」石碑
   school: (
     <g>
