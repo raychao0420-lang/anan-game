@@ -663,6 +663,52 @@ const DIAGRAMS = {
       <text x="80" y="93" fontSize="7.8" fill={C.ink} textAnchor="middle" fontWeight="bold">輪子＋鐵軌＝省力；上坡費力、下坡加速</text>
     </g>
   ),
+
+  // 通議第平面（S8 EP4）：長 216 × 寬 144 的城，正好＝今天的校地＋綜合球場
+  'fortress-plan': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="15" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">通議第的範圍（1843）</text>
+      <rect x="26" y="22" width="112" height="39" fill="#e6f0dc" stroke={C.green} strokeWidth="1.2" />
+      <text x="82" y="38" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">大溪國小 校地</text>
+      <text x="82" y="49" fontSize="7" fill={C.sub} textAnchor="middle">216 × 100</text>
+      <rect x="26" y="61" width="112" height="17" fill="#f6e3c8" stroke={C.sunEdge} strokeWidth="1.2" />
+      <text x="82" y="72" fontSize="7.5" fill={C.ink} textAnchor="middle" fontWeight="bold">綜合球場 216 × 44</text>
+      {/* 長 216（下） */}
+      <line x1="26" y1="84" x2="138" y2="84" stroke={C.ink} strokeWidth="1" />
+      <path d="M26,84 l5,-3 v6 z M138,84 l-5,-3 v6 z" fill={C.ink} />
+      <text x="82" y="92" fontSize="7.5" fill={C.ink} textAnchor="middle">長 216 公尺</text>
+      {/* 寬 144（左） */}
+      <line x1="20" y1="22" x2="20" y2="78" stroke={C.red} strokeWidth="1" />
+      <path d="M20,22 l-3,5 h6 z M20,78 l-3,-5 h6 z" fill={C.red} />
+      <text x="11" y="50" fontSize="7.5" fill={C.red} textAnchor="middle" transform="rotate(-90,11,50)">寬 144</text>
+      <text x="82" y="101" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">100 ＋ 44 ＝ 144，一公尺都不差</text>
+    </g>
+  ),
+
+  // 城牆剖面（S8 EP4）：高 4 公尺、厚 4.5 公尺——厚的比高的還大，這是工事不是圍牆
+  'wall-thick': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="15" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">通議第城牆·剖面</text>
+      <rect x="8" y="74" width="144" height="7" fill={C.ground} />
+      <rect x="48" y="20" width="63" height="54" fill={C.stone} stroke="#8d8678" strokeWidth="1.2" />
+      {[0, 1, 2, 3].map((r) => (
+        <line key={r} x1="48" y1={31 + r * 11} x2="111" y2={31 + r * 11} stroke="#8d8678" strokeWidth="0.7" />
+      ))}
+      {/* 高 4（左） */}
+      <line x1="40" y1="20" x2="40" y2="74" stroke={C.red} strokeWidth="1" />
+      <path d="M40,20 l-3,5 h6 z M40,74 l-3,-5 h6 z" fill={C.red} />
+      <text x="31" y="47" fontSize="8" fill={C.red} textAnchor="middle" fontWeight="bold" transform="rotate(-90,31,47)">高 4</text>
+      {/* 厚 4.5（下） */}
+      <line x1="48" y1="88" x2="111" y2="88" stroke={C.green} strokeWidth="1" />
+      <path d="M48,88 l5,-3 v6 z M111,88 l-5,-3 v6 z" fill={C.green} />
+      <text x="80" y="99" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">厚 4.5 公尺</text>
+      {/* 對照：一般人家的圍牆 */}
+      <rect x="128" y="50" width="4" height="24" fill="#e8e4da" stroke={C.line} strokeWidth="0.8" />
+      <text x="130" y="46" fontSize="6.2" fill={C.sub} textAnchor="middle">一般圍牆</text>
+    </g>
+  ),
 }
 
 // ── 資料驅動圖表：題目給哪些數字，就照那些數字現場畫，孩子看到的圖和題目一模一樣 ──

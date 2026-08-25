@@ -386,6 +386,52 @@ const BG = {
       </g>
     </g>
   ),
+  // 大溪國小（S8 EP4）：米黃校舍＋跑道操場＋校門邊那塊「林家捐地」石碑
+  school: (
+    <g>
+      <rect width="160" height="90" fill={C.sky} />
+      <rect y="52" width="160" height="38" fill="#cfe0b8" />
+      <ellipse cx="88" cy="76" rx="66" ry="15" fill="#c98a6a" />
+      <ellipse cx="88" cy="76" rx="52" ry="9" fill="#cfe0b8" />
+      <rect x="30" y="26" width="96" height="28" fill="#f0e2c2" />
+      <rect x="26" y="21" width="104" height="6" fill={C.brick} />
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <rect key={i} x={36 + i * 15} y="32" width="9" height="10" fill={C.water2} opacity="0.7" />
+      ))}
+      <rect x="72" y="42" width="12" height="12" fill={C.wood2} />
+      {/* 石碑 */}
+      <rect x="12" y="56" width="12" height="20" rx="1.5" fill={C.stone} />
+      <rect x="9" y="74" width="18" height="4" rx="1" fill="#9a9384" />
+      <path d="M15,60 v12 M19,60 v12" stroke={C.dark} strokeWidth="0.8" opacity="0.45" />
+      {/* 樹 */}
+      <rect x="140" y="44" width="5" height="14" fill={C.wood2} />
+      <circle cx="142" cy="40" r="11" fill={C.green2} />
+      <circle cx="151" cy="46" r="7" fill={C.green} />
+    </g>
+  ),
+  // 通議第（S8 EP4）：石砌城牆＋城門樓——學校底下那座消失的城
+  fortress: (
+    <g>
+      <rect width="160" height="90" fill={C.skyDusk} />
+      <rect y="64" width="160" height="26" fill="#cfbf9a" />
+      <rect y="38" width="160" height="26" fill={C.stone} />
+      {[0, 1, 2].map((r) => (
+        <line key={r} x1="0" y1={45 + r * 7} x2="160" y2={45 + r * 7} stroke="#9a9384" strokeWidth="0.7" />
+      ))}
+      {[...Array(11)].map((_, i) => (
+        <line key={i} x1={8 + i * 14} y1="38" x2={8 + i * 14} y2="64" stroke="#9a9384" strokeWidth="0.7" />
+      ))}
+      {/* 城門樓 */}
+      <rect x="58" y="20" width="44" height="18" fill={C.brick} />
+      <path d="M52,20 h56 l-6,-6 h-44 Z" fill={C.brick2} />
+      <rect x="66" y="26" width="8" height="8" fill={C.dark} opacity="0.55" />
+      <rect x="86" y="26" width="8" height="8" fill={C.dark} opacity="0.55" />
+      {/* 城門洞 */}
+      <path d="M70,64 v-12 a10,10 0 0 1 20,0 v12 Z" fill={C.dark} opacity="0.75" />
+      {/* 米倉的旗 */}
+      <path d="M104,20 v-13 h11 l-3.5,4 3.5,4 h-11" fill={C.gold} />
+    </g>
+  ),
   // 老榕樹下：阿榕留下故事書那一頁的地方（每集破案後共用）
   banyan: (
     <g>
