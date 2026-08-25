@@ -2694,8 +2694,296 @@ export const SEASON9 = {
       ],
       arcClue: { zh: '走出咖啡店，天已經黑了——北方的冬天，下午三點就天黑。安安在手帳貼上第九張貼紙，旁邊寫下：「1946 比 1950 早四年。原因不能排在結果後面。」寫完她抬起頭，發現圓圓已經自己走進雪地裡去了。橘色的貓站在一片白色中間，愣愣地看著自己的腳印，然後回頭看安安，喵了一聲——那一聲聽起來，好像在說「原來雪是這樣的」。',
                  en: 'Outside the café it is already dark — in the northern winter, night falls at three in the afternoon. An-An sticks the ninth sticker into her notebook and writes beside it: "1946 is four years before 1950. A cause cannot come after its effect." Looking up, she finds Yuan-Yuan has walked out into the snow by herself. The ginger cat stands in all that white, staring blankly at her own paw prints, then turns back and mews once — and it sounds very much like *so this is what snow is.*' },
-      nextPreview: { zh: '下一站還在羅瓦涅米——這一次要問一個更奇怪的問題：聖誕老人**是怎麼搬來這裡的**？他原本在芬蘭不是送禮物的，還是一隻山羊；他的家是一個廣播節目「宣布」的；而觀光客排隊拍照的那條北極圈白線……其實畫錯地方了。這一回，要用小數和長度換算，找出真正的北極圈在哪裡。',
-                     en: 'The next stop is still Rovaniemi — but with a stranger question: how exactly did Santa Claus *move here*? In Finland he was not originally a gift-giver at all, but a goat; his home address was announced by a radio programme; and that white Arctic Circle line the tourists queue to photograph… is drawn in the wrong place. This time, decimals and length conversion will find where the real Arctic Circle lies.' },
+      nextPreview: { zh: '下一站還在羅瓦涅米——這一次要問一個更奇怪的問題：聖誕老人**是怎麼搬來這裡的**？他原本在芬蘭不是送禮物的，還是一隻山羊；他的家是一個廣播節目「宣布」的；而觀客排隊拍照的那條北極圈白線……站在上面的人，其實還沒真的踏進北極圈。這一回，要用小數和長度換算，找出真正的北極圈在哪裡。',
+                     en: 'The next stop is still Rovaniemi — but with a stranger question: how exactly did Santa Claus *move here*? In Finland he was not originally a gift-giver at all, but a goat; his home address was announced by a radio programme; and the tourists queuing to photograph that white Arctic Circle line… have not actually stepped into the Arctic Circle at all. This time, decimals and length conversion will find where the real Arctic Circle lies.' },
+      reward: 500,
+    },
+
+    // ─────────────────────────────────────── S9 EP10 ───────────────────────────────────────
+    // 芬蘭篇第四站：聖誕老人村（羅瓦涅米東北約 8 公里）。
+    // 數字查證（2026-08-25 重新查過，⚠️ 修正劇本舊稿的錯誤）：
+    //   ❌ 舊稿寫「白線畫的是 1865 年的位置、真正北極圈在北邊 700 公尺」→ 查不到可靠來源，已棄用。
+    //   ✅ 正確版本：白線是 1950 年 Eleanor Roosevelt 造訪後、1950 年代設立的；北極圈因地球轉軸傾角
+    //      緩慢變化而【每年往北移動約 14~15 公尺】；現在真正的北極圈在標線【北方約 1.2 公里】。
+    //   ⭐ 這三個數字自己會互相驗證：2026−1950＝76 年，76×15＝1140 公尺＝1.14 公里 ≈ 實測的 1.2 公里。
+    //      這條算式鏈就是本集的破案核心——安安算出來的數字跟實際量到的吻合，才能證明「不是有人畫錯」。
+    // 其他查證：Joulupukki 字面＝「聖誕山羊」（joulu＝耶魯節、pukki＝公羊）；基督教傳入前的 Nuuttipukki
+    //   戴獸皮面具挨家挨戶【討】東西，不是送禮；1927 年廣播主持人 Markus Rautio（馬庫斯叔叔）在兒童節目
+    //   宣布聖誕老人住在 Korvatunturi（耳朵山，山形像一對耳朵，所以聽得見全世界小孩的願望）；
+    //   ⚠️ 耳朵山在更東邊的 Savukoski 靠近芬俄邊界，【不在羅瓦涅米】；聖誕老人村 1980 年代開幕（來源有
+    //   1980 與 1985 兩說，故遊戲內只寫「一九八〇年代」），設有正式的聖誕老人主郵局。
+    // 案件手法第四種（前三集都用過了，刻意再換）：【不是誰說錯，是被量的東西自己會動】——
+    //   線沒有畫錯、村子也沒有騙人，是北極圈這七十幾年自己往北跑了一公里多。
+    //   教訓：看板不準，不一定是因為有人說謊，也可能是因為【數字會過期】。
+    {
+      id: 's9ep10',
+      comicIntro: [
+        { bg: 'santa', cast: ['anan', 'feifei', '🐈'],
+          say: { zh: '從市區往東北走八公里，就是聖誕老人村。地上一條白線，排滿了等著拍照的人。',
+                 en: 'Eight kilometres northeast of town lies Santa Claus Village. A white line runs across the ground, lined with people waiting to be photographed.' } },
+        { bg: 'santa', cast: ['anan', '😤', '📏'],
+          say: { zh: '一位觀光客氣呼呼地說：「我用手機一量，這條線根本不是北極圈！他們騙人！」',
+                 en: 'A tourist fumes: "I checked on my phone — this line isn’t the Arctic Circle at all! They’re cheating us!"' } },
+      ],
+      comicSolve: [
+        { bg: 'santa', cast: ['anan', '📏'],
+          say: { zh: '安安舉起手帳：「線沒畫錯。是北極圈這七十六年，自己往北走了一公里多。」',
+                 en: 'An-An holds up her notebook: "The line isn’t wrong. The Arctic Circle has walked a kilometre north in seventy-six years."' } },
+        { bg: 'snowforest', cast: ['anan', '🐈'],
+          say: { zh: '圓圓一腳踩在白線上，一腳踩在線外，抬頭看安安。〈手帳貼紙 10 · 聖誕老人是怎麼搬來的〉',
+                 en: 'Yuan-Yuan stands with one paw on the line and one paw past it, and looks up at An-An. Sticker 10 — How Santa Moved In.' } },
+      ],
+      no: 10,
+      title: { zh: '聖誕老人是怎麼搬來的', en: 'How Santa Moved In' },
+      emoji: '🎅',
+      accent: '#c0504d',
+      difficulty: { zh: '乘法·公里換算·二位小數（四上）', en: 'Times · km conversion · two-place decimals (Grade 4-1)' },
+      sticker: { id: 'santa', emoji: '🎅', name: { zh: '手帳貼紙 10 · 聖誕老人是怎麼搬來的', en: 'Sticker 10 · How Santa Moved In' } },
+      intro: [
+        { zh: '隔天早上，安安終於要去那個地方了——聖誕老人村。從市區往東北開了大約 {8} 公里，車子停在一片雪白的木屋前面。安安一下車就看見了：地上有一條長長的白線，橫過整個廣場，線的兩邊排滿了人，每個人都張開雙手站在線上拍照。牌子上寫著大大的字：**ARCTIC CIRCLE 北極圈**。',
+          en: 'The next morning An-An finally goes to the place — Santa Claus Village. Some {8} kilometres northeast of town, the car stops before a cluster of snow-white wooden cabins. She sees it the moment she steps out: a long white line running clear across the plaza, people queued on either side, each standing astride it with arms spread for a photograph. The sign reads in large letters: **ARCTIC CIRCLE.**' },
+        { zh: '可是排隊的隊伍前面，有一位觀光客正在生氣。他舉著手機大聲說：「我剛剛用手機定位量過了——真正的北極圈根本不在這裡！這條線是假的！他們故意畫錯，好讓大家排隊拍照！」旁邊的人開始交頭接耳。村子的工作人員站在一旁，一臉為難。小Q🦉飛到安安肩膀上，小聲說：「安安……這一題，恐怕不是誰說謊那麼簡單。」',
+          en: 'But at the head of the queue a tourist is angry. He waves his phone: "I just checked the GPS — the real Arctic Circle isn’t here at all! This line is fake! They drew it wrong on purpose so people would queue up for photos!" Murmurs spread through the crowd. A village staff member stands to one side, looking uncomfortable. Little Q 🦉 flutters to An-An’s shoulder and murmurs: "An-An… this one may not be as simple as somebody lying."' },
+      ],
+      scenes: [
+        // 1 🐐 乘法：聖誕老人原本是來討東西的山羊
+        {
+          place: { zh: '🐐 聖誕老人原本是一隻山羊', en: '🐐 Santa Was Once a Goat' },
+          emoji: '🐐',
+          story: { zh: '安安走進村子裡的小展覽室避風。導覽員笑著說：「你知道嗎？芬蘭話的聖誕老人叫 **Joulupukki**，字面意思是『**聖誕山羊**』喔。」她指著一張老照片，上面是戴著獸皮面具的人：「更早以前，這些人挨家挨戶去，不是送禮物——是**去討東西的**。」她舉例：「假設一隊走了 {12} 戶人家，每戶給了 {3} 樣年節剩下的東西，你算算看一共討到幾樣？」',
+                   en: 'An-An ducks into a small exhibition room out of the wind. The guide smiles: "Did you know the Finnish Santa is called **Joulupukki** — literally, the **Christmas goat**?" She points to an old photo of figures in fur masks. "Long ago these ones went door to door, and not to give presents — they came to **ask for things.**" She offers an example: "Say a group visited {12} houses and each gave {3} leftover treats from the feast — how many did they collect in all?"' },
+          clueNote: { zh: 'Joulupukki字面＝聖誕山羊；基督教傳入前的Nuuttipukki戴獸皮面具挨家挨戶討東西，不是送禮', en: 'Joulupukki literally means "Christmas goat"; the pre-Christian Nuuttipukki went door to door in fur masks asking for things, not giving' },
+          puzzle: {
+            text: { zh: '走了 {12} 戶，每戶給 {3} 樣。[一共]討到幾樣？',
+                    en: '{12} houses, {3} items each. How many collected [in all]?' },
+            answer: 36, unit: { zh: '樣', en: 'items' },
+            hint: { zh: '每戶一樣多，用乘法：3 × 12！', en: 'Equal houses — multiply: 3 × 12!' },
+            teach: [
+              { zh: '每一戶給的一樣多，用乘法：每戶 3 樣，走了 12 戶。', en: 'Each house gives the same — multiply: 3 items, 12 houses.' },
+              { zh: '3 × 12：可以先算 3 × 10 ＝ 30，再加 3 × 2 ＝ 6。', en: '3 × 12: try 3 × 10 = 30, then add 3 × 2 = 6.' },
+              { zh: '30 ＋ 6……換你算出一共討到幾樣！', en: '30 + 6… you work out the total!' },
+            ],
+            reward: { zh: '🐐 36 樣！安安笑出來：「所以聖誕老人以前不是給東西，是來要東西的？」導覽員點頭：「而且吵得隔壁農場都聽得見。是後來才慢慢變成和藹的送禮物老公公的。」',
+                      en: '🐐 36! An-An laughs: "So Santa used to take things instead of giving them?" The guide nods: "And loudly enough that the neighbouring farm could hear. Only later did he soften into the kindly gift-giver."' },
+          },
+        },
+        // 2 📻 減法：家是廣播節目宣布的
+        {
+          place: { zh: '📻 他的家，是廣播「宣布」的', en: '📻 His Address Was Announced on the Radio' },
+          emoji: '📻',
+          story: { zh: '牆上掛著一台老收音機。導覽員說：「聖誕老人住在哪裡？這件事其實是**廣播節目講出來的**。{1927} 年，一位叫馬庫斯叔叔的主持人在兒童節目上宣布：聖誕老人住在『耳朵山』。」安安睜大眼睛：「耳朵山？」「那座山的形狀像一對耳朵，所以他聽得見全世界小孩的願望啊。」小Q：「從 {1927} 年到今年 {2026} 年，幾年了？」',
+                   en: 'An old radio set hangs on the wall. The guide says: "Where does Santa live? That was actually **announced on the radio.** In {1927} a presenter called Uncle Markus told a children’s programme that Santa lives at Ear Fell." An-An’s eyes go wide: "Ear Fell?" "The mountain is shaped like a pair of ears — so he can hear the wishes of every child in the world." Little Q: "From {1927} to this year, {2026} — how many years?"' },
+          clueNote: { zh: '1927年廣播主持人Markus Rautio宣布聖誕老人住耳朵山Korvatunturi；⚠️耳朵山在更東邊的Savukoski，不在羅瓦涅米', en: 'In 1927 radio host Markus Rautio announced Santa lives at Korvatunturi (Ear Fell); ⚠️ it lies further east in Savukoski, NOT in Rovaniemi' },
+          puzzle: {
+            text: { zh: '{1927} 年廣播宣布，今年 {2026} 年。已經幾年了？',
+                    en: 'Announced in {1927}; this year is {2026}. How many years?' },
+            answer: 99, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代相差用減法：2026 − 1927！', en: 'Subtract the years: 2026 − 1927!' },
+            teach: [
+              { zh: '一樣的算法：今年減掉宣布的那一年。', en: 'Same method: this year minus the year of the announcement.' },
+              { zh: '2026 − 1927：先算 2026 − 1900 ＝ 126，再減 27。', en: '2026 − 1927: try 2026 − 1900 = 126, then subtract 27.' },
+              { zh: '126 − 27……換你算出過了幾年！', en: '126 − 27… you work out the years!' },
+            ],
+            reward: { zh: '📻 99 年！小Q忽然補了一句很重要的話：「等一下——耳朵山其實在更東邊，靠近國界，**不在羅瓦涅米**喔。」安安愣住：「那我們現在站的這裡是……？」導覽員笑而不答。',
+                      en: '📻 99 years! Then Little Q adds something important: "Hold on — Ear Fell is actually further east, near the border. It is **not in Rovaniemi.**" An-An freezes: "Then where are we standing right now…?" The guide only smiles.' },
+          },
+        },
+        // 3 📏 公里換公尺：村子離市區多遠
+        {
+          place: { zh: '📏 村子離市區多遠', en: '📏 How Far from Town' },
+          emoji: '🚌',
+          story: { zh: '安安翻開地圖：「我們今天早上從市區開過來，大概 {8} 公里。」小Q：「換算成公尺是幾公尺？」',
+                   en: 'An-An opens the map: "We drove out from town this morning, about {8} kilometres." Little Q: "How many metres is that?"' },
+          clueNote: { zh: '聖誕老人村在羅瓦涅米市區東北約8公里＝8000公尺', en: 'Santa Claus Village lies about 8 km — 8000 m — northeast of central Rovaniemi' },
+          puzzle: {
+            text: { zh: '{8} 公里，換算成公尺是幾公尺？',
+                    en: '{8} kilometres — how many metres?' },
+            answer: 8000, unit: { zh: '公尺', en: 'm' },
+            hint: { zh: '1 公里 ＝ 1000 公尺，8 公里就是 8 個 1000！', en: '1 km = 1000 m, so 8 km is eight 1000s!' },
+            teach: [
+              { zh: '公里換公尺，記住 1 公里 ＝ 1000 公尺。', en: 'To convert km to m: 1 km = 1000 m.' },
+              { zh: '8 公里就是 8 × 1000。', en: '8 km is 8 × 1000.' },
+              { zh: '換你算出是幾公尺！', en: 'You work out the metres!' },
+            ],
+            reward: { zh: '🚌 8000 公尺！安安在手帳畫了一條線：市區 → 8 公里 → 村子。「等一下，這個換算等一下好像會用到……」她自己也還不知道為什麼這麼想。',
+                      en: '🚌 8000 metres! An-An sketches a line in her notebook: town → 8 km → village. "Wait, I feel like I’ll need this conversion again in a minute…" She does not yet know why she thinks so.' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 56）
+        {
+          kind: 'choice',
+          place: { zh: '村子裡的兩個地方', en: 'Two Places in the Village' },
+          emoji: '🔀',
+          story: { zh: '外面那位觀光客還在吵。工作人員為難地說：「小朋友，你們要不要先去別處看看？」他指指兩邊：「左邊是聖誕老人的主郵局，全世界小孩寄來的信都在那裡；右邊是馴鹿的雪橇場。」圓圓已經自己走出去了——牠正一步一步，慢慢地靠近那條白線。',
+                   en: 'Outside, the tourist is still arguing. The staff member says awkwardly: "Children, perhaps look around elsewhere first?" He points both ways: "Left, Santa’s main post office, where letters from children all over the world arrive; right, the reindeer sleigh yard." Yuan-Yuan has already slipped outside — and is padding, step by careful step, towards that white line.' },
+          question: { zh: '★ 你來決定！要先去哪一邊？（兩邊都行，選你喜歡的！）',
+                      en: '★ You decide! Which way first? (Either works — pick your favourite!)' },
+          options: [
+            {
+              id: 'postoffice',
+              label: { zh: '📮 聖誕老人主郵局', en: '📮 Santa’s Main Post Office' },
+              scene: {
+                place: { zh: '聖誕老人主郵局', en: 'Santa’s Main Post Office' },
+                emoji: '📮',
+                story: { zh: '郵局裡堆滿了信，牆上貼著各種語言的明信片。郵局員工說：「今天早上到的這一批，{7} 袋，每袋 {8} 封。」安安小聲問：「這些都是小孩寫的嗎？」員工點點頭：「每一封我們都會收好。」',
+                         en: 'The post office is heaped with letters, postcards in every language pinned to the walls. A worker says: "This morning’s batch is {7} sacks of {8} letters." An-An asks quietly: "Are these all from children?" The worker nods: "And we keep every single one."' },
+                clueNote: { zh: '今早到的信共56封（7袋×8封）；村裡設有正式的聖誕老人主郵局', en: '56 letters arrived this morning (7 sacks × 8); the village has an official Santa Claus main post office' },
+                puzzle: {
+                  text: { zh: '信 {7} 袋，每袋 {8} 封，[一共]幾封？', en: '{7} sacks, {8} letters each. How many [in all]?' },
+                  answer: 56, unit: { zh: '封', en: 'letters' },
+                  hint: { zh: '每袋一樣多，用乘法：8 × 7！', en: 'Equal sacks — multiply: 8 × 7!' },
+                  teach: [
+                    { zh: '一袋一袋一樣多，用乘法：每袋 8 封，有 7 袋。', en: 'Equal sacks — multiply: 8 letters, 7 sacks.' },
+                    { zh: '就是 8 × 7（或 7 × 8，答案一樣）。', en: 'That is 8 × 7 (or 7 × 8 — same answer).' },
+                    { zh: '8 × 7……換你算出一共幾封信！', en: '8 × 7… you count the letters!' },
+                  ],
+                  reward: { zh: '📮 56 封！而且這只是今天早上的一批。安安看著那些歪歪扭扭的字跡，忽然覺得心裡暖暖的。', en: '📮 56 letters — and that is only this morning’s batch. Looking at all that wobbly handwriting, An-An feels something warm settle in her chest.' },
+                },
+              },
+            },
+            {
+              id: 'reindeer',
+              label: { zh: '🦌 馴鹿的雪橇場', en: '🦌 The Reindeer Sleigh Yard' },
+              scene: {
+                place: { zh: '馴鹿的雪橇場', en: 'The Reindeer Sleigh Yard' },
+                emoji: '🦌',
+                story: { zh: '雪橇場上，馴鹿正安靜地吃著地衣，呼出來的白氣一團一團。飼育員說：「今天出勤的分成 {8} 隊，每隊 {7} 隻。」安安伸手摸了摸馴鹿的鼻子，暖暖的。',
+                         en: 'In the yard the reindeer graze quietly on lichen, their breath rising in white puffs. A handler says: "Today’s teams are {8} groups of {7}." An-An reaches out and touches a reindeer’s nose — warm.' },
+                clueNote: { zh: '今天出勤的馴鹿共56隻（8隊×7隻）', en: '56 reindeer working today (8 teams × 7)' },
+                puzzle: {
+                  text: { zh: '馴鹿 {8} 隊，每隊 {7} 隻，[一共]幾隻？', en: '{8} teams, {7} reindeer each. How many [in all]?' },
+                  answer: 56, unit: { zh: '隻', en: 'reindeer' },
+                  hint: { zh: '每隊一樣多，用乘法：7 × 8！', en: 'Equal teams — multiply: 7 × 8!' },
+                  teach: [
+                    { zh: '一隊一隊一樣多，用乘法：每隊 7 隻，有 8 隊。', en: 'Equal teams — multiply: 7 reindeer, 8 teams.' },
+                    { zh: '就是 7 × 8（或 8 × 7，答案一樣）。', en: 'That is 7 × 8 (or 8 × 7 — same answer).' },
+                    { zh: '7 × 8……換你算出一共幾隻馴鹿！', en: '7 × 8… you count the reindeer!' },
+                  ],
+                  reward: { zh: '🦌 56 隻！飼育員笑著說：「牠們不會飛，這點要先跟你說清楚。」安安大笑。', en: '🦌 56! The handler grins: "They can’t fly — best you hear that from me first." An-An bursts out laughing.' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 📅 減法：白線立了幾年
+        {
+          place: { zh: '📅 那條線是什麼時候畫的', en: '📅 When Was the Line Drawn' },
+          emoji: '🤍',
+          story: { zh: '回到廣場，爭吵還沒停。一位穿著螢光背心的測量隊工程師剛好路過，停下來說：「這條線不是隨便畫的。」她翻開工作板：「{1950} 年，美國第一夫人來訪之後，這裡開始有觀光客，那條北極圈紀念線就是在那個年代畫下去的。」小Q：「到今年 {2026} 年，這條線立了幾年了？」',
+                   en: 'Back at the plaza the argument has not died down. A surveyor in a hi-vis vest happens past and stops. "That line was not drawn carelessly." She opens her clipboard. "After the American First Lady’s visit in {1950}, tourists began coming here, and the commemorative Arctic Circle line was laid down in that era." Little Q: "And to this year, {2026} — how long has the line stood?"' },
+          clueNote: { zh: '北極圈紀念白線是1950年代（Roosevelt夫人來訪後）畫的，到2026年共76年', en: 'The commemorative Arctic Circle line was laid in the 1950s, after Mrs Roosevelt’s visit — 76 years to 2026' },
+          puzzle: {
+            text: { zh: '{1950} 年畫的線，今年 {2026} 年。立了幾年了？',
+                    en: 'The line dates to {1950}; this year is {2026}. How many years has it stood?' },
+            answer: 76, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代相差用減法：2026 − 1950！', en: 'Subtract the years: 2026 − 1950!' },
+            teach: [
+              { zh: '一樣的算法：今年減掉畫線那一年。', en: 'Same method: this year minus the year it was drawn.' },
+              { zh: '2026 − 1950：先算 2026 − 2000 ＝ 26，再加回 50。', en: '2026 − 1950: try 2026 − 2000 = 26, then add back 50.' },
+              { zh: '26 ＋ 50……換你算出這條線立了幾年！', en: '26 + 50… you work out how long the line has stood!' },
+            ],
+            reward: { zh: '🤍 76 年！工程師點點頭：「記住這個數字。等一下你會用到。」安安握緊了鉛筆。',
+                      en: '🤍 76 years! The surveyor nods: "Remember that number. You will need it shortly." An-An grips her pencil.' },
+          },
+        },
+        // 6 ✖️ 乘法：北極圈每年往北移動
+        {
+          place: { zh: '✖️ 北極圈自己會走路', en: '✖️ The Arctic Circle Walks' },
+          emoji: '🧭',
+          diagram: 'map-compass',
+          story: { zh: '工程師蹲下來，在雪地上畫了一條線，又在旁邊畫了一條：「小朋友，北極圈**不是地上的一條線**，它是地球轉軸傾斜的角度決定出來的。而那個角度，一直在很慢很慢地改變。」她抬起頭：「所以北極圈**每年會往北移動大約 {15} 公尺**。」小Q：「安安，{76} 年下來，一共往北跑了幾公尺？」',
+                   en: 'The surveyor crouches and draws a line in the snow, then another beside it. "Children, the Arctic Circle **is not a line on the ground.** It is defined by the tilt of the Earth’s axis — and that angle is slowly, constantly changing." She looks up. "So the Arctic Circle **moves north about {15} metres every year.**" Little Q: "An-An — over {76} years, how far north has it travelled?"' },
+          clueNote: { zh: '⭐ 北極圈因地球轉軸傾角變化，每年往北移動約15公尺；76年×15公尺＝1140公尺', en: '⭐ The Arctic Circle drifts north about 15 m a year as Earth’s axial tilt changes; 76 years × 15 m = 1140 m' },
+          puzzle: {
+            text: { zh: '每年往北移 {15} 公尺，過了 {76} 年。[一共]移動幾公尺？',
+                    en: 'Moving {15} m north each year for {76} years. How many metres [in all]?' },
+            answer: 1140, unit: { zh: '公尺', en: 'm' },
+            hint: { zh: '每年一樣多，用乘法：15 × 76！', en: 'Same each year — multiply: 15 × 76!' },
+            teach: [
+              { zh: '每年移動一樣多，用乘法：一年 15 公尺，共 76 年。', en: 'Equal each year — multiply: 15 m a year, 76 years.' },
+              { zh: '15 × 76 可以拆開：15 × 70 ＝ 1050，15 × 6 ＝ 90。', en: '15 × 76 splits up: 15 × 70 = 1050, and 15 × 6 = 90.' },
+              { zh: '1050 ＋ 90……換你算出一共移動幾公尺！', en: '1050 + 90… you find the total distance!' },
+            ],
+            reward: { zh: '🧭 1140 公尺！安安握著筆的手停住了：「一千一百四十公尺……那不就是一公里多？」工程師笑了：「你自己說出來了。」',
+                      en: '🧭 1140 metres! An-An’s pen stops. "One thousand one hundred and forty metres… that’s over a kilometre?" The surveyor smiles: "You said it yourself."' },
+          },
+        },
+        // 7 📐 二位小數：公尺換公里
+        {
+          place: { zh: '📐 換成公里是多少', en: '📐 Put That in Kilometres' },
+          emoji: '📐',
+          story: { zh: '小Q把手帳翻到剛才畫換算圖的那一頁：「安安，還記得 1 公里 ＝ 1000 公尺嗎？」牠指著剛算出來的數字：「{1140} 公尺，換算成公里是幾公里？寫成二位小數。」',
+                   en: 'Little Q turns the notebook back to the conversion sketch. "An-An, remember that 1 km = 1000 m?" He taps the number she just found. "{1140} metres — how many kilometres is that? Write it as a two-place decimal."' },
+          clueNote: { zh: '1140公尺＝1.14公里', en: '1140 m = 1.14 km' },
+          puzzle: {
+            text: { zh: '{1140} 公尺是幾公里？（寫成二位小數）',
+                    en: 'How many kilometres is {1140} metres? (Two-place decimal.)' },
+            answer: 1.14, unit: { zh: '公里', en: 'km' },
+            hint: { zh: '1000 公尺 ＝ 1 公里。1140 裡有 1 個 1000，剩下 140 公尺就是 0.14 公里！', en: '1000 m = 1 km. 1140 holds one 1000, and the remaining 140 m is 0.14 km!' },
+            teach: [
+              { zh: '公尺換公里，要除以 1000（因為 1000 公尺才是 1 公里）。', en: 'Metres to kilometres: divide by 1000, since 1000 m make 1 km.' },
+              { zh: '1140 裡面有 1 個完整的 1000 → 1 公里，還剩 140 公尺。', en: '1140 contains one full 1000 → 1 km, with 140 m left over.' },
+              { zh: '140 公尺是 1000 的 140/1000 ＝ 0.14 公里。合起來……換你寫出答案！', en: '140 m is 140/1000 = 0.14 km. Put them together — you write the answer!' },
+            ],
+            reward: { zh: '📐 1.14 公里！工程師從口袋掏出她的測量報告，遞到安安面前。上面寫著：**目前真正的北極圈，在紀念白線北方約 1.2 公里。**安安看看報告，又看看自己算出來的 1.14——幾乎一模一樣。',
+                      en: '📐 1.14 kilometres! The surveyor pulls out her survey report and holds it out. It reads: **the true Arctic Circle currently lies about 1.2 km north of the commemorative line.** An-An looks at the report, then at her own 1.14 — very nearly the same.' },
+          },
+        },
+        // 8 🔍 破案：算出來的和量到的差多少
+        {
+          place: { zh: '🔍 算出來的，和量到的', en: '🔍 Calculated Against Measured' },
+          emoji: '🎯',
+          story: { zh: '安安把兩個數字並排寫在手帳上：她自己算的 **{1.14} 公里**、工程師實際量到的 **{1.2} 公里**。小Q輕聲說：「這就是最關鍵的一步了。算算看，這兩個數字差多少公里？」（提示：1.2 可以先寫成 1.20 再減。）',
+                   en: 'An-An writes the two numbers side by side: her own **{1.14} km**, and the surveyor’s measured **{1.2} km**. Little Q says softly: "This is the crucial step. What is the difference between those two numbers?" (Hint: write 1.2 as 1.20 first.)' },
+          clueNote: { zh: '⭐ 1.20−1.14＝0.06公里＝60公尺；自己算的跟實際量到的幾乎吻合', en: '⭐ 1.20 − 1.14 = 0.06 km = 60 m; the calculation and the measurement very nearly agree' },
+          puzzle: {
+            text: { zh: '量到的 {1.2} 公里，算出來的 {1.14} 公里。[相差]幾公里？',
+                    en: 'Measured {1.2} km, calculated {1.14} km. What is the [difference] in km?' },
+            answer: 0.06, unit: { zh: '公里', en: 'km' },
+            hint: { zh: '先把 1.2 補成 1.20，再對齊小數點相減：1.20 − 1.14！', en: 'Write 1.2 as 1.20, line up the decimal points, and subtract: 1.20 − 1.14!' },
+            teach: [
+              { zh: '二位小數相減，先讓兩個數的小數位數一樣多：1.2 ＝ 1.20。',
+                en: 'To subtract decimals, give both the same number of decimal places: 1.2 = 1.20.' },
+              { zh: '再對齊小數點相減：1.20 − 1.14。',
+                en: 'Then line up the decimal points and subtract: 1.20 − 1.14.' },
+              { zh: '20 減 14 剩 6，所以是 0.0 幾……換你寫出答案！',
+                en: '20 minus 14 leaves 6, so the answer is 0.0-something — you write it!' },
+            ],
+            reward: { zh: '🎯 0.06 公里！也就是只差 **60 公尺**。在一公里多的距離裡，這已經非常接近了。小Q把三份說法排開，聲音很輕：「安安，說吧——這條線，到底是誰畫錯了？」',
+                      en: '🎯 0.06 kilometres — a gap of just **60 metres.** Across more than a kilometre, that is remarkably close. Little Q lays out the three accounts and says softly: "An-An. Speak — who drew this line wrong?"' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'tourist', name: { zh: '😤 排隊的觀光客', en: '😤 The Tourist in the Queue' }, emoji: '😤',
+          say: { zh: '「他們**故意**把線畫錯位置的啦！這樣大家才會乖乖排隊拍照、買紀念品。這是騙人的把戲。」',
+                 en: '"They drew the line in the wrong place **on purpose!** That way everyone queues up, takes photos and buys souvenirs. It’s a trick."' } },
+        { id: 'surveyor', name: { zh: '📏 測量隊的工程師', en: '📏 The Surveyor' }, emoji: '📏',
+          say: { zh: '「線畫下去的時候是準的。是北極圈自己每年往北移動大約 15 公尺，七十幾年下來就差了一公里多。」',
+                 en: '"The line was accurate when it was laid. The Arctic Circle itself drifts about 15 metres north each year — over seventy-odd years, that adds up to more than a kilometre."' } },
+        { id: 'staff', name: { zh: '🎅 村子的工作人員', en: '🎅 The Village Staff Member' }, emoji: '🎅',
+          say: { zh: '「那是一條**紀念線**。我們從來沒有說它就是今天的北極圈——只是大家都這樣以為。」',
+                 en: '"It is a **commemorative line.** We have never claimed it is today’s Arctic Circle — people simply assume so."' } },
+      ],
+      culprit: 'tourist',
+      accuse: { zh: '你剛剛親手做了一件很厲害的事：你**沒有去量**，只用兩個數字就算出了答案——線立了 {76} 年 × 每年北移 {15} 公尺 ＝ 1140 公尺 ＝ **1.14 公里**，跟工程師實際量到的 **1.2 公里**只差 0.06 公里（60 公尺）。如果真的是「故意畫錯來騙人」，那個誤差**不可能剛好等於七十六年的移動量**。三份說法裡，哪一份被你這串計算推翻了？',
+                en: 'You have just done something remarkable: without measuring anything, two numbers gave you the answer — {76} years standing × {15} m drift a year = 1140 m = **1.14 km**, against the surveyor’s measured **1.2 km**, a difference of only 0.06 km (60 metres). If the line had been drawn wrong **on purpose**, that error could not possibly match seventy-six years of drift so exactly. Which of the three accounts does your calculation demolish?' },
+      wrongAccuse: { zh: '再想一次——📏工程師講的正是你算出來的那件事，數字完全對得上。🎅工作人員說「那是紀念線、我們沒說它是今天的北極圈」，這句也沒有錯。真正被推翻的，是說「**故意**畫錯來騙人」的那一份：騙人的話，誤差不會剛好等於 76 年 × 15 公尺。是哪一份？😤',
+                     en: 'Think again — the 📏 surveyor described exactly what your calculation shows, and the numbers match. The 🎅 staff member’s "it is a commemorative line, we never claimed otherwise" is also true. What your calculation demolishes is the claim that it was drawn wrong **on purpose**: a deliberate trick would not produce an error equal to 76 years × 15 metres. Which one? 😤' },
+      solve: [
+        { zh: '講不通的是😤那位觀光客的「他們故意畫錯」。你的計算已經證明了：誤差**剛好等於**這條線立在那裡的年數乘以北極圈每年移動的距離。76 × 15 ＝ 1140 公尺 ＝ 1.14 公里，實際量到 1.2 公里，只差 60 公尺。**騙人的誤差不會這麼剛好。**',
+          en: 'The claim that fails is the 😤 tourist’s "they drew it wrong on purpose." Your own calculation proves otherwise: the error is **exactly** the years the line has stood multiplied by the Arctic Circle’s annual drift. 76 × 15 = 1140 m = 1.14 km, against a measured 1.2 km — a gap of just 60 metres. **A deliberate deception would never land that precisely.**' },
+        { zh: '📏工程師說的是真的：北極圈不是地上的一條線，它是**地球轉軸傾斜的角度**決定的，而那個角度一直在很慢很慢地改變。所以北極圈每年往北跑大約 15 公尺。🎅工作人員也沒說錯——那是一條紀念線，只是大家都以為它是今天的北極圈。',
+          en: 'The 📏 surveyor was telling the truth: the Arctic Circle is not a line on the ground but a consequence of **the tilt of the Earth’s axis** — an angle that keeps changing, very slowly. So the circle creeps about 15 metres north each year. Nor was the 🎅 staff member wrong: it is a commemorative line, and people simply assume it is today’s Arctic Circle.' },
+        { zh: '⭐ **這一集學到的事，跟前面幾集都不一樣。**前面我們學過「有人漏講了一段」「有人把難的說成簡單的」「有人把原因排在結果後面」——那些都是**說法**出了問題。可是這一次，三個人都很誠實，線也沒有畫錯。**是被量的那個東西自己動了。**小Q輕輕說：「安安，記住這件事：看板不準，不一定是有人說謊。有時候只是——**數字會過期。**」',
+          en: '⭐ **This case taught something none of the others did.** Before, we found someone who left out a chapter, someone who called the hardest work laziness, someone who put an effect before its cause — all of them faults in the *telling*. But this time all three people were honest, and the line was not drawn wrong. **The thing being measured moved.** Little Q says quietly: "An-An, remember this one: a sign being wrong does not always mean somebody lied. Sometimes it only means — **numbers expire.**"' },
+        { zh: '⭐ 現場可以自己驗證：站上那條白線拍照的時候，記得往北邊看一眼——真正的北極圈就在那個方向，大約一公里多以外的雪地裡，沒有線、沒有牌子、也沒有人排隊。而且明年，它還會再往北走十幾公尺。小知識：這條紀念線是 1950 年美國第一夫人來訪之後、1950 年代設立的；聖誕老人村在 1980 年代開幕，裡面有正式的聖誕老人主郵局。至於聖誕老人真正的「家」——1927 年廣播裡宣布的耳朵山，其實在更東邊靠近國界的地方，不在這裡。',
+          en: '⭐ Verify it yourself: when you stand on that white line for your photo, glance north — the true Arctic Circle lies that way, a kilometre or so out in the snow, with no line, no sign and nobody queuing. And next year it will have moved a dozen-odd metres further north. Facts: the commemorative line was set up in the 1950s after the American First Lady’s 1950 visit; Santa Claus Village opened in the 1980s and houses an official Santa Claus main post office. As for Santa’s real "home" — Ear Fell, announced on the radio in 1927 — that lies further east near the border, not here.' },
+      ],
+      arcClue: { zh: '爭吵平息之後，安安終於輪到自己站上那條白線了。她一腳踩在線的南邊、一腳踩在北邊，張開雙手，笑得很大。可是拍完照，她做了一件別人都沒做的事——她轉過身，面向北方，安靜地看著遠處那片沒有任何標記的雪地。圓圓也跟著轉過去，坐得直挺挺的。安安在手帳寫下第十張貼紙的說明：「真正的線在那邊，沒有人排隊。**不是他們畫錯，是它自己在走。**」',
+                 en: 'When the argument dies down, An-An finally gets her turn on the white line. One foot south, one foot north, arms flung wide, grinning enormously. But once the photo is taken she does something nobody else does — she turns to face north, and looks quietly out at that unmarked stretch of snow in the distance. Yuan-Yuan turns with her and sits bolt upright. Beneath the tenth sticker An-An writes: "The real line is out there, with nobody queuing for it. **They did not draw it wrong — it walked away.**"' },
+      nextPreview: { zh: '再往北，安安會遇見拉普蘭真正的主人——薩米族。他們的語言曾經被禁止在學校裡說，很多人因此失去了自己原本的名字。可是這一次的結局，跟你在大溪聽過的那個故事**不一樣**：他們正在把名字一個一個拿回來。這一回要用統計圖和分數，看清楚一種語言是怎麼快要消失、又是怎麼被接回來的。',
+                     en: 'Further north, An-An will meet the true people of Lapland — the Sámi. Their language was once forbidden in schools, and many lost the names they were born with. But this time the ending is **not** the one she heard back in Daxi: they are taking those names back, one at a time. This round uses charts and fractions to see how a language nearly vanished, and how it is being carried home.' },
       reward: 500,
     },
   ],
