@@ -2142,6 +2142,277 @@ export const SEASON9 = {
                      en: 'Next stop, central Helsinki — a church, but one carved directly out of a rock hill. Its roof is not tile, but a single slab of exposed natural bedrock, with light pouring through the cracks. This time the numbers run deep and hard: how many tonnes of stone had to be cut away to fit a church inside a mountain?' },
       reward: 500,
     },
+
+    // ─────────────────────────────────────── S9 EP8 ───────────────────────────────────────
+    // 芬蘭篇第二站：赫爾辛基市中心的岩石教堂（Temppeliaukio Church）。
+    // 數字全部查證（2026-08-25）：建築師 Suomalainen 兄弟 1961 年競圖獲勝；因預算與市府/輿論反對，
+    // 拖到 1968 年 2 月才動工，1969 年 9 月完工啟用（競圖到完工共 8 年，實際動工只花約 1 年半）；
+    // 為了省錢，最後蓋出來的空間縮小到原設計的四分之一左右；圓頂直徑 24 公尺；因為要貼合天然岩石的
+    // 凹凸形狀，教堂天花板一圈裝了約 180 扇大小互不相同的窗戶；可容納約 940 人。
+    // 案件改款：不是「漏了一段」，是「大家都覺得是隨便蓋的，其實是最費工的做法」——
+    // 若真的偷懶，做法應該是全部窗戶開一樣大小（省事又便宜），而不是一扇一扇量身訂做。
+    {
+      id: 's9ep8',
+      comicIntro: [
+        { bg: 'helsinki', cast: ['anan', '🐈'],
+          say: { zh: '從芬蘭堡回到市區，安安在路口停下腳步——眼前不是教堂尖塔，是一座矮矮的、長滿草的小山丘。',
+                 en: 'Back in the city from Suomenlinna, An-An stops at a corner — ahead is no steeple, only a low, grass-covered hillock.' } },
+        { bg: 'rockchurch', cast: ['anan', '👨‍🎤', '🐈'],
+          say: { zh: '走進山丘裡面，居然是滿滿一圈天然岩壁的教堂。管風琴師托比笑著說：「歡迎來到山的裡面。」',
+                 en: 'Inside the hillock is a church ringed entirely in natural rock. Organist Topi grins: "Welcome to the inside of a mountain."' } },
+      ],
+      comicSolve: [
+        { bg: 'rockchurch', cast: ['anan', '🧒'],
+          say: { zh: '安安指著參差不齊的窗戶：「不是隨便挖的——是照著石頭本來的形狀，一扇一扇量出來的。」',
+                 en: 'An-An points at the irregular windows: "It wasn’t carved carelessly — every single one was measured to fit the rock’s own shape."' } },
+        { bg: 'rockchurch', cast: ['anan', '🐈'],
+          say: { zh: '圓圓跳上岩壁，仰頭看著那圈灑下來的光——跟萬神殿的那一圈，好像，又不太一樣。〈手帳貼紙 8 · 鑿進岩石的教堂〉',
+                 en: 'Yuan-Yuan hops onto the rock ledge, gazing up at the ring of falling light — a little like the Pantheon’s, and yet not quite. Sticker 8 — The Church in the Rock.' } },
+      ],
+      no: 8,
+      title: { zh: '鑿進岩石的教堂', en: 'The Church in the Rock' },
+      emoji: '🪨',
+      accent: '#8a8478',
+      difficulty: { zh: '乘法·除法·減法（四上）', en: 'Multiplication · division · subtraction (Grade 4-1)' },
+      sticker: { id: 'rockchurch', emoji: '🪨', name: { zh: '手帳貼紙 8 · 鑿進岩石的教堂', en: 'Sticker 8 · The Church in the Rock' } },
+      intro: [
+        { zh: '離開芬蘭堡，安安一行人回到赫爾辛基市中心。托比說要帶他們去看「全城市最奇怪的教堂」——結果走到的，只是一座矮矮的草丘，看不見任何尖塔或十字架。「入口在草丘側面。」托比說。推開門，眼前豁然開朗：整座教堂的牆壁，是**沒有被搬走的天然岩石**，圓形的銅頂懸在上方，一圈天窗把光灑得滿地都是。',
+          en: 'Leaving Suomenlinna, An-An’s group returns to central Helsinki. Topi offers to show them "the strangest church in the city" — and it turns out to be a low grassy mound, no steeple or cross in sight. "The entrance is on the side," Topi says. Through the door, the space opens up: the church walls are **the natural rock itself, never carted away**, a round copper dome hovering above, and a ring of skylights spilling light across the floor.' },
+        { zh: '一個當地小男孩湊過來，指著天花板一圈大小不一的窗戶說：「我聽說是工人蓋到一半懶得量了，隨便挖一挖就交差。」托比皺眉：「是嗎？」他從口袋掏出一張泛黃的舊照片：「這座教堂從設計比賽得獎，到真正開工，中間可是隔了好久好久呢。」',
+          en: 'A local boy sidles up, pointing at the ring of mismatched windows: "I heard the workers got lazy halfway through and just hacked away at it." Topi frowns: "Is that so?" He pulls a yellowed old photo from his pocket. "This church — from the day it won the design contest to the day it actually began — a very long time passed in between."' },
+      ],
+      scenes: [
+        // 1 🔢 乘法：天花板一圈的窗戶
+        {
+          place: { zh: '🔢 一圈裝了幾扇窗', en: '🔢 A Ring of How Many Windows' },
+          emoji: '🪟',
+          story: { zh: '托比抬頭指著天花板：「窗戶繞著圓頂排成一整圈，大約 {12} 圈弧線，每圈弧線上大約有 {15} 扇。」小Q：「大約一共幾扇窗？」',
+                   en: 'Topi points up at the ceiling: "The windows ring the dome in about {12} arcs, each arc holding roughly {15}." Little Q: "About how many windows in all?"' },
+          clueNote: { zh: '窗戶約12圈×15扇＝約180扇，每一扇大小都不同', en: 'About 12 arcs × 15 windows = about 180 windows, each a different size' },
+          puzzle: {
+            text: { zh: '窗戶約 {12} 圈，每圈約 {15} 扇，[一共]大約幾扇？',
+                    en: 'About {12} arcs, {15} windows each. About how many [in all]?' },
+            answer: 180, unit: { zh: '扇', en: 'windows' },
+            hint: { zh: '每圈一樣多，用乘法：15 × 12！', en: 'Equal arcs — multiply: 15 × 12!' },
+            teach: [
+              { zh: '每圈窗戶數量差不多，用乘法：一圈 15 扇，共 12 圈。', en: 'Roughly equal arcs — multiply: 15 windows, 12 arcs.' },
+              { zh: '15 × 12：先算 15 × 10 ＝ 150，再加 15 × 2 ＝ 30。', en: '15 × 12: try 15 × 10 = 150, then add 15 × 2 = 30.' },
+              { zh: '150 ＋ 30……換你算出大約一共幾扇窗！', en: '150 + 30… you find the total windows!' },
+            ],
+            reward: { zh: '🪟 180 扇！托比點頭：「而且沒有兩扇是一樣大的——因為石頭本來就凹凸不平。」', en: '🪟 About 180! Topi nods: "And no two are the same size — because the rock itself is never smooth."' },
+          },
+        },
+        // 2 📅 減法：得獎到動工，等了幾年
+        {
+          place: { zh: '📅 得獎之後，等了好久', en: '📅 A Long Wait After Winning' },
+          emoji: '🏆',
+          story: { zh: '托比翻開舊照片：「這座教堂的設計，{1961} 年就在比賽裡得了第一名。可是因為錢不夠，市政府裡也吵成一團，一直拖到 {1968} 年才真正動工。」小Q：「得獎之後，等了幾年才開工？」',
+                   en: 'Topi opens the old photo. "This design won first place in {1961}. But the city ran short of money, and city hall argued for years — construction didn’t truly begin until {1968}." Little Q: "How many years did it wait after winning?"' },
+          clueNote: { zh: '1961年得獎～1968年動工＝等了7年（缺錢＋市府爭論）', en: 'Won 1961, construction began 1968 = a 7-year wait (money and city-hall arguments)' },
+          puzzle: {
+            text: { zh: '{1961} 年得獎，{1968} 年才動工。等了幾年？',
+                    en: 'Won in {1961}, construction began in {1968}. How many years’ wait?' },
+            answer: 7, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代相差用減法：1968 − 1961！', en: 'Subtract the years: 1968 − 1961!' },
+            teach: [
+              { zh: '算「等了幾年」，用晚的年份減早的年份。', en: 'To find the wait, subtract the earlier year from the later one.' },
+              { zh: '1968 − 1961 ＝ 7。', en: '1968 − 1961 = 7.' },
+              { zh: '換你算出得獎後等了幾年才開工！', en: 'You work out how many years passed before it began!' },
+            ],
+            reward: { zh: '🏆 7 年！小男孩瞪大眼睛：「哇，比我活的年紀還久！」', en: '🏆 7 years! The boy’s eyes go wide: "Whoa, longer than I’ve been alive!"' },
+          },
+        },
+        // 3 ✖️ 乘法（帶出四分之一縮小的概念）
+        {
+          place: { zh: '✖️ 縮小的設計', en: '✖️ The Design That Shrank' },
+          emoji: '📐',
+          story: { zh: '托比指著照片裡一張更大的草圖：「因為預算不夠，最後蓋出來的教堂，只有原本設計的四分之一大——現在能坐 {940} 人，原本設計要蓋成現在的 {4} 倍大。」小Q：「原本設計要蓋幾人座位的教堂？」',
+                   en: 'Topi points to an even larger sketch in the photo. "Money ran short, so what got built is only about a quarter of the original plan — it seats {940} now, but the plan called for {4} times that." Little Q: "How many seats was the original design meant to hold?"' },
+          clueNote: { zh: '現在940人座＝原設計的1/4；原設計＝940×4＝3760人座', en: 'Today’s 940 seats = 1/4 of the original plan; original plan = 940 × 4 = 3760 seats' },
+          puzzle: {
+            text: { zh: '現在 {940} 人座，是原本設計的 [四分之一]。原本設計是幾人座？',
+                    en: 'Today seats {940}, which is [one quarter] of the original plan. How many seats did the plan call for?' },
+            answer: 3760, unit: { zh: '人座', en: 'seats' },
+            hint: { zh: '現在是原本的四分之一，原本就是現在的 4 倍：940 × 4！', en: 'Today is one quarter of the original, so the original is 4 times today: 940 × 4!' },
+            teach: [
+              { zh: '「現在是原本的四分之一」，反過來說，原本就是現在的 4 倍。', en: '"Today is a quarter of the original" — flip it: the original is 4 times today.' },
+              { zh: '940 × 4：先算 900 × 4 ＝ 3600，再算 40 × 4 ＝ 160。', en: '940 × 4: try 900 × 4 = 3600, then 40 × 4 = 160.' },
+              { zh: '3600 ＋ 160……換你算出原本設計要蓋幾人座！', en: '3600 + 160… you find the original planned capacity!' },
+            ],
+            reward: { zh: '📐 3760 人座！安安倒抽一口氣：「差好多喔！」托比笑：「省下來的不是隨便省的——每一分工夫還是花在這片岩石上。」', en: '📐 3760 seats! An-An gasps: "That’s huge!" Topi smiles: "But what was cut wasn’t care — every remaining effort still went into this rock."' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 12）
+        {
+          kind: 'choice',
+          place: { zh: '教堂裡的兩個角落', en: 'Two Corners of the Church' },
+          emoji: '🔀',
+          story: { zh: '托比說：「趁我準備等一下的練習，你們自己去看看吧。」他指指兩邊：「左邊去看管風琴，右邊去摸摸岩壁上鑽孔的痕跡。」圓圓已經跳上了長椅，安靜地聽著遠遠傳來的迴音。',
+                   en: 'Topi says: "While I get ready to practise, go look around." He points both ways: "Left, the organ; right, the drill-marks on the rock wall." Yuan-Yuan has already hopped onto a pew, quietly listening to the echoes drifting in.' },
+          question: { zh: '★ 你來決定！要先去哪一邊？（兩邊都行，選你喜歡的！）',
+                      en: '★ You decide! Which corner first? (Either works — pick your favourite!)' },
+          options: [
+            {
+              id: 'organ',
+              label: { zh: '🎹 管風琴', en: '🎹 The Organ' },
+              scene: {
+                place: { zh: '管風琴前', en: 'Before the Organ' },
+                emoji: '🎹',
+                story: { zh: '巨大的管風琴立在岩壁前。托比的同事說：「琴管一排一排立著，{4} 排，每排 {3} 根最粗的低音管，你數數看。」',
+                         en: 'The great organ stands against the rock. A colleague of Topi’s says: "The pipes stand in rows — {4} rows of the {3} thickest bass pipes each. Count them."' },
+                clueNote: { zh: '低音管共12根（4排×3根）', en: '12 bass pipes (4 rows × 3)' },
+                puzzle: {
+                  text: { zh: '低音管 {4} 排，每排 {3} 根，[一共]幾根？', en: '{4} rows, {3} bass pipes each. How many [in all]?' },
+                  answer: 12, unit: { zh: '根', en: 'pipes' },
+                  hint: { zh: '每排一樣多，用乘法：3 × 4！', en: 'Equal rows — multiply: 3 × 4!' },
+                  teach: [
+                    { zh: '一排一排一樣多，用乘法：每排 3 根，有 4 排。', en: 'Equal rows — multiply: 3 pipes, 4 rows.' },
+                    { zh: '就是 3 × 4（或 4 × 3，答案一樣）。', en: 'That is 3 × 4 (or 4 × 3 — same answer).' },
+                    { zh: '3 × 4……換你數出一共幾根低音管！', en: '3 × 4… you count the bass pipes!' },
+                  ],
+                  reward: { zh: '🎹 12 根！同事按下一個鍵，整座岩壁都在震動。', en: '🎹 12! The colleague presses a key, and the whole rock wall seems to hum.' },
+                },
+              },
+            },
+            {
+              id: 'drillmarks',
+              label: { zh: '⛏️ 岩壁上的鑽孔痕跡', en: '⛏️ The Drill-Marks on the Wall' },
+              scene: {
+                place: { zh: '岩壁前', en: 'Before the Rock Wall' },
+                emoji: '⛏️',
+                story: { zh: '粗糙的岩壁上滿是一排排小小的鑽孔痕跡，沒有被磨平。托比的同事說：「你看這一小塊，{6} 排，每排 {2} 個孔，這是當年鑽岩石留下的。」',
+                         en: 'The rough wall is covered in rows of small drill-marks, left unpolished. A colleague says: "Look at this patch — {6} rows of {2} holes each, left over from the original drilling."' },
+                clueNote: { zh: '鑽孔痕跡12個（6排×2個）；牆面刻意不磨平，留下當年開鑿的痕跡', en: '12 drill-marks (6 rows × 2); the wall was deliberately left unpolished, keeping the marks of the original quarrying' },
+                puzzle: {
+                  text: { zh: '鑽孔痕跡 {6} 排，每排 {2} 個，[一共]幾個？', en: '{6} rows, {2} marks each. How many [in all]?' },
+                  answer: 12, unit: { zh: '個', en: 'marks' },
+                  hint: { zh: '每排一樣多，用乘法：2 × 6！', en: 'Equal rows — multiply: 2 × 6!' },
+                  teach: [
+                    { zh: '一排一排一樣多，用乘法：每排 2 個，有 6 排。', en: 'Equal rows — multiply: 2 marks, 6 rows.' },
+                    { zh: '就是 2 × 6（或 6 × 2，答案一樣）。', en: 'That is 2 × 6 (or 6 × 2 — same answer).' },
+                    { zh: '2 × 6……換你數出一共幾個鑽孔痕跡！', en: '2 × 6… you count the drill-marks!' },
+                  ],
+                  reward: { zh: '⛏️ 12 個！安安伸手摸了摸：「粗粗的，跟外面磨得亮亮的石頭完全不一樣。」', en: '⛏️ 12! An-An reaches out and touches it: "Rough — nothing like the polished stone outside."' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 📏 減法：圓頂比較（回收 EP1/EP5 伏筆）
+        {
+          place: { zh: '📏 第三座圓頂', en: '📏 The Third Dome' },
+          emoji: '🔵',
+          story: { zh: '安安抬頭看著銅色的圓頂，忽然想起手帳裡記過的兩個數字。小Q：「這座圓頂直徑 {24} 公尺。你在 EP1 量過萬神殿——{43} 公尺。差多少？」',
+                   en: 'An-An looks up at the copper dome and suddenly recalls two numbers from her notebook. Little Q: "This dome is {24} metres across. You measured the Pantheon back in EP1 — {43} metres. What’s the difference?"' },
+          clueNote: { zh: '萬神殿43公尺－岩石教堂24公尺＝19公尺；這是本季第三座圓頂（萬神殿、聖伯多祿、岩石教堂）', en: 'Pantheon 43m − Rock Church 24m = 19m; the third dome this season, after the Pantheon and St Peter’s' },
+          puzzle: {
+            text: { zh: '萬神殿 {43} 公尺，這座圓頂 {24} 公尺。差多少公尺？',
+                    en: 'The Pantheon is {43} m, this dome is {24} m. What’s the difference?' },
+            answer: 19, unit: { zh: '公尺', en: 'm' },
+            hint: { zh: '相差用減法：43 − 24！', en: 'Subtract: 43 − 24!' },
+            teach: [
+              { zh: '比較兩個大小，用大的減小的。', en: 'To compare two sizes, subtract the smaller from the larger.' },
+              { zh: '43 − 24：先算 43 − 20 ＝ 23，再減 4。', en: '43 − 24: try 43 − 20 = 23, then subtract 4.' },
+              { zh: '23 − 4……換你算出兩座圓頂差多少公尺！', en: '23 − 4… you find the difference between the domes!' },
+            ],
+            reward: { zh: '🔵 19 公尺！安安在手帳上寫下：「這一季看過的圓頂：萬神殿 43、聖伯多祿 42.56、這裡 24。」三個數字，三種故事。', en: '🔵 19 m! An-An writes in her notebook: "Domes seen this season: Pantheon 43, St Peter’s 42.56, here 24." Three numbers, three stories.' },
+          },
+        },
+        // 6 🔢 除法：940人平均分成10區
+        {
+          place: { zh: '🔢 座位怎麼分', en: '🔢 Dividing Up the Seats' },
+          emoji: '🪑',
+          story: { zh: '托比說：「音樂會的時候，{940} 個座位會平均分成 {10} 個區塊賣票，方便帶位。」小Q：「平均一區有幾個座位？」',
+                   en: 'Topi says: "For concerts, the {940} seats are divided into {10} equal sections for ticketing, to make seating easier." Little Q: "How many seats per section, on average?"' },
+          clueNote: { zh: '940個座位÷10個區塊＝每區平均94個座位', en: '940 seats ÷ 10 sections = 94 per section on average' },
+          puzzle: {
+            text: { zh: '{940} 個座位，平均分成 {10} 區，每區[平均]幾個？',
+                    en: '{940} seats divided evenly into {10} sections. How many [on average] per section?' },
+            answer: 94, unit: { zh: '個', en: 'seats' },
+            hint: { zh: '平分用除法：940 ÷ 10！', en: 'Sharing equally means dividing: 940 ÷ 10!' },
+            teach: [
+              { zh: '平均分配，用除法：座位總數 ÷ 區塊數。', en: 'Divide evenly: total seats ÷ number of sections.' },
+              { zh: '940 ÷ 10：除以 10，只要把末位的 0 拿掉。', en: '940 ÷ 10: dividing by 10 just drops the final zero.' },
+              { zh: '換你算出每區平均有幾個座位！', en: 'You work out the average seats per section!' },
+            ],
+            reward: { zh: '🪑 94 個！托比說：「今晚剛好有一場音樂會，你們要不要留下來聽？」', en: '🪑 94! Topi says: "There happens to be a concert tonight — care to stay and listen?"' },
+          },
+        },
+        // 7 🔢 除法：圓頂半徑
+        {
+          place: { zh: '🔢 圓頂的一半', en: '🔢 Half the Dome' },
+          emoji: '⭕',
+          diagram: 'scale-bar',
+          story: { zh: '小Q指著圓頂中心：「直徑是整個圓頂量到最寬的地方，{24} 公尺。從正中心到邊緣，是半徑，是直徑的一半。」小Q：「半徑是幾公尺？」',
+                   en: 'Little Q points at the dome’s centre: "The diameter is the widest measurement across, {24} m. From the very centre to the edge is the radius — half the diameter." Little Q: "How many metres is the radius?"' },
+          clueNote: { zh: '直徑24公尺÷2＝半徑12公尺', en: 'Diameter 24m ÷ 2 = radius 12m' },
+          puzzle: {
+            text: { zh: '圓頂直徑 {24} 公尺，半徑是幾公尺？',
+                    en: 'The dome’s diameter is {24} m. How many metres is the radius?' },
+            answer: 12, unit: { zh: '公尺', en: 'm' },
+            hint: { zh: '半徑是直徑的一半：24 ÷ 2！', en: 'The radius is half the diameter: 24 ÷ 2!' },
+            teach: [
+              { zh: '半徑＝直徑的一半，用除法：直徑 ÷ 2。', en: 'Radius = half the diameter — divide by 2.' },
+              { zh: '24 ÷ 2 ＝ 12。', en: '24 ÷ 2 = 12.' },
+              { zh: '換你算出圓頂的半徑是幾公尺！', en: 'You work out the dome’s radius!' },
+            ],
+            reward: { zh: '⭕ 12 公尺！安安張開雙臂比劃：「從正中間走到牆邊，要走這麼遠喔。」', en: '⭕ 12 m! An-An spreads her arms wide: "That’s how far it is from the middle to the wall."' },
+          },
+        },
+        // 8 🔍 破案：得獎到完工，一共幾年
+        {
+          place: { zh: '🔍 從得獎到完工', en: '🔍 From Winning to Opening' },
+          emoji: '🎉',
+          story: { zh: '托比把舊照片收好：「{1961} 年得獎，{1968} 年動工，{1969} 年就completed完工開放了——動工到完工其實只花了一年多。」小Q：「從得獎的那一年，到完工的那一年，一共經過幾年？」',
+                   en: 'Topi tucks the old photo away. "Won in {1961}, construction began in {1968}, and it opened in {1969} — from breaking ground to opening took just over a year." Little Q: "From the year it won to the year it opened, how many years passed in all?"' },
+          clueNote: { zh: '1961年得獎～1969年完工＝共8年（等待7年＋動工約1年多）', en: 'Won 1961 to opened 1969 = 8 years total (7 years waiting + just over 1 year building)' },
+          puzzle: {
+            text: { zh: '{1961} 年得獎，{1969} 年完工。一共經過幾年？',
+                    en: 'Won in {1961}, opened in {1969}. How many years in total?' },
+            answer: 8, unit: { zh: '年', en: 'years' },
+            hint: { zh: '一樣用減法：1969 − 1961！', en: 'Subtract again: 1969 − 1961!' },
+            teach: [
+              { zh: '一樣的算法：完工年份減得獎年份。', en: 'Same method: opening year minus winning year.' },
+              { zh: '1969 − 1961 ＝ 8。', en: '1969 − 1961 = 8.' },
+              { zh: '換你算出從得獎到完工一共經過幾年！', en: 'You work out the total years from winning to opening!' },
+            ],
+            reward: { zh: '🎉 8 年！小Q把數字排開：等待 7 年、真正動工卻只花了一年多。「安安，說吧——真的蓋出來的窗戶，是隨便挖的，還是量身訂做的？」',
+                      en: '🎉 8 years! Little Q lays out the numbers: 7 years of waiting, just over a year of actual building. "An-An. Speak — were the windows carved carelessly, or measured one by one?"' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'kid', name: { zh: '🧒 路過的當地小男孩', en: '🧒 The Local Boy' }, emoji: '🧒',
+          say: { zh: '「我聽說是工人蓋到一半懶得量了，隨便挖一挖就交差。」',
+                 en: '"I heard the workers got lazy halfway through and just hacked away at it."' } },
+        { id: 'pamphlet', name: { zh: '📖 教堂門口的簡介單張', en: '📖 The Leaflet by the Door' }, emoji: '📖',
+          say: { zh: '「本教堂窗戶大小不一，是施工時期的一項特色。」——寫得含糊，沒說清楚是故意的還是不小心的。',
+                 en: '"The church’s irregular windows are a feature of the construction period." — vague, never saying whether it was deliberate or accidental.' } },
+        { id: 'organist', name: { zh: '🎹 管風琴師托比', en: '🎹 Organist Topi' }, emoji: '🎹',
+          say: { zh: '「每一扇窗，都是照著那一小塊岩石本來凹凸的形狀，一扇一扇量出來、鑿出來的。」',
+                 en: '"Every window was measured and cut to match the exact bump and hollow of that one patch of rock — one at a time."' } },
+      ],
+      culprit: 'kid',
+      accuse: { zh: '想一想：如果真的是「懶得量、隨便挖」，最省事的做法應該是把所有窗戶都開成同一種大小——這樣訂做、施工都最便宜最快。可是這裡的 180 扇窗戶，扇扇不同、扇扇量身訂做，比開統一大小**麻煩得多**。三份說法裡，哪一份完全說反了？',
+                en: 'Think about it: if it really were "too lazy to measure," the easiest path would be windows all the same size — cheapest and fastest to make. But these 180 windows are each different, each custom-cut — **far more work** than a uniform size would be. Which of the three accounts has it exactly backwards?' },
+      wrongAccuse: { zh: '再想一次——📖那份簡介只是寫得含糊，它沒有說「懶得量」，只是沒說清楚，不算講反了。真正把因果**完全說反**的，是那句「因為懶得量」——偷懶的做法應該更省事，不會更費工。是哪一份這樣說？🧒',
+                     en: 'Think again — the 📖 leaflet is only vague, it never claims "too lazy," so it hasn’t got things backwards. The one that gets cause and effect **exactly backwards** is the "too lazy to measure" claim — laziness makes things easier, not harder. Which one says that? 🧒' },
+      solve: [
+        { zh: '講反了的是🧒當地小男孩那句「懶得量、隨便挖」。你剛剛也算過了：940 個座位其實是砍到只剩原設計的四分之一，經費緊得不得了——在這麼緊的預算下，還堅持一扇一扇量身訂做 180 扇窗戶，恰恰是**最不偷懶**的做法。',
+          en: 'The one with it backwards is the 🧒 local boy’s "too lazy, just hacked away." You worked it out yourself: the seating was cut to a mere quarter of the original plan, the budget razor-thin — and under that pressure, still customizing all 180 windows one by one is precisely the **opposite** of laziness.' },
+        { zh: '📖簡介單張沒有說謊，只是寫得太含糊，沒把「故意」兩個字說出來。🎹托比說得最清楚：「照著岩石本來的形狀，一扇一扇量出來的。」',
+          en: 'The 📖 leaflet never lied — it was simply too vague to say the word "deliberate." 🎹 Topi put it most clearly: "Measured to match the rock’s own shape, one at a time."' },
+        { zh: '托比望著滿室的天光：「這座教堂等了 7 年才等到動工的錢，蓋出來的地方只有當初想的四分之一大——如果是隨便做做，最省事的辦法有的是。他們偏偏選了最麻煩的那一條路。」安安摸著粗糙的岩壁，忽然懂了：**尊重一塊石頭本來的樣子，比讓它變得整齊劃一，麻煩多了，也美多了。**',
+          en: 'Topi gazes at the daylight filling the room. "This church waited 7 years just for the funding to begin, and what got built is a mere quarter of the original vision — if it were done carelessly, there were far easier ways. They chose the hardest path instead." An-An runs her hand over the rough rock and suddenly understands: **respecting a stone’s own shape is far more trouble — and far more beautiful — than making it uniform.**' },
+        { zh: '⭐ 現場可以自己驗證：抬頭數數看天花板那一圈窗戶，真的沒有兩扇是一樣大小的。小知識：這座岩石教堂 1969 年啟用，圓頂直徑 24 公尺，因為音響效果特別好，現在還常常用來開音樂會。',
+          en: '⭐ Verify it yourself: look up and count the ring of windows — truly no two are the same size. Fact: this rock church opened in 1969, its dome spans 24 metres, and thanks to its exceptional acoustics it still regularly hosts concerts today.' },
+      ],
+      arcClue: { zh: '離開教堂前，安安在手帳貼上第八張貼紙，旁邊寫下：「等了 7 年，只蓋了原本的四分之一——可是每一扇窗都沒有偷工。」外頭天色漸漸暗下來，托比揮揮手道別：「往北走，你們會看到更奇怪的東西喔。」圓圓已經不安分地在行李箱邊繞圈——牠好像已經聞到雪的味道了。',
+                 en: 'Before leaving, An-An sticks the eighth sticker into her notebook and writes beside it: "Waited 7 years, built only a quarter of the plan — yet not one window was rushed." Outside, the sky is dimming. Topi waves goodbye: "Head north, and you’ll see something even stranger." Yuan-Yuan is already pacing restlessly around the suitcase — as if she can already smell the snow.' },
+      nextPreview: { zh: '往北飛，降落在北極圈邊上的城市——羅瓦涅米。可是這座城市，其實是「重新蓋出來的」：一場大火幾乎把它燒光，後來一位建築師重新設計了整座城市的街道，形狀畫成一種動物的角。是什麼動物？走過去，你就會看見答案，就畫在地圖上。',
+                     en: 'Flying north, they land in a city on the edge of the Arctic Circle — Rovaniemi. But this city was, in truth, rebuilt from nothing: a great fire nearly burned it to the ground, and an architect redesigned its very streets in the shape of one animal’s antlers. Which animal? Walk the map, and you will see the answer laid out before you.' },
+      reward: 500,
+    },
   ],
 }
 
