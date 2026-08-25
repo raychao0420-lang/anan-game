@@ -890,6 +890,35 @@ const DIAGRAMS = {
       <text x="80" y="95" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">一天 7 圓 × 一年 365 天 ＝ ?</text>
     </g>
   ),
+
+  // 四十八甲地（S8 EP9）：「捐地」其實是一條有四站的金流——先借錢，才有地
+  'school-land': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="13" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">「捐出學田」中間其實有四站</text>
+      {[
+        { x: 22, t: '銀行', s: '貸 5000 圓', e: '🏦' },
+        { x: 61, t: '六個人', s: '抵押產業', e: '🖐️' },
+        { x: 100, t: '三十戶佃農', s: '上山開墾', e: '🌾' },
+        { x: 139, t: '公學校', s: '收益捐入', e: '🏫' },
+      ].map((n, i) => (
+        <g key={n.t}>
+          <circle cx={n.x} cy="40" r="14" fill={i === 2 ? '#ffe8a3' : '#f0e2c2'} stroke={i === 2 ? '#d98a00' : '#b9ab90'} strokeWidth="1.2" />
+          <text x={n.x} y="45" fontSize="13" textAnchor="middle">{n.e}</text>
+          <text x={n.x} y="66" fontSize="7.2" fill={C.ink} textAnchor="middle" fontWeight="bold">{n.t}</text>
+          <text x={n.x} y="75" fontSize="6.2" fill={C.sub} textAnchor="middle">{n.s}</text>
+          {i < 3 && (
+            <>
+              <line x1={n.x + 15} y1="40" x2={n.x + 22} y2="40" stroke={C.red} strokeWidth="1.6" />
+              <path d={`M${n.x + 24},40 l-5,-3 v6 z`} fill={C.red} />
+            </>
+          )}
+        </g>
+      ))}
+      <text x="80" y="90" fontSize="7.4" fill={C.sub} textAnchor="middle">十年攤還本利·地在阿姆坪·面積四十八甲半</text>
+      <text x="80" y="101" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">這不是施捨，是一樁有風險的經營</text>
+    </g>
+  ),
 }
 
 // ── 資料驅動圖表：題目給哪些數字，就照那些數字現場畫，孩子看到的圖和題目一模一樣 ──

@@ -2514,6 +2514,329 @@ export const SEASON8 = {
                      en: 'Next — forty-eight jia! “The six gentlemen gave forty-eight jia of school-land” is Daxi’s best-loved story. But An-An finds something: those six men **pledged their own businesses and borrowed five thousand yen from the bank** to fund the clearing of that land. This was not the gift of idle acres; it was a venture, and a risky one. And where had the land itself come from? This time we use land measures and division to share one loan among six men.' },
       reward: 500,
     },
+
+    // ─────────────────────────────────────── S8 EP9 ───────────────────────────────────────
+    // 案件來自 daxi-history/docs/大溪仕紳敘事考.md「二、逆寫版本」，2026-08-26 回頭核對原文查證：
+    //   羅烈師〈大溪六君子為什麼能捐出48甲學田？〉客新聞 2025/08/25，原文明確寫：
+    //   ・明治41（1908）年初春，呂鷹揚（1866–1923）與王式璋、呂建邦、江健臣、黃丙南、黃玉麟共六人
+    //   ・「各自以自己的產業為擔保，10年攤還本利的方式，向台灣勸業銀行貸款 5000 圓」
+    //   ・開墾「48甲半的原野」，作為大嵙崁公學校的基本財產；招募而來的「三十戶佃農」
+    //   ・三井會社在此經營「超過 1000 甲的茶園」
+    //   1917 年學田全數捐贈為公學校財產（daxi-history/docs/大溪地點史觀.md 年表）。
+    // ★ 破案數字＝史料矛盾清單裡真實存在的那一條：學田面積 48甲半（客新聞／StoryStudio）
+    //   vs 六十餘甲（Newtalk 2017）vs 四十多甲（蘭室官網）。60 − 48.5 ＝ 11.5 甲憑空長出來，
+    //   這就是 daxi-history 講的「紀念性敘事會自己長大」。
+    // ★ 阿姆坪的下場另查證（2026-08-26 WebSearch）：1964 石門水庫完工，標高 250 公尺以下
+    //   （含阿姆坪）全部沒入水下，淹沒區 416 戶、最終 278 戶分五批遷村，其中 82 戶泰雅族
+    //   經協商遷往最近的大溪中庄。⚠️ 遷村的人只寫進 story／arcClue，不拿來當算式答案。
+    // ⚠️ 誠實鐵則（比照 EP8）：scene 1 先把「學校是真的、好處也是真的」釘在證據板第一條。
+    // ⚠️ culprit 罰的是「錯了不改」——解說牌把 48甲半寫成六十餘甲、放著沒改，而且今天正要被
+    //   抄進校慶影片；📗特刊與📙貸款契據都沒說謊，不能罰。
+    // ⚠️ 1907 只在 arcClue 點一句「前一年」，完整處理留給 EP10。
+    {
+      id: 's8ep9',
+      comicIntro: [
+        { bg: 'school', cast: ['anan', '👩'],
+          say: { zh: '校友阿蕙姊姊攤開三份資料：「校慶影片後天要交，可是學田面積三份寫得都不一樣！」',
+                 en: 'Hui, an old pupil of the school, spreads out three files: "The anniversary film is due in two days — and all three sources give a different acreage!"' } },
+        { bg: 'school', cast: ['anan', '📘'],
+          say: { zh: '解說牌上寫著「無私捐出六十餘甲」。小Q把一張貸款契據放上去：「先問——地從哪來？」',
+                 en: 'The sign reads "selflessly gave over sixty jia." Little Q lays a loan deed beside it: "First — where did the land come from?"' } },
+      ],
+      comicSolve: [
+        { bg: 'dam', cast: ['anan', '🌾'],
+          say: { zh: '安安站在水庫邊：「多出來的十一點五甲，不是誰在說謊——是故事自己長大的。」',
+                 en: 'At the reservoir\'s edge An-An says: "The extra eleven and a half jia is nobody\'s lie — the story grew on its own."' } },
+        { bg: 'banyan', cast: ['anan', 'arong', '🐦'],
+          say: { zh: '藍鵲的第九根羽毛落下。〈史料卡 9 · 四十八甲〉',
+                 en: 'The magpie\'s ninth feather falls. Archive Card 9 — Forty-Eight Jia.' } },
+      ],
+      no: 9,
+      title: { zh: '四十八甲地', en: 'Forty-Eight Jia' },
+      emoji: '🌾',
+      accent: '#b08a3e',
+      difficulty: { zh: '有餘數除法·併式·大數·帶分數化假分數·小數減法（四上）', en: 'Division with remainder · combined operations · big numbers · fractions · decimals (Grade 4-1)' },
+      card: { id: 'school-land', emoji: '🌾', name: { zh: '史料卡 9 · 四十八甲', en: 'Archive Card 9 · Forty-Eight Jia' } },
+      intro: [
+        { zh: '大溪國小的會議室裡，一個綁馬尾的大姊姊快哭出來了。她叫**阿蕙**，是這所學校的畢業生，被拜託幫忙做校慶紀念影片。桌上攤著三份資料。「小偵探你看，」她指著一份一份，「解說牌寫『六十餘甲』，這本書寫『四十八甲半』，這個網頁寫『四十多甲』。到底哪一個才對啊？後天就要交了！」',
+          en: 'In the meeting room of Daxi Primary a young woman with a ponytail is close to tears. Her name is **Hui**; she went to this school, and has been asked to make the anniversary film. Three sources lie open on the table. “Look, detective,” she says, pointing at each in turn, “the sign says ‘over sixty jia,’ this book says ‘forty-eight and a half,’ and this page says ‘forty-odd.’ Which one is right? It is due the day after tomorrow!”' },
+        { zh: '小Q🦉推了推眼鏡：「阿蕙姊姊，先講一件事——**這件事本身是真的。**六位仕紳確實把一大片地給了這所學校，學校也確實靠那塊地的收益撐了好多年。這一點沒有人可以推翻。」阿蕙鬆了一口氣。小Q話鋒一轉：「可是，上一集我們問過『💰錢從哪來』。今天要問這一季的第二個問題——」牠從包包裡抽出一張泛黃的契據，攤在三份資料中間：「🗺️**地從哪來？**」',
+          en: 'Little Q🦉 pushes up his spectacles. “Miss Hui, one thing first — **the event itself is true.** Six men did give a great stretch of land to this school, and the school did live off its yield for many years. Nobody can overturn that.” Hui breathes out. Then Little Q turns: “But last time we asked 💰 where the money came from. Today we ask this season’s second question —” and he draws a yellowed deed from his bag and lays it among the three files: “🗺️ **Where did the land come from?**”' },
+      ],
+      scenes: [
+        // 1 📗 官方版：先把「好處是真的」釘住（1917 − 1908 ＝ 9）
+        {
+          place: { zh: '📗 紀念碑上的兩個年份', en: '📗 Two Dates on the Tablet' },
+          emoji: '🏫',
+          story: { zh: '小Q先帶大家到操場邊的紀念碑前。碑上刻著：「明治四十一年，六君子拓墾阿姆坪山田為學田。」小Q說：「明治四十一年，就是西元 {1908} 年——那一年初春，六個人開始開墾。」牠又指著碑的另一面：「而學田正式變成學校的財產，是 {1917} 年。」阿蕙湊過去看。小Q：「安安，這中間隔了幾年？」',
+                   en: 'Little Q leads them first to the tablet beside the playground. It reads: “In the forty-first year of Meiji, the six gentlemen cleared the hill fields of Amuping as school-land.” Little Q says: “The forty-first year of Meiji is {1908} — early that spring, six men began the clearing.” He points to the other face: “And the land formally became school property in {1917}.” Hui leans in. Little Q: “An-An, how many years between?”' },
+          clueNote: { zh: '1908 初春開墾 → 1917 正式成為校產，中間隔 9 年；辦學是真的，好處也是真的', en: '1908 clearing begins → 1917 it becomes school property: nine years. The school is real and so is the good it did' },
+          puzzle: {
+            text: { zh: '{1908} 年開始開墾，{1917} 年正式捐給學校。中間隔了幾年？',
+                    en: 'Clearing began in {1908}; it was given to the school in {1917}. How many years between?' },
+            answer: 9, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代差用減法：1917 − 1908！', en: 'Subtract: 1917 − 1908!' },
+            teach: [
+              { zh: '隔了幾年，就是後面那一年減掉前面那一年。',
+                en: '“How many years between” is the later year minus the earlier one.' },
+              { zh: '1917 − 1908：兩個都是一九〇〇多，可以只看後面兩位——17 − 8。',
+                en: '1917 − 1908: both are nineteen-hundreds, so just look at the last part — 17 − 8.' },
+              { zh: '換你算出中間隔了幾年！',
+                en: 'Your turn — how many years?' },
+            ],
+            reward: { zh: '🏫 9 年！小Q在證據板最上面寫下第一條，跟上次一樣畫了個圈：「**九年。他們花了九年，才把那塊地變成學校的。**」牠轉頭看阿蕙：「姊姊，你的影片裡這一句一定要留著——這所學校是真的被撐起來的。」阿蕙用力點頭。小Q把眼鏡推正：「好。現在我們來查那九年裡面，發生了什麼事。」',
+                      en: '🏫 Nine years! Little Q writes the first line at the top of the evidence board and rings it, as before: “**Nine years. It took them nine years to turn that land into a school’s.**” He looks at Hui: “Miss, keep this line in your film — this school really was held up by someone.” Hui nods hard. Little Q straightens his spectacles: “Good. Now let us find out what happened during those nine years.”' },
+          },
+        },
+        // 2 📙 老紀錄：貸款五千圓，六個人怎麼分（有餘數除法 5000 ÷ 6 ＝ 833 餘 2）
+        {
+          place: { zh: '📙 台灣勸業銀行·貸款契據', en: '📙 The Bank Deed' },
+          emoji: '🏦',
+          story: { zh: '小Q把那張泛黃的契據推到桌子正中間。上面的字很硬、很冷，沒有一句好聽話：「**呂鷹揚等六名，各自以自己的產業為擔保，向台灣勸業銀行貸款 {5000} 圓，十年攤還本利。**」阿蕙愣住了：「等一下……**借錢**？」小Q點頭：「他們不是拿出閒著沒用的地送人。他們是把自己的房子、店面、產業押給銀行，借了五千圓，去開墾一片還沒開的荒地。」安安小聲說：「那如果失敗了……」小Q沒有回答，只問：「五千圓，六個人平分，一個人幾圓？除不盡就只寫商。」',
+                   en: 'Little Q pushes the yellowed deed to the middle of the table. Its language is hard and cold, with no fine words in it: “**Lü Ying-yang and five others, each pledging his own property as security, borrow {5000} yen from the Taiwan Kangyo Bank, principal and interest repayable over ten years.**” Hui stares. “Wait… they *borrowed* it?” Little Q nods: “They did not hand over idle acres. They pledged their houses, their shops, their businesses to a bank, took five thousand yen, and went to clear ground nobody had cleared.” An-An says quietly: “And if it had failed…” Little Q does not answer. He asks instead: “Five thousand yen shared among six men — how much each? Give the quotient only.”' },
+          clueNote: { zh: '⭐ 貸款契據：六人各以自身產業擔保，向台灣勸業銀行貸 5000 圓、十年攤還本利；平分每人約 833 圓餘 2', en: '⭐ The deed: six men, each pledging his own property, borrow 5,000 yen from the Kangyo Bank over ten years — about 833 each, remainder 2' },
+          puzzle: {
+            text: { zh: '貸款 {5000} 圓，{6} 個人平分。一個人約幾圓？（[只寫商]）',
+                    en: 'A loan of {5000} yen shared by {6} men. About how much each? ([quotient only])' },
+            answer: 833, unit: { zh: '圓', en: 'yen' },
+            hint: { zh: '5000 ÷ 6：6 × 800 ＝ 4800，剩 200；200 裡面有幾個 6？', en: '5000 ÷ 6: 6 × 800 = 4800, leaving 200. How many sixes in 200?' },
+            teach: [
+              { zh: '「平分給幾個人」用除法：5000 分給 6 個人。',
+                en: '“Shared among” means division: 5,000 among 6.' },
+              { zh: '一步一步來：6 × 800 ＝ 4800，5000 − 4800 ＝ 200。',
+                en: 'Step by step: 6 × 800 = 4800, and 5000 − 4800 = 200.' },
+              { zh: '200 裡面有 33 個 6（6 × 33 ＝ 198，餘 2）。所以商是 800 ＋ 33；換你算！',
+                en: 'There are 33 sixes in 200 (6 × 33 = 198, remainder 2). So the quotient is 800 + 33 — your turn!' },
+            ],
+            reward: { zh: '🏦 833 圓餘 2！小Q在證據板寫下：「**這不是施捨，是一樁有風險的經營。**」阿蕙很小聲地說：「我以為……他們就是很有錢，隨手捐一塊地。」小Q搖頭：「有錢是真的。可是有錢的人也可以什麼都不做。他們選擇去借五千圓——安安，你注意到了嗎？**除不盡。**餘 2。錢從來不是剛剛好的。」',
+                      en: '🏦 833, remainder 2! Little Q writes: “**This was not charity. It was a venture, and a risky one.**” Hui says, very small: “I always thought… they were simply rich, and gave away a field.” Little Q shakes his head: “Rich they were. But a rich man may also do nothing at all. These men chose to borrow five thousand — and An-An, did you notice? **It does not divide evenly.** Remainder two. Money never comes out exactly right.”' },
+          },
+        },
+        // 3 📙 併式：還了三年還欠多少（5000 − 500 × 3 ＝ 3500）
+        {
+          place: { zh: '📙 十年攤還', en: '📙 Ten Years to Repay' },
+          emoji: '📉',
+          diagram: 'school-land',
+          story: { zh: '小Q在紙上畫了一條線，分成十格。「十年攤還，意思是這筆錢要還十年。五千圓分十年，一年還 {500} 圓。」牠在前三格打了勾：「假設他們已經還了 {3} 年。安安——**還欠銀行幾圓？**」牠特別提醒：「這題要用**併式**：先算還掉的，再從總數裡減掉。一行寫完。」阿蕙看著那條線，忽然說：「這十年裡面，只要有一年山上收成不好……」小Q：「對。所以這叫風險。」',
+                   en: 'Little Q draws a line on the paper and divides it into ten. “Ten years to repay means the debt runs for ten years. Five thousand over ten years is {500} a year.” He ticks the first three: “Suppose they have repaid {3} years. An-An — **how much is still owed?**” He adds: “Use a **combined expression** here: work out what has been repaid, then take it off the total. All in one line.” Hui looks at the row of boxes and says suddenly: “And in those ten years, if even one harvest failed up there…” Little Q: “Just so. That is what risk means.”' },
+          clueNote: { zh: '五千圓十年攤還＝一年 500 圓；還了 3 年後仍欠 5000 − 500 × 3 ＝ 3500 圓', en: '5,000 over ten years is 500 a year; after three years 5000 − 500 × 3 = 3,500 still owed' },
+          puzzle: {
+            text: { zh: '借 {5000} 圓，一年還 {500} 圓，已經還了 {3} 年。[還欠]幾圓？（用併式）',
+                    en: 'Borrow {5000} yen, repay {500} a year, three years done. How much is [still owed]? (One expression)' },
+            answer: 3500, unit: { zh: '圓', en: 'yen' },
+            hint: { zh: '併式：5000 − 500 × 3。記得先算乘法！', en: 'One line: 5000 − 500 × 3. Multiply first!' },
+            teach: [
+              { zh: '先想「已經還掉多少」：一年 500 圓，還了 3 年 → 500 × 3。',
+                en: 'First, how much is repaid: 500 a year for 3 years → 500 × 3.' },
+              { zh: '併式裡**先乘除、後加減**：5000 − 500 × 3，要先算 500 × 3 ＝ 1500。',
+                en: 'In a combined expression, **multiply before you subtract**: 5000 − 500 × 3, so 500 × 3 = 1500 first.' },
+              { zh: '再算 5000 − 1500；換你算出還欠幾圓！',
+                en: 'Then 5000 − 1500 — your turn to find what is left!' },
+            ],
+            reward: { zh: '📉 3500 圓！小Q在證據板旁邊畫了一張流程圖：**銀行 → 六個人 → 三十戶佃農 → 公學校**。牠用爪子從左邊一路劃到右邊：「安安，看清楚。『捐出學田』這四個字，中間其實有四站。**解說牌只寫了最後一站。**」安安盯著中間那個亮起來的圈圈：「三十戶佃農……那是誰？」小Q：「下一題。」',
+                      en: '📉 3,500 yen! Little Q draws a flow chart beside the board: **bank → six men → thirty tenant families → the school.** He traces it with a claw from left to right: “Look carefully, An-An. Behind the words ‘gave the school-land’ there are four stations. **The sign only wrote the last one.**” An-An stares at the lit circle in the middle: “Thirty tenant families… who were they?” Little Q: “Next question.”' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 480000：48 甲換成平方公尺）
+        {
+          kind: 'choice',
+          place: { zh: '那塊地到底在哪裡', en: 'Where the Land Actually Was' },
+          emoji: '🔀',
+          story: { zh: '阿蕙翻著資料：「可是……阿姆坪在哪裡啊？我 Google 地圖找不到。」小Q合上契據：「找得到，只是你要往水裡看。」牠站起來：「兩條路。想**親眼看**那塊地在哪，就搭車去石門水庫，阿姆坪就在庫區中游。想**看白紙黑字**，就去校史室，那份老地契還在，背面有換算表。」安安猶豫了。窗外，那隻藍鵲往山的方向飛了一小段，又停下來回頭看她。',
+                   en: 'Hui scrolls through her files: “But… where *is* Amuping? I cannot find it on the map.” Little Q closes the deed: “You can find it. You must look under the water.” He stands. “Two routes. To **see** where the land was, take the bus to Shihmen Reservoir — Amuping lies in the middle reach. To **read** it, go to the school history room; the old deed is still there, with a conversion table on the back.” An-An hesitates. Outside, the magpie flies a little way towards the mountains, then stops and looks back at her.' },
+          question: { zh: '★ 你來決定！要去石門水庫看阿姆坪，還是去校史室查老地契？（兩條都查得到，選你喜歡的！）',
+                      en: '★ You decide! Shihmen Reservoir, or the old deed in the history room? (Both work — pick your favourite!)' },
+          options: [
+            {
+              id: 'reservoir',
+              label: { zh: '🌊 石門水庫·阿姆坪', en: '🌊 Shihmen Reservoir · Amuping' },
+              scene: {
+                place: { zh: '石門水庫·阿姆坪碼頭', en: 'Shihmen Reservoir · Amuping Jetty' },
+                emoji: '🌊',
+                story: { zh: '水面很大很安靜，遠遠的山倒映在上面，一動也不動。碼頭邊立著一塊解說牌。開船的伯伯指著湖心說：「以前那底下是田啦。整片。」安安趴在欄杆上往下看，只看到自己的影子。解說牌上有一張換算表：「**一甲約等於一公頃，一公頃約等於 {10000} 平方公尺。**」小Q：「先用整數粗算。{48} 甲，大約是幾平方公尺？」',
+                         en: 'The water is wide and very still, the far hills lying motionless on its surface. An interpretive sign stands by the jetty. The boatman points at the middle of the lake: “Fields down there, once. All of it.” An-An leans on the rail and looks down, and sees only her own shadow. On the sign is a conversion table: “**One jia ≈ one hectare; one hectare ≈ {10000} square metres.**” Little Q: “Round numbers first. {48} jia — about how many square metres?”' },
+                clueNote: { zh: '阿姆坪在石門水庫庫區中游，田在水下；一甲約一公頃約 10000 平方公尺 → 48 甲約 480000 平方公尺', en: 'Amuping lies in the reservoir’s middle reach, the fields underwater; 1 jia ≈ 1 ha ≈ 10,000 m², so 48 jia ≈ 480,000 m²' },
+                puzzle: {
+                  text: { zh: '{48} 甲，一甲約 {10000} 平方公尺。大約幾平方公尺？', en: '{48} jia, one jia ≈ {10000} m². About how many square metres?' },
+                  answer: 480000, unit: { zh: '平方公尺', en: 'm²' },
+                  hint: { zh: '48 × 10000：先算 48，後面接四個 0！', en: '48 × 10000: write 48, then four zeros!' },
+                  teach: [
+                    { zh: '一甲約 10000 平方公尺，有 48 甲，用乘法：48 × 10000。',
+                      en: 'One jia is about 10,000 m², and there are 48 — multiply: 48 × 10000.' },
+                    { zh: '乘 10000 有捷徑：後面接**四個 0**就好。',
+                      en: 'Multiplying by 10,000 is quick: just add **four zeros.**' },
+                    { zh: '48 後面接四個 0，唸作四十八萬；換你寫出來！',
+                      en: '48 with four zeros is four hundred and eighty thousand — your turn to write it!' },
+                  ],
+                  reward: { zh: '🌊 480000 平方公尺！安安唸出來：「四十八萬平方公尺。」她抬頭看那片水，忽然覺得很怪——這麼大一塊地，居然可以整個不見。開船的伯伯在旁邊補了一句：「標高兩百五十公尺以下，全部淹掉。」小Q沒說話，牠在筆記本上寫下一行字，安安沒看清楚。',
+                            en: '🌊 480,000 m²! An-An says it aloud: “Four hundred and eighty thousand square metres.” She looks up at the water and finds it strange — that so much ground could simply be gone. The boatman adds: “Everything below two hundred and fifty metres. All under.” Little Q says nothing; he writes a line in his notebook that An-An cannot quite read.' },
+                },
+              },
+            },
+            {
+              id: 'deed',
+              label: { zh: '📜 校史室·老地契', en: '📜 The History Room · The Old Deed' },
+              scene: {
+                place: { zh: '校史室·老地契', en: 'The History Room · The Old Deed' },
+                emoji: '📜',
+                story: { zh: '校史室最裡面的抽屜拉開，一股舊紙的味道跑出來。老地契用棉紙包著，攤開來比桌子還大，毛筆字一行一行往下寫。阿蕙屏住呼吸：「這……可以碰嗎？」管理員笑著遞來白手套。地契背面有人用鉛筆寫了一張換算表：「**一甲約等於一公頃，一公頃約等於 {10000} 平方公尺。**」小Q：「先用整數粗算。{48} 甲，大約是幾平方公尺？」',
+                         en: 'The deepest drawer in the history room slides open and the smell of old paper comes out. The deed is wrapped in cotton paper and, unfolded, is larger than the table, its brush columns running downwards. Hui holds her breath: “Can we… touch it?” The keeper smiles and hands her white gloves. On the back someone has pencilled a conversion table: “**One jia ≈ one hectare; one hectare ≈ {10000} square metres.**” Little Q: “Round numbers first. {48} jia — about how many square metres?”' },
+                clueNote: { zh: '老地契還在校史室；背面換算表：一甲約一公頃約 10000 平方公尺 → 48 甲約 480000 平方公尺', en: 'The old deed survives in the history room; its table gives 1 jia ≈ 1 ha ≈ 10,000 m², so 48 jia ≈ 480,000 m²' },
+                puzzle: {
+                  text: { zh: '{48} 甲，一甲約 {10000} 平方公尺。大約幾平方公尺？', en: '{48} jia, one jia ≈ {10000} m². About how many square metres?' },
+                  answer: 480000, unit: { zh: '平方公尺', en: 'm²' },
+                  hint: { zh: '48 × 10000：先算 48，後面接四個 0！', en: '48 × 10000: write 48, then four zeros!' },
+                  teach: [
+                    { zh: '一甲約 10000 平方公尺，有 48 甲，用乘法：48 × 10000。',
+                      en: 'One jia is about 10,000 m², and there are 48 — multiply: 48 × 10000.' },
+                    { zh: '乘 10000 有捷徑：後面接**四個 0**就好。',
+                      en: 'Multiplying by 10,000 is quick: just add **four zeros.**' },
+                    { zh: '48 後面接四個 0，唸作四十八萬；換你寫出來！',
+                      en: '48 with four zeros is four hundred and eighty thousand — your turn to write it!' },
+                  ],
+                  reward: { zh: '📜 480000 平方公尺！安安唸出來：「四十八萬平方公尺。」她低頭看那張地契，忽然發現角落還有一行更小的字，寫著一個地名，後面跟著兩個她不認得的字。管理員瞇著眼看了很久：「這個啊……我也不知道念什麼。老東西上面常常有。」小Q在筆記本上寫下一行字，安安沒看清楚。',
+                            en: '📜 480,000 m²! An-An says it aloud: “Four hundred and eighty thousand square metres.” Then she notices, in the corner, a smaller line still: a place-name, followed by two characters she does not know. The keeper squints at it a long while: “That one… I could not tell you how it is read. Old papers often have them.” Little Q writes a line in his notebook that An-An cannot quite read.' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 📙 三十戶佃農（大數除法 480000 ÷ 30 ＝ 16000）
+        {
+          place: { zh: '📙 三十戶佃農', en: '📙 Thirty Tenant Families' },
+          emoji: '🌾',
+          story: { zh: '小Q把契據上的一行字圈起來，那行字很短，很容易看漏：「**招募而來的三十戶佃農。**」阿蕙唸了兩遍：「三十戶……所以真正下田的不是那六個人？」小Q：「六個人出錢、擔保、承擔風險，這是真的。可是把四十八萬平方公尺的荒地一鋤頭一鋤頭變成田的，是這 {30} 戶人家。」牠推了推眼鏡：「安安，如果四十八萬平方公尺平分給三十戶，一戶要開幾平方公尺？」',
+                   en: 'Little Q rings one short, easily missed line on the deed: “**thirty tenant families, recruited.**” Hui reads it twice: “Thirty… so it was not those six who actually worked it?” Little Q: “The six put up the money, the security and the risk — that is true. But the ones who turned four hundred and eighty thousand square metres of scrub into fields, hoe-stroke by hoe-stroke, were these {30} households.” He pushes up his spectacles: “An-An, if that area were shared equally among thirty families, how much to each?”' },
+          clueNote: { zh: '⭐ 契據另記「招募而來的三十戶佃農」；480000 ÷ 30 ＝ 一戶 16000 平方公尺，佃農無一人留下姓名', en: '⭐ The deed also records “thirty tenant families, recruited”: 480,000 ÷ 30 = 16,000 m² each. Not one of their names survives' },
+          puzzle: {
+            text: { zh: '{480000} 平方公尺，平分給 {30} 戶。一戶幾平方公尺？',
+                    en: '{480000} m² shared equally among {30} families. How much each?' },
+            answer: 16000, unit: { zh: '平方公尺', en: 'm²' },
+            hint: { zh: '480000 ÷ 30：兩邊各去掉一個 0 → 48000 ÷ 3！', en: '480000 ÷ 30: drop a zero from each → 48000 ÷ 3!' },
+            teach: [
+              { zh: '「平分給幾戶」用除法：480000 分給 30 戶。',
+                en: '“Shared among” means division: 480,000 among 30.' },
+              { zh: '被除數和除數**同時去掉一個 0**，答案不變：變成 48000 ÷ 3。',
+                en: 'Drop one zero from **both** numbers and the answer is unchanged: 48000 ÷ 3.' },
+              { zh: '48 ÷ 3 ＝ 16，再把去掉的 0 補回來；換你算！',
+                en: '48 ÷ 3 = 16 — now put the zeros back. Your turn!' },
+            ],
+            reward: { zh: '🌾 16000 平方公尺！阿蕙拿筆記下來，寫到一半停住了：「那……這三十戶人家，紀念碑上有寫他們的名字嗎？」會議室安靜了幾秒。小Q很平靜地說：「沒有。碑上有六個名字。」安安低下頭看那張契據——「三十戶佃農」，五個字，沒有一個是名字。',
+                      en: '🌾 16,000 m²! Hui writes it down, then stops halfway: “So… are these thirty families named on the tablet?” The room is quiet for a few seconds. Little Q says evenly: “No. There are six names on the tablet.” An-An looks down at the deed — *thirty tenant families*, four words, and not one of them a name.' },
+          },
+        },
+        // 6 🌳 阿榕的記憶碎片：地契寫的是「四十八甲半」（帶分數化假分數 48又1/2 → 97/2）
+        {
+          place: { zh: '🌳 阿榕的記憶碎片', en: '🌳 Ah-Rong’s Fragment of Memory' },
+          emoji: '🍃',
+          story: { zh: '老榕樹下，一片葉子飄下來，葉面浮出一格畫面：一個還沒亮的清晨，六個穿長袍的人站在街口，其中一個手上捏著一張紙。阿榕的聲音很輕：「那天早上我看見了。紙上的字很大，我到現在還記得——寫的不是『四十八甲』，是『**四十八甲半**』。」小Q眼睛一亮：「半甲也是地。安安，把 48 又 1/2 甲**化成假分數**——一共是幾個 1/2 甲？」',
+                   en: 'Beneath the old banyan a leaf drifts down, and a scene surfaces: a morning before dawn, six men in long robes standing at the street corner, one of them holding a sheet of paper. Ah-Rong’s voice is quiet: “I saw them that morning. The writing was large, and I remember it still — it did not say ‘forty-eight jia.’ It said ‘**forty-eight and a half.**’” Little Q’s eyes light up: “Half a jia is land too. An-An, turn 48½ into an **improper fraction** — how many halves is that altogether?”' },
+          clueNote: { zh: '⭐ 地契原文是「四十八甲半」，不是 48 甲整；48又1/2 ＝ 97/2 甲，我們自己也少算了半甲', en: '⭐ The deed says forty-eight and a **half** jia, not forty-eight: 48½ = 97/2. Even we had rounded half a jia away' },
+          puzzle: {
+            text: { zh: '{48} 又 1/2 甲，化成假分數：[一共]是幾個 1/2 甲？',
+                    en: '{48}½ jia as an improper fraction: how many halves [in all]?' },
+            answer: 97, unit: { zh: '個 1/2 甲', en: 'halves' },
+            hint: { zh: '整數 48 先變成幾個 1/2？48 × 2 ＝ 96，再加上原本那 1 個！', en: 'How many halves in 48? 48 × 2 = 96 — then add the one you already had!' },
+            teach: [
+              { zh: '帶分數化假分數：先把**整數部分**換成同樣分母的分數。',
+                en: 'To make an improper fraction, first turn the **whole part** into the same kind of fraction.' },
+              { zh: '1 甲有 2 個 1/2，所以 48 甲有 48 × 2 ＝ 96 個 1/2。',
+                en: 'One jia is two halves, so 48 jia is 48 × 2 = 96 halves.' },
+              { zh: '再加上原本的那 1 個 1/2：96 ＋ 1；換你算出分子！',
+                en: 'Now add the half you started with: 96 + 1 — your turn!' },
+            ],
+            reward: { zh: '🍃 97！所以是 97/2 甲。小Q把數字補進證據板，然後停住了：「安安，注意一件事——**我們自己剛剛也把那半甲丟掉了。**四捨五入很方便，可是每四捨五入一次，就有一點點東西不見。」葉子上的畫面還沒散。安安盯著那六個站在街口的人，忽然問：「阿榕，那三十戶佃農呢？你有看見他們嗎？」老榕樹沉默了很久：「……他們是從山那一邊走過來的。安安，我跟你說過——**我看不見山的那邊。**」',
+                      en: '🍃 97! So it is 97/2 jia. Little Q adds it to the board, then pauses: “An-An, note something — **we ourselves threw that half away just now.** Rounding is convenient, and every time you round, a little of something disappears.” The picture on the leaf has not faded. An-An stares at the six men at the corner and asks suddenly: “Ah-Rong, what about the thirty tenant families? Did you see them?” The old banyan is silent a long while. “…They came from the other side of the mountain. An-An, I told you once — **I cannot see the other side of the mountain.**”' },
+          },
+        },
+        // 7 📘 導覽版：那塊地後來怎麼了（1964 − 1908 ＝ 56）
+        {
+          place: { zh: '📘 那塊地後來怎麼了', en: '📘 What Became of the Land' },
+          emoji: '💧',
+          story: { zh: '小Q翻開最後一份資料，是一本水利工程的紀錄。「阿蕙姊姊，你的影片裡有一段一定要補上。」牠指著一行：「{1964} 年，石門水庫完工。標高兩百五十公尺以下的地方，全部沒入水下——**阿姆坪就在裡面。**」阿蕙張大嘴：「所以學田……」小Q：「在水下。」安安低聲問：「從開墾那年算起，過了幾年？」小Q把年份寫給她：{1908} 到 {1964}。',
+                   en: 'Little Q opens the last file, a record of waterworks. “Miss Hui, your film needs one more passage.” He points at a line: “In {1964} the Shihmen Reservoir was completed. Everything below two hundred and fifty metres went under the water — **and Amuping is in there.**” Hui’s mouth opens: “So the school-land…” Little Q: “Is underwater.” An-An asks quietly: “How many years after the clearing?” Little Q writes the dates for her: {1908} to {1964}.' },
+          clueNote: { zh: '1964 石門水庫完工，標高 250 公尺以下（含阿姆坪）沒入水下；距 1908 開墾 56 年', en: '1964: the reservoir is finished and everything below 250 m — Amuping included — goes under, 56 years after the clearing' },
+          puzzle: {
+            text: { zh: '{1908} 年開墾，{1964} 年水庫完工。中間隔了幾年？',
+                    en: 'Cleared in {1908}; the reservoir finished in {1964}. How many years between?' },
+            answer: 56, unit: { zh: '年', en: 'years' },
+            hint: { zh: '1964 − 1908：可以先算 1964 − 1900 ＝ 64，再減 8！', en: '1964 − 1908: try 1964 − 1900 = 64, then take off 8!' },
+            teach: [
+              { zh: '中間隔幾年，一樣用減法：1964 − 1908。',
+                en: 'Years between is subtraction again: 1964 − 1908.' },
+              { zh: '先湊整比較好算：1964 − 1900 ＝ 64。',
+                en: 'Round first: 1964 − 1900 = 64.' },
+              { zh: '剛剛少減了 8，要再減掉：64 − 8；換你算！',
+                en: 'You took off 8 too few, so subtract them: 64 − 8 — your turn!' },
+            ],
+            reward: { zh: '💧 56 年！小Q把紀錄合上，語氣很輕：「那塊地被開出來五十六年之後，又被水蓋回去了。」牠停了一下：「淹沒區一共四百多戶人家要搬走。其中有八十二戶，經過協商，遷到了離家最近的地方——**大溪中庄**。」阿蕙輕輕問：「那八十二戶是……」小Q看著窗外的山：「是泰雅族的人。紀錄上寫了戶數，寫了村子的名字。」牠沒有把話說完。',
+                      en: '💧 Fifty-six years! Little Q closes the record and says softly: “Fifty-six years after that ground was opened, the water closed over it again.” He pauses. “Four hundred-odd households in the flooded zone had to move. Eighty-two of them, after negotiation, went to the nearest place they could — **Zhongzhuang, in Daxi.**” Hui asks gently: “And those eighty-two were…” Little Q looks out at the hills: “Atayal families. The record gives the number of households, and the name of the settlement.” He does not finish the sentence.' },
+          },
+        },
+        // 8 🔍 破案：三份說法的面積差（60 − 48.5 ＝ 11.5）
+        {
+          place: { zh: '🔍 多出來的那些地', en: '🔍 The Extra Acres' },
+          emoji: '📊',
+          chart: {
+            type: 'bar', title: '同一塊學田·兩份說法（甲）', highlight: 1,
+            caption: '📙 老紀錄 48.5 甲 vs 📘 解說牌 60 甲，差多少？',
+            data: [{ label: '📙 老紀錄', v: 48.5 }, { label: '📘 解說牌', v: 60 }],
+          },
+          story: { zh: '回到會議室，小Q把三份資料一字排開，畫了一張長條圖。「阿蕙姊姊，你一開始問我哪一個才對。答案是——**我們有原始契據，寫的是四十八甲半。**」牠指著另一根長條：「而解說牌寫的是『六十餘甲』。」阿蕙盯著那兩根，聲音有點抖：「差好多……」小Q：「安安，最後一題。這兩個數字，**差幾甲**？」',
+                   en: 'Back in the meeting room Little Q sets the three sources in a row and draws a bar chart. “Miss Hui, you asked me at the start which one was right. The answer is — **we have the original deed, and it says forty-eight and a half.**” He points at the other bar: “The sign says ‘over sixty.’” Hui stares at the two, her voice unsteady: “That is so much more…” Little Q: “An-An, last question. **How many jia apart** are these two numbers?”' },
+          clueNote: { zh: '⭐ 60 − 48.5 ＝ 11.5 甲憑空多出來：沒有人說謊，是紀念性的故事會自己長大', en: '⭐ 60 − 48.5 = 11.5 jia out of nowhere. Nobody lied — commemorative stories grow by themselves' },
+          puzzle: {
+            text: { zh: '解說牌寫 {60} 甲，老契據寫 {48.5} 甲。[差]幾甲？',
+                    en: 'The sign says {60} jia; the deed says {48.5}. How many jia is the [difference]?' },
+            answer: 11.5, unit: { zh: '甲', en: 'jia' },
+            hint: { zh: '60 − 48.5：小數點對齊！可以想成 60.0 − 48.5。', en: '60 − 48.5: line up the decimal points — think of it as 60.0 − 48.5.' },
+            teach: [
+              { zh: '「差幾甲」用減法：大的減小的，60 − 48.5。',
+                en: '“How many apart” is subtraction: the larger minus the smaller, 60 − 48.5.' },
+              { zh: '小數相減要**小數點對齊**：把 60 寫成 60.0，再直式相減。',
+                en: 'When subtracting decimals, **line up the points**: write 60 as 60.0, then subtract in columns.' },
+              { zh: '也可以拆開想：60 − 48 ＝ 12，再減 0.5；換你算出差幾甲！',
+                en: 'Or split it: 60 − 48 = 12, then take off 0.5 — your turn!' },
+            ],
+            reward: { zh: '📊 11.5 甲！阿蕙倒抽一口氣：「十一甲半……那是誰加上去的？」小Q搖搖頭：「大概沒有人。故事被講一次、就大一點點，講一百次，就大了十一甲半。」牠把三份說法排好：「安安，說吧——哪一份，把數字寫大了，而且到今天還立在那裡沒改？」',
+                      en: '📊 Eleven and a half! Hui draws in her breath: “Eleven and a half jia… who added them?” Little Q shakes his head: “Probably nobody. A story is told once and grows a little; told a hundred times, it has grown eleven and a half jia.” He lays the three accounts out: “Say it, An-An — which one wrote the number larger, and stands there uncorrected to this day?”' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'signboard', name: { zh: '📘 校園導覽解說牌', en: '📘 The Campus Interpretive Sign' }, emoji: '📘',
+          say: { zh: '「學田六君子。六位地方仕紳無私捐出阿姆坪土地六十餘甲，作為本校學田，嘉惠學子，功在教育。」',
+                 en: '“The Six Gentlemen of the School-Land. Six local worthies selflessly gave over sixty jia of land at Amuping as this school’s endowment, to the benefit of its pupils and the credit of education.”' } },
+        { id: 'anniversary', name: { zh: '📗 校慶紀念特刊', en: '📗 The Anniversary Souvenir Booklet' }, emoji: '📗',
+          say: { zh: '「明治四十一年，呂鷹揚等六位仕紳於阿姆坪拓墾山田；大正六年，學田悉數捐贈，成為本校財產，以其收益支應校務。」',
+                 en: '“In 1908 Lü Ying-yang and five other gentlemen cleared hill fields at Amuping; in 1917 the school-land was given over entire, becoming school property, its yield supporting the school’s work.”' } },
+        { id: 'loandeed', name: { zh: '📙 台灣勸業銀行貸款契據', en: '📙 The Kangyo Bank Loan Deed' }, emoji: '📙',
+          say: { zh: '「呂鷹揚等六名，各自以自己的產業為擔保，貸款五千圓，十年攤還本利。開墾四十八甲半之原野，招募佃農三十戶。」',
+                 en: '“Lü Ying-yang and five others, each pledging his own property as security, borrow five thousand yen, principal and interest over ten years, to clear forty-eight and a half jia of open ground; thirty tenant families recruited.”' } },
+      ],
+      culprit: 'signboard',
+      accuse: { zh: '這一回一樣沒有壞人。**這件事是真的，好處也是真的**——九年、五千圓、三十戶人家，學校真的被撐起來了，這一條我們第一題就先釘住了。可是我們手上有**原始契據**：四十八甲半、招佃三十戶、十年攤還。有一份說法把數字寫成「六十餘甲」，多出十一點五甲；而且它說「無私捐出」，把借錢、擔保、開墾這三站整段拿掉了。它就立在校園裡，每天有小朋友讀。哪一份？',
+                en: 'Again there is no villain. **The deed was real and so was the good** — nine years, five thousand yen, thirty households; the school really was held up. We pinned that down in the very first question. But we hold the **original deed**: forty-eight and a half jia, thirty tenant families, ten years to repay. One account writes the figure as “over sixty” — eleven and a half jia more — and calls it a selfless gift, cutting out the borrowing, the security and the clearing altogether. And it stands in the schoolyard, where children read it every day. Which one?' },
+      wrongAccuse: { zh: '再想一次喔——📙貸款契據是我們的**硬證據**，它把四十八甲半、五千圓、三十戶佃農通通寫出來了，一個字都沒藏。📗紀念特刊雖然只講功績，可是它寫的年份、寫的「拓墾」兩個字都對得上契據，**它沒有把數字寫大**。我們要找的是：**數字多寫了十一點五甲，還把中間三站刪掉，而且到今天都沒有改**的那一份。📘',
+                     en: 'Think again — 📙 the loan deed is our **hard evidence**: forty-eight and a half jia, five thousand yen, thirty tenant families, nothing hidden. 📗 the booklet records only the credit side, true, but its dates and its word “cleared” both match the deed — **it did not enlarge the figure.** We want the one that **added eleven and a half jia, deleted three stations from the middle, and has never been corrected.** 📘' },
+      solve: [
+        { zh: '答案是📘校園導覽解說牌！它有兩個問題。第一個是**數字**：原始契據寫的是「四十八甲半」，解說牌寫「六十餘甲」，多了 **11.5 甲**。這多半不是有人故意造假——故事被講一次就大一點點，講久了就自己長大了。可是它就立在校園裡，一百年來每天有小朋友讀，**沒有人去改。**',
+          en: 'The answer is 📘 the campus sign. It has two problems. The first is **the number**: the original deed says forty-eight and a half jia; the sign says over sixty — **11.5 jia more.** Most likely nobody faked anything; a story told again and again simply grows. But that sign stands in the schoolyard, read by children every day for a century, and **nobody has corrected it.**' },
+        { zh: '第二個問題更大：**「無私捐出」這四個字，把中間三站整段刪掉了。**小Q把流程圖再畫一次：🏦銀行 → 🖐️六個人各自抵押自己的產業，借五千圓、十年攤還 → 🌾三十戶佃農上山開墾 → 🏫學校。安安說：「解說牌只寫了最後一站。」小Q點頭：「而且它把『經營』寫成了『施捨』。這兩件事的重量完全不一樣——**施捨不用擔風險，經營要。**」',
+          en: 'The second problem is larger: **the words “selflessly gave” delete three whole stations from the middle.** Little Q draws the chain again: 🏦 the bank → 🖐️ six men pledging their own property for five thousand yen over ten years → 🌾 thirty tenant families clearing the hillside → 🏫 the school. An-An says: “The sign wrote only the last one.” Little Q nods: “And it turned a *venture* into *charity.* Those weigh quite differently — **charity carries no risk. A venture does.**”' },
+        { zh: '🗺️**地從哪來？**小Q問出這一季的第二個問題，然後自己回答了一半：「阿姆坪那片『原野』，在六個人上山之前，不是空的。」牠翻開資料：「同一個時期，三井會社在這一帶經營超過一千甲茶園。而那些地，是先被**收歸國有**，才交到會社和開墾者手上的。」安安追問：「收歸國有之前呢？」小Q看著她，很久才說：「那是別人住的地方——你上次已經聽阿榕說過了。」',
+          en: '🗺️ **Where did the land come from?** Little Q asks the season’s second question, then answers half of it himself: “That ‘open ground’ at Amuping was not empty before six men climbed up to it.” He turns a page: “In the same years Mitsui worked over a thousand jia of tea plantation hereabouts. And that land had first been **taken into state ownership**, before it passed to companies and clearers.” An-An presses: “And before that?” Little Q looks at her, and it is a long moment before he answers: “It was where other people lived — you heard Ah-Rong say so last time.”' },
+        { zh: '阿蕙把筆記本闔上，很小聲地說：「那我的影片……是不是不能拍了？」小Q難得笑了：「當然要拍。**只是把中間那三站補回去。**」牠敲敲桌子：「姊姊，你想想看——『六個有錢人隨手捐了一塊地』，跟『六個人抵押身家去借五千圓，招了三十戶人家上山開了九年』，哪一個比較好看？」阿蕙愣了一下，然後笑了：「……第二個。第二個好看太多了。」小Q：「而且第二個是真的。」',
+          en: 'Hui closes her notebook and says, very small: “So… I cannot make my film after all?” Unusually, Little Q smiles: “Of course you can. **Simply put the three missing stations back.**” He raps the table: “Think about it — ‘six rich men gave away a field,’ or ‘six men pledged everything they owned for five thousand yen, recruited thirty families, and spent nine years opening a hillside.’ Which is the better film?” Hui blinks, then laughs: “…The second. Far better.” Little Q: “And the second is true.”' },
+        { zh: '⭐ 大溪小知識：據客新聞〈大溪六君子為什麼能捐出48甲學田？〉（羅烈師，2025）引述，明治四十一（**1908**）年初春，呂鷹揚與王式璋、呂建邦、江健臣、黃丙南、黃玉麟共六人，「**各自以自己的產業為擔保，10 年攤還本利的方式，向台灣勸業銀行貸款 5000 圓**」，開墾阿姆坪「**48 甲半的原野**」，並招募「**三十戶佃農**」；**1917** 年學田全數捐贈為公學校財產。同一塊地，不同來源寫成 48 甲半／六十餘甲／四十多甲——這條矛盾本身就是史料考證的功課。而**阿姆坪在 1964 年石門水庫完工後沒入水下**，淹沒區居民分批遷村，其中 82 戶泰雅族遷往大溪中庄。第九張史料卡，到手！',
+          en: '⭐ Daxi fact: according to HakkaNews’ “Why could Daxi’s six gentlemen give away 48 jia of school-land?” (Lo Lieh-shih, 2025), in the spring of **1908** Lü Ying-yang, Wang Shi-zhang, Lü Jian-bang, Jiang Jian-chen, Huang Bing-nan and Huang Yu-lin, “**each pledging his own property as security, borrowed 5,000 yen from the Taiwan Kangyo Bank, repayable with interest over ten years**,” to clear “**forty-eight and a half jia of open ground**” at Amuping, recruiting “**thirty tenant families**”; in **1917** the land was given over entire to the public school. The same parcel is recorded elsewhere as 48½, “over sixty,” and “forty-odd” jia — and that contradiction is itself the historian’s homework. **Amuping went under water when the Shihmen Reservoir was completed in 1964**; its residents were resettled in batches, including 82 Atayal households moved to Zhongzhuang in Daxi. Archive card nine — acquired!' },
+      ],
+      arcClue: { zh: '傍晚，安安又跑回水庫邊。太陽壓在山頭上，整片水變成橘色的，安靜得像一張沒有寫字的紙。阿藍停在欄杆上，跟她一起看。安安忽然開口：「阿藍，那三十戶佃農，還有本來就住在那裡的人……他們後來去哪裡了？」藍鵲側過頭，翅膀往下游的方向抬了一下——那邊是中庄。然後第九根羽毛落下來，掉在故事書上。這一次，那個名字**整個浮出來了**，一筆一畫都很清楚。安安伸手想把它抄到旁邊的空白處，可是筆一離開，抄過去的字就淡掉了。她試了三次，三次都一樣。阿榕在遠處輕輕說：「安安，那個名字**沒有被寫進任何一份紀錄裡**。所以這本書，是目前唯一寫得下它的地方。」安安握緊筆，沒有再抄。她只是很慢、很慢地，把那個名字念了一遍。藍鵲整個身體都轉了過來。',
+                 en: 'At dusk An-An goes back to the reservoir. The sun rests on the ridge and the whole surface turns orange, quiet as an unwritten page. Ah-Lan settles on the rail and looks with her. An-An says suddenly: “Ah-Lan — the thirty tenant families, and the people who lived there before them… where did they go?” The magpie tilts her head and lifts a wing downstream — towards Zhongzhuang. Then the ninth feather falls onto the storybook. This time the name **surfaces whole**, every stroke clear. An-An reaches to copy it into the blank beside it; but the moment her pen lifts, the copy fades. She tries three times, and three times the same. From far off Ah-Rong says gently: “An-An, that name **was never written into any record at all.** So this book is the only place that can hold it.” An-An grips her pen and does not try again. She only says the name aloud, very slowly, once. The magpie turns her whole body towards her.' },
+      nextPreview: { zh: '下一站——一九〇七那一年！六君子是 1908 年初春上阿姆坪的。可是安安翻資料的時候發現，**前一年**，那片山上發生了一件很大的事，兩份紀錄剛好從這一年的頭尾各接一段，中間那一年被跳過去了。這一集不算傷亡、不寫戰鬥——我們只算資源、只算年份，然後問一個問題：**為什麼所有的紀錄，都剛好從那一年之後才開始寫？**',
+                     en: 'Next — the year 1907! The six men went up to Amuping in the spring of 1908. But An-An finds that in **the year before**, something very large happened on that mountain, and two records happen to join at either end of it, skipping the year in between. This time we count no casualties and describe no fighting — only resources and dates. Then one question: **why does every record begin just after that year?**' },
+      reward: 500,
+    },
   ],
 }
 
