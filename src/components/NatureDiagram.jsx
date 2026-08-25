@@ -709,6 +709,65 @@ const DIAGRAMS = {
       <text x="130" y="46" fontSize="6.2" fill={C.sub} textAnchor="middle">一般圍牆</text>
     </g>
   ),
+
+  // 礦權接力（S8 EP5）：福安煤礦 1915 王式璋 → 1919 簡阿牛 → 1922 更名建成炭坑
+  'mine-timeline': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="15" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">福安煤礦·礦業權登記簿</text>
+      {/* 軸 */}
+      <line x1="20" y1="52" x2="146" y2="52" stroke={C.line} strokeWidth="1.5" />
+      <path d="M146,52 l-6,-3 v6 z" fill={C.line} />
+      {/* 王式璋段 1915→1919 */}
+      <rect x="20" y="45" width="52" height="14" rx="3" fill="#dfe9f6" stroke="#5a7fb0" strokeWidth="1.2" />
+      <text x="46" y="55" fontSize="7" fill="#3a5a86" textAnchor="middle" fontWeight="bold">王式璋 4 年</text>
+      <text x="46" y="36" fontSize="6.5" fill={C.sub} textAnchor="middle">門牌 31 · 33</text>
+      {/* 簡阿牛段 1919→1922 */}
+      <rect x="72" y="45" width="42" height="14" rx="3" fill="#f6e6d4" stroke="#b5804a" strokeWidth="1.2" />
+      <text x="93" y="55" fontSize="7" fill="#8a5a24" textAnchor="middle" fontWeight="bold">簡阿牛 3 年</text>
+      <text x="93" y="36" fontSize="6.5" fill={C.sub} textAnchor="middle">門牌 35</text>
+      {/* 年份刻度 */}
+      {[[20, '1915'], [72, '1919'], [114, '1922']].map(([x, y]) => (
+        <g key={y}>
+          <line x1={x} y1="59" x2={x} y2="66" stroke={C.ink} strokeWidth="1" />
+          <text x={x} y="74" fontSize="7.5" fill={C.ink} textAnchor="middle" fontWeight="bold">{y}</text>
+        </g>
+      ))}
+      <text x="20" y="83" fontSize="6.2" fill={C.sub} textAnchor="middle">取得</text>
+      <text x="72" y="83" fontSize="6.2" fill={C.red} textAnchor="middle" fontWeight="bold">移轉</text>
+      <text x="114" y="83" fontSize="6.2" fill={C.sub} textAnchor="middle">更名建成炭坑</text>
+      <text x="80" y="97" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">不是鄰居，是前後手</text>
+    </g>
+  ),
+
+  // 新南街 31/33/35（S8 EP5）：連坎對稱，31 與 33 同一位屋主
+  'three-shophouses': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="14" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">中山路 31 · 33 · 35 號</text>
+      {/* 王式璋的兩棟（同底色框） */}
+      <rect x="16" y="20" width="66" height="54" rx="3" fill="#eaf1fa" stroke="#5a7fb0" strokeWidth="1.4" strokeDasharray="4 2" />
+      {[20, 51].map((x, i) => (
+        <g key={x}>
+          <rect x={x} y="30" width="27" height="40" fill="#e8d7bd" stroke="#a98a63" strokeWidth="1" />
+          <path d={`M${x - 2},30 h31 l-4,-7 h-23 Z`} fill="#c9a87c" stroke="#a98a63" strokeWidth="1" />
+          <rect x={x + 5} y="38" width="7" height="9" fill={C.water2} opacity="0.7" />
+          <rect x={x + 15} y="38" width="7" height="9" fill={C.water2} opacity="0.7" />
+          <rect x={x + 8} y="56" width="11" height="14" fill="#8a6a45" />
+          <text x={x + 13.5} y="80" fontSize="7.5" fill={C.ink} textAnchor="middle" fontWeight="bold">{[31, 33][i]}</text>
+        </g>
+      ))}
+      <text x="49" y="26" fontSize="6.5" fill="#3a5a86" textAnchor="middle" fontWeight="bold">同一位屋主·各 8 公尺</text>
+      {/* 簡阿牛的一棟（比較寬） */}
+      <rect x="88" y="24" width="56" height="46" fill="#f3dfc4" stroke="#a98a63" strokeWidth="1.2" />
+      <path d="M86,24 h60 l-5,-8 h-50 Z" fill="#d8b184" stroke="#a98a63" strokeWidth="1" />
+      {[0, 1, 2].map((i) => <rect key={i} x={96 + i * 16} y="34" width="9" height="11" fill={C.water2} opacity="0.7" />)}
+      <rect x="106" y="54" width="20" height="16" fill="#8a6a45" />
+      <text x="116" y="80" fontSize="7.5" fill={C.ink} textAnchor="middle" fontWeight="bold">35</text>
+      <text x="116" y="21" fontSize="6.5" fill="#8a5a24" textAnchor="middle" fontWeight="bold">12 公尺·全街最宏大</text>
+      <text x="80" y="97" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">8 × 2 ＋ 12 ＝ 三棟連起來幾公尺</text>
+    </g>
+  ),
 }
 
 // ── 資料驅動圖表：題目給哪些數字，就照那些數字現場畫，孩子看到的圖和題目一模一樣 ──

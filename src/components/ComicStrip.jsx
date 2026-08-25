@@ -386,6 +386,59 @@ const BG = {
       </g>
     </g>
   ),
+  // 新南老街／中山路（S8 EP5）：洗石子洋樓立面＋羅馬柱＋圓頂，跟和平老街的紅磚不一樣
+  newsouth: (
+    <g>
+      <rect width="160" height="90" fill={C.sky} />
+      <rect y="70" width="160" height="20" fill="#c9c2b4" />
+      {[0, 1, 2].map((i) => {
+        const x = 6 + i * 52
+        return (
+          <g key={i}>
+            <rect x={x} y="26" width="46" height="44" fill="#e6dcc8" stroke="#b9ab90" strokeWidth="1" />
+            {/* 山牆＋圓頂 */}
+            <path d={`M${x - 3},26 h52 l-6,-9 h-40 Z`} fill="#d5c6a8" stroke="#b9ab90" strokeWidth="1" />
+            <ellipse cx={x + 23} cy="14" rx="7" ry="5" fill="#cbbb9c" stroke="#b9ab90" strokeWidth="1" />
+            {/* 匾額 */}
+            <rect x={x + 13} y="19" width="20" height="6" fill={C.paper} stroke="#a08d6c" strokeWidth="0.7" />
+            {/* 二樓窗＋羅馬柱 */}
+            <rect x={x + 8} y="33" width="10" height="12" fill={C.water2} opacity="0.65" />
+            <rect x={x + 28} y="33" width="10" height="12" fill={C.water2} opacity="0.65" />
+            <rect x={x + 21} y="31" width="4" height="16" fill="#f0e8d6" stroke="#b9ab90" strokeWidth="0.6" />
+            {/* 一樓拱門 */}
+            <path d={`M${x + 12},70 v-12 a11,11 0 0 1 22,0 v12 Z`} fill="#7d6b52" opacity="0.85" />
+          </g>
+        )
+      })}
+    </g>
+  ),
+  // 煤礦坑口（S8 EP5、EP6）：山壁上的坑口＋台車鐵軌＋煤堆
+  minepit: (
+    <g>
+      <rect width="160" height="90" fill={C.sky} />
+      <path d="M0,90 V44 Q30,20 62,30 Q100,42 132,22 Q148,14 160,20 V90 Z" fill="#6f7a5c" />
+      <path d="M0,90 V58 Q40,44 80,52 Q120,60 160,48 V90 Z" fill="#5b6449" />
+      <rect y="74" width="160" height="16" fill="#4a4133" />
+      {/* 坑口 */}
+      <path d="M52,74 v-16 a14,14 0 0 1 28,0 v16 Z" fill="#211d18" />
+      <path d="M48,74 v-18 a18,18 0 0 1 36,0 v18" fill="none" stroke={C.wood2} strokeWidth="3.5" />
+      {/* 鐵軌 */}
+      <line x1="60" y1="78" x2="8" y2="88" stroke="#8a8274" strokeWidth="1.4" />
+      <line x1="72" y1="78" x2="26" y2="90" stroke="#8a8274" strokeWidth="1.4" />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <line key={i} x1={60 - i * 11} y1={78 + i * 2} x2={72 - i * 10} y2={80 + i * 2.2} stroke="#6b6255" strokeWidth="1.2" />
+      ))}
+      {/* 台車 */}
+      <g transform="translate(104,72)">
+        <rect x="-11" y="-9" width="22" height="9" rx="1" fill="#5a4a3a" stroke="#2f2a22" strokeWidth="1" />
+        <path d="M-9,-9 q9,-4 18,0 Z" fill="#211d18" />
+        <circle cx="-6" cy="2" r="3" fill="#3a332a" />
+        <circle cx="6" cy="2" r="3" fill="#3a332a" />
+      </g>
+      {/* 煤堆 */}
+      <path d="M126,74 q10,-14 22,0 Z" fill="#241f1a" />
+    </g>
+  ),
   // 大溪國小（S8 EP4）：米黃校舍＋跑道操場＋校門邊那塊「林家捐地」石碑
   school: (
     <g>
