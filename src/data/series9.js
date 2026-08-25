@@ -1866,6 +1866,282 @@ export const SEASON9 = {
                      en: 'Act Two begins — Finland! The plane flies north over the Alps, and the colours outside the window turn white. First stop, Helsinki: a city by the sea, with a great island fortress beyond the harbour. But that fortress is a curious thing — the people who built it, the people who later held it, and the people who own it now are three different countries. This time we use big numbers and division to understand how one piece of land changed hands three times.' },
       reward: 500,
     },
+
+    // ─────────────────────────────────────── S9 EP7 ───────────────────────────────────────
+    // 第二幕開場：芬蘭篇第一站。芬蘭堡（Suomenlinna，舊名 Sveaborg）三度易主的真實歷史。
+    // 數字全部查證（2026-08-25）：1748 瑞典開始建造（工程師 Ehrensvärd）；1808 俄軍攻下；
+    // 1918 才正式交還芬蘭（比 1917/12/6 芬蘭獨立晚了一年，因俄軍駐守未撤）；1991 UNESCO 登錄；
+    // 6 座島以橋樑相連；城牆約 6 公里；現存老砲逾百尊；現有住民約 800 人；
+    // 從市集廣場搭渡輪約 15 分鐘。三段統治年數 60／110／108 相加＝278，與 2026−1748 直接算完全吻合。
+    // 破案節奏延續 EP1 的手法（不是說謊，是漏掉一段）：觀光手冊只講「瑞典蓋的」跳過俄國那 110 年。
+    {
+      id: 's9ep7',
+      comicIntro: [
+        { bg: 'helsinki', cast: ['anan', 'feifei', '🐈'],
+          say: { zh: '飛機降落赫爾辛基。海邊風好大，圓圓縮進安安的外套帽子裡，只露出兩隻耳朵。',
+                 en: 'The plane lands in Helsinki. The sea wind is fierce; Yuan-Yuan burrows into An-An’s hood, only her ears peeking out.' } },
+        { bg: 'suomenlinna', cast: ['anan', '👩'],
+          say: { zh: '渡輪靠岸，島上的解說員艾諾姐姐急著整理三塊看板：「新的告示牌要印了，可是這三份說法……數字兜不起來啊。」',
+                 en: 'The ferry docks. Guide Aino is fretting over three information panels: "The new sign goes to print soon — but these three accounts... the numbers don’t add up."' } },
+      ],
+      comicSolve: [
+        { bg: 'suomenlinna', cast: ['anan', '📖'],
+          say: { zh: '安安把三份說法攤開：「艾諾姐姐，問題不是誰說謊——是這一份，漏講了一整段。」',
+                 en: 'An-An lays the three accounts side by side: "Aino, the problem isn’t a lie — this one just skipped an entire chapter."' } },
+        { bg: 'suomenlinna', cast: ['anan', '🐈'],
+          say: { zh: '圓圓跳上城牆，第一次看見了雪——瞇著眼，卻沒有躲。〈手帳貼紙 7 · 換過三次主人〉',
+                 en: 'Yuan-Yuan hops onto the wall and sees snow for the first time — she squints, but does not hide. Sticker 7 — Three Owners.' } },
+      ],
+      no: 7,
+      title: { zh: '換過三次主人', en: 'Three Owners' },
+      emoji: '🏰',
+      accent: '#5f7d99',
+      difficulty: { zh: '大數·減法·除法·公里（四上）', en: 'Big numbers · subtraction · division · km (Grade 4-1)' },
+      sticker: { id: 'suomenlinna', emoji: '🏰', name: { zh: '手帳貼紙 7 · 換過三次主人', en: 'Sticker 7 · Three Owners' } },
+      intro: [
+        { zh: '飛機往北飛過阿爾卑斯山，窗外的顏色一路變白。降落赫爾辛基那天風很大，安安裹緊外套，圓圓整隻縮進帽子裡。從市集廣場搭上渡輪，海面灰灰藍藍的，開了大約十五分鐘，一座長滿老城牆的小島群就出現在眼前——芬蘭堡。',
+          en: 'The plane flies north over the Alps, and the colours outside turn white. The day they land in Helsinki the wind is fierce; An-An zips her coat tight, and Yuan-Yuan curls entirely inside the hood. From the Market Square they board a ferry, and after some fifteen minutes across grey-blue water, a cluster of islands ringed in old stone walls comes into view — Suomenlinna.' },
+        { zh: '島上的解說員艾諾姐姐正對著三塊看板皺眉頭。「新的兒童導覽牌明天就要送印，可是我手上有三份不同年代寫的說法——一塊是老石碑、一份是現在賣的觀光手冊、一份是語音導覽的逐字稿。」她把三份都攤在桌上：「小朋友，你們家不是很會算數字嗎？幫我看看，到底哪一份最該印上去？」',
+          en: 'On the island, Guide Aino is frowning at three panels. "The new children’s sign goes to print tomorrow, but I have three accounts written in different eras — an old stone plaque, the guidebook we sell today, and the audio-guide script." She spreads all three on the table. "You lot are good with numbers, aren’t you? Help me work out which one truly deserves to go on the sign."' },
+      ],
+      scenes: [
+        // 1 🚢 乘法：渡輪往返
+        {
+          place: { zh: '🚢 從市集廣場出發', en: '🚢 Setting Off from Market Square' },
+          emoji: '🚢',
+          diagram: 'map-compass',
+          story: { zh: '艾諾姐姐指著海面：「渡輪一趟大約 {15} 分鐘。你們今天來回各坐一趟，一共坐了 {2} 趟。」小Q：「一共坐了幾分鐘的船？」',
+                   en: 'Aino points across the water: "One crossing takes about {15} minutes. You’ll ride it {2} times today — there and back." Little Q: "How many minutes on the ferry in all?"' },
+          clueNote: { zh: '渡輪一趟15分鐘，來回2趟＝30分鐘', en: 'One crossing 15 min, 2 crossings round-trip = 30 min' },
+          puzzle: {
+            text: { zh: '渡輪一趟 {15} 分鐘，來回共 {2} 趟，[一共]幾分鐘？',
+                    en: 'One crossing is {15} min, {2} crossings round-trip. How many minutes [in all]?' },
+            answer: 30, unit: { zh: '分鐘', en: 'min' },
+            hint: { zh: '一趟一樣長，坐了幾趟就乘幾倍：15 × 2！', en: 'Each crossing is equal length — multiply by the number of trips: 15 × 2!' },
+            teach: [
+              { zh: '每一趟時間一樣，用乘法：一趟 15 分鐘，坐了 2 趟。', en: 'Equal crossings — multiply: 15 minutes, 2 trips.' },
+              { zh: '就是 15 × 2。', en: 'That is 15 × 2.' },
+              { zh: '15 × 2……換你算出一共坐了幾分鐘的船！', en: '15 × 2… you work out the total minutes on the water!' },
+            ],
+            reward: { zh: '🚢 30 分鐘！船靠岸的那一刻，圓圓第一次探出頭——牠盯著滿地的老城牆，一動也不動。',
+                      en: '🚢 30 minutes! The moment the ferry docks, Yuan-Yuan pokes her head out for the first time and freezes, staring at the old stone walls everywhere.' },
+          },
+        },
+        // 2 📅 減法：瑞典統治了幾年
+        {
+          place: { zh: '📅 蓋城牆的人', en: '📅 The Ones Who Built the Walls' },
+          emoji: '🧱',
+          story: { zh: '艾諾姐姐摸著石牆：「這座要塞從 {1748} 年開始蓋，是瑞典的工程師設計的，用來擋俄國人。蓋到 {1808} 年，俄國軍隊還是打下來了。」小Q：「瑞典人蓋、也守了這座要塞多少年？」',
+                   en: 'Aino touches the stone: "Construction began in {1748}, designed by a Swedish engineer, to keep the Russians out. It held until {1808}, when Russian forces finally took it." Little Q: "How many years did Sweden build and hold this fortress?"' },
+          clueNote: { zh: '瑞典統治：1748～1808＝60年', en: 'Swedish period: 1748–1808 = 60 years' },
+          puzzle: {
+            text: { zh: '{1748} 年開始蓋，{1808} 年被打下。瑞典守了幾年？',
+                    en: 'Built from {1748}, fell in {1808}. How many years did Sweden hold it?' },
+            answer: 60, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代相差用減法：1808 − 1748！', en: 'Subtract the years: 1808 − 1748!' },
+            teach: [
+              { zh: '算「守了幾年」，用晚的年份減早的年份。', en: 'To find how long, subtract the earlier year from the later one.' },
+              { zh: '1808 − 1748：先算 1808 − 1748 = 60（都是 1700 多年，直接對位減）。', en: '1808 − 1748: both are in the 1700s, so subtract place by place.' },
+              { zh: '換你算出瑞典守了這座要塞幾年！', en: 'You work out how many years Sweden held the fortress!' },
+            ],
+            reward: { zh: '🧱 60 年！艾諾姐姐點頭：「所以石碑上刻的『瑞典建造』沒有錯——只是那句話，只講了故事的第一段。」',
+                      en: '🧱 60 years! Aino nods: "So the plaque’s ‘Built by Sweden’ isn’t wrong — it’s just the first chapter of the story."' },
+          },
+        },
+        // 3 🔢 除法：600名士兵分駐6座島
+        {
+          place: { zh: '🔢 六座島上的守軍', en: '🔢 Soldiers Across Six Islands' },
+          emoji: '🏝️',
+          story: { zh: '艾諾姐姐指著地圖：「整座要塞蓋在 {6} 座小島上，靠橋互相連接。當年守備隊一共有 {600} 名士兵，平均分駐在這 {6} 座島。」小Q：「平均每座島有幾名士兵？」',
+                   en: 'Aino points at the map: "The whole fortress spans {6} islands, linked by bridges. The garrison once numbered {600} soldiers, spread evenly across those {6} islands." Little Q: "How many soldiers per island, on average?"' },
+          clueNote: { zh: '600名士兵÷6座島＝每座島平均100人', en: '600 soldiers ÷ 6 islands = 100 per island on average' },
+          puzzle: {
+            text: { zh: '{600} 名士兵，平均分駐 {6} 座島，每座島[平均]幾人？',
+                    en: '{600} soldiers spread evenly over {6} islands. How many per island [on average]?' },
+            answer: 100, unit: { zh: '人', en: 'soldiers' },
+            hint: { zh: '平均分配用除法：600 ÷ 6！', en: 'Sharing equally means dividing: 600 ÷ 6!' },
+            teach: [
+              { zh: '「平均分駐」就是平分，用除法：士兵總數 ÷ 島數。', en: '"Spread evenly" means dividing: total soldiers ÷ number of islands.' },
+              { zh: '600 ÷ 6：想成 60 個十 ÷ 6 ＝ 10 個十。', en: '600 ÷ 6: think of it as 60 tens ÷ 6 = 10 tens.' },
+              { zh: '也就是 100……換你算出每座島平均有幾人！', en: 'That is 100… you work out the average per island!' },
+            ],
+            reward: { zh: '🏝️ 100 人！艾諾姐姐笑了：「難怪要蓋橋——不然士兵要傳個口令,得游六趟泳。」',
+                      en: '🏝️ 100 soldiers! Aino laughs: "No wonder they built bridges — otherwise a single order would need six swims to deliver."' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 100）
+        {
+          kind: 'choice',
+          place: { zh: '要塞裡的兩個地方', en: 'Two Corners of the Fortress' },
+          emoji: '🔀',
+          story: { zh: '艾諾姐姐說：「趁我整理看板，你們去逛逛吧。」她指指兩邊：「左邊是老砲台，還留著當年的大砲；右邊是現在的生活區，還有島民真的住在這裡。」圓圓已經跳下牆，蹲在陽光下發呆。',
+                   en: 'Aino says: "While I sort the panels, go explore." She points both ways: "Left, the old gun battery, still lined with cannons; right, the living quarter, where islanders live to this day." Yuan-Yuan has already hopped down and sits dazed in a patch of sun.' },
+          question: { zh: '★ 你來決定！要先去哪一邊？（兩邊都行，選你喜歡的！）',
+                      en: '★ You decide! Which way first? (Either works — pick your favourite!)' },
+          options: [
+            {
+              id: 'cannons',
+              label: { zh: '💣 老砲台', en: '💣 The Old Gun Battery' },
+              scene: {
+                place: { zh: '老砲台', en: 'The Old Gun Battery' },
+                emoji: '💣',
+                story: { zh: '砲台上一整排烏黑的大砲對著海面。艾諾姐姐的同事說：「這一區保存最完整，一共 {5} 排，每排 {20} 尊，你數數看有幾尊。」',
+                         en: 'A row of blackened cannons faces the sea. A colleague of Aino’s says: "This section is the best preserved — {5} rows, {20} in each row. Count them up."' },
+                clueNote: { zh: '大砲共100尊（5排×20尊）；整座要塞現存老砲逾百尊', en: '100 cannons (5 rows × 20); the whole fortress holds over 100 surviving cannons' },
+                puzzle: {
+                  text: { zh: '大砲 {5} 排，每排 {20} 尊，[一共]幾尊？', en: '{5} rows of {20} cannons. How many [in all]?' },
+                  answer: 100, unit: { zh: '尊', en: 'cannons' },
+                  hint: { zh: '每排一樣多，用乘法：20 × 5！', en: 'Equal rows — multiply: 20 × 5!' },
+                  teach: [
+                    { zh: '一排一排一樣多，用乘法：每排 20 尊，有 5 排。', en: 'Equal rows — multiply: 20 cannons, 5 rows.' },
+                    { zh: '就是 20 × 5（或 5 × 20，答案一樣）。', en: 'That is 20 × 5 (or 5 × 20 — same answer).' },
+                    { zh: '20 × 5……換你數出一共幾尊大砲！', en: '20 × 5… you count the cannons!' },
+                  ],
+                  reward: { zh: '💣 100 尊！同事說：「整座要塞留下來的老砲加起來還不只這個數呢。」', en: '💣 100! The colleague adds: "The whole fortress holds even more surviving cannons than this."' },
+                },
+              },
+            },
+            {
+              id: 'residents',
+              label: { zh: '🏘️ 現在的生活區', en: '🏘️ The Living Quarter' },
+              scene: {
+                place: { zh: '現在的生活區', en: 'The Living Quarter' },
+                emoji: '🏘️',
+                story: { zh: '石板路兩旁竟然有信箱、腳踏車、曬衣繩。艾諾姐姐的鄰居說：「現在約有 {800} 人住在這裡，分成 {8} 個小社區。」小Q：「平均一個社區住幾人？」',
+                         en: 'Along the cobbled lane stand mailboxes, bicycles, a washing line. A neighbour of Aino’s says: "About {800} people live here now, in {8} small communities." Little Q: "How many per community, on average?"' },
+                clueNote: { zh: '居民約800人÷8個社區＝每區平均100人', en: 'About 800 residents ÷ 8 communities = 100 per community on average' },
+                puzzle: {
+                  text: { zh: '居民約 {800} 人，分成 {8} 個社區，每區[平均]幾人？', en: 'About {800} residents in {8} communities. How many [on average] per community?' },
+                  answer: 100, unit: { zh: '人', en: 'people' },
+                  hint: { zh: '平分用除法：800 ÷ 8！', en: 'Sharing equally means dividing: 800 ÷ 8!' },
+                  teach: [
+                    { zh: '平均分配，用除法：居民總數 ÷ 社區數。', en: 'Divide evenly: total residents ÷ number of communities.' },
+                    { zh: '800 ÷ 8：想成 80 個十 ÷ 8 ＝ 10 個十。', en: '800 ÷ 8: think 80 tens ÷ 8 = 10 tens.' },
+                    { zh: '也就是 100……換你算出每區平均住幾人！', en: 'That is 100… you find the average per community!' },
+                  ],
+                  reward: { zh: '🏘️ 100 人！鄰居笑著說：「別看這裡滿地古蹟，我們也是要倒垃圾、接小孩放學的。」', en: '🏘️ 100! The neighbour laughs: "Don’t let the ruins fool you — we still take out the bins and pick the kids up from school."' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 📅 減法：俄國統治了幾年
+        {
+          place: { zh: '📅 後來占領的人', en: '📅 The Ones Who Took It Next' },
+          emoji: '🪖',
+          story: { zh: '艾諾姐姐回來了，攤開語音導覽的逐字稿：「俄國在 {1808} 年打下這裡，一直守到 {1918} 年才真正交還給芬蘭——中間隔了一整個世紀還多。」小Q：「俄國統治了這座要塞多少年？」',
+                   en: 'Aino returns, unfolding the audio-guide script: "Russia took this place in {1808} and held it until {1918}, when it truly passed to Finland — more than a century in between." Little Q: "How many years did Russia hold this fortress?"' },
+          clueNote: { zh: '俄國統治：1808～1918＝110年', en: 'Russian period: 1808–1918 = 110 years' },
+          puzzle: {
+            text: { zh: '{1808} 年被占領，{1918} 年交還芬蘭。俄國統治了幾年？',
+                    en: 'Taken in {1808}, returned to Finland in {1918}. How many years under Russia?' },
+            answer: 110, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代相差用減法：1918 − 1808！', en: 'Subtract the years: 1918 − 1808!' },
+            teach: [
+              { zh: '一樣的算法：晚的年份減早的年份。', en: 'Same method: later year minus earlier year.' },
+              { zh: '1918 − 1808：先算百位與十位，1918 − 1808 = 110。', en: '1918 − 1808: subtract the hundreds and tens places, giving 110.' },
+              { zh: '換你算出俄國統治了幾年！', en: 'You work out how many years Russia held it!' },
+            ],
+            reward: { zh: '🪖 110 年！安安倒抽一口氣：「比瑞典蓋的那 60 年還久快一倍！」', en: '🪦 110 years! An-An gasps: "That’s almost double the 60 years Sweden held it!"' },
+          },
+        },
+        // 6 📏 乘法：城牆公里換算公尺
+        {
+          place: { zh: '📏 走不完的城牆', en: '📏 The Wall That Never Ends' },
+          emoji: '📏',
+          diagram: 'scale-bar',
+          story: { zh: '安安沿著城牆走，走到腿都痠了還沒走完。艾諾姐姐說：「城牆全長大約 {6} 公里。」小Q：「換算成公尺，是幾公尺？」',
+                   en: 'An-An walks the wall until her legs ache, still not done. Aino says: "The wall runs about {6} kilometres in all." Little Q: "Convert that to metres — how many?"' },
+          clueNote: { zh: '城牆全長6公里＝6000公尺', en: 'The wall is 6 km long = 6000 m' },
+          puzzle: {
+            text: { zh: '城牆全長 {6} 公里，換算成公尺是幾公尺？',
+                    en: 'The wall is {6} km. How many metres is that?' },
+            answer: 6000, unit: { zh: '公尺', en: 'm' },
+            hint: { zh: '1 公里 ＝ 1000 公尺，6 公里就是 6 個 1000！', en: '1 km = 1000 m, so 6 km is six 1000s!' },
+            teach: [
+              { zh: '公里換公尺，記住 1 公里 ＝ 1000 公尺。', en: 'To convert km to m, remember 1 km = 1000 m.' },
+              { zh: '6 公里就是 6 × 1000。', en: '6 km is 6 × 1000.' },
+              { zh: '換你算出城牆全長幾公尺！', en: 'You work out the wall’s length in metres!' },
+            ],
+            reward: { zh: '📏 6000 公尺！安安揉揉腿：「難怪走不完……」圓圓倒是輕輕鬆鬆，沿著牆頭跳來跳去。', en: '📏 6000 m! An-An rubs her legs: "No wonder I can’t finish it…" Yuan-Yuan, meanwhile, trots lightly along the top of the wall.' },
+          },
+        },
+        // 7 🎏 乘法＋對稱：稜堡角上的旗子
+        {
+          place: { zh: '🎏 稜堡轉角的旗子', en: '🎏 Flags on the Bastion Corners' },
+          emoji: '🎏',
+          diagram: 'symmetry',
+          story: { zh: '城牆每隔一段就凸出一個尖角，艾諾姐姐說這叫「稜堡」，是特別設計的形狀，凸角左右完全對稱，才能不留死角地看守海面。「每個凸角上插著 {2} 面對稱的小旗子，這一段城牆數得到 {5} 個凸角。」小Q：「一共插了幾面旗子？」',
+                   en: 'The wall juts into sharp points at intervals — "bastions", Aino explains, a shape designed so the two sides mirror each other exactly, leaving no blind spot toward the sea. "Each point flies {2} matching flags, one to a side, and this stretch of wall has {5} such points." Little Q: "How many flags in all?"' },
+          clueNote: { zh: '5個稜堡凸角×每角2面旗子＝10面旗子', en: '5 bastion points × 2 flags each = 10 flags' },
+          puzzle: {
+            text: { zh: '{5} 個凸角，每個凸角 {2} 面旗子，[一共]幾面？',
+                    en: '{5} points, {2} flags each. How many [in all]?' },
+            answer: 10, unit: { zh: '面', en: 'flags' },
+            hint: { zh: '每個凸角一樣多，用乘法：2 × 5！', en: 'Equal points — multiply: 2 × 5!' },
+            teach: [
+              { zh: '每個凸角插的旗子一樣多，用乘法：每角 2 面，有 5 角。', en: 'Equal flags per point — multiply: 2 flags, 5 points.' },
+              { zh: '就是 2 × 5。', en: 'That is 2 × 5.' },
+              { zh: '2 × 5……換你算出一共插了幾面旗子！', en: '2 × 5… you count the flags!' },
+            ],
+            reward: { zh: '🎏 10 面！安安看著左右對稱的城牆：「沿著中間對摺，兩邊真的會疊在一起。」', en: '🎏 10! An-An eyes the mirrored wall: "Fold it right down the middle, and the two sides really would land on top of each other."' },
+          },
+        },
+        // 8 🔍 破案：芬蘭統治到今年幾年
+        {
+          place: { zh: '🔍 現在，是第幾年', en: '🔍 Now, In Its Nth Year' },
+          emoji: '🏴',
+          diagram: 'place-value',
+          story: { zh: '艾諾姐姐把三份說法擺在桌上：「1918 年，俄國士兵終於離開，這座要塞才真正變成芬蘭的——注意喔，比芬蘭自己宣布獨立的 1917 年，還晚了一年。」小Q：「從 {1918} 年到今年 {2026} 年，芬蘭擁有這座要塞幾年了？」',
+                   en: 'Aino lays the three accounts on the table: "In 1918 the Russian soldiers finally left, and the fortress truly became Finnish — note, that’s a full year after Finland declared independence in 1917." Little Q: "From {1918} to this year, {2026} — how many years has Finland held it?"' },
+          clueNote: { zh: '芬蘭統治：1918～2026＝108年；60+110+108=278，正好等於2026−1748', en: 'Finnish period: 1918–2026 = 108 years; 60+110+108=278, exactly matching 2026−1748' },
+          puzzle: {
+            text: { zh: '{1918} 年變成芬蘭的，今年 {2026} 年。已經第幾年了？',
+                    en: 'Became Finnish in {1918}; this year is {2026}. How many years now?' },
+            answer: 108, unit: { zh: '年', en: 'years' },
+            hint: { zh: '一樣用減法：2026 − 1918！', en: 'Subtract again: 2026 − 1918!' },
+            teach: [
+              { zh: '一樣的算法：今年減掉那一年。', en: 'Same method: this year minus that year.' },
+              { zh: '2026 − 1918：先算 2026 − 1900 = 126，再減 18，等於 108。', en: '2026 − 1918: try 2026 − 1900 = 126, then subtract 18, giving 108.' },
+              { zh: '換你算出芬蘭擁有這座要塞幾年了！', en: 'You work out how many years Finland has held it!' },
+            ],
+            reward: { zh: '🏴 108 年！小Q把三個數字排在一起：瑞典 60 年、俄國 110 年、芬蘭 108 年。「安安，說吧。三份說法裡，哪一份漏講了最長的那一段？」',
+                      en: '🏴 108 years! Little Q lines up all three: Sweden 60, Russia 110, Finland 108. "An-An. Of the three accounts, which one leaves out the longest chapter of all?"' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'plaque', name: { zh: '🪨 帝俄時期的老石碑', en: '🪨 The Old Imperial-Russian Plaque' }, emoji: '🪨',
+          say: { zh: '「此地永屬俄羅斯帝國。」——刻於帝俄年代，如今仍立在原地，沒有人搬走它，只是當作古董留著看。',
+                 en: '"This place belongs forever to the Russian Empire." — carved in the imperial era, still standing where it always has, kept as a relic rather than removed.' } },
+        { id: 'guidebook', name: { zh: '📖 現在賣的觀光手冊', en: '📖 The Guidebook Sold Today' }, emoji: '📖',
+          say: { zh: '「芬蘭堡是瑞典建造的要塞，現在是芬蘭最重要的世界遺產。」',
+                 en: '"Suomenlinna is a fortress built by Sweden, and today it is Finland’s most important World Heritage Site."' } },
+        { id: 'audio', name: { zh: '🎧 語音導覽逐字稿', en: '🎧 The Audio-Guide Script' }, emoji: '🎧',
+          say: { zh: '「這座要塞換過三次主人：瑞典建造、俄國占領一百一十年、最後才是芬蘭。」',
+                 en: '"This fortress changed hands three times: built by Sweden, held by Russia for a hundred and ten years, and only then became Finland’s."' } },
+      ],
+      culprit: 'guidebook',
+      accuse: { zh: '你剛剛親手算出三段年數：瑞典 {60} 年、俄國 {110} 年、芬蘭 {108} 年——俄國統治的時間其實是三段裡最長的。三份說法裡，有一份完全沒提到那 110 年，直接從「瑞典建造」跳到「現在是芬蘭的」。是哪一份？',
+                en: 'You just worked out all three spans yourself: Sweden {60}, Russia {110}, Finland {108} — Russia’s 110 years is actually the longest of the three. One account skips that entire chapter, leaping straight from "built by Sweden" to "belongs to Finland today." Which one?' },
+      wrongAccuse: { zh: '再想一次——石碑上那句「永屬俄羅斯帝國」，本來就是帝俄年代刻的古董，沒有人會拿它當今天的事實看，那不是陷阱。真正會讓人誤會的，是那份現在還在賣、看起來最權威、卻悄悄漏掉一整段的說法。是哪一份？📖',
+                     en: 'Think again — the plaque’s "belongs forever to the Russian Empire" is simply an antique carved in the imperial era; nobody mistakes it for today’s fact, so it is not the trap. The real trap is the one still sold today, sounding the most authoritative, while quietly skipping an entire chapter. Which one? 📖' },
+      solve: [
+        { zh: '講不通的是📖現在賣的觀光手冊。它說「瑞典建造，現在是芬蘭的」，聽起來完整，其實中間跳過了整整 110 年——比瑞典蓋、守的 60 年還久快一倍的俄國統治期，完全沒被提到。',
+          en: 'The one that fails is 📖 today’s guidebook. "Built by Sweden, now Finland’s" sounds complete, but it skips 110 whole years in between — a Russian period nearly double the 60 years Sweden held the place, never mentioned at all.' },
+        { zh: '🪨老石碑沒有騙人——它就是俄國那個年代刻的東西，本來就只代表那一段。🎧語音導覽說得最完整：「換過三次主人。」三段年數 60、110、108 加起來剛好是 278 年，跟你用 2026 − 1748 直接算出來的一模一樣。',
+          en: 'The 🪨 stone plaque never lied — it is simply an object of its own era, and only ever spoke for that one chapter. The 🎧 audio guide told it most fully: "changed hands three times." The three spans, 60, 110, and 108, add up to exactly 278 years — the very same number you’d get from 2026 − 1748 directly.' },
+        { zh: '艾諾姐姐聽完，把📖那份收進抽屜，改拿🎧的逐字稿當新看板的底稿：「謝謝你們——不是要罵誰說謊，是要讓小朋友知道，一塊地的故事，常常比看板上一句話長得多。」圓圓蹲在城牆最高處，看著北方的天空，尾巴輕輕搖了一下。',
+          en: 'Aino listens, tucks the 📖 draft into a drawer, and takes up the 🎧 script as the new sign’s base text instead: "Thank you — this isn’t about calling anyone a liar. It’s about letting children know a piece of land’s story is almost always longer than one line on a sign." Yuan-Yuan sits atop the highest wall, gazing north, tail giving the smallest flick.' },
+        { zh: '⭐ 現場可以自己驗證：芬蘭堡的城牆上到現在還立著帝俄年代的老砲和石碑，跟後來的芬蘭建築混在一起——三段歷史疊在同一座島上，一眼就看得出來。小知識：這座要塞一九九一年被列入世界遺產，靠橋樑連接的六座小島現在還有人真的住在這裡。',
+          en: '⭐ Verify it yourself: Suomenlinna’s walls still carry imperial-Russian cannons and plaques standing beside later Finnish buildings — three layers of history stacked on one island, visible at a glance. Fact: the fortress was named a World Heritage Site in 1991, and people still genuinely live across its six bridge-linked islands today.' },
+      ],
+      arcClue: { zh: '離開芬蘭堡前，安安在手帳貼上第七張貼紙，旁邊寫下：「60、110、108，加起來是 278——跟現在直接數的一樣多。」渡輪往回開，圓圓第一次主動走到船邊，看著海面，一句話也沒說，尾巴卻不停輕輕搖晃。小Q低聲說：「牠好像很喜歡這裡的風。」',
+                 en: 'Before leaving Suomenlinna, An-An sticks the seventh sticker into her notebook and writes beside it: "60, 110, 108 — adds up to 278, the same as counting straight through to today." The ferry heads back; for the first time Yuan-Yuan walks to the rail on her own, watching the sea, saying nothing, tail flicking softly all the while. Little Q murmurs: "I think she likes the wind here."' },
+      nextPreview: { zh: '下一站，赫爾辛基市區——一座教堂，卻是把整片岩石山直接挖開蓋成的。屋頂不是磚瓦，是一整塊裸露的天然岩盤，光從縫隙裡灑下來。這一回要算的是又深又硬的數字：挖掉了多少噸的石頭，才能把教堂放進山裡？',
+                     en: 'Next stop, central Helsinki — a church, but one carved directly out of a rock hill. Its roof is not tile, but a single slab of exposed natural bedrock, with light pouring through the cracks. This time the numbers run deep and hard: how many tonnes of stone had to be cut away to fit a church inside a mountain?' },
+      reward: 500,
+    },
   ],
 }
 
