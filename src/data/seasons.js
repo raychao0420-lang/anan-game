@@ -110,8 +110,9 @@ export const SEASONS = [
     board: TRAVEL_BOARD,
     collType: 'sticker',                                 // 每集 ep.sticker.id 收進 store.seriesStickers
     collLabel: { zh: '旅行手帳', en: 'Travel Notebook' },
-    clueLabel: { zh: '圓圓的腳印', en: "Yuan-Yuan's Paw Prints" },
+    clueLabel: { zh: '小圓的腳印', en: "Xiao-Yuan's Paw Prints" },
     clueIcon: '🐈',
-    subtitle: { zh: '第九季 · 行前導覽', en: 'Season 9 · Before We Go' },
+    subtitle: { zh: '第九季 · 已完結', en: 'Season 9 · Complete' },
+    done: true,
   }),
 ]

@@ -384,9 +384,30 @@ export const PETS = {
     happyEmoji: '🥰',
     sadEmoji: '🥺',
   },
+  // 小圓：連載劇《羅馬與極光》終章加入的萬神殿老貓（事件限定，不可金幣購買）
+  // 主題「想看看外面」：牠在萬神殿的光圈裡坐了七千三百天，望著陽光永遠不會來的北方，
+  // 只因為二十年前聽過一位北方旅人說「我們的天空，整片都會亮起來」。
+  yuanyuan: {
+    id: 'yuanyuan',
+    name: '小圓',
+    breed: '萬神殿老橘貓',
+    personality: '在羅馬萬神殿的圓洞光圈裡坐了二十年的老橘貓，安靜、慢吞吞、金黃色的眼睛什麼都看在眼裡；跟著安安走到北極圈，終於看見了牠等一輩子的那片會發光的天空',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '完成《羅馬與極光》終章極光之夜，把旅行手帳貼滿十二張貼紙，小圓就會跳進你的行李箱，跟你一起回家！',
+    stages: [
+      null,
+      { emoji: '🐈', label: '光圈裡的貓',   size: '5rem', bg: '#FBF1E4', border: '#D9A96A' },
+      { emoji: '🐈', label: '跨過門檻的貓', size: '5rem', bg: '#F7EEE6', border: '#C98F4E' },
+      { emoji: '🐈', label: '看過雪的貓',   size: '5rem', bg: '#EFF2F8', border: '#8FA6C4' },
+      { emoji: '🐈', label: '極光下的小圓', size: '5rem', bg: '#EDF4F4', border: '#4FB39A', glow: true },
+    ],
+    happyEmoji: '🥰',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu', 'arong']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu', 'arong', 'yuanyuan']
 
 // ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
 // 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
@@ -427,6 +448,8 @@ export const PET_SKILLS = {
   feifei:  { name: '順風翅膀', icon: '🪽', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒（乘著環遊世界的風！）' },
   xiaohu:  { name: '靈敏鼻子', icon: '🐽', effect: { type: 'coin',  add: 22 },   desc: '這一題答對 +22 金幣（聞得出寶藏藏在哪！）' },
   arong:   { name: '家鄉記憶', icon: '🍃', effect: { type: 'shield' },           desc: '這一題答錯不斷連段（老樹記得你努力過）' },
+  // 小圓等了七千三百天才等到牠想看的東西 → 技能就是「等」：把時間拉到全場最長
+  yuanyuan:{ name: '等一下下', icon: '🌌', effect: { type: 'time',  value: 9 },  desc: '這一題 +9 秒（等了七千三百天的貓，很會等）' },
 }
 
 // 動物小知識：每隻寵物兩則真實的特徵，讓安安一邊養寵物一邊認識牠。
@@ -517,5 +540,9 @@ export const PET_TRAITS = {
   arong: [
     '榕樹會從樹枝垂下「氣根」，碰到地面後會變粗、長成新的樹幹，一棵樹就能長成一片樹林。',
     '葉子摘下來會流出白白的汁液，那是它用來保護傷口的乳汁。',
+  ],
+  yuanyuan: [
+    '貓在暗暗的地方瞳孔會放到又大又圓，是為了讓更多光線進到眼睛裡，所以牠們在微光中看得比人清楚。',
+    '橘貓大約每四隻才有一隻是母的，因為決定橘色的基因在 X 染色體上，母貓要兩個 X 都帶橘色才會是橘貓——小圓正好就是少見的那一種。',
   ],
 }

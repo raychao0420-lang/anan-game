@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { ACHIEVEMENTS } from '../data/achievements'
-import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START } from '../data/pets'
+import { EVOLVE_EXP, ENERGY_MAX, ENERGY_START, PET_ORDER } from '../data/pets'
 import { pullLuckyEgg } from '../data/gacha'
 import { rollSeedDrop, todayKey, yesterdayKey, PLANT_KINDS, ALL_BLOOMS, MAX_PLANTS, MAX_FLOWER_DECOS, FLOWER_GIFT, flowerLovers, crossResult, CROSS_COST } from '../data/garden'
 import { habitatOfPet, habitatOfDeco, MAX_PETS_PER_SCENE, MAX_DECOS_PER_SCENE } from '../data/roomRules'
@@ -12,6 +12,14 @@ const makeStages = () => {
   for (let i = 1; i <= 70; i++) s[i] = { completed: false, stars: 0 }
   return s
 }
+
+// 🔴 寵物初始狀態一律由 PET_ORDER 生出來，不要再手寫三份清單。
+// 以前初始 pets／resetGame／migration 各抄一份，漏掉就爆：S7 阿榕漏了 store 初始化，
+// grantPet 對 undefined 展開成 { unlocked:true } 缺 evolutionStage → 寵物頁讀 stages[undefined] 整頁崩潰。
+// （resetGame 那份也真的漏過 arong，重置後到下次重新載入之間 pets.arong 是 undefined。）
+const makePets = () => Object.fromEntries(
+  PET_ORDER.map((id) => [id, { unlocked: id === 'lulu', evolutionStage: 1, foodExp: 0, accessories: [] }])
+)
 
 function checkAllAchievements(s) {
   const unlocked = []
@@ -41,29 +49,7 @@ export const useGameStore = create(
     (set, get) => ({
       coins: 0,
       activePet: 'lulu',
-      pets: {
-        lulu:    { unlocked: true,  evolutionStage: 1, foodExp: 0, accessories: [] },
-        hana:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        kotaro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        jiji:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        kitsune: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        mejiro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        penguin: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        owl:     { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        seal:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        beaver:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        hamster: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        dino:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        monkey:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        raccoon: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        twinkle: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        luna:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        pluto:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        xiaoq:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        feifei:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        xiaohu:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-        arong:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-      },
+      pets: makePets(),
       stages: makeStages(),
       ownedItems:        [],
       petEquipment:      { lulu: [], hana: [], kotaro: [], jiji: [], kitsune: [], mejiro: [], penguin: [], owl: [], seal: [], beaver: [], hamster: [], dino: [], monkey: [], raccoon: [] },
@@ -907,28 +893,7 @@ export const useGameStore = create(
         set({
           coins: 0,
           activePet: 'lulu',
-          pets: {
-            lulu:    { unlocked: true,  evolutionStage: 1, foodExp: 0, accessories: [] },
-            hana:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            kotaro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            jiji:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            kitsune: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            mejiro:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            penguin: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            owl:     { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            seal:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            beaver:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            hamster: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            dino:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            monkey:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            raccoon: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            twinkle: { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            luna:    { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            pluto:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            xiaoq:   { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            feifei:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-            xiaohu:  { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] },
-          },
+          pets: makePets(),
           stages: makeStages(),
           stagePlays: {},
           stageLastPlay: {},
@@ -995,8 +960,7 @@ export const useGameStore = create(
       name: 'anan-game-v2',
       onRehydrateStorage: () => (state) => {
         if (!state) return
-        const allPets = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu', 'arong']
-        allPets.forEach((id) => {
+        PET_ORDER.forEach((id) => {
           const p = state.pets[id]
           if (!p) {
             state.pets[id] = { unlocked: false, evolutionStage: 1, foodExp: 0, accessories: [] }

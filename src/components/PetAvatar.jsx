@@ -974,6 +974,78 @@ function PlutoBase({ c }) {
 
 // 阿榕：百年老榕樹靈（樹冠當頭髮＋樹皮樹幹當身體＋垂下的氣根當手，臉長在樹幹上，旁邊飄落葉）
 // 榕樹的招牌就是「從枝條垂下來的氣根」，所以氣根一定要露在剪影外面，不能貼著樹幹。
+// 小圓：萬神殿的老橘貓。刻意跟吉吉（黑貓，尖耳、細長瞳孔、優雅）做出區隔——
+// 小圓比較「圓」：身體更胖、耳朵更圓更短、臉頰有兩撮鬍鬚肉、虎斑條紋，
+// 瞳孔是【圓的】（呼應萬神殿圓洞那個光圈，也表示牠年紀大了、瞳孔常常放大）。
+function YuanyuanBase({ c }) {
+  const stripe = c.ear
+  return (
+    <g>
+      {/* ── 尾巴：老貓的尾巴垂垂的、繞在身體右側，尾端一圈白 ── */}
+      <path d="M68,106 C88,100 96,82 84,68 C76,59 64,63 67,75 C69,84 80,88 71,99 Q69,103 64,109 Z"
+        fill={c.body} />
+      {[{ y: 72 }, { y: 80 }, { y: 88 }].map((s, i) => (
+        <ellipse key={i} cx={80 - i * 4} cy={s.y} rx="5.5" ry="2.4" fill={stripe} opacity="0.5"
+          transform={`rotate(${-30 + i * 12} ${80 - i * 4} ${s.y})`} />
+      ))}
+      <ellipse cx="84" cy="68" rx="6" ry="5.5" fill={c.belly} />
+
+      {/* ── 身體：比吉吉圓胖（老貓） ── */}
+      <ellipse cx="50" cy="93" rx="24" ry="19" fill={c.body} />
+      <ellipse cx="50" cy="96" rx="13" ry="12" fill={c.belly} opacity="0.75" />
+      {/* 身上的虎斑 */}
+      <path d="M32,84 Q36,89 32,94" fill="none" stroke={stripe} strokeWidth="2.4" strokeLinecap="round" opacity="0.55" />
+      <path d="M68,84 Q64,89 68,94" fill="none" stroke={stripe} strokeWidth="2.4" strokeLinecap="round" opacity="0.55" />
+
+      {/* ── 耳朵：短而圓（跟吉吉的尖三角形不一樣） ── */}
+      <path d="M29,27 Q22,10 40,20 Z" fill={c.body} />
+      <path d="M30,25 Q26,15 37,21 Z" fill={c.earInner || '#F3B98E'} opacity="0.8" />
+      <path d="M71,27 Q78,10 60,20 Z" fill={c.body} />
+      <path d="M70,25 Q74,15 63,21 Z" fill={c.earInner || '#F3B98E'} opacity="0.8" />
+
+      {/* ── 頭：偏圓 ── */}
+      <circle cx="50" cy="45" r="25" fill={c.body} />
+      {/* 額頭的虎斑 M 字紋（橘貓的招牌） */}
+      <path d="M42,25 L44,33 M50,23 L50,32 M58,25 L56,33" fill="none" stroke={stripe}
+        strokeWidth="2.2" strokeLinecap="round" opacity="0.5" />
+
+      {/* ── 眼睛：金黃色、【圓瞳孔】（呼應萬神殿的圓洞光圈） ── */}
+      <circle cx="37" cy="43" r="9" fill="#E8B437" />
+      <circle cx="63" cy="43" r="9" fill="#E8B437" />
+      <circle cx="37" cy="43" r="5.4" fill="#241405" />
+      <circle cx="63" cy="43" r="5.4" fill="#241405" />
+      <circle cx="37" cy="43" r="9" fill="none" stroke="#8A5A18" strokeWidth="1" />
+      <circle cx="63" cy="43" r="9" fill="none" stroke="#8A5A18" strokeWidth="1" />
+      <circle cx="39.6" cy="39.8" r="2.6" fill="rgba(255,255,255,0.75)" />
+      <circle cx="65.6" cy="39.8" r="2.6" fill="rgba(255,255,255,0.75)" />
+
+      {/* ── 鼻子與嘴 ── */}
+      <path d="M46.8,53 L50,50.4 L53.2,53 L50,56.6 Z" fill={c.nose || '#C9705E'} />
+      <ellipse cx="48.4" cy="52.2" rx="1.2" ry="0.8" fill="rgba(255,255,255,0.45)" />
+      <line x1="50" y1="56.6" x2="50" y2="60" stroke={c.nose || '#C9705E'} strokeWidth="1.3" opacity="0.8" />
+      <path d="M45,60 Q50,64.5 55,60" fill="none" stroke={c.nose || '#C9705E'}
+        strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+      {/* 兩撮鬍鬚肉（讓臉看起來更圓、更老） */}
+      <ellipse cx="43" cy="59" rx="7" ry="5.5" fill={c.belly} opacity="0.55" />
+      <ellipse cx="57" cy="59" rx="7" ry="5.5" fill={c.belly} opacity="0.55" />
+
+      {/* ── 鬍鬚 ── */}
+      <line x1="17" y1="53" x2="36" y2="55" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
+      <line x1="16" y1="58" x2="36" y2="58" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
+      <line x1="18" y1="63" x2="36" y2="61" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
+      <line x1="64" y1="55" x2="83" y2="53" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
+      <line x1="64" y1="58" x2="84" y2="58" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
+      <line x1="64" y1="61" x2="82" y2="63" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
+
+      {/* ── 前腳：收在身體前面（貓坐姿） ── */}
+      <ellipse cx="36" cy="108" rx="11" ry="6.5" fill={c.body} />
+      <ellipse cx="64" cy="108" rx="11" ry="6.5" fill={c.body} />
+      {[31, 36, 41].map(x => <ellipse key={x} cx={x} cy="108" rx="2.9" ry="2.1" fill={c.earInner || '#F3B98E'} opacity="0.7" />)}
+      {[59, 64, 69].map(x => <ellipse key={x} cx={x} cy="108" rx="2.9" ry="2.1" fill={c.earInner || '#F3B98E'} opacity="0.7" />)}
+    </g>
+  )
+}
+
 function ArongBase({ c }) {
   const leaf = c.leaf || c.belly
   return (
@@ -1556,6 +1628,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'feifei' ? <FeifeiBase c={colors} />
        : petId === 'xiaohu' ? <XiaohuBase c={colors} />
        : petId === 'arong' ? <ArongBase c={colors} />
+       : petId === 'yuanyuan' ? <YuanyuanBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 

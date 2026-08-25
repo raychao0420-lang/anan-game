@@ -178,5 +178,15 @@ export const EVO = {
     { body:'#4F6436', belly:'#7C9A55', ear:'#3A4824', nose:'#1E2814', leaf:'#3F8F2C' },
     { body:'#3F5A2C', belly:'#9BC46A', ear:'#2E3C1C', nose:'#16200E', leaf:'#7CE05A', glow:'#A8E063' },
   ],
+  // 小圓（萬神殿老橘貓）：配色走「從羅馬的陽光走到北極的極光」——
+  // 1 溫暖的橘（萬神殿光圈裡）→ 2 稍亮（跨出門檻）→ 3 冷色調滲進來（第一次看見雪）
+  // → 4 極光綠的光暈（終於看見牠等了七千三百天的天空）
+  yuanyuan: [
+    null,
+    { body:'#E09A50', belly:'#FBEAD2', ear:'#B06E2E', earInner:'#F3B98E', nose:'#C9705E' },
+    { body:'#EAA65C', belly:'#FDF0DE', ear:'#BC7834', earInner:'#F7C79C', nose:'#CE7A66' },
+    { body:'#E8AE78', belly:'#F2F5FA', ear:'#B9834E', earInner:'#F0CBB0', nose:'#C08A80' },
+    { body:'#F0C088', belly:'#FFFFFF', ear:'#C0904F', earInner:'#F8DCBE', nose:'#B89A92', glow:'#5FE0B0' },
+  ],
 }
 
