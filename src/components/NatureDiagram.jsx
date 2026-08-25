@@ -813,6 +813,55 @@ const DIAGRAMS = {
       <text x="80" y="94" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">17 個坑 · 今天一個都看不到</text>
     </g>
   ),
+
+  // 山牆的三角形（S8 EP7）：兩個底角各 70°，用內角和 180° 求頂角
+  'gable-angle': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="14" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">牌樓山牆＝一個三角形</text>
+      {/* 牆身 */}
+      <rect x="34" y="62" width="92" height="18" fill="#c96f52" stroke="#8e4c30" strokeWidth="1" />
+      <rect x="34" y="66" width="92" height="4" fill="#f2ece0" />
+      {/* 山牆三角形 */}
+      <path d="M80,24 L128,62 L32,62 Z" fill="#e8d7bd" stroke="#8e4c30" strokeWidth="1.6" />
+      {/* 頂角 */}
+      <path d="M74,32 a10,10 0 0 0 12,0" fill="none" stroke={C.red} strokeWidth="1.4" />
+      <text x="80" y="44" fontSize="9" fill={C.red} textAnchor="middle" fontWeight="bold">?</text>
+      {/* 底角 */}
+      <path d="M42,62 a12,12 0 0 0 6,-9" fill="none" stroke={C.green} strokeWidth="1.3" />
+      <path d="M118,62 a12,12 0 0 1 -6,-9" fill="none" stroke={C.green} strokeWidth="1.3" />
+      <text x="50" y="59" fontSize="7" fill={C.green} textAnchor="middle" fontWeight="bold">70°</text>
+      <text x="110" y="59" fontSize="7" fill={C.green} textAnchor="middle" fontWeight="bold">70°</text>
+      <text x="80" y="93" fontSize="8" fill={C.ink} textAnchor="middle" fontWeight="bold">三角形三個角加起來 ＝ 180°</text>
+    </g>
+  ),
+
+  // 式樣比對（S8 EP7）：巴洛克的曲線山牆 vs 辰野式的紅磚＋白色橫飾帶
+  'gable-style': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      {/* 左：巴洛克 */}
+      <text x="44" y="14" fontSize="7.5" fill={C.sub} textAnchor="middle" fontWeight="bold">巴洛克（歐洲 1600–1750）</text>
+      <rect x="16" y="46" width="56" height="34" fill="#efe6d4" stroke="#b9ab90" strokeWidth="1" />
+      {/* 破縫式曲線山牆＋渦卷 */}
+      <path d="M16,46 Q22,26 34,30 Q40,32 40,38" fill="none" stroke="#b9ab90" strokeWidth="2.4" />
+      <path d="M72,46 Q66,26 54,30 Q48,32 48,38" fill="none" stroke="#b9ab90" strokeWidth="2.4" />
+      <circle cx="30" cy="31" r="3.2" fill="none" stroke="#b9ab90" strokeWidth="1.6" />
+      <circle cx="58" cy="31" r="3.2" fill="none" stroke="#b9ab90" strokeWidth="1.6" />
+      <text x="44" y="90" fontSize="7" fill={C.sub} textAnchor="middle">曲線·渦卷·山牆中間斷開</text>
+      {/* 分隔 */}
+      <line x1="80" y1="20" x2="80" y2="84" stroke={C.cardEdge} strokeWidth="1.2" strokeDasharray="3 3" />
+      {/* 右：辰野式 */}
+      <text x="120" y="14" fontSize="7.5" fill={C.red} textAnchor="middle" fontWeight="bold">辰野式（大溪·總督府）</text>
+      <rect x="90" y="40" width="60" height="40" fill="#c96f52" stroke="#8e4c30" strokeWidth="1" />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <rect key={i} x="90" y={44 + i * 8} width="60" height="3.4" fill="#f2ece0" />
+      ))}
+      <path d="M120,22 L150,40 L90,40 Z" fill="#e8d7bd" stroke="#8e4c30" strokeWidth="1.4" />
+      <text x="120" y="90" fontSize="7" fill={C.red} textAnchor="middle" fontWeight="bold">紅磚＋白色橫飾帶·直線</text>
+      <text x="80" y="101" fontSize="7.6" fill={C.green} textAnchor="middle" fontWeight="bold">大溪的是右邊那一種</text>
+    </g>
+  ),
 }
 
 // ── 資料驅動圖表：題目給哪些數字，就照那些數字現場畫，孩子看到的圖和題目一模一樣 ──

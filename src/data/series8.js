@@ -1883,6 +1883,322 @@ export const SEASON8 = {
                      en: 'Next — the façades are not Baroque! Every interpretive sign on the old street says “Baroque architecture,” and An-An had learned it by heart. But an architectural historian says it is nothing of the kind: it is the Tatsuno Kingo manner. The two look alike, yet their gables differ in geometry and in how many axes of symmetry they hold. This time we use triangles and angles to lay the two gables over each other — and prove, with a ruler and a protractor, that the signs copied it wrong.' },
       reward: 500,
     },
+
+    // ─────────────────────────────────────── S8 EP7 ───────────────────────────────────────
+    // 案件來自 daxi-history/docs/大溪老城區歷史建築.md「零、先更正一個幾乎人人都講錯的說法」：
+    //   成大建築系名譽教授傅朝卿指出「大溪老街是巴洛克建築」是誤稱，
+    //   正確說法＝西洋歷史式樣／辰野金吾式樣（紅磚配白色橫飾帶）。
+    //   ・1912（大正元年）大溪市區改正，同年動工的總督府採用相同樣式
+    //   ・蘭室（1918 戊午年）介紹資料明確標註「辰野式風格」，是大溪第一座牌樓
+    //   ・最晚的建成商行 1921 年，規模最宏大
+    //   ・連總統府的官方文宣也曾犯此錯，經傅朝卿糾正後才改正 ← 本集的道德分水嶺
+    // ★ culprit 是「今天還在寫巴洛克」的導覽手冊，不是「以前寫錯但已改正」的官方文宣。
+    //   這一集教的是：錯了不可怕，錯了不改才可怕。
+    // ⚠️ 第 7 場刻意讓小Q自己反駁自己：「年代差不是決定性證據，因為有『新巴洛克』」，
+    //   延續 EP5「巧合不是證據」「匾額是軟的」的證據分級訓練。真正的證據放在破案。
+    // ⚠️ 洗石子裝飾統計（傳統 3／混合 5／外來 4）為大溪學以江家牌樓為例的真實統計。
+    //   白色橫飾帶條數與工匠工期為劇中估算，故事裡明講是「安安自己數的／小Q粗估」。
+    {
+      id: 's8ep7',
+      comicIntro: [
+        { bg: 'oldstreet', cast: ['anan', '🧑‍🔧'],
+          say: { zh: '刻解說牌的阿棠師傅舉著兩份公文：「舊牌寫巴洛克，新資料寫西洋歷史式樣。」',
+                 en: 'Master Tang, who carves the interpretive signs, holds up two documents: "The old sign says Baroque. The new file says Western historical style."' } },
+        { bg: 'oldstreet', cast: ['anan', '📘'],
+          say: { zh: '「字刻上石頭就是幾十年。小偵探，我到底該刻哪一個？」',
+                 en: '"Once it is cut in stone it stands for decades. Little detective — which one do I carve?"' } },
+      ],
+      comicSolve: [
+        { bg: 'oldstreet', cast: ['anan', '📐'],
+          say: { zh: '安安量完山牆的角度：「總督府一九一二年動工，大溪市區改正也是一九一二年。」',
+                 en: 'An-An finishes measuring the gable: "The Governor-General\'s Office broke ground in 1912. Daxi\'s street reform was 1912 too."' } },
+        { bg: 'banyan', cast: ['anan', 'arong', '🐦'],
+          say: { zh: '藍鵲的第七根羽毛落下。〈史料卡 7 · 牌樓式樣〉',
+                 en: 'The magpie\'s seventh feather falls. Archive Card 7 — The Façade Style.' } },
+      ],
+      no: 7,
+      title: { zh: '牌樓不是巴洛克', en: 'The Façades Are Not Baroque' },
+      emoji: '🏛️',
+      accent: '#b06a4a',
+      difficulty: { zh: '三角形內角和·角度·併式·大數減法（四上）', en: 'Angles in a triangle · brackets · big-number subtraction (Grade 4-1)' },
+      card: { id: 'facade-style', emoji: '🏛️', name: { zh: '史料卡 7 · 牌樓式樣', en: 'Archive Card 7 · The Façade Style' } },
+      intro: [
+        { zh: '和平老街的騎樓底下，一位滿手石粉的師傅正蹲在一塊還沒刻完的石板前面發呆。他是阿棠師，做解說牌做了三十年。「小偵探，我遇到麻煩了。」他指著地上兩份公文：「市府要我重做一批老街的解說牌。可是——舊的那塊牌子上刻的是『**巴洛克式建築**』，新送來的文化資產登錄資料寫的卻是『**西洋歷史式樣**』。兩份都是官方的，我到底該刻哪一個？」',
+          en: 'Under the arcade of Heping Old Street, a craftsman with stone dust to his elbows crouches before an unfinished slab, staring at it. This is Master Tang, thirty years a maker of interpretive signs. “Little detective, I am in trouble.” He points at two documents on the ground: “The city has asked me to remake the street’s signs. But the old plaque reads ‘**Baroque architecture**,’ while the heritage listing they have just sent me says ‘**Western historical style.**’ Both are official. Which am I to carve?”' },
+        { zh: '他抓了抓頭髮，石粉簌簌地掉：「而且你知道嗎——字刻上石頭，就是幾十年。我要是刻錯了，全大溪的小朋友都會跟著背錯。」安安低頭看那塊石板，忽然覺得有點沉重。小Q🦉倒是很興奮，牠繞著石板走了一圈：「阿棠師，你問對人了。這一題**有標準答案**——而且答案是可以**用量的**。」牠抬頭看著街上那一整排牌樓：「安安，今天我們不查地契、不查帳簿。今天我們用**尺和量角器**辦案。」',
+          en: 'He rakes his hair, stone dust falling: “And you know — once it is cut in stone, it stands for decades. Get it wrong and every child in Daxi will learn it wrong.” An-An looks down at the slab and feels the weight of it. Little Q 🦉, however, is delighted; he circles the stone. “Master Tang, you have come to the right people. This question **has a correct answer** — and the answer can be **measured.**” He looks up at the row of façades along the street: “An-An, today we consult no deeds and no ledgers. Today we work the case with **a ruler and a protractor.**”' },
+      ],
+      scenes: [
+        // 1 📐 三角形內角和（四上「三角形」單元）＋併式
+        {
+          place: { zh: '📐 山牆是一個三角形', en: '📐 The Gable Is a Triangle' },
+          emoji: '📐',
+          diagram: 'gable-angle',
+          story: { zh: '小Q要阿棠師架起梯子，安安爬上去，把量角器貼在牌樓最上面那面山牆上。「先學會看形狀。」小Q在下面喊：「山牆就是屋頂那個三角形。你量到的兩個底角是幾度？」安安小心地讀刻度：「兩邊……都是 {70} 度！」小Q：「兩個底角一樣大，這叫**等腰三角形**。那頂角呢？別爬上去量了，用算的——**三角形三個角加起來一定是 {180} 度**。」',
+                   en: 'Little Q has Master Tang set up a ladder, and An-An climbs to press a protractor against the gable at the top of the façade. “First, learn to see the shape,” Little Q calls up. “A gable is that triangle under the roof. What are the two base angles?” An-An reads the scale carefully: “Both of them… {70} degrees!” Little Q: “Two equal base angles — that is an **isosceles** triangle. And the apex? Do not climb for it, work it out — **the three angles of a triangle always add to {180}.**”' },
+          clueNote: { zh: '牌樓山牆＝等腰三角形，兩底角各 70 度，頂角 40 度（180 − 70 × 2）', en: 'The gable is isosceles: base angles 70° each, apex 40° (180 − 70 × 2)' },
+          puzzle: {
+            text: { zh: '三角形內角和 {180} 度，兩個底角各 {70} 度。頂角幾度？[併式]：180 − 70 × 2',
+                    en: 'Angles in a triangle total {180}°; the two base angles are {70}° each. The apex? [One expression]: 180 − 70 × 2' },
+            answer: 40, unit: { zh: '度', en: '°' },
+            hint: { zh: '先乘後減：70 × 2 ＝ 140，再用 180 − 140！', en: 'Times before minus: 70 × 2 = 140, then 180 − 140!' },
+            teach: [
+              { zh: '三角形有一個鐵則：**三個角加起來一定是 180 度**，不管三角形長什麼樣子。',
+                en: 'One iron rule of triangles: **the three angles always total 180°,** whatever its shape.' },
+              { zh: '兩個底角一樣大，先把它們加起來：70 × 2 ＝ 140 度。（併式先乘後減）',
+                en: 'The two base angles match, so total them first: 70 × 2 = 140°. (Times before minus.)' },
+              { zh: '180 − 140……剩下的就是頂角；換你算！',
+                en: '180 − 140… what remains is the apex — your turn!' },
+            ],
+            reward: { zh: '📐 40 度！小Q點點頭：「很好。記住這個形狀——**直線、對稱、乾乾淨淨的三角形**。」牠停了一下，語氣忽然變了：「安安，先問你一件事。你覺得『巴洛克』長什麼樣子？」安安愣住了。她背過那四個字幾百次，可是……她從來沒想過那是什麼樣子。',
+                      en: '📐 40 degrees! Little Q nods: “Good. Remember that shape — **straight lines, symmetry, a clean triangle.**” He pauses, and his tone shifts: “An-An, one question first. What do you think ‘Baroque’ looks like?” An-An freezes. She has recited those two syllables a hundred times, and… she has never once pictured it.' },
+          },
+        },
+        // 2 📙 老紀錄：辰野金吾是誰
+        {
+          place: { zh: '📙 辰野金吾是誰', en: '📙 Who Was Tatsuno Kingo' },
+          emoji: '🚉',
+          story: { zh: '小Q從背包裡拿出一疊照片：「先認識一個人。**辰野金吾**，日本建築家，他設計了東京車站和日本銀行本店。」安安接過照片，第一眼就「咦」了一聲——照片上的房子是**紅磚**的，牆上一條一條**白色的橫帶**，一路橫過整面牆。小Q：「這就是他的招牌做法，大家叫它『**辰野式**』。東京車站是 {1914} 年落成的，今年 {2026} 年。安安，那棟車站幾歲了？」',
+                   en: 'Little Q takes a stack of photographs from his bag: “First, meet a man. **Tatsuno Kingo**, a Japanese architect — he designed Tokyo Station and the head office of the Bank of Japan.” An-An takes the photos and gives a start at the first: the building is **red brick**, banded with **white horizontal stripes** running the width of the wall. Little Q: “That was his signature, and people call it the **Tatsuno manner.** Tokyo Station was completed in {1914}; this year is {2026}. How old is that station?”' },
+          clueNote: { zh: '辰野金吾（東京車站 1914、日本銀行本店）的招牌＝紅磚配白色橫飾帶，人稱「辰野式」', en: 'Tatsuno Kingo (Tokyo Station 1914, Bank of Japan) — his signature was red brick with white horizontal bands' },
+          puzzle: {
+            text: { zh: '東京車站 {1914} 年落成，今年 {2026} 年。它幾歲了？',
+                    en: 'Tokyo Station was completed in {1914}; this year is {2026}. How old is it?' },
+            answer: 112, unit: { zh: '歲', en: 'years old' },
+            hint: { zh: '年代差用減法：2026 − 1914！', en: 'Subtract: 2026 − 1914!' },
+            teach: [
+              { zh: '算「幾歲」一樣是年代差：今年減掉落成那一年。',
+                en: 'Age is another year gap: this year minus the year it was finished.' },
+              { zh: '2026 − 1914 可以先湊整：2026 − 1900 ＝ 126。',
+                en: '2026 − 1914: round first — 2026 − 1900 = 126.' },
+              { zh: '剛剛多減了 14，要加回來：126 ＋ 14；換你算！',
+                en: 'You took off 14 too many, so add them back: 126 + 14 — your turn!' },
+            ],
+            reward: { zh: '🚉 112 歲！安安還在看那張照片，看得出神。她抬起頭，指著老街上的牌樓，又指指照片：「小Q……這個紅磚配白帶子的，跟我們老街好像。」小Q沒有笑，只是輕輕說：「你自己看出來的。記住這一刻。」',
+                      en: '🚉 112! An-An is still absorbed in the photograph. She looks up, points at the façades along the old street, then back at the photo: “Little Q… this red brick with the white bands. It looks like our street.” Little Q does not smile; he says only, quietly: “You saw that yourself. Remember this moment.”' },
+          },
+        },
+        // 3 📗 官方版：釐清「市區改正」與「牌樓興建」是兩件事
+        {
+          place: { zh: '📗 兩個年代，兩件事', en: '📗 Two Dates, Two Different Things' },
+          emoji: '📅',
+          story: { zh: '阿棠師搬出一箱舊資料：「奇怪，這裡有的寫『市區改正 1912 年』，有的寫『1919 年』，到底哪個對？」小Q眼睛一亮：「兩個都對——因為它們講的是**不同的事**。」牠攤開紙寫給大家看：「市區改正是**都市計畫**：拆房子、拓寬街道、訂建築線，那是 {1912} 年。牌樓立面是**後來一家一家蓋的**：第一座是蘭室，落款戊午年，{1918} 年底；最晚的建成商行是 {1921} 年。」',
+                   en: 'Master Tang hauls out a box of old papers: “Odd — some say the street reform was 1912, others 1919. Which is right?” Little Q’s eyes light up: “Both — because they describe **different things.**” He writes it out for them: “The street reform was the **town plan**: clearing buildings, widening roads, setting building lines. That was {1912}. The decorated façades came later, house by house: the first was Lan Shi, dated to the end of {1918}; the last was the Jiancheng house in {1921}.”' },
+          clueNote: { zh: '⭐ 釐清矛盾：市區改正＝1912（都市計畫）；牌樓興建＝1918 底~1921（一家一家蓋）', en: '⭐ Contradiction resolved: street reform = 1912 (town plan); façades = late 1918–1921 (built house by house)' },
+          puzzle: {
+            text: { zh: '第一座牌樓 {1918} 年，最晚的 {1921} 年。這條街的牌樓前後蓋了幾年？',
+                    en: 'The first façade dates to {1918}, the last to {1921}. Over how many years were they built?' },
+            answer: 3, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代差用減法：1921 − 1918！', en: 'Subtract: 1921 − 1918!' },
+            teach: [
+              { zh: '「前後蓋了幾年」＝最晚那一座的年份，減掉最早那一座。',
+                en: '“Over how many years” = the year of the last minus the year of the first.' },
+              { zh: '1921 − 1918：前面三位一樣，只要看個位 8 和 1。',
+                en: '1921 − 1918: the leading digits match, so look at the ones — 8 and 1.' },
+              { zh: '11 − 8 ＝ 3……換你算出前後蓋了幾年！',
+                en: '11 − 8 = 3… you find how many years!' },
+            ],
+            reward: { zh: '📅 3 年！小Q把兩個年份分開寫在紙的兩邊：「所以以後看到『1912』和『1919』吵架，你就知道——**它們根本不是在講同一件事。**很多所謂的『史料矛盾』，拆開來看就不見了。」阿棠師鬆了一口氣：「那我這塊牌子上的年份沒錯。」小Q：「年份沒錯。**可是那四個字還沒解決。**」',
+                      en: '📅 Three years! Little Q writes the two dates on opposite sides of the page: “So when you next see 1912 and 1919 quarrelling, you will know — **they are not talking about the same thing at all.** A great many so-called contradictions vanish once you separate them.” Master Tang exhales: “Then my dates are fine.” Little Q: “Your dates are fine. **Those two words are not.**”' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 12）
+        {
+          kind: 'choice',
+          place: { zh: '去哪裡找答案', en: 'Where to Find the Answer' },
+          emoji: '🔀',
+          story: { zh: '小Q：「要證明樣式，有兩條路。左邊，木藝生態博物館有一份**牌樓裝飾元素的統計**，一個一個數過的。右邊，圖書館有建築學者寫的書，架上整整一區都是『西洋歷史式樣』。」阿棠師舉手：「我……我可能看不懂書。」小Q：「所以才有兩條路。」窗外，那隻長尾巴的藍鳥停在牌樓的山牆上，剛好停在剛剛量過的那個 40 度角旁邊。',
+                   en: 'Little Q: “Two routes will settle the style. Left: the Wood Art Ecomuseum holds a **survey of façade ornament**, counted piece by piece. Right: the library has books by architectural historians — a whole shelf on Western historical styles.” Master Tang raises a hand: “I… may not follow the books.” Little Q: “Which is why there are two routes.” Outside, the long-tailed blue bird settles on the gable — right beside the forty-degree angle they have just measured.' },
+          question: { zh: '★ 你來決定！要去看統計，還是去翻書？（兩邊都查得到，選你喜歡的！）',
+                      en: '★ You decide! The survey, or the books? (Both work — pick your favourite!)' },
+          options: [
+            {
+              id: 'survey',
+              label: { zh: '🏛️ 木博館的裝飾統計', en: '🏛️ The Museum’s Ornament Survey' },
+              scene: {
+                place: { zh: '木博館·牌樓裝飾統計', en: 'The Museum · Ornament Survey' },
+                emoji: '🏛️',
+                story: { zh: '展板上有一張表，是研究者以江家牌樓為例，把每一個裝飾圖案分了三類數出來的：**傳統的**（蝙蝠、麒麟、花盆）{3} 例、**混合的**{5} 例、**外來的**（羅馬柱、勳章飾）{4} 例。導覽員說：「這張表最有意思的地方是——**三類都有**。」安安：「那一共幾例？」',
+                         en: 'A panel carries a table in which researchers sorted every ornament on the Jiang family façade into three groups: **traditional** (bats, qilin, flower urns) {3}; **mixed** {5}; **foreign** (Roman columns, medallions) {4}. The guide says: “What is interesting is that **all three appear.**” An-An: “How many in total?”' },
+                clueNote: { zh: '牌樓裝飾統計（以江家為例）：傳統 3、混合 5、外來 4，共 12 例——外來與傳統並置', en: 'Ornament survey (Jiang façade): traditional 3, mixed 5, foreign 4 — twelve in all, foreign and traditional side by side' },
+                puzzle: {
+                  text: { zh: '裝飾統計：傳統 {3} 例、混合 {5} 例、外來 {4} 例。[一共]幾例？', en: 'Survey: traditional {3}, mixed {5}, foreign {4}. How many [in all]?' },
+                  answer: 12, unit: { zh: '例', en: '' },
+                  hint: { zh: '三類加起來：3 ＋ 5 ＋ 4！', en: 'Add the three groups: 3 + 5 + 4!' },
+                  teach: [
+                    { zh: '要算「一共」，就把三類全部加起來。',
+                      en: 'For the total, add all three groups together.' },
+                    { zh: '先湊好算的：3 ＋ 5 ＝ 8。',
+                      en: 'Start with the easy pair: 3 + 5 = 8.' },
+                    { zh: '8 ＋ 4……換你算出一共幾例！',
+                      en: '8 + 4… you find the total!' },
+                  ],
+                  reward: { zh: '🏛️ 12 例！安安盯著那張表：「所以這面牆上，中國的蝙蝠跟羅馬的柱子……是排在一起的？」導覽員笑了：「對。所以有人說它是『中西合璧』。可是小朋友，**『合璧』不等於『巴洛克』喔。**」',
+                            en: '🏛️ Twelve! An-An stares at the table: “So on this one wall, Chinese bats and Roman columns… stand side by side?” The guide smiles: “They do. Which is why people call it a blending of East and West. But little one — **a blend is not the same thing as Baroque.**”' },
+                },
+              },
+            },
+            {
+              id: 'library',
+              label: { zh: '📕 圖書館的建築書', en: '📕 The Library’s Architecture Shelf' },
+              scene: {
+                place: { zh: '圖書館·西洋歷史式樣專區', en: 'The Library · Western Historical Styles' },
+                emoji: '📕',
+                story: { zh: '圖書館三樓最角落，一整排厚厚的建築書，書背都磨白了。阿棠師仰著頭看，眼鏡都滑下來。安安數了數那一格：「這裡 {4} 排，每排 {3} 本。」她抽出最上面那一本，封面上四個大字：**西洋歷史式樣**。翻開第一頁，就看到「巴洛克」三個字被放在一個她完全不熟的年代裡。',
+                         en: 'In the furthest corner of the third floor stands a run of heavy architecture books, their spines worn pale. Master Tang cranes up until his glasses slide. An-An counts the section: “{4} rows here, {3} books to a row.” She pulls out the top one; four words across the cover: **Western Historical Styles.** On the first page, “Baroque” sits inside a period she does not know at all.' },
+                clueNote: { zh: '建築專區 4 排 × 每排 3 本＝12 本；「巴洛克」被歸在一個很早的年代裡', en: 'Architecture section: 4 rows × 3 books = 12; “Baroque” is filed under a very early period' },
+                puzzle: {
+                  text: { zh: '書架 {4} 排，每排 {3} 本，[一共]幾本？', en: '{4} rows, {3} books each — how many [in all]?' },
+                  answer: 12, unit: { zh: '本', en: 'books' },
+                  hint: { zh: '每排 3 本，有 4 排：3 × 4！', en: '3 per row, 4 rows: 3 × 4!' },
+                  teach: [
+                    { zh: '一排一排一樣多，用乘法：每排 3 本，有 4 排。',
+                      en: 'Equal rows — multiply: 3 books, 4 rows.' },
+                    { zh: '就是 3 × 4（或 4 × 3，答案一樣）。',
+                      en: 'That’s 3 × 4 (or 4 × 3 — same answer).' },
+                    { zh: '3 × 4……換你數出一共幾本！',
+                      en: '3 × 4… you count the books!' },
+                  ],
+                  reward: { zh: '📕 12 本！安安把書抱在胸前，忽然覺得手上這疊東西有點重。阿棠師小小聲問：「裡面……有寫大溪嗎？」小Q翻到其中一頁，指給他看。阿棠師看了很久，然後把老花眼鏡摘下來，用袖子擦了擦。',
+                            en: '📕 Twelve! An-An hugs the books to her chest and finds them heavier than she expected. Master Tang asks quietly: “Does it… mention Daxi?” Little Q turns to a page and points. Master Tang reads it for a long while, then takes off his glasses and wipes them on his sleeve.' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 📗 併式（含括號）：白色橫飾帶與間隔數
+        {
+          place: { zh: '📗 牆上的白帶子', en: '📗 The White Bands on the Wall' },
+          emoji: '🧱',
+          diagram: 'gable-style',
+          story: { zh: '小Q把兩張圖並排貼在牆上：左邊是歐洲的巴洛克山牆——**全是曲線**，渦卷、花草，山牆中間還斷開一個缺口；右邊是總督府——**紅磚配白色橫飾帶**，一條一條，直得像尺畫的。安安看看圖，再抬頭看看老街，忍不住說：「我們的是右邊那種。」小Q點頭：「那就來數一數。安安，這面牆上有 {5} 條白帶子，每兩條白帶子之間夾著 {8} 層紅磚。一共幾層紅磚？」',
+                   en: 'Little Q pins two pictures side by side: on the left, a European Baroque gable — **all curves**, scrolls and foliage, its pediment broken open in the middle; on the right, the Governor-General’s Office — **red brick with white horizontal bands**, ruled as straight as a line. An-An looks from the pictures to the street and cannot help saying: “Ours is the right-hand kind.” Little Q nods: “Then let us count. An-An, this wall has {5} white bands, and between each pair of bands sit {8} courses of red brick. How many courses altogether?”' },
+          clueNote: { zh: '（安安自己數的）白色橫飾帶 5 條，帶與帶之間 4 個間隔，每個間隔 8 層磚＝32 層', en: '(An-An’s own count) 5 white bands make 4 gaps; 8 brick courses per gap = 32' },
+          puzzle: {
+            text: { zh: '白帶子 {5} 條，每兩條之間夾 {8} 層紅磚。[併式]：8 × (5 − 1) ＝ 幾層？',
+                    en: '{5} white bands, {8} brick courses between each pair. [One expression]: 8 × (5 − 1) = how many courses?' },
+            answer: 32, unit: { zh: '層', en: 'courses' },
+            hint: { zh: '⚠️ 陷阱：5 條帶子，中間只有 4 個間隔！先算括號 5 − 1 ＝ 4！', en: '⚠️ Careful: 5 bands leave only 4 gaps! Brackets first: 5 − 1 = 4!' },
+            teach: [
+              { zh: '這裡有個經典的陷阱：**帶子有 5 條，可是「中間」只有 4 個**。伸出手指數數看就懂了。',
+                en: 'A classic trap: **5 bands, but only 4 gaps between them.** Hold up your fingers and count.' },
+              { zh: '所以先算括號：（5 − 1）＝ 4 個間隔。',
+                en: 'So brackets first: (5 − 1) = 4 gaps.' },
+              { zh: '每個間隔 8 層：8 × 4……換你算出一共幾層紅磚！',
+                en: 'Eight courses per gap: 8 × 4… you find the total!' },
+            ],
+            reward: { zh: '🧱 32 層！小Q指著右邊那張圖：「白帶子、紅磚、白帶子、紅磚——**一路橫過整面牆**。這就是辰野式的指紋。」牠又指指左邊：「你在巴洛克那張圖上，找得到這種橫帶子嗎？」安安看了很久，搖搖頭。阿棠師忽然在旁邊「啊」了一聲，站了起來。',
+                      en: '🧱 Thirty-two! Little Q points to the right-hand picture: “Band, brick, band, brick — **straight across the whole wall.** That is the Tatsuno fingerprint.” He points left: “Can you find bands like these anywhere in the Baroque one?” An-An studies it a long time, then shakes her head. Beside them Master Tang gives a sudden “oh” and gets to his feet.' },
+          },
+        },
+        // 6 🌳 阿榕的記憶碎片：1919 年家家爭奇鬥豔
+        {
+          place: { zh: '🌳 阿榕的記憶碎片', en: '🌳 Ah-Rong’s Fragment of Memory' },
+          emoji: '🍃',
+          story: { zh: '老榕樹沙沙地笑起來，一片葉子飄下來，葉面浮出一格熱鬧的畫面：整條街都搭著竹鷹架，師傅們吊在半空中磨牆。阿榕的聲音難得這麼輕快：「那三年，這條街天天在比。這家做了個圓頂，隔壁馬上做個更大的；這家貼了洗石子的花，對面立刻加兩根柱子。」小Q粗估了一下：「洗石子要一遍一遍磨，一座牌樓大約要磨 {15} 天。一組工匠那三年做了 {24} 座——一共磨了幾天？」',
+                   en: 'The old banyan laughs in rustles and a leaf drifts down, a busy scene rising on it: bamboo scaffolding the length of the street, craftsmen swinging in mid-air, grinding at the render. Ah-Rong’s voice is rarely so light: “Those three years, this street competed daily. One house raised a dome, the neighbour raised a bigger one; one set granolithic flowers, the house opposite added two columns.” Little Q makes a rough estimate: “Granolithic work is ground pass after pass — about {15} days to a façade. One team completed {24} in those years. How many days of grinding?”' },
+          clueNote: { zh: '（粗估）一座牌樓磨 15 天 × 24 座＝360 天，差不多整整一年都在磨牆', en: '(Rough estimate) 15 days a façade × 24 façades = 360 days — very nearly a whole year of grinding' },
+          puzzle: {
+            text: { zh: '（粗估）一座牌樓磨 {15} 天，做了 {24} 座。[一共]磨幾天？',
+                    en: '(Estimate) {15} days per façade, {24} façades. How many days [in all]?' },
+            answer: 360, unit: { zh: '天', en: 'days' },
+            hint: { zh: '每座 15 天，有 24 座：15 × 24！', en: '15 days each, 24 façades: 15 × 24!' },
+            teach: [
+              { zh: '每座花一樣多天，用乘法：一座 15 天，有 24 座。',
+                en: 'Each takes the same — multiply: 15 days, 24 façades.' },
+              { zh: '15 × 24 可以拆開：15 × 20 ＝ 300，15 × 4 ＝ 60。',
+                en: '15 × 24 splits up: 15 × 20 = 300, and 15 × 4 = 60.' },
+              { zh: '300 ＋ 60……換你算出一共磨了幾天！',
+                en: '300 + 60… you find the total days of grinding!' },
+            ],
+            reward: { zh: '🍃 360 天！安安睜大眼睛：「那不就是**整整一年**都在磨牆？」阿榕笑著嘆氣：「所以你們今天看到的每一朵洗石子的花，都是有人趴在鷹架上，一天一天磨出來的。」牠停了一下，聲音低了：「那些師傅……大溪學的研究說，當年有『數組工匠團隊』穿梭在街上。安安，你猜怎麼著——**沒有一個人的名字留下來。**」',
+                      en: '🍃 360 days! An-An’s eyes widen: “That is a **whole year** of grinding!” Ah-Rong sighs, smiling: “So every granolithic flower you see today was ground out, day after day, by someone lying on scaffolding.” It pauses, its voice lowering: “Those craftsmen… the research says several teams moved through the street in those years. And An-An — guess what. **Not one of their names survives.**”' },
+          },
+        },
+        // 7 📘 導覽版：巴洛克有多老（＋小Q自己反駁自己）
+        {
+          place: { zh: '📘 巴洛克有多老', en: '📘 How Old Is Baroque' },
+          emoji: '⏳',
+          story: { zh: '安安終於問了那個問題：「小Q，巴洛克到底是什麼時候的？」小Q翻開圖書館借來的書：「巴洛克是**歐洲**的風格，大約盛行在西元 {1600} 年到 {1750} 年之間。」牠指指窗外：「而我們這條街的牌樓，蓋在 {1919} 年前後。安安，從巴洛克結束到大溪蓋牌樓，中間隔了幾年？」',
+                   en: 'At last An-An asks the question: “Little Q, when was Baroque?” He opens the borrowed book: “Baroque was a **European** style, flourishing roughly between {1600} and {1750}.” He gestures out of the window: “And the façades on this street went up around {1919}. An-An — how many years lie between the end of Baroque and the building of Daxi’s façades?”' },
+          clueNote: { zh: '巴洛克盛期約 1600~1750（歐洲），大溪牌樓約 1919，中間隔了 169 年', en: 'Baroque flourished c. 1600–1750 in Europe; Daxi’s façades date to c. 1919 — a gap of 169 years' },
+          puzzle: {
+            text: { zh: '巴洛克大約在 {1750} 年結束，大溪牌樓蓋於 {1919} 年。中間隔了幾年？',
+                    en: 'Baroque ended around {1750}; Daxi’s façades were built in {1919}. How many years apart?' },
+            answer: 169, unit: { zh: '年', en: 'years' },
+            hint: { zh: '年代差用減法：1919 − 1750！', en: 'Subtract: 1919 − 1750!' },
+            teach: [
+              { zh: '一樣是年代差，用減法：晚的減早的。',
+                en: 'Another year gap — subtract the earlier from the later.' },
+              { zh: '1919 − 1750 可以先湊整：1919 − 1700 ＝ 219。',
+                en: '1919 − 1750: round first — 1919 − 1700 = 219.' },
+              { zh: '剛剛少減了 50，要再減掉：219 − 50；換你算！',
+                en: 'You still owe 50, so take it off: 219 − 50 — your turn!' },
+            ],
+            reward: { zh: '⏳ 169 年！阿棠師一拍大腿：「一百六十九年！那怎麼可能是巴洛克！」——可是小Q搖搖頭。「阿棠師，慢一點。」牠說得很慢：「有人會這樣反駁你：後來的人**也可以模仿**古早的風格，那叫『新巴洛克』。所以**光靠年代差，其實還不夠硬。**」安安愣住了：「那……我們剛剛算的不算數？」小Q：「算數，但它只能當旁證。安安——**真正的證據，是形狀本身。**」',
+                      en: '⏳ 169 years! Master Tang slaps his thigh: “A hundred and sixty-nine! How could it possibly be Baroque?” — but Little Q shakes his head. “Master Tang, slowly.” He speaks deliberately: “Someone will answer you: later builders **can imitate** older styles, and that is called Neo-Baroque. So **a gap of years alone is not hard enough.**” An-An is thrown: “Then… does what we just worked out not count?” Little Q: “It counts, but only as corroboration. An-An — **the real evidence is the shape itself.**”' },
+          },
+        },
+        // 8 🔍 破案：總督府哪一年動工（＝大溪市區改正同一年）
+        {
+          place: { zh: '🔍 同一年', en: '🔍 The Same Year' },
+          emoji: '🏛️',
+          diagram: 'gable-style',
+          story: { zh: '小Q把總督府的照片壓在老街的照片旁邊。「阿棠師，你看這兩面牆。紅磚、白色橫飾帶、直線的幾何——**一樣的**。」阿棠師的手在抖。小Q繼續：「不只樣子一樣。總督府 {1919} 年完工，工期 {7} 年。安安，算算看，它是哪一年動工的？」安安一邊算，一邊覺得心跳得好快，因為她已經猜到答案了。',
+                   en: 'Little Q lays the photograph of the Governor-General’s Office beside one of the old street. “Master Tang, look at these two walls. Red brick, white horizontal bands, straight geometry — **the same.**” Master Tang’s hands are shaking. Little Q goes on: “And not only in looks. The Governor-General’s Office was completed in {1919}, after {7} years of building. An-An — what year did it break ground?” She calculates with her heart racing, because she has already guessed.' },
+          clueNote: { zh: '⭐ 總督府 1919 完工 − 工期 7 年 ＝ 1912 動工，正好是大溪市區改正那一年，同一套工程系統', en: '⭐ Completed 1919 − 7 years = broke ground 1912, the very year of Daxi’s street reform — one and the same programme' },
+          puzzle: {
+            text: { zh: '總督府 {1919} 年完工，蓋了 {7} 年。哪一年動工？',
+                    en: 'The Governor-General’s Office was completed in {1919} after {7} years. What year did it begin?' },
+            answer: 1912, unit: { zh: '年', en: '' },
+            hint: { zh: '往回推用減法：1919 − 7！', en: 'Working backwards means subtracting: 1919 − 7!' },
+            teach: [
+              { zh: '知道完工年和工期，要回推動工年，就用減法。',
+                en: 'Knowing the finish year and the duration, subtract to find the start.' },
+              { zh: '1919 − 7：個位 9 − 7 ＝ 2，前面照抄。',
+                en: '1919 − 7: ones 9 − 7 = 2, the rest unchanged.' },
+              { zh: '換你算出總督府是哪一年動工的——然後回頭看看第三站那個年份！',
+                en: 'You find the year it began — then look back at the date from station three!' },
+            ],
+            reward: { zh: '🏛️ 1912 年！安安猛地抬起頭：「小Q！大溪市區改正也是一九一二年！」小Q終於笑了：「同一年動工，同一套工程系統，同一種樣式。」牠把三份說法一字排開：「阿棠師，你的答案在這裡。安安，說吧——哪一份，到今天還在寫『巴洛克』？」',
+                      en: '🏛️ 1912! An-An’s head snaps up: “Little Q — Daxi’s street reform was 1912 as well!” At last Little Q smiles: “The same year, the same programme of works, the same style.” He lays the three accounts in a row: “Master Tang, here is your answer. An-An — say it. Which of these still says ‘Baroque’ today?”' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'booklet', name: { zh: '📘 現在的老街導覽手冊', en: '📘 Today’s Old Street Guidebook' }, emoji: '📘',
+          say: { zh: '「大溪老街，全台最美的**巴洛克式**牌樓群，華麗浪漫，充滿異國情調——快來拍照打卡！」',
+                 en: '“Daxi Old Street: Taiwan’s loveliest **Baroque** façades — ornate, romantic, deliciously exotic. Come and take your photograph!”' } },
+        { id: 'oldofficial', name: { zh: '📗 以前的官方文宣（已更正）', en: '📗 The Old Official Leaflet (since corrected)' }, emoji: '📗',
+          say: { zh: '「本府建築屬巴洛克式樣……（後經建築學者指出有誤，本文宣已於再版時更正為『西洋歷史式樣』。）」',
+                 en: '“This building is of the Baroque manner… (An architectural historian later showed this to be mistaken; the text was corrected to ‘Western historical style’ in reprint.)”' } },
+        { id: 'scholar', name: { zh: '📙 建築學者與文資登錄', en: '📙 The Historian and the Heritage Listing' }, emoji: '📙',
+          say: { zh: '「稱巴洛克為誤稱。正確為西洋歷史式樣，具體為**辰野金吾式樣**：紅磚配白色橫飾帶，與同期總督府一致。」',
+                 en: '“‘Baroque’ is a misnomer. The correct term is Western historical style — specifically the **Tatsuno Kingo manner**: red brick with white horizontal banding, consistent with the contemporaneous Governor-General’s Office.”' } },
+      ],
+      culprit: 'booklet',
+      accuse: { zh: '⚠️ 這一回要問的不是「誰錯了」——📘和📗**兩份都寫過巴洛克**，都錯過。要問的是：**誰錯了以後不改？**📗那份官方文宣以前也寫巴洛克，可是被建築學者指出來以後，它**再版的時候改掉了**。📙從頭到尾都是對的。你自己量過、算過：山牆是直線的三角形、紅磚配白色橫飾帶、和總督府同一年、同一套樣式。那麼——哪一份，到今天還在印「巴洛克」？',
+                en: '⚠️ This time the question is not who was wrong — 📘 and 📗 **both printed “Baroque,”** and both were wrong. The question is: **who, having been wrong, refused to change?** 📗 that official leaflet once said Baroque too, but when an architectural historian pointed out the error, **it was corrected in reprint.** 📙 was right all along. You measured and calculated yourself: a straight-sided triangular gable, red brick with white banding, the same year and the same style as the Governor-General’s Office. So — which one is still printing “Baroque” today?' },
+      wrongAccuse: { zh: '再讀一次它們說的話喔——📗那份官方文宣，括號裡明明白白寫著「**後經建築學者指出有誤，已於再版時更正**」。它錯過，可是它改了，而且承認了。📙從頭到尾都是對的，它就是我們的答案來源。我們要找的是：**被指出來這麼多年，到今天還在印「巴洛克」的那一份。**📘',
+                     en: 'Read their words again — 📗 the official leaflet states plainly, in its own brackets: “**later shown to be mistaken; corrected in reprint.**” It was wrong, but it changed, and said so. 📙 was right throughout and is the source of our answer. We want the one that, years after being told, **is still printing “Baroque” today.** 📘' },
+      solve: [
+        { zh: '答案是📘現在的老街導覽手冊！大溪老街的牌樓**不是巴洛克**。成大建築系名譽教授傅朝卿指出，這是誤稱——正確的說法是「**西洋歷史式樣**」，更具體地說，是「**辰野金吾式樣**」：紅磚配白色橫飾帶，和東京車站、日本銀行本店、台大醫院舊館同一個系統。而大溪 1912 年市區改正，**同年動工的總督府，用的就是這一套。**',
+          en: 'The answer is 📘 today’s old street guidebook! Daxi’s façades **are not Baroque.** Professor Fu Chao-ching, emeritus of architecture at NCKU, has shown the term to be a misnomer — the correct description is **Western historical style**, and more precisely the **Tatsuno Kingo manner**: red brick with white horizontal banding, of a family with Tokyo Station, the Bank of Japan and the old NTU Hospital. And Daxi’s street reform came in 1912 — **the very year the Governor-General’s Office broke ground in that same manner.**' },
+        { zh: '小Q說：「這個錯誤有多普遍？普遍到——**連總統府自己的官方文宣都寫錯過**，後來經傅教授糾正，才改正過來。」牠看著阿棠師：「所以錯不可怕。你以為只有你會弄錯嗎？總統府都弄錯過。」阿棠師低著頭，耳朵紅紅的。小Q繼續：「**可怕的是被指出來以後，還一直印下去。**」',
+          en: 'Little Q says: “How widespread is this error? Widespread enough that **the Presidential Office’s own literature once carried it too** — and was corrected only after Professor Fu pointed it out.” He looks at Master Tang: “So being wrong is not the frightening part. Did you think you were the only one to get it wrong? The Presidential Office got it wrong.” Master Tang looks down, his ears red. Little Q goes on: “**The frightening part is going on printing it after you have been told.**”' },
+        { zh: '🗣️**這個故事是誰講的？**安安想通了：「因為『巴洛克』比較好聽。」小Q點頭：「一針見血。『巴洛克』聽起來浪漫、有異國情調、好行銷，於是被一本抄一本，抄了幾十年。而正確的答案——『辰野式』——會把大溪直接連到**日本殖民時期的整套建設系統**：總督府、市區改正、同一批工程。」牠停了很久：「安安，記住這句話：**錯的說法比較好賣，對的說法比較尷尬。**」',
+          en: '🗣️ **Who is telling this story?** An-An works it out: “Because ‘Baroque’ sounds nicer.” Little Q nods: “Exactly so. ‘Baroque’ sounds romantic, foreign, marketable — so one booklet copied another for decades. Whereas the right answer, the Tatsuno manner, ties Daxi directly to **the whole colonial-era programme of works**: the Governor-General’s Office, the street reform, the same engineers.” He is quiet a long while. “An-An, remember this: **the wrong version sells better; the right one is awkward.**”' },
+        { zh: '阿棠師拿起鑿子，蹲回那塊石板前面。他刻的是：「**大溪老街牌樓　西洋歷史式樣（辰野金吾式樣）　1918–1921 年陸續興建**」。刻到一半他停下來，抬頭問：「小偵探，我可不可以……在旁邊多刻一行小字？」安安點頭。他一筆一筆刻下去：「**這裡曾經被寫成『巴洛克』。是我們後來查清楚的。**」',
+          en: 'Master Tang takes up his chisel and crouches back to the slab. He carves: “**Daxi Old Street façades — Western historical style (the Tatsuno Kingo manner) — built 1918–1921.**” Halfway through he stops and looks up: “Little detective, might I… add one small line beside it?” An-An nods. Stroke by stroke he cuts: “**This was once written as ‘Baroque.’ We found out later.**”' },
+        { zh: '⭐ 大溪小知識：把大溪老街稱為「巴洛克建築」是**誤稱**，成大建築系名譽教授**傅朝卿**已明確指出，連總統府官方文宣都曾犯此錯、後經糾正。正確說法是「西洋歷史式樣」，具體風格為「**辰野金吾式樣**」——辰野金吾是設計東京車站與日本銀行本店的日本建築家，特徵是紅磚配白色橫飾帶。依據有三：①大溪 1912 年（大正元年）市區改正，同年動工的總督府採用相同樣式；②大溪最知名的「蘭室」（1918）介紹資料標註為「辰野式風格」；③研究指出大溪牌樓立面風格與總統府一致。另外，「市區改正 1912」與「牌樓興建 1918–1921」是**兩件不同的事**，不是矛盾。第七張史料卡，到手！',
+          en: '⭐ Daxi fact: calling Daxi Old Street “Baroque” is a **misnomer**, as Professor Fu Chao-ching, emeritus of architecture at NCKU, has established — even the Presidential Office’s own literature once made the mistake before it was corrected. The proper term is Western historical style, specifically the **Tatsuno Kingo manner** — Tatsuno being the Japanese architect of Tokyo Station and the Bank of Japan, whose signature was red brick with white horizontal banding. Three grounds support it: (1) Daxi’s street reform came in 1912, the same year the Governor-General’s Office broke ground in that manner; (2) Daxi’s best-known house, Lan Shi (1918), is documented as Tatsuno in style; (3) research finds Daxi’s façades consistent with the Presidential Office. Note too that “street reform, 1912” and “façades, 1918–1921” are **two different things**, not a contradiction. Archive Card seven — acquired!' },
+      ],
+      arcClue: { zh: '阿棠師刻到天黑才收工。安安坐在騎樓的台階上，看著那塊新的解說牌，忽然想起阿榕說的話——那些趴在鷹架上磨了三百六十天的師傅，一個名字都沒留下。她抬起頭，對著牌樓的山牆說：「阿棠師，你的名字會刻在牌子上嗎？」阿棠師愣了一下，笑起來：「不會啦。做牌子的人不會署名的。」安安沒有說話。她走過去，用手指在石板背面那個看不見的角落，輕輕描了三個字。那隻藍鵲從山牆上飛下來，落在她手邊，放下第七根羽毛。故事書上那一整行字，這一次**動了一下**——最前面那個名字，忽然變得比其他的都清楚。阿榕在夜色裡輕輕地說：「安安……牠好像，等你等很久了。」',
+                 en: 'Master Tang carves until dark. An-An sits on the arcade step looking at the new sign, and remembers what Ah-Rong said — the craftsmen who ground away three hundred and sixty days and left not one name. She looks up at the gable. “Master Tang, will your name be on the sign?” He blinks, then laughs: “Of course not. Signmakers do not sign.” An-An says nothing. She goes over and, in an unseen corner on the back of the slab, traces three characters lightly with her finger. The magpie drops down from the gable, lands beside her hand, and lays a seventh feather. On the storybook page, that whole line of writing **shifts** — and the first name in it grows suddenly clearer than the rest. In the dark, Ah-Rong says softly: “An-An… I think she has been waiting a very long time for you.”' },
+      nextPreview: { zh: '下一站——每天七圓！「仕紳捐錢辦學」是一個很感人的故事：一群大溪人湊錢，讓孩子有學校可以念。可是安安在一份公司章程裡看到一行小字：「樟腦每日抽出金七圓。」每天七圓，一年就是兩千五百多圓。那些捐出去的錢，是從哪裡來的？這一回要用乘法和大數，把一筆捐款的來路，一天一天算回去。',
+                     en: 'Next — seven yen a day! “The gentry funded a school” is a moving story: a group of Daxi men pooled their money so the children could learn. But in a company’s articles An-An finds one small line: “Seven yen daily to be drawn from camphor.” Seven yen a day is more than two and a half thousand a year. Where did the donated money come from? This time we use multiplication and big numbers to trace a gift back, one day at a time.' },
+      reward: 500,
+    },
   ],
 }
 
