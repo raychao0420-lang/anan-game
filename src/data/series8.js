@@ -3122,6 +3122,290 @@ export const SEASON8 = {
                      en: 'Next — **Those Without Names**! Looking back over everything she has collected, An-An notices something: the Han gentry are each recorded with a name, birth and death dates, deeds done — a tidy list of twelve. But from the same era, on the mountain? Search every record, and she finds only five *village* names — not one person. This time there is no contradiction to compare. This time, we use **statistics** to show, to everyone, just how unequal that is.' },
       reward: 500,
     },
+
+    // ─────────────────────────────────────── S8 EP11 ───────────────────────────────────────
+    // ⭐ outline 第11站，本季情感核心（阿藍主題「想被叫出名字」的正題）。
+    // 案件來自 daxi-history/docs/大溪人物及其歷史.md 開頭「誰有名字、誰沒有名字」：
+    //   ・福仁宮十大公號：李家2位/江家2位/林家2位/黃家3位/其他1位＝10位，多數有生卒年
+    //   ・加上EP9學田六君子6位＝16位有名有姓的漢人仕紳／家族代表
+    //   ・1886–1892大嵙崁戰役，清軍行動表共7次，5次點名社（竹頭角/塔卡散/比亞外/大埧七/雪霧鬧），
+    //     2次只寫集體稱呼；查得到的頭目個人姓名＝0（文件原文：「沒有列出人名」）
+    // ⚠️ outline 大綱寫「漢人仕紳12位」，回頭在 daxi-history 查不到剛好12的清單（比對EP6教訓：
+    //   大綱數字不保證有出處），改用查得到的真實數字：十大公號10位＋學田六君子6位＝16位。
+    // ⚠️ 避免把「有名字的人數」拿去除以「原住民社群數」做成「每社分到幾分之幾個人」──
+    //   那是把人當可切分的量，不妥；改用「幾倍」的比值（16÷5＝3.2倍）純粹當統計比較，不切分人。
+    // ⚠️ culprit 罰的是「主動宣稱一句拿不出證據的話」——網頁寫「原住民朋友共同參與」卻一個名字都沒有；
+    //   先賢錄體例只收個人傳記，沒主動宣稱什麼，不罰；清軍檔案誠實寫「未詳」，是最誠實的一份，不罰。
+    {
+      id: 's8ep11',
+      comicIntro: [
+        { bg: 'school', cast: ['anan', '🧑‍🏫'],
+          say: { zh: '周老師佈置「大溪歷史人物牆」，一個學生舉手問：「老師，那……住在山上的人呢？他們沒有代表嗎？」',
+                 en: 'Ms. Chou is building a "Daxi Historical Figures Wall." A student raises his hand: "Miss, then… what about the people who lived on the mountain? Don\'t they have a representative?"' } },
+        { bg: 'school', cast: ['anan', '📗'],
+          say: { zh: '小Q翻開清冊：「今天不比對矛盾了——今天要用數數字，把不對稱算給大家看。」',
+                 en: 'Little Q opens a ledger: "No contradiction to compare today — today we count, and let the numbers show the imbalance."' } },
+      ],
+      comicSolve: [
+        { bg: 'school', cast: ['anan', '📊'],
+          say: { zh: '安安看著黑板上的長條圖：「十六比零……連可以拿來比的『人』，那邊都沒有。」',
+                 en: 'An-An looks at the bar chart on the board: "Sixteen to zero… there wasn\'t even a person on the other side to compare against."' } },
+        { bg: 'banyan', cast: ['anan', 'arong', '🐦'],
+          say: { zh: '阿藍第一次沒有落下羽毛——牠飛過來，停在安安的肩膀上。〈史料卡 11 · 沒有名字〉',
+                 en: "For the first time Ah-Lan drops no feather — she flies over and settles on An-An's shoulder instead. Archive Card 11 — Without Names." } },
+      ],
+      no: 11,
+      title: { zh: '沒有名字的人', en: 'Those Without Names' },
+      emoji: '🪶',
+      accent: '#6a7a8a',
+      difficulty: { zh: '大數加減·統計圖·二位小數除法（四上）', en: 'Large-number addition/subtraction · bar charts · division to two decimal places (Grade 4-1)' },
+      card: { id: 'no-names', emoji: '🪶', name: { zh: '史料卡 11 · 沒有名字', en: 'Archive Card 11 · Without Names' } },
+      intro: [
+        { zh: '大溪國小圖書館裡，周老師正踩著梯子，把一張張姓名卡片貼上「大溪歷史人物牆」——李騰芳、林平侯、呂鷹揚、呂建邦、簡阿牛……名條一路貼到牆角，密密麻麻。一個叫小宇的男生舉手：「老師，那……住在山上的人呢？他們沒有代表嗎？」周老師愣住了，梯子上停了很久：「我……我找找看。」',
+          en: 'In the library of Daxi Primary, Ms. Chou stands on a stepladder, pasting name-cards onto the "Daxi Historical Figures Wall" — Li Teng-fang, Lin Ping-hou, Lü Ying-yang, Lü Jian-bang, Jian A-niu… the cards run all the way to the corner, densely packed. A boy named Xiao-Yu raises his hand: "Miss, then… what about the people who lived on the mountain? Don\'t they have a representative?" Ms. Chou freezes on the ladder, and is quiet a long while. "I… let me look into that."' },
+        { zh: '小Q🦉飛進圖書館，停在梯子扶手上：「周老師，這個問題問得很好。」牠翻開一份清冊：「這一季我們問過💰錢從哪來、🗺️地從哪來、🗣️故事是誰講的。今天，我們不比對矛盾了——今天要用**數數字**，把一件事本身的不對稱算給大家看。」牠指著人物牆：「安安，先數數看，這面牆上，一共貼了幾張有名有姓的名條？」',
+          en: 'Little Q🦉 flies into the library and lands on the ladder rail. "Ms. Chou, that is an excellent question." He opens a ledger. "This season we have asked 💰 where the money came from, 🗺️ where the land came from, and 🗣️ who tells the story. Today there is no contradiction to compare — today we simply **count**, and let the numbers themselves show how unequal this is." He points at the wall. "An-An, first, count how many named cards are pasted up there."' },
+      ],
+      scenes: [
+        // 1 📗 福仁宮十大公號：加法暖身，10位
+        {
+          place: { zh: '📗 福仁宮十大公號名錄', en: '📗 The Ten Great Names of Fu-ren Temple' },
+          emoji: '📛',
+          story: { zh: '小Q翻到清冊裡「福仁宮十大公號」那一頁：「這是清末到戰後，地方輪流主持祭典的家族代表名單。」牠念出來：「李家 {2} 位、江家 {2} 位、林家 {2} 位、黃家 {3} 位、其他 {1} 位。」周老師湊過來看：「都寫得清清楚楚。」小Q：「安安，全部加起來，一共幾位？」',
+                   en: 'Little Q turns to the "Ten Great Names of Fu-ren Temple" page in the ledger. "This is a list of family representatives who took turns leading the temple rites, from the late Qing into the postwar years." He reads aloud: "{2} from the Li family, {2} from the Jiang family, {2} from the Lin family, {3} from the Huang family, {1} other." Ms. Chou leans in. "Every one, clearly written." Little Q: "An-An, add them all — how many in total?"' },
+          clueNote: { zh: '福仁宮十大公號：李家2位、江家2位、林家2位、黃家3位、其他1位，全部有姓有名，多數連生卒年都查得到', en: 'The Ten Great Names of Fu-ren Temple: 2 from the Li family, 2 Jiang, 2 Lin, 3 Huang, 1 other — every one named, most even with birth and death years on record' },
+          puzzle: {
+            text: { zh: '李家 {2} 位、江家 {2} 位、林家 {2} 位、黃家 {3} 位、其他 {1} 位。一共幾位？',
+                    en: '{2}+{2}+{2}+{3}+{1} people. What is the total?' },
+            answer: 10, unit: { zh: '位', en: 'people' },
+            hint: { zh: '五個數字一路加起來：2+2+2+3+1！', en: 'Add all five numbers: 2+2+2+3+1!' },
+            teach: [
+              { zh: '多個數字相加，一個一個累加上去。', en: 'Adding several numbers: add them one at a time.' },
+              { zh: '2+2+2＝6，先算這三個。', en: '2+2+2 = 6 — do these three first.' },
+              { zh: '再加 3，再加 1；換你算出總數！', en: 'Then add 3, then 1 — your turn to find the total!' },
+            ],
+            reward: { zh: '📛 10 位！小Q闔上清冊：「『十大公號』，名字裡就有個十，而且十位一個都不少，每一位都查得到家族、查得到年份。」牠停頓了一下：「安安，這才只是其中一份名單。」',
+                      en: '📛 Ten! Little Q closes the ledger. "\'Ten Great Names\' — the number ten is right there in the name, and all ten are accounted for, every one traceable to a family and a year." He pauses. "An-An, and this is only one list among many."' },
+          },
+        },
+        // 2 📗 加上學田六君子：10+6=16
+        {
+          place: { zh: '📗 加上學田六君子', en: '📗 Adding the Six Gentlemen of the School-Land' },
+          emoji: '➕',
+          story: { zh: '小Q把 EP9 查過的那份契據也拿出來：「呂鷹揚、王式璋、呂建邦、江健臣、黃丙南、黃玉麟——學田六君子，{6} 位，一樣有名有姓。」牠把兩份名單並排：「十大公號 {10} 位，加上學田六君子 {6} 位。安安，這兩份名單，一共幾位有名有姓的人？」',
+                   en: 'Little Q brings out the deed from EP9. "Lü Ying-yang, Wang Shi-zhang, Lü Jian-bang, Jiang Jian-chen, Huang Bing-nan, Huang Yu-lin — the Six Gentlemen of the School-Land, {6} of them, every one named." He lays the two lists side by side. "The ten great names, plus the six gentlemen. An-An, between just these two lists, how many named people is that?"' },
+          clueNote: { zh: '十大公號10位＋學田六君子6位＝16位，光是這兩份名單，就有16個查得到姓名的人', en: '10 from the Ten Great Names + 6 School-Land Gentlemen = 16 — just these two lists alone name sixteen individuals' },
+          puzzle: {
+            text: { zh: '十大公號 {10} 位，加上學田六君子 {6} 位，一共幾位？',
+                    en: '{10} plus {6} — how many in total?' },
+            answer: 16, unit: { zh: '位', en: 'people' },
+            hint: { zh: '10 + 6！', en: '10 + 6!' },
+            teach: [
+              { zh: '兩個數字直接相加：10 ＋ 6。', en: 'Simply add the two numbers: 10 + 6.' },
+              { zh: '10 加幾，就是在十位後面接上那個個位數。', en: 'Ten plus a number just tacks that number onto the ones place.' },
+              { zh: '換你算出總人數！', en: 'Your turn to find the total!' },
+            ],
+            reward: { zh: '➕ 16 位！周老師看著兩份名單：「而且這還只是我隨手找到的兩份。」小Q點頭：「安安，記住這個數字——**16**。等一下我們要拿它跟另一個數字比。」',
+                      en: '➕ Sixteen! Ms. Chou looks at the two lists. "And these are only the two I happened to find." Little Q nods. "An-An, remember this number — **sixteen**. We are about to compare it with another."' },
+          },
+        },
+        // 3 📙 清軍行動表：減法，7-5=2
+        {
+          place: { zh: '📙 清軍行動紀錄表', en: '📙 The Record of Qing Military Actions' },
+          emoji: '🗒️',
+          story: { zh: '小Q翻開另一份檔案，是一張時間表：「1886年到1892年，清軍在大嵙崁一帶一共記錄了 {7} 次行動。」牠指著表格：「其中 {5} 次，寫出了明確的社名——竹頭角、塔卡散、比亞外、大埧七、雪霧鬧。」安安追問：「那剩下的呢？」小Q：「安安，算算看，剩下幾次連社名都沒寫？」',
+                   en: 'Little Q opens another file, a timeline. "Between 1886 and 1892, the Qing military recorded {7} actions around Daxi." He points at the table. "{5} of them name a specific village — Zhutou-jiao, Taka-san, Biya-wai, Dazha-qi, Xuewu-nao." An-An asks: "And the rest?" Little Q: "An-An, work it out — how many entries do not even give a village name?"' },
+          clueNote: { zh: '1886-1892清軍行動表共7次，5次點名社名（竹頭角/塔卡散/比亞外/大埧七/雪霧鬧），2次只寫「後山群」「泰雅族諸社」等集體稱呼', en: 'The 1886–1892 record of Qing actions lists 7 entries; 5 name a specific village, while 2 use only collective terms like "the rear-mountain group" or "the Atayal villages"' },
+          puzzle: {
+            text: { zh: '一共 {7} 次行動，{5} 次寫出社名。[剩下]幾次沒有寫出社名？',
+                    en: '{7} actions recorded; {5} name a village. How many [do not]?' },
+            answer: 2, unit: { zh: '次', en: 'entries' },
+            hint: { zh: '總次數減掉有寫名字的次數：7 − 5！', en: 'Total minus the named ones: 7 − 5!' },
+            teach: [
+              { zh: '「剩下」用減法：總次數 − 有社名的次數。', en: '"How many remain" is subtraction: total − the named entries.' },
+              { zh: '7 − 5，個位直接相減。', en: '7 − 5: subtract the ones digit directly.' },
+              { zh: '換你算出答案！', en: 'Your turn!' },
+            ],
+            reward: { zh: '🗒️ 2 次！小Q指著那兩行沒有社名的紀錄：「『後山群領域』、『泰雅族諸社聯合抗戰』——連社名都懶得寫清楚。」牠翻回前面那 {5} 個社名：「可是安安，就算有寫社名的這五次……」牠停下來，聲音低了一點：「你猜猜看，裡面寫了幾個頭目的名字？」',
+                      en: '🗒️ Two! Little Q points at the two entries with no village name at all: "\'The rear-mountain group,\' \'the Atayal villages, allied in resistance\' — not even bothered to specify." He turns back to the {5} named villages. "But An-An, even in those five…" He pauses, his voice a little lower. "Guess how many chiefs\' names are written down."' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 0：查得到的頭目姓名數）
+        {
+          kind: 'choice',
+          place: { zh: '去問誰，才查得到頭目的名字', en: "Whom to Ask, to Find a Chief's Name" },
+          emoji: '🔀',
+          story: { zh: '周老師皺著眉：「那……要去哪裡查？」小Q合上檔案：「兩條路都可以試。想問**活著的人**，可以去找部落的文史工作者，他們口述傳統裡也許留著什麼。想查**寫下來的東西**，可以去查理蕃誌稿與人類學調查報告的資料庫。」安安握緊拳頭。窗外，藍鵲落在窗台上，一動也不動地看著她。',
+                   en: 'Ms. Chou frowns. "Then… where should we look?" Little Q closes the file. "Either way is worth trying. To ask **the living**, we could find a tribal historian — something may survive in oral tradition. To search **the written record**, we could check the Qing frontier-administration archives and anthropological surveys." An-An clenches her fists. Outside, the magpie sits motionless on the sill, watching her.' },
+          question: { zh: '★ 你來決定！要去問部落文史工作者，還是查理蕃誌稿資料庫？（兩條都查得到答案，選你喜歡的！）',
+                      en: '★ You decide! Ask a tribal historian, or search the frontier-administration archives? (Either route gets an answer — pick your favourite!)' },
+          options: [
+            {
+              id: 'elder',
+              label: { zh: '🗣️ 部落·文史工作者', en: '🗣️ The Tribe · A Historian' },
+              scene: {
+                place: { zh: '部落文史工作室', en: 'The Tribal History Workshop' },
+                emoji: '🗣️',
+                story: { zh: '文史工作者聽完問題，沉默了很久。「竹頭角、塔卡散、比亞外、大埧七、雪霧鬧……」他一個一個唸出社名，「這些名字，我們自己都還在找。清代的文獻只寫社，不寫人；後來的口述傳統，因為那場戰事死傷很重，很多家族的記憶也斷了。」他看著安安：「小朋友，這 {5} 個被點名的社，你猜猜看，我們現在查得到幾位頭目的姓名？」',
+                         en: 'The historian listens, and is silent a long while. "Zhutou-jiao, Taka-san, Biya-wai, Dazha-qi, Xuewu-nao…" he reads the names one by one, "these are names we ourselves are still searching for. Qing documents wrote only villages, never people; and because that conflict cost so much, oral memory in many families broke off too." He looks at An-An. "Child — of these {5} named villages, how many chiefs\' names do you think we can find today?"' },
+                clueNote: { zh: '部落文史工作者：文獻只寫社不寫人，戰事重創後許多家族的口述記憶也斷了；5個社，查得到的頭目姓名＝0', en: "The tribal historian: documents named villages, never people, and after the heavy losses much oral memory broke off too; of 5 named villages, chiefs' names found = 0" },
+                puzzle: {
+                  text: { zh: '{5} 個被點名的社，查得到頭目姓名的有幾位？', en: "Of {5} named villages, how many chiefs' names can be found?" },
+                  answer: 0, unit: { zh: '位', en: 'people' },
+                  hint: { zh: '仔細讀線索——一位都沒有查到。', en: 'Read the clue carefully — not a single one has been found.' },
+                  teach: [
+                    { zh: '這一題不用計算，是讀懂線索。', en: 'No calculation here — just read the clue.' },
+                    { zh: '文史工作者說「查得到幾位」，答案就在他的話裡。', en: "The historian says how many can be found — the answer is right there in his words." },
+                    { zh: '換你寫出正確的數字！', en: 'Your turn to write the number!' },
+                  ],
+                  reward: { zh: '🗣️ 0 位。工作室裡很安靜。安安小聲說：「一個都沒有……」文史工作者點頭：「對。這不是我們不想找，是真的**沒有留下來**。」',
+                            en: '🗣️ Zero. The workshop is very quiet. An-An says, small: "Not even one…" The historian nods. "Yes. It is not that we do not wish to find them. They were simply **never kept.**"' },
+                },
+              },
+            },
+            {
+              id: 'archive2',
+              label: { zh: '📖 理蕃誌稿·資料庫', en: '📖 The Frontier Archive Database' },
+              scene: {
+                place: { zh: '理蕃誌稿資料庫', en: 'The Frontier Administration Archive' },
+                emoji: '📖',
+                story: { zh: '圖書館的資料庫裡，掃描件一頁一頁翻過去。竹頭角、塔卡散、比亞外、大埧七、雪霧鬧——每個社名旁邊都有詳細的日期與清軍動員數字，唯獨「頭目」那一欄，全部是空的，或者寫著「未詳」。安安一頁一頁往下捲：「怎麼每一頁都一樣……」小Q：「安安，這 {5} 個被點名的社，你數數看，查得到幾位頭目的姓名？」',
+                         en: 'In the library database, scanned pages turn one by one. Zhutou-jiao, Taka-san, Biya-wai, Dazha-qi, Xuewu-nao — each village name sits beside a detailed date and mobilisation figure, but the column for "chief" is, every time, either blank or marked "unknown." An-An scrolls down, page after page: "Why is every page the same…" Little Q: "An-An, count — of these {5} named villages, how many chiefs\' names can be found?"' },
+                clueNote: { zh: '理蕃誌稿資料庫：5個社名旁的「頭目」欄全部空白或寫「未詳」；5個社，查得到的頭目姓名＝0', en: 'The frontier archive: the "chief" column beside all 5 village names is blank or marked "unknown"; of 5 named villages, chiefs\' names found = 0' },
+                puzzle: {
+                  text: { zh: '{5} 個被點名的社，查得到頭目姓名的有幾位？', en: "Of {5} named villages, how many chiefs' names can be found?" },
+                  answer: 0, unit: { zh: '位', en: 'people' },
+                  hint: { zh: '仔細讀線索——每一欄都是空的。', en: 'Read the clue carefully — every column is empty.' },
+                  teach: [
+                    { zh: '這一題不用計算，是讀懂線索。', en: 'No calculation here — just read the clue.' },
+                    { zh: '資料庫裡的欄位全部空白，答案就在畫面裡。', en: 'Every field in the database is empty — the answer is right there on the screen.' },
+                    { zh: '換你寫出正確的數字！', en: 'Your turn to write the number!' },
+                  ],
+                  reward: { zh: '📖 0 位。安安盯著螢幕上一整排空白欄位，久久沒有滑動滑鼠。小Q輕聲說：「安安，這不是資料庫沒建好。這是**當年記錄的人，從一開始就沒有打算寫下他們的名字。**」',
+                            en: '📖 Zero. An-An stares at the row of empty fields on the screen and does not scroll for a long while. Little Q says softly: "An-An, this is not a gap in the database. **The people who kept these records never meant to write their names down at all.**"' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 🌳 阿榕的記憶碎片：時間計算 1892-1886=6
+        {
+          place: { zh: '🌳 阿榕的記憶碎片', en: "🌳 Ah-Rong's Fragment of Memory" },
+          emoji: '🍃',
+          story: { zh: '老榕樹下，一片葉子飄下來，很久沒有畫面浮現。阿榕的聲音比平常更輕：「安安，我沒辦法給你一張臉，也沒辦法給你一個名字……我真的看不到山的那邊。」牠停頓很久：「我只能告訴你，這件事**拖了很久**——從第一次入侵竹頭角，到最後一次聯合抗戰，是 {1886} 年到 {1892} 年。安安，中間隔了幾年？」',
+                   en: 'Beneath the old banyan a leaf drifts down, and for a long time no picture surfaces. Ah-Rong\'s voice is quieter than usual: "An-An, I cannot give you a face, and I cannot give you a name… I truly cannot see the other side of the mountain." A long pause. "All I can tell you is that this went on **for a long time** — from the first incursion at Zhutou-jiao to the last allied resistance, {1886} to {1892}. An-An, how many years is that?"' },
+          clueNote: { zh: '清軍對泰雅族大嵙崁群的軍事行動，從1886年持續到1892年，共6年；阿榕坦承自己也看不到山的那邊', en: "Qing military action against the Atayal Da-ke-kan group ran from 1886 to 1892 — six years; Ah-Rong admits even he cannot see the other side of the mountain" },
+          puzzle: {
+            text: { zh: '從 {1886} 年到 {1892} 年，中間隔了幾年？',
+                    en: 'From {1886} to {1892}, how many years is that?' },
+            answer: 6, unit: { zh: '年', en: 'years' },
+            hint: { zh: '1892 − 1886！', en: '1892 − 1886!' },
+            teach: [
+              { zh: '「中間隔幾年」用減法：後面的年份 − 前面的年份。', en: '"Years between" is subtraction: later year − earlier year.' },
+              { zh: '1892 − 1886，看最後兩位：92 − 86。', en: '1892 − 1886: compare the last two digits, 92 − 86.' },
+              { zh: '換你算出答案！', en: 'Your turn!' },
+            ],
+            reward: { zh: '🍃 6 年！阿榕的葉子安靜地落到地上。「六年，這麼久的事，我這邊的紀錄一個字都沒有。」牠的聲音幾乎聽不見：「安安，這是我第一次，這麼清楚地知道自己漏掉了什麼。」',
+                      en: '🍃 Six years! Ah-Rong\'s leaf settles quietly on the ground. "Six years, and on my side, not one word of it was recorded." His voice is almost too soft to hear. "An-An, this is the first time I have known, this clearly, what I have been missing."' },
+          },
+        },
+        // 6 📙 十六比五：二位小數除法 16÷5=3.2倍
+        {
+          place: { zh: '📙 十六比五', en: '📙 Sixteen to Five' },
+          emoji: '⚖️',
+          story: { zh: '回到圖書館，小Q把兩個數字並排寫下：有名有姓的仕紳與家族代表 {16} 位，有名字留下來的原住民社群──不是人，是**社名**──{5} 個。「安安，16 是 5 的幾倍？算到**小數點第二位**。」周老師看著黑板，久久沒有說話。',
+                   en: 'Back in the library, Little Q writes two numbers side by side: {16} named gentry and family representatives, and {5} — not people, but **village names** — for the other side. "An-An, how many times is 16 of 5? Work it to **two decimal places**." Ms. Chou looks at the board and says nothing for a long while.' },
+          clueNote: { zh: '16 ÷ 5 ＝ 3.2 倍；有名有姓的仕紳代表人數，是有名字留下的原住民社群數的3.2倍——而且那5個還只是社名，不是人名', en: "16 ÷ 5 = 3.2 times: named gentry outnumber named indigenous communities more than three to one — and those 5 are only village names, not a single person's name" },
+          puzzle: {
+            text: { zh: '{16} 是 {5} 的幾倍？（到小數點第二位）',
+                    en: 'How many times is {16} of {5}? (Two decimal places)' },
+            answer: 3.2, unit: { zh: '倍', en: 'times' },
+            hint: { zh: '16 ÷ 5，除到小數點就好，不用除更多位！', en: '16 ÷ 5 — it divides evenly by one decimal place, no need to go further!' },
+            teach: [
+              { zh: '求「幾倍」用除法：大的數 ÷ 小的數。', en: '"How many times" means division: larger ÷ smaller.' },
+              { zh: '16 ÷ 5 ＝ 3 餘 1，餘數 1 變成 10 再除以 5 ＝ 0.2。', en: '16 ÷ 5 = 3 remainder 1; turn the remainder into 10 and divide by 5 again: 0.2.' },
+              { zh: '合起來是 3.2；換你確認答案！', en: 'Put it together: 3.2 — check your answer!' },
+            ],
+            reward: { zh: '⚖️ 3.2 倍！小Q把數字寫在黑板最上面，用力圈了兩圈：「而且安安，這個 3.2 倍，比的還不是『人跟人』。」牠的聲音很沉：「是**16個人**，比**5個地名**。連可以拿來比的『人』，那邊都沒有。」',
+                      en: '⚖️ 3.2 times! Little Q writes the number at the top of the board and circles it twice. "And An-An — this 3.2 is not even people against people." His voice is heavy. "It is **sixteen people** against **five place-names**. There was not even a person on the other side to compare against."' },
+          },
+        },
+        // 7 📖 收集進度：10+1=11張史料卡
+        {
+          place: { zh: '📖 十一張史料卡', en: '📖 Eleven Archive Cards' },
+          emoji: '🗂️',
+          story: { zh: '安安翻開她的史料卡收集本，數了一下：「阿藍的羽毛，已經帶回來 {10} 張史料卡了。」小Q點頭：「等這一集結束，會變成第幾張？」周老師在一旁看得入神：「你們……一直都在做這件事？」小Q：「對。每一張卡片背後，都是一件被兜不攏的事。」',
+                   en: 'An-An opens her archive-card album and counts. "Ah-Lan\'s feathers have brought back {10} cards so far." Little Q nods. "Once this episode ends, which number will it be?" Ms. Chou watches, absorbed. "You two… have been doing this the whole time?" Little Q: "Yes. Behind every card is something that did not add up."' },
+          clueNote: { zh: '安安已收集10張史料卡，這是第11張——沒有名字的人', en: "An-An has already collected 10 archive cards; this is the 11th — Those Without Names" },
+          puzzle: {
+            text: { zh: '已經收集 {10} 張史料卡，這一集完成後會是第幾張？',
+                    en: "{10} cards collected so far. What number will this episode's card be?" },
+            answer: 11, unit: { zh: '張', en: 'cards' },
+            hint: { zh: '10 加 1！', en: '10 plus 1!' },
+            teach: [
+              { zh: '「下一張」就是現有的數量加 1。', en: '"The next one" is just the current count plus one.' },
+              { zh: '10 ＋ 1，直接數上去。', en: '10 + 1 — just count up one.' },
+              { zh: '換你算出是第幾張！', en: 'Your turn — which number is it?' },
+            ],
+            reward: { zh: '🗂️ 第 11 張！安安把新的空格畫出來，寫上「沒有名字的人」六個字，可是配圖那一格，她遲遲沒有下筆。「小Q，這一張……我要畫什麼？」小Q沉默了一下：「安安，也許，這一張什麼都不畫，才是誠實的。」',
+                      en: '🗂️ The eleventh! An-An draws the new blank slot and writes "Those Without Names" — but leaves the picture box untouched for a long while. "Little Q… what should I draw for this one?" Little Q is quiet a moment. "An-An, perhaps leaving it empty is the honest thing to do, this time."' },
+          },
+        },
+        // 8 🔍 破案：統計圖 16 vs 0，16-0=16
+        {
+          place: { zh: '🔍 十六比零', en: '🔍 Sixteen to Zero' },
+          emoji: '📊',
+          chart: { type: 'bar', title: '有名有姓的人數（位）', highlight: 1, caption: '📗📙已知的仕紳與家族代表16位 vs 泰雅族頭目0位', data: [{ label: '📗仕紳/家族代表', v: 16 }, { label: '📙泰雅族頭目', v: 0 }] },
+          story: { zh: '回到人物牆前，小Q把長條圖畫在黑板上：一邊 {16}，一邊 {0}。周老師看著那根幾乎不存在的長條，說不出話。小Q轉向那句「當然，這段歷史也有許多原住民朋友共同參與其中」：「安安，最後一題——16 減掉 0，還是幾？」',
+                   en: 'Back at the wall, Little Q draws the bar chart on the board: one side {16}, the other {0}. Ms. Chou stares at the bar that is barely there at all, and says nothing. Little Q turns to the line claiming "many indigenous friends also took part in this history": "An-An, one last question — 16 minus 0 is still what?"' },
+          clueNote: { zh: '⭐ 有名有姓的仕紳與家族代表16位 vs 查得到姓名的泰雅族頭目0位；16−0＝16，這16位的空缺，不會因為一句「共同參與」就被填上', en: "⭐ 16 named gentry and family representatives vs 0 named Atayal chiefs; 16 − 0 = 16 — that gap is not filled just because a webpage claims they 'took part too'" },
+          puzzle: {
+            text: { zh: '有名有姓的代表 {16} 位，查得到姓名的頭目 {0} 位。差幾位？',
+                    en: '{16} named representatives, {0} named chiefs. What is the difference?' },
+            answer: 16, unit: { zh: '位', en: 'people' },
+            hint: { zh: '16 − 0！', en: '16 − 0!' },
+            teach: [
+              { zh: '任何數減掉 0，還是原來的數。', en: 'Any number minus 0 stays the same.' },
+              { zh: '16 − 0 ＝ 16。', en: '16 − 0 = 16.' },
+              { zh: '換你確認答案！', en: 'Your turn to confirm!' },
+            ],
+            reward: { zh: '📊 16 位！這一次，小Q沒有多說話。長條圖就立在那裡，一邊高高的，一邊幾乎貼著地。安安看著看著，忽然覺得眼眶有點熱。',
+                      en: '📊 Sixteen! This time Little Q says nothing more. The chart simply stands there — one bar tall, the other almost flat on the ground. Looking at it, An-An suddenly feels her eyes grow warm.' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'webpage', name: { zh: '📘 大溪人物介紹網頁', en: '📘 The Daxi Historical Figures Webpage' }, emoji: '📘',
+          say: { zh: '「以上介紹了大溪重要的歷史人物與家族。當然，這段歷史也有許多原住民朋友共同參與其中。」',
+                 en: '"The above introduces Daxi\'s important historical figures and families. Of course, this history also saw the participation of many indigenous friends."' } },
+        { id: 'chronicle', name: { zh: '📗 大溪先賢錄', en: "📗 The Record of Daxi's Worthies" }, emoji: '📗',
+          say: { zh: '「本錄收錄清代至日治大溪地方仕紳、家族代表凡數十人，生平事蹟，以彰後世。」',
+                 en: '"This record collects several dozen gentry and family representatives from the Qing to the Japanese era, their lives and deeds, for posterity."' } },
+        { id: 'archive', name: { zh: '📙 清軍行動檔案', en: '📙 The Record of Qing Military Actions' }, emoji: '📙',
+          say: { zh: '「光緒年間，歷次行動對象：竹頭角等社、塔卡散社、比亞外社、大埧七社、雪霧鬧社。頭目姓名，未詳。」',
+                 en: '"In the Guangxu years, successive targets: Zhutou-jiao and allied villages, Taka-san, Biya-wai, Dazha-qi, Xuewu-nao. Chiefs\' names: unknown."' } },
+      ],
+      culprit: 'webpage',
+      accuse: { zh: '這一次比較特別——不是三份數字兜不攏，是**空白本身**。📗大溪先賢錄沒有騙人，它的體例本來就只收「個人傳記」，不寫社群，這不算說謊。📙清軍行動檔案是我們的硬證據，社名、日期、動員數字全部清清楚楚，甚至誠實寫下「頭目姓名，未詳」——它是三份裡最誠實的一份。可是有一份主動說了一句話：「當然，這段歷史也有許多原住民朋友共同參與其中。」**共同參與，是一個聽起來很溫暖的句子。可是我們查了一整集，一個名字都拿不出來。**哪一份，說了一句自己拿不出證據的話，而且到今天還掛在網路上？',
+                en: 'This time is a little different — it is not three numbers failing to match, but **the blank space itself**. 📗 the Record of Worthies told no lie; its whole form only ever collects individual biographies, never communities — that is not deception. 📙 the record of military actions is our hard evidence: village names, dates, mobilisation numbers, all set down plainly, even honestly noting "chiefs\' names: unknown" — of the three, it is the most honest. But one account made a claim of its own: "this history also saw the participation of many indigenous friends." **"Participation" sounds warm. But we have searched all episode, and cannot produce a single name for it.** Which one made a claim it cannot back up — and still hangs online today?' },
+      wrongAccuse: { zh: '再想一次喔——📙清軍行動檔案雖然沒有頭目姓名，可是它連「未詳」兩個字都老實寫出來了，這是**承認空白**，不是**假裝沒有空白**，不能罰。📗先賢錄的體例本來就是個人傳記，它從沒說過「這就是全部的大溪歷史」，**它沒有主動宣稱什麼**，只是選擇了自己的範圍。我們要找的是：**講了一句『共同參與』，卻連一個名字都給不出來，而且這句話今天還在網路上**的那一份。📘',
+                     en: 'Think again — 📙 the military record may lack chiefs\' names, but it honestly writes "unknown" — that is **admitting** the gap, not **hiding** it, and cannot be at fault. 📗 the Record of Worthies is, by its very form, a collection of biographies; it never claimed to be "the whole of Daxi\'s history" — **it asserts nothing**, it simply chose its own scope. We want the one that **says "participation," yet cannot produce one single name — and that sentence is still online today.** 📘' },
+      solve: [
+        { zh: '答案是📘大溪人物介紹網頁。它有一句聽起來很得體的話：「這段歷史也有許多原住民朋友共同參與其中。」可是我們花了一整集去查——十大公號10位、學田六君子6位，光是這兩份名單就有 **16 位**有名有姓的漢人仕紳與家族代表；而1886到1892年被清軍點名的5個泰雅族社群，**查得到的頭目姓名是0位。**「共同參與」四個字，拿不出一個名字撐著。',
+          en: 'The answer is 📘 the historical figures webpage. It carries one line that sounds perfectly proper: "this history also saw the participation of many indigenous friends." But we have spent this whole episode checking — 10 from the Ten Great Names, 6 School-Land Gentlemen, **16** named Han gentry and family representatives from just these two lists; while, of the 5 Atayal communities named by the Qing military between 1886 and 1892, **the number of chiefs\' names we can find is zero.** The phrase "participation" cannot stand on a single name.' },
+        { zh: '🗣️**這個故事是誰講的？**小Q把三份資料排開：「先賢錄誠實，它只做個人傳記，範圍寫得很清楚。清軍檔案也誠實，它連自己不知道的地方都寫『未詳』。**最不誠實的，反而是那句聽起來最溫暖的話。**」安安低聲說：「因為它聽起來，好像已經有人記得他們了。」小Q：「對。**聽起來被記得，跟真的被記得，是兩件事。**」',
+          en: '🗣️ **Who tells this story?** Little Q lays the three sources out. "The Record of Worthies is honest — it only ever does biographies, and says so plainly. The military record is honest too — it writes \'unknown\' even where it does not know. **The least honest thing here is, ironically, the warmest-sounding sentence.**" An-An says quietly: "Because it sounds like someone already remembers them." Little Q: "Yes. **Sounding remembered, and actually being remembered, are two different things.**"' },
+        { zh: '周老師從梯子上下來，看著那面貼滿名字的牆，很久沒有說話。「那……我該把那句話拿掉嗎？」小Q搖頭：「不用拿掉。跟解說牌那一次一樣——**多加一句就好**。」牠說：「加一句『目前查得到的，只有這5個社名，沒有留下頭目的姓名——這也是我們正在補的空白』。」周老師點點頭，慢慢把梯子推向牆角，那裡還留著一塊空的地方。',
+          en: 'Ms. Chou climbs down from the ladder and looks a long while at the wall of names. "Then… should I remove that line?" Little Q shakes his head. "No need to remove it — like the trail sign, before. **Just add one line.**" He says: "Add: \'At present, only these 5 village names can be found, with no chief\'s name preserved — this, too, is a gap we are still working to fill.\'" Ms. Chou nods, and slowly wheels the ladder toward the corner of the wall, where a patch of empty space still waits.' },
+        { zh: '⭐ 大溪小知識：據《大溪人物及其歷史》整理，清代與日治時期的漢人仕紳，幾乎個個查得到姓名、生卒年、事蹟；同一時期與他們互動、甚至被清軍/日軍攻打的泰雅族頭目，絕大多數只留下「社名」。1886至1892年的大嵙崁戰役中，清軍點名的社群包括竹頭角、塔卡散、比亞外、大埧七、雪霧鬧，目前查得到的頭目個人姓名為零。這個落差不是史料蒐集不夠認真，而是史料生產方式本身的偏差——漢人仕紳的事蹟被自己人、被官方反覆記錄；原住民的歷史則主要以「番社」的樣貌，出現在別人的戰報與公文裡。第十一張史料卡，到手！這一張，圖畫的地方，安安決定先留白。',
+          en: 'Daxi fact: according to the research file "Figures and History of Daxi," Han gentry of the Qing and Japanese eras can nearly all be traced by name, birth and death dates, and deeds; the Atayal chiefs who, in the same era, interacted with — and were even attacked by — Qing and Japanese forces are, in the overwhelming majority of cases, recorded only by village name. In the Da-ke-kan campaigns of 1886–1892, the villages named by the Qing military include Zhutou-jiao, Taka-san, Biya-wai, Dazha-qi and Xuewu-nao; the number of individual chiefs\' names findable today is zero. This gap is not a failure of research diligence — it is a bias built into how the records themselves were made: Han gentry\'s deeds were recorded again and again by their own people and by officialdom; indigenous history appears mainly as "tribes" in other people\'s battle reports and documents. Archive card eleven — acquired! For this one, An-An decides to leave the picture blank.' },
+      ],
+      arcClue: { zh: '傍晚，安安一個人留在圖書館，翻開故事書那一頁——原本浮出來的那行「其餘，無名」旁邊，這次多了一整段。她抬頭找阿藍，藍鵲就停在窗外的樹枝上，一動也不動地看著她，像是在等一件事。安安慢慢開口：「阿藍，我不知道你叫什麼名字之前的名字，也不知道山上那五個社，頭目叫什麼。可是……」她把史料卡第11張攤開，指著上面的空白：「我會記得，這裡有一塊，是空的。」藍鵲張開翅膀，第一次沒有落下羽毛——牠飛過來，輕輕停在安安的肩膀上，很久很久，都沒有再飛走。',
+                 en: 'At dusk, An-An stays alone in the library and opens the storybook to that page — beside the line that once surfaced, "The rest: unnamed," a longer passage has now appeared. She looks up for Ah-Lan, and finds her sitting motionless on a branch outside the window, watching, as though waiting for something. An-An speaks slowly: "Ah-Lan, I don\'t know what name you had before this one, and I don\'t know what those five chiefs on the mountain were called. But—" she opens the eleventh archive card and points at its blank space, "I will remember that this space is empty." The magpie spreads her wings — and for the first time, drops no feather. Instead she flies over and settles gently on An-An\'s shoulder, and for a long, long time, does not fly away again.' },
+      nextPreview: { zh: '下一站——**終章·大溪的另一半**！十二站的旅程走到了最後。安安要把所有的史料卡攤開，把「錢從哪來、地從哪來、誰在講故事」這三個問題，一次問完。可是阿藍還在等一件事——牠一直沒有說出口的，那個真正的心願。這一次，安安準備好要問了。',
+                     en: "Next — **The Finale: Daxi's Other Half**! The twelve-station journey reaches its end. An-An will lay out every archive card and ask all three questions — where the money came from, where the land came from, who tells the story — one final time. But Ah-Lan is still waiting for something: the wish she has never quite said aloud. This time, An-An is ready to ask." },
+      reward: 500,
+    },
   ],
 }
 
