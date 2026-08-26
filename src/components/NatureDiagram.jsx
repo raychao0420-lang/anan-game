@@ -919,6 +919,28 @@ const DIAGRAMS = {
       <text x="80" y="101" fontSize="8" fill={C.green} textAnchor="middle" fontWeight="bold">這不是施捨，是一樁有風險的經營</text>
     </g>
   ),
+
+  // 一九〇七那一年（S8 EP10）：官方故事從1908年講起，中間夾著的1907被跳過了
+  'hidden-year': (
+    <g fontFamily="system-ui, sans-serif">
+      {panel}
+      <text x="80" y="13" fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="bold">同一條時間線，兩份紀錄從哪裡開始說</text>
+      <line x1="20" y1="55" x2="140" y2="55" stroke={C.line} strokeWidth="2" />
+      <circle cx="32" cy="55" r="3" fill={C.sub} />
+      <text x="32" y="70" fontSize="6.6" fill={C.sub} textAnchor="middle">更早以前</text>
+      <path d="M75,50 L75,55" stroke={C.red} strokeWidth="1.2" />
+      <circle cx="75" cy="55" r="3.4" fill={C.red} />
+      <rect x="60" y="26" width="30" height="20" rx="3" fill="none" stroke={C.red} strokeWidth="1.4" strokeDasharray="3 2" />
+      <text x="75" y="39" fontSize="9.5" fill={C.red} textAnchor="middle" fontWeight="bold">1907</text>
+      <text x="75" y="22" fontSize="6.4" fill={C.red} textAnchor="middle">📙老紀錄有寫</text>
+      <path d="M118,50 L118,55" stroke="#8a7648" strokeWidth="1.2" />
+      <circle cx="118" cy="55" r="3.4" fill="#b9ab90" />
+      <rect x="103" y="60" width="30" height="20" rx="3" fill="#f0e2c2" stroke="#b9ab90" strokeWidth="1.2" />
+      <text x="118" y="73" fontSize="9.5" fill={C.ink} textAnchor="middle" fontWeight="bold">1908</text>
+      <text x="118" y="91" fontSize="6.4" fill={C.sub} textAnchor="middle">📗官方故事從這裡講起</text>
+      <text x="80" y="101" fontSize="7.6" fill={C.green} textAnchor="middle" fontWeight="bold">兩份紀錄之間，剛好差了一年</text>
+    </g>
+  ),
 }
 
 // ── 資料驅動圖表：題目給哪些數字，就照那些數字現場畫，孩子看到的圖和題目一模一樣 ──

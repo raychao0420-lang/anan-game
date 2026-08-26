@@ -461,6 +461,23 @@ const BG = {
       {[0, 1, 2].map((i) => <ellipse key={i} cx={136 + (i % 2) * 7} cy={72 - i * 5} rx="7" ry="3.4" fill="#9a7a4e" stroke="#6d5230" strokeWidth="0.8" />)}
     </g>
   ),
+  // 打鐵寮古道·稜線（S8 EP10）：灰藍霧色稜線，一條沿稜線的舊路虛線＋老隘寮界樁
+  ridgeline: (
+    <g>
+      <rect width="160" height="90" fill="#c7cdd2" />
+      <path d="M0,90 V38 Q30,14 62,26 Q100,40 132,18 Q148,8 160,14 V90 Z" fill="#7c8a72" />
+      <path d="M0,90 V54 Q40,40 80,48 Q120,56 160,44 V90 Z" fill="#63715c" />
+      <ellipse cx="40" cy="46" rx="30" ry="7" fill="#fff" opacity="0.35" />
+      <ellipse cx="118" cy="38" rx="26" ry="6" fill="#fff" opacity="0.3" />
+      {/* 沿稜線的舊路 */}
+      <path d="M6,80 Q50,60 74,64 Q110,70 154,50" fill="none" stroke="#9a8a6c" strokeWidth="3.5" strokeDasharray="6 4" opacity="0.85" />
+      {/* 老隘寮界樁 */}
+      <rect x="70" y="58" width="5" height="16" fill="#6d5a3e" />
+      <rect x="67" y="54" width="11" height="6" rx="1" fill="#8a7650" stroke="#4f3a20" strokeWidth="0.8" />
+      {/* 遠方兩隻飛鳥 */}
+      <path d="M118,24 q3,-3 6,0 q3,-3 6,0" fill="none" stroke="#4a4133" strokeWidth="1" />
+    </g>
+  ),
   // 大溪國小（S8 EP4）：米黃校舍＋跑道操場＋校門邊那塊「林家捐地」石碑
   school: (
     <g>

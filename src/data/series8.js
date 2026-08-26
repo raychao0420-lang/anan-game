@@ -2837,6 +2837,291 @@ export const SEASON8 = {
                      en: 'Next — the year 1907! The six men went up to Amuping in the spring of 1908. But An-An finds that in **the year before**, something very large happened on that mountain, and two records happen to join at either end of it, skipping the year in between. This time we count no casualties and describe no fighting — only resources and dates. Then one question: **why does every record begin just after that year?**' },
       reward: 500,
     },
+
+    // ─────────────────────────────────────── S8 EP10 ───────────────────────────────────────
+    // 案件來自 daxi-history/docs/大溪仕紳敘事考.md「揭露3：六君子進場的前一年，那裡剛打完一場仗」：
+    //   1907年（六君子1908年進阿姆坪開墾的前一年），總督府為確保樟腦事業，出動軍警打通隘勇線，
+    //   遭遇泰雅族抵抗。軍警動員1500人次、巡查近15000人次、隘勇與人伕近120000人次。
+    // ⚠️ 依 daxi-history 2026-08-26 附註與本季第五節鐵則：給小孩的版本只用「資源與年份」的數字
+    //   （人力動員人次、明治年號換算），不用傷亡數字（60餘人），不描寫戰鬥過程與武器細節本身，
+    //   彈藥/人力人次僅作為資源統計數字使用，不出現在任何敘事性戰鬥描寫中。
+    // ★ 破案數字＝outline 定案的「兩份紀錄年份差＝1年，這一年被跳過了」：
+    //   老紀錄（總督府公文）明治40年＝1907年打通隘勇線；官方地方沿革故事從明治41年＝1908年才開始講。
+    // ⚠️ culprit 罰的是「主動宣稱一件查得到是假的事」——解說牌寫「未曾發生過爭端」，
+    //   跟老紀錄的1907年隘勇線行動矛盾；地方沿革只是「沒提到」，不算說謊，不罰。
+    {
+      id: 's8ep10',
+      comicIntro: [
+        { bg: 'ridgeline', cast: ['anan', '👨'],
+          say: { zh: '古道志工詹伯伯攤開新解說牌草稿：「小偵探，這面牌要立在登山口了，可是我心裡總覺得怪怪的。」',
+                 en: 'Trail volunteer Uncle Zhan unrolls a draft signboard: "Detective, this one goes up at the trailhead soon — but something about it has never sat right with me."' } },
+        { bg: 'ridgeline', cast: ['anan', '📙'],
+          say: { zh: '小Q把一份泛黃公文攤在草稿旁：「伯伯，你覺得哪裡怪？先問——這條路，真的『未曾發生過爭端』嗎？」',
+                 en: 'Little Q lays a yellowed document beside the draft: "Uncle, what feels wrong? First — did this road really \'never see any dispute\' at all?"' } },
+      ],
+      comicSolve: [
+        { bg: 'ridgeline', cast: ['anan', '📅'],
+          say: { zh: '安安望著稜線：「1907，剛好夾在兩份紀錄中間，誰都沒說謊，只是誰都沒提起。」',
+                 en: 'An-An looks along the ridge: "1907 — sitting right between two records. Nobody lied. Nobody mentioned it, either."' } },
+        { bg: 'banyan', cast: ['anan', 'arong', '🐦'],
+          say: { zh: '阿藍的第十根羽毛落下。〈史料卡 10 · 一九〇七〉',
+                 en: "Ah-Lan's tenth feather falls. Archive Card 10 — The Year 1907." } },
+      ],
+      no: 10,
+      title: { zh: '一九〇七那一年', en: 'The Year 1907' },
+      emoji: '📅',
+      accent: '#5c6b73',
+      difficulty: { zh: '概數（四捨五入）·大數加減·二位小數除法·倍數／除法（四上）', en: 'Rounding · large-number addition/subtraction · division to two decimal places · multiples (Grade 4-1)' },
+      card: { id: 'year-1907', emoji: '📅', name: { zh: '史料卡 10 · 一九〇七', en: 'Archive Card 10 · The Year 1907' } },
+      intro: [
+        { zh: '打鐵寮古道的登山口，志工詹伯伯正在核對新解說牌的稿子。他做古道巡守快十年了，這面牌是為了配合政府新一輪步道整修才重新設計的。「小偵探，你來得正好，」他把稿子鋪在木頭桌上，「上面寫著這條路『昔日運送民生物資，未曾發生過爭端』——我巡了快十年，總覺得哪裡怪怪的，可是說不出來。」',
+          en: 'At the trailhead of the Dagi-liao Historic Trail, volunteer Uncle Zhan is checking the draft of a new interpretive sign. He has patrolled this trail for nearly ten years, and the sign is being redesigned for the government\'s latest round of trail works. "Detective, good timing," he says, spreading the draft on the wooden table. "It says this road was once used to carry daily goods, and never saw any dispute — I have walked it for ten years, and something has always felt off, though I could never say what."' },
+        { zh: '小Q🦉推了推眼鏡，從包包裡拿出一份影印公文，跟解說牌並排放好：「伯伯，這條路的另一個名字，其實是隘勇線——古代畫在山稜線上、用來『管理』誰能進山的那條線。」牠翻開公文：「這一季我們問過💰錢從哪來、🗺️地從哪來。今天要問第三個，也是最後一個問題——」牠指向解說牌上那句「未曾發生過爭端」：「🗣️**這個故事是誰講的？他為什麼要從這裡開始講？**」',
+          en: 'Little Q🦉 pushes up his spectacles and draws a photocopied document from his bag, laying it beside the draft. "Uncle, this road has another name — it was once part of a *guard line*, a boundary drawn along the ridge to control who could enter the mountains." He opens the document. "This season we have asked 💰 where the money came from, and 🗺️ where the land came from. Today, the third and final question —" He points at the sign\'s claim that the road "never saw any dispute": "🗣️ **Who is telling this story? And why does it begin where it begins?**"' },
+      ],
+      scenes: [
+        // 1 📘 導覽牌初稿：暖身題（除法，速度）
+        {
+          place: { zh: '📘 登山口·解說牌初稿', en: '📘 Trailhead · The Draft Sign' },
+          emoji: '🥾',
+          story: { zh: '詹伯伯指著草稿上的地圖：「這條古道全長 {6} 公里，我巡一趟差不多要 {3} 個小時。」小Q側頭看著他：「伯伯，你平均一小時走幾公里？」詹伯伯愣了一下：「呃……我沒算過欸。」小Q：「安安，幫他算算看。」',
+                   en: 'Uncle Zhan points at the map on the draft. "The trail runs {6} kilometres end to end, and it takes me about {3} hours to patrol it." Little Q tilts his head. "Uncle, how many kilometres an hour, on average?" Uncle Zhan blinks. "Huh… I never worked that out." Little Q: "An-An, help him find out."' },
+          clueNote: { zh: '打鐵寮古道全長 6 公里，巡一趟約 3 小時；平均一小時 2 公里，是一條真正走在稜線上的路', en: 'The trail runs 6 km and takes about 3 hours to walk; roughly 2 km/h — a real path along a real ridge' },
+          puzzle: {
+            text: { zh: '古道全長 {6} 公里，走一趟約 {3} 小時。平均一小時走幾公里？',
+                    en: 'The trail is {6} km long and takes about {3} hours. On average, how many km per hour?' },
+            answer: 2, unit: { zh: '公里', en: 'km' },
+            hint: { zh: '總公里數 ÷ 總時數：6 ÷ 3！', en: 'Total km ÷ total hours: 6 ÷ 3!' },
+            teach: [
+              { zh: '「平均一小時走幾公里」用除法：總公里數 ÷ 總時數。', en: '"Average per hour" means division: total distance ÷ total time.' },
+              { zh: '6 公里，走了 3 小時：6 ÷ 3。', en: '6 km over 3 hours: 6 ÷ 3.' },
+              { zh: '換你算出答案！', en: 'Your turn to work it out!' },
+            ],
+            reward: { zh: '🥾 一小時 2 公里！詹伯伯笑了：「這樣講，我下次可以跟遊客說得更清楚。」小Q把公文再往前推了一點：「伯伯，這條路除了風景，還有一個名字，你聽過嗎？」詹伯伯搖頭。小Q翻開公文第一頁，上面蓋著一個模糊的紅印章：「**隘勇線。**」',
+                      en: '🥾 Two kilometres an hour! Uncle Zhan smiles: "Now I can explain that to visitors properly." Little Q slides the document a little closer. "Uncle, besides the scenery, this road has another name. Have you heard it?" Uncle Zhan shakes his head. Little Q opens to the first page, stamped with a faded red seal: "**The Guard Line.**"' },
+          },
+        },
+        // 2 📙 老紀錄：明治→西元換算，第一次確認 1907
+        {
+          place: { zh: '📙 總督府公文·明治四十年', en: "📙 The Governor-General's Document · Meiji 40" },
+          emoji: '📜',
+          diagram: 'hidden-year',
+          story: { zh: '小Q把公文攤平。上面用日本年號寫著：「**明治四十年**，為確保樟腦事業，於本路線一帶整理隘勇線。」詹伯伯瞇著眼看：「明治四十年……那是西元幾年啊？」小Q：「明治的年數，直接加上 {1867}，就是西元年。安安，明治 {40} 年，換算成西元是幾年？」',
+                   en: 'Little Q spreads the document flat. It reads, in the era-name of Japan: "**Meiji 40**, the guard line along this route was reorganised to secure the camphor industry." Uncle Zhan squints. "Meiji forty… what year is that in our calendar?" Little Q: "Add {1867} straight to the Meiji year number, and you get the western year. An-An, what year is Meiji {40}?"' },
+          clueNote: { zh: '老紀錄用明治紀年：「明治四十年，為確保樟腦事業，整理隘勇線」；明治40年 ＝ 西元1907年', en: 'The old record uses the Meiji era: "Meiji 40, the guard line reorganised to secure the camphor trade"; Meiji 40 = 1907 CE' },
+          puzzle: {
+            text: { zh: '明治年數加上 {1867}，就是西元年。明治 {40} 年，是西元哪一年？',
+                    en: 'Add {1867} to the Meiji year number to get the western year. What year is Meiji {40}?' },
+            answer: 1907, unit: { zh: '年', en: '' },
+            hint: { zh: '明治年數直接加上 1867：40 + 1867！', en: 'Just add 1867 to the Meiji year number: 40 + 1867!' },
+            teach: [
+              { zh: '年號換算公式：西元年 ＝ 明治年數 ＋ 1867。', en: 'Conversion rule: western year = Meiji year number + 1867.' },
+              { zh: '40 ＋ 1867，位數對齊直式加。', en: '40 + 1867 — line up the digits and add.' },
+              { zh: '換你算出西元幾年！', en: 'Your turn — what year is it?' },
+            ],
+            reward: { zh: '📜 1907 年！詹伯伯倒抽一口氣：「所以……這條路曾經打過仗？」小Q沒有正面回答，牠只是把手指放在公文旁邊那句「未曾發生過爭端」上：「伯伯，你的草稿寫的是這句。可是老紀錄寫的是明治四十年。**這兩句話，可以同時是真的嗎？**」',
+                      en: '📜 1907! Uncle Zhan draws a breath. "So… was there fighting on this road?" Little Q does not answer directly; he only lays a finger beside the sign\'s claim of "never any dispute." "Uncle, your draft says this. The old record says Meiji forty. **Can both sentences be true at once?**"' },
+          },
+        },
+        // 3 📙 老紀錄続：大數加法，136500 人次
+        {
+          place: { zh: '📙 老紀錄·動員規模', en: '📙 The Old Record · The Scale of the Mobilisation' },
+          emoji: '📊',
+          story: { zh: '小Q翻到公文的下一頁，那一頁只有一張表，沒有一句形容詞。「這次整理隘勇線，動用了軍警 {1500} 人次、巡查近 {15000} 人次，還有負責搬運物資、開路的隘勇與人伕近 {120000} 人次。」詹伯伯瞪大眼睛：「十二萬……這麼多人？」小Q：「安安，把三個數字加起來，這次一共動用了幾人次？」',
+                   en: 'Little Q turns to the next page — just a table, not one adjective on it. "This operation used {1500} soldier-and-police postings, nearly {15000} inspector postings, and nearly {120000} postings of guards and labourers hauling supplies and cutting the road." Uncle Zhan\'s eyes widen. "A hundred and twenty thousand… that many?" Little Q: "An-An, add the three numbers — how many postings in total?"' },
+          clueNote: { zh: '軍警1500人次＋巡查15000人次＋隘勇與人伕120000人次＝136500人次；真正被推上第一線的多數是被徵調的隘勇與人伕', en: '1,500 soldier/police + 15,000 inspectors + 120,000 guards/labourers = 136,500 postings; most of those actually sent to the front were conscripted labourers, not soldiers' },
+          puzzle: {
+            text: { zh: '軍警 {1500} 人次、巡查 {15000} 人次、隘勇與人伕 {120000} 人次。一共幾人次？',
+                    en: '{1500} + {15000} + {120000} postings. What is the total?' },
+            answer: 136500, unit: { zh: '人次', en: 'postings' },
+            hint: { zh: '三個數直式對齊，個位對個位、十位對十位，一路往上加！', en: 'Line the three numbers up by place value and add column by column!' },
+            teach: [
+              { zh: '三個數相加，用直式：位數對齊最重要。', en: 'Adding three numbers: line up the place values first.' },
+              { zh: '1500 + 15000 ＝ 16500，先算這一步。', en: '1500 + 15000 = 16500 — do this step first.' },
+              { zh: '再加上 120000；換你算出總人次！', en: 'Now add 120000 — your turn to find the total!' },
+            ],
+            reward: { zh: '📊 136500 人次！詹伯伯久久說不出話。小Q把表格轉過來給他看：「伯伯，你注意到了嗎？這張表裡，一千五百個是**軍警**，一萬五千個是**巡查**——這兩種都是官方編制內的人。剩下那**十二萬**，是被徵調來扛物資、砍路的**隘勇與人伕**。」牠停頓了一下：「真正被推到最前面的，大多不是軍人。」',
+                      en: '📊 136,500 postings! Uncle Zhan is silent a long moment. Little Q turns the table towards him. "Uncle, notice this — fifteen hundred of these are **soldiers and police**, fifteen thousand are **inspectors**, both official ranks. The remaining **hundred and twenty thousand** were conscripted **guards and labourers**, hauling supplies, cutting the road." He pauses. "Most of the ones actually pushed to the front were not soldiers at all."' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 140000：概數四捨五入到萬位）
+        {
+          kind: 'choice',
+          place: { zh: '這份公文，現在在哪裡', en: 'Where This Document Lives Now' },
+          emoji: '🔀',
+          story: { zh: '詹伯伯捏著那份公文影本：「這……原件現在在哪裡啊？」小Q合上資料夾：「兩條路都通。想去**看現場**，山裡還留著當年隘寮的石頭台基，巡山員知道位置。想**查白紙黑字**，總督府檔案的數位典藏網站上找得到掃描件，案號都對得上。」安安猶豫了一下。窗外，那隻藍鵲飛過稜線，又停下來看她。',
+                   en: 'Uncle Zhan holds the photocopy. "This… where is the original kept now?" Little Q closes the folder. "Either route works. To **see the site**, stone platforms of the old guard-posts still stand in the hills, and the trail rangers know where. To **read the paper trail**, the Governor-General\'s digital archive has the scanned original, case number matching." An-An hesitates. Outside, the magpie flies along the ridge, then stops and looks back at her.' },
+          question: { zh: '★ 你來決定！要去山裡看隘寮遺址，還是上網查總督府檔案？（兩條都查得到，選你喜歡的！）',
+                      en: '★ You decide! The guard-post ruins in the hills, or the Governor-General\'s digital archive? (Both work — pick your favourite!)' },
+          options: [
+            {
+              id: 'ruins',
+              label: { zh: '⛰️ 山裡·隘寮遺址', en: '⛰️ The Hills · Guard-Post Ruins' },
+              scene: {
+                place: { zh: '隘寮遺址·石頭台基', en: 'Guard-Post Ruins · The Stone Platform' },
+                emoji: '⛰️',
+                story: { zh: '循著巡山員指的方向走了一段，樹叢間果然有一塊平整的石頭台基，長滿了青苔。安安蹲下來摸了摸：「這裡……真的有人住過？」小Q：「這是隘寮的地基，當年就架在稜線上，監視山裡的動靜。」牠翻開筆記：「剛才算出來，這次動員一共 {136500} 人次。安安，把它**四捨五入到萬位**，大約是幾人次？」',
+                         en: 'Following the ranger\'s directions a while, they find, among the trees, a flat stone platform thick with moss. An-An crouches and touches it: "Someone… really lived here?" Little Q: "This is a guard-post foundation — set right along the ridge, once, to watch the mountain." He opens his notebook: "We worked out the total was {136500} postings. An-An, round that **to the nearest ten-thousand** — about how many?"' },
+                clueNote: { zh: '隘寮石頭台基仍在稜線上，青苔覆蓋；136500 四捨五入到萬位約 140000', en: 'The stone platform of a guard-post still stands on the ridge, moss-covered; 136,500 rounds to about 140,000' },
+                puzzle: {
+                  text: { zh: '{136500} 人次，四捨五入到萬位，大約是幾人次？', en: 'Round {136500} to the nearest ten-thousand. About how many?' },
+                  answer: 140000, unit: { zh: '人次', en: 'postings' },
+                  hint: { zh: '看千位數字：136500 的千位是 6，6 ≥ 5 就要進位！', en: 'Look at the thousands digit: it is 6, and 6 ≥ 5 means round up!' },
+                  teach: [
+                    { zh: '四捨五入到萬位，要看**千位**數字。', en: 'Rounding to the nearest ten-thousand: check the **thousands** digit.' },
+                    { zh: '136500 的千位是 6，滿 5 要進位，萬位從 13 進成 14。', en: 'The thousands digit here is 6 — that rounds up, so 13 (ten-thousands) becomes 14.' },
+                    { zh: '換你寫出四捨五入後的數字！', en: 'Your turn to write the rounded number!' },
+                  ],
+                  reward: { zh: '⛰️ 約 140000 人次！安安站在台基上，望向稜線的另一頭，風很大。她小聲問：「小Q，住在這裡的人，叫什麼名字？」小Q沒有立刻回答，牠望向更遠的山：「這一題，我們晚一點再問阿藍。」',
+                            en: '⛰️ About 140,000! Standing on the platform, An-An looks along the ridge into the wind. "Little Q," she says quietly, "what was the name of whoever lived here?" Little Q does not answer at once; he looks toward the farther hills. "That question, we will ask Ah-Lan a little later."' },
+                },
+              },
+            },
+            {
+              id: 'archive',
+              label: { zh: '💻 數位典藏·總督府檔案', en: '💻 The Digital Archive' },
+              scene: {
+                place: { zh: '總督府檔案·數位典藏', en: "The Governor-General's Digital Archive" },
+                emoji: '💻',
+                story: { zh: '圖書館的電腦螢幕上，掃描件一頁一頁翻過去，紙張泛黃，毛筆字工整。案號、日期、印章，全部對得上詹伯伯手上那份影本。安安盯著螢幕：「原來真的找得到……」小Q翻開筆記：「剛才算出來，這次動員一共 {136500} 人次。安安，把它**四捨五入到萬位**，大約是幾人次？」',
+                         en: 'On the library computer screen, scanned pages turn one by one — yellowed paper, neat brush-strokes. Case number, date, seal: all match the copy in Uncle Zhan\'s hand. An-An stares at the screen: "So it really can be found…" Little Q opens his notebook: "We worked out the total was {136500} postings. An-An, round that **to the nearest ten-thousand** — about how many?"' },
+                clueNote: { zh: '總督府檔案數位典藏可查到掃描原件，案號日期印章全部相符；136500 四捨五入到萬位約 140000', en: "The Governor-General's digital archive holds the scanned original, its case number and seal matching exactly; 136,500 rounds to about 140,000" },
+                puzzle: {
+                  text: { zh: '{136500} 人次，四捨五入到萬位，大約是幾人次？', en: 'Round {136500} to the nearest ten-thousand. About how many?' },
+                  answer: 140000, unit: { zh: '人次', en: 'postings' },
+                  hint: { zh: '看千位數字：136500 的千位是 6，6 ≥ 5 就要進位！', en: 'Look at the thousands digit: it is 6, and 6 ≥ 5 means round up!' },
+                  teach: [
+                    { zh: '四捨五入到萬位，要看**千位**數字。', en: 'Rounding to the nearest ten-thousand: check the **thousands** digit.' },
+                    { zh: '136500 的千位是 6，滿 5 要進位，萬位從 13 進成 14。', en: 'The thousands digit here is 6 — that rounds up, so 13 (ten-thousands) becomes 14.' },
+                    { zh: '換你寫出四捨五入後的數字！', en: 'Your turn to write the rounded number!' },
+                  ],
+                  reward: { zh: '💻 約 140000 人次！安安看著螢幕上那個小小的印章，忽然覺得，一份文件能留到今天，本身就是一種選擇——**有人決定要留下它。**小Q闔上電腦：「安安，住在山上的人，他們的名字，有沒有被留下來？這一題，我們晚一點再問阿藍。」',
+                            en: '💻 About 140,000! Looking at the tiny seal on the screen, An-An realises, suddenly, that a document surviving to this day is itself a kind of choice — **someone decided it should be kept.** Little Q closes the laptop. "An-An — the names of the people who lived on that mountain, were they kept too? That question, we will ask Ah-Lan a little later."' },
+                },
+              },
+            },
+          ],
+        },
+        // 5 🌳 阿榕的記憶碎片：二位小數除法 550000 ÷ 1500 ≈ 366.67
+        {
+          place: { zh: '🌳 阿榕的記憶碎片', en: "🌳 Ah-Rong's Fragment of Memory" },
+          emoji: '🍃',
+          story: { zh: '老榕樹下，一片葉子飄下來。「那一年……」阿榕的聲音很輕，「街上忽然很安靜。挑夫的工錢漲了三倍，米店的伙計說，山那邊在『整理路』，要很多人手，要很久。我只知道這些——**我看不到山的那邊。**」小Q把筆記翻開：「街上聽得到的，只有傳聞。可是老紀錄寫得很清楚：子彈用了 {550000} 發，分給軍警 {1500} 人次。安安，平均一人次帶了幾發？算到**小數點第二位**。」',
+                   en: 'Beneath the old banyan a leaf drifts down. "That year…" Ah-Rong\'s voice is very quiet, "the street went suddenly still. Porters\' wages tripled overnight. The rice-shop clerk said the far side of the mountain was being \'put in order\' — that it needed many hands, and a long time. That is all I know. **I cannot see the other side of the mountain.**" Little Q opens his notebook: "What the street heard was only rumour. But the old record is precise: {550000} rounds of ammunition, issued across {1500} postings. An-An, how many rounds per posting, on average? Work it out to **two decimal places**."' },
+          clueNote: { zh: '阿榕：那一年街上忽然安靜，挑夫工錢漲了三倍，只知道「山那邊在整理路」；子彈550000發÷軍警1500人次≈366.67發', en: "Ah-Rong: that year the street fell quiet, porters' wages tripled, and all anyone knew was that 'the far side was being put in order'; 550,000 rounds ÷ 1,500 postings ≈ 366.67 each" },
+          puzzle: {
+            text: { zh: '子彈共 {550000} 發，分給 {1500} 人次。平均一人次幾發？（到小數點第二位）',
+                    en: '{550000} rounds shared across {1500} postings. Average per posting? (Two decimal places)' },
+            answer: 366.67, unit: { zh: '發', en: 'rounds' },
+            hint: { zh: '550000 ÷ 1500：先把兩邊都去掉兩個 0，變成 5500 ÷ 15！', en: '550000 ÷ 1500: drop two zeros from each side first — 5500 ÷ 15!' },
+            teach: [
+              { zh: '550000 ÷ 1500，兩邊先同時去掉兩個 0：5500 ÷ 15。', en: '550000 ÷ 1500 — drop two zeros from both: 5500 ÷ 15.' },
+              { zh: '5500 ÷ 15 ≈ 366.66……除不盡，往下多除兩位再四捨五入。', en: '5500 ÷ 15 ≈ 366.66… it does not divide evenly — carry two more places, then round.' },
+              { zh: '到小數點第二位，約是 366.67；換你確認答案！', en: 'To two decimal places, about 366.67 — check your answer!' },
+            ],
+            reward: { zh: '🍃 約 366.67 發！小Q把數字寫在筆記上，沒有多做評論。阿榕的聲音更輕了：「安安，街上的人後來都說，那一陣子過去，大家就當作沒發生過。可是我記得工錢漲了三倍——**東西是真的貴了，只是原因，沒人寫下來。**」',
+                      en: '🍃 About 366.67! Little Q writes the figure in his notebook without comment. Ah-Rong\'s voice grows quieter still: "An-An, once it had passed, people on the street simply spoke as though nothing had happened. But I remember the wages tripling. **Things really did cost more — only, no one wrote down why.**"' },
+          },
+        },
+        // 6 📙 老紀錄続：大數減法 136500 − 1500 ＝ 135000
+        {
+          place: { zh: '📙 誰扛的最多', en: '📙 Who Carried the Most' },
+          emoji: '🎒',
+          story: { zh: '回到登山口，小Q把那張表再攤開一次：「總共 {136500} 人次裡面，真正算是**軍人**的，只有軍警那 {1500} 人次。」牠指著剩下的欄位：「安安，把總數扣掉軍人，剩下的是幾人次？」詹伯伯湊過去看：「那些人……是誰啊？」小Q：「巡查、隘勇、人伕。負責帶路、搬東西、開路的人。」',
+                   en: 'Back at the trailhead Little Q lays the table out again. "Of the {136500} total, only {1500} — the soldier-and-police postings — were, properly speaking, soldiers." He points at the remaining columns. "An-An, subtract the soldiers from the total. How many postings are left?" Uncle Zhan leans in. "Those people… who were they?" Little Q: "Inspectors, guards, labourers. The ones who guided, carried, and cut the road."' },
+          clueNote: { zh: '136500 − 1500 ＝ 135000 人次，是巡查與隘勇人伕，不是軍人本身', en: '136,500 − 1,500 = 135,000 postings of inspectors, guards and labourers — not soldiers themselves' },
+          puzzle: {
+            text: { zh: '總共 {136500} 人次，軍警占 {1500} 人次。[剩下]是幾人次？',
+                    en: 'Of {136500} total postings, {1500} were soldiers/police. How many are [left]?' },
+            answer: 135000, unit: { zh: '人次', en: 'postings' },
+            hint: { zh: '總數減掉軍警：136500 − 1500！', en: 'Total minus soldiers: 136500 − 1500!' },
+            teach: [
+              { zh: '「扣掉」用減法：總人次 − 軍警人次。', en: '"Subtract" means: total − soldiers.' },
+              { zh: '136500 − 1500，先算千位以上：1365 − 15 ＝ 1350，再補上後面的 00。', en: '136500 − 1500: work with the leading digits, 1365 − 15 = 1350, then put the zeros back.' },
+              { zh: '換你算出剩下幾人次！', en: 'Your turn to find what is left!' },
+            ],
+            reward: { zh: '🎒 135000 人次！詹伯伯低聲說：「所以……真正的軍人只占一小部分？」小Q點頭：「十三萬五千人次，扛物資、開路、帶路。**這些人，公文裡連名字都沒有，只寫『隘勇與人伕』四個字。**」牠闔上資料夾：「伯伯，你的解說牌現在還要不要寫『未曾發生過爭端』？」',
+                      en: '🎒 135,000! Uncle Zhan says, low: "So… actual soldiers were only a small part of it?" Little Q nods. "A hundred and thirty-five thousand postings, hauling supplies, cutting the road, guiding the way. **The document does not give a single one of them a name — only the words \'guards and labourers.\'**" He closes the folder. "Uncle, does your sign still want to say \'never any dispute\'?"' },
+          },
+        },
+        // 7 📙 倍數（除法）：120000 ÷ 1500 ＝ 80 倍
+        {
+          place: { zh: '📙 誰被推到最前面', en: '📙 Who Was Sent to the Front' },
+          emoji: '⚖️',
+          story: { zh: '小Q把兩個數字圈起來：軍警 {1500} 人次，隘勇與人伕 {120000} 人次。「安安，隘勇與人伕的人次，是軍警的幾倍？」詹伯伯算不出來，乾脆坐下來看。小Q：「這一題用除法，倍數就是『大的 ÷ 小的』。」',
+                   en: 'Little Q rings two numbers: {1500} soldier-and-police postings, {120000} guard-and-labourer postings. "An-An, how many times more is the guard-and-labourer figure than the soldiers\'?" Uncle Zhan cannot work it in his head and simply sits to watch. Little Q: "This one is division — a multiple is just the larger ÷ the smaller."' },
+          clueNote: { zh: '120000 ÷ 1500 ＝ 80 倍；真正被推上第一線的隘勇與人伕，人次是軍警的80倍', en: '120,000 ÷ 1,500 = 80 times; conscripted guards and labourers, pushed to the front, outnumbered soldiers eighty to one' },
+          puzzle: {
+            text: { zh: '隘勇與人伕 {120000} 人次，是軍警 {1500} 人次的幾倍？',
+                    en: '{120000} postings is how many times {1500}?' },
+            answer: 80, unit: { zh: '倍', en: 'times' },
+            hint: { zh: '120000 ÷ 1500：兩邊各去掉兩個 0，變成 1200 ÷ 15！', en: '120000 ÷ 1500: drop two zeros from each — 1200 ÷ 15!' },
+            teach: [
+              { zh: '求「幾倍」用除法：大的數 ÷ 小的數。', en: '"How many times" means: larger ÷ smaller.' },
+              { zh: '120000 ÷ 1500，先同時去掉兩個 0：1200 ÷ 15。', en: '120000 ÷ 1500 — drop two zeros from both: 1200 ÷ 15.' },
+              { zh: '1200 ÷ 15 ＝ 80；換你算出倍數！', en: '1200 ÷ 15 = 80 — your turn to confirm the multiple!' },
+            ],
+            reward: { zh: '⚖️ 80 倍！安安愣住了：「八十倍……」小Q的聲音很平靜：「這就是為什麼老紀錄留不下他們的名字——**名字要一個一個記，八十倍的人，誰有空一個一個記？**」牠看向窗外的稜線：「這一集我們問的是🗣️這個故事是誰講的。現在你知道了，連『老紀錄』自己，也只記得住一千五百個人的番號，記不住十二萬個人的名字。」',
+                      en: '⚖️ Eighty times! An-An is still. "Eighty times…" Little Q\'s voice is level: "That is why even the old record kept no names for them. **Names must be recorded one by one — who has time for that, eighty times over?**" He looks out toward the ridge. "This episode we asked 🗣️ who tells this story. Now you know — even the \'old record\' itself only troubled to number fifteen hundred men. It never got around to naming the hundred and twenty thousand."' },
+          },
+        },
+        // 8 🔍 破案：兩份紀錄的年份差＝1年（1908 − 1907）
+        {
+          place: { zh: '🔍 剛好差一年', en: '🔍 Exactly One Year Apart' },
+          emoji: '📅',
+          diagram: 'hidden-year',
+          story: { zh: '回到登山口，小Q把所有資料排成一列：解說牌📘、老紀錄📙、還有詹伯伯口袋裡那份地方沿革📗——沿革開頭第一句就是「明治四十一年，六位仕紳於阿姆坪拓墾山田」。小Q指著兩個年份：「老紀錄說，整理隘勇線是明治四十年，也就是西元 {1907} 年。地方沿革的故事，從明治四十一年，也就是西元 {1908} 年才開始講。安安，最後一題——這兩個年份，中間差幾年？」',
+                   en: 'Back at the trailhead, Little Q lays everything out in a row: the sign📘, the old record📙, and the local chronicle📗 from Uncle Zhan\'s pocket — whose very first line reads "In Meiji 41, six gentlemen cleared hill-fields at Amuping." Little Q points at the two years. "The old record says the guard line was reorganised in Meiji 40 — {1907}. The chronicle\'s story begins in Meiji 41 — {1908}. An-An, one last question: how many years apart are these two dates?"' },
+          clueNote: { zh: '⭐ 老紀錄1907年整理隘勇線，地方沿革的故事從1908年才開始講，兩者剛好差1年——那一年被跳過了', en: "⭐ The old record places the guard-line reorganisation in 1907; the chronicle's story starts only in 1908 — exactly one year apart. That year was skipped" },
+          puzzle: {
+            text: { zh: '老紀錄寫 {1907} 年，官方故事從 {1908} 年才開始講。中間差幾年？',
+                    en: 'The old record says {1907}; the official story begins only in {1908}. How many years apart?' },
+            answer: 1, unit: { zh: '年', en: 'year' },
+            hint: { zh: '1908 − 1907！', en: '1908 − 1907!' },
+            teach: [
+              { zh: '「中間差幾年」一樣用減法：後面的年份 − 前面的年份。', en: '"Years apart" is subtraction again: later year − earlier year.' },
+              { zh: '1908 − 1907，兩個都是一九〇〇多，看最後兩位：08 − 07。', en: '1908 − 1907: both nineteen-hundreds, so just compare the last two digits: 08 − 07.' },
+              { zh: '換你算出差幾年！', en: 'Your turn — how many years?' },
+            ],
+            reward: { zh: '📅 剛好 1 年！詹伯伯把草稿放下，久久沒有再拿起來。「所以……不是誰在說謊。」小Q點頭：「解說牌沒有說謊，它只是選了一句最模糊的話。地方沿革也沒有說謊，它只是從最好講的那一年開始講。**可是那剛好差的一年，裡面裝的是十三萬六千五百人次。**」',
+                      en: '📅 Exactly one year! Uncle Zhan sets the draft down and does not pick it up again for a long while. "So… nobody lied." Little Q nods. "The sign did not lie — it only chose the vaguest sentence it could. The chronicle did not lie — it only began at the easiest year to tell. **But that one year, the one they both skip past, held a hundred and thirty-six thousand five hundred postings.**"' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'trailsign', name: { zh: '📘 古道解說牌初稿', en: '📘 The Draft Trailhead Sign' }, emoji: '📘',
+          say: { zh: '「打鐵寮古道，昔日運送民生物資的重要道路，沿線林蔭優美，自古以來未曾發生過爭端，是老少咸宜的健行路線。」',
+                 en: '"The Dagi-liao Historic Trail was once a vital route for carrying daily goods, its shaded path lovely throughout; from ancient times it has never seen any dispute — a trail suited to all ages."' } },
+        { id: 'chronicle', name: { zh: '📗 地方沿革', en: '📗 The Local Chronicle' }, emoji: '📗',
+          say: { zh: '「明治四十一年，呂鷹揚等六位仕紳於阿姆坪拓墾山田，開啟大溪教育新頁。」',
+                 en: '"In Meiji 41, Lü Ying-yang and five other gentlemen cleared hill-fields at Amuping, opening a new page in Daxi\'s education."' } },
+        { id: 'archive', name: { zh: '📙 總督府公文', en: "📙 The Governor-General's Document" }, emoji: '📙',
+          say: { zh: '「明治四十年，為確保樟腦事業，於本路線一帶整理隘勇線，動員軍警一千五百人次、巡查近一萬五千人次、隘勇與人伕近十二萬人次。」',
+                 en: '"In Meiji 40, to secure the camphor industry, the guard line along this route was reorganised, mobilising 1,500 soldier-and-police postings, nearly 15,000 inspector postings, and nearly 120,000 postings of guards and labourers."' } },
+      ],
+      culprit: 'trailsign',
+      accuse: { zh: '這一回一樣沒有壞人——📗地方沿革沒有說謊，它只是從明治四十一年講起；📙老紀錄是我們的硬證據，一個字都沒藏，連十三萬六千五百人次都寫得清清楚楚。可是有一份說法，講的不是「沒提到」，而是**主動宣告一件我們查得到是假的事**：它說這條路「未曾發生過爭端」。我們已經查到，明治四十年，也就是1907年，官方自己的公文寫著要在這裡「整理隘勇線」——而它，立在登山口，每天有遊客與小朋友走過去讀。哪一份？',
+                en: 'Again there is no villain — 📗 the chronicle told no lie; it simply begins its story in Meiji 41. 📙 the old record is our hard evidence, hiding nothing, setting down all 136,500 postings in plain figures. But one account does not merely omit — it **actively claims something we can prove false**: that this road "never saw any dispute." We have found the government\'s own document, dated Meiji 40 — 1907 — ordering the guard line here "reorganised." And that account stands at the trailhead, read by visitors and children every day. Which one?' },
+      wrongAccuse: { zh: '再想一次喔——📙總督府公文是我們的**硬證據**，把明治四十年、三個人力數字都寫出來了，一個字都沒藏，不能罰。📗地方沿革雖然只從明治四十一年講起，可是它從沒說過「這之前什麼都沒發生」，**它沒有主動否定任何事**，只是沒提到。我們要找的是：**明確寫出一句可以被史料推翻的話，而且到今天還立在原地沒有修改**的那一份。📘',
+                     en: 'Think again — 📙 the document is our **hard evidence**: Meiji 40, the three headcounts, nothing hidden — it cannot be at fault. 📗 the chronicle only begins in Meiji 41, but it never claims nothing happened before that; **it denies nothing**, it merely omits. We want the one that **states outright a claim the record can disprove, and still stands there today, uncorrected.** 📘' },
+      solve: [
+        { zh: '答案是📘古道解說牌！它有一句看起來很溫和，其實禁不起檢查的話：「未曾發生過爭端」。可是我們手上有📙總督府自己的公文，明治四十年——西元1907年——白紙黑字寫著，為了樟腦事業，在這一帶「整理隘勇線」，動員了軍警、巡查、隘勇與人伕共 **136500 人次**。這句話跟解說牌的「未曾發生過爭端」，不可能同時是真的。',
+          en: 'The answer is 📘 the trailhead sign. It carries one gentle-sounding line that does not survive scrutiny: "never any dispute." But we hold 📙 the Governor-General\'s own document, dated Meiji 40 — 1907 — stating plainly that, to secure the camphor trade, the guard line here was "reorganised," mobilising soldiers, inspectors, guards and labourers, **136,500 postings in all**. That sentence and the sign\'s "never any dispute" cannot both be true.' },
+        { zh: '🗣️**這個故事是誰講的？他為什麼要這樣講？**小Q把三份資料排開：「解說牌是寫給遊客看的，它想讓人放心地走這條路——這個目的沒有錯。可是要做到『放心』，最簡單的辦法就是**把不舒服的部分整句拿掉**。」安安接著問：「那地方沿革呢？」小Q：「它沒有騙人，它只是**從最容易講的地方開始講**——六個人捐地興學，比隘勇線好講太多了。」',
+          en: '🗣️ **Who tells this story, and why this way?** Little Q lays the three sources out. "The sign is written for visitors — it wants people to walk this road at ease, and that aim is not wrong. But the easiest way to make people feel at ease is to **cut the uncomfortable part out entirely.**" An-An asks: "And the chronicle?" Little Q: "It never lied. It simply **begins at the easiest place to begin** — six men giving land for a school is a far easier story to tell than a guard line."' },
+        { zh: '詹伯伯把草稿揉成一團，又攤平：「那我該怎麼寫？」小Q搖頭：「不用刪掉『從未發生爭端』以外的一切，只要**多加一句**。」牠拿起筆，在空白處寫下：「**這條路，也曾經是隘勇線的一段——西元1907年，官方在此整理隘勇線，遭遇泰雅族的抵抗。**」詹伯伯看了很久：「就這樣寫，遊客會不會覺得，走這條路很沉重？」小Q：「會沉重一點點。可是沉重跟正確，不是相反詞。」',
+          en: 'Uncle Zhan crumples the draft, then smooths it out again. "Then how should I write it?" Little Q shakes his head. "You need not delete anything — only **add one line.**" He takes a pen and writes in the margin: "**This road was also once part of the guard line — in 1907 the authorities reorganised it here, meeting Atayal resistance.**" Uncle Zhan studies it a long while. "Written like that, will visitors feel the walk has grown heavy?" Little Q: "A little heavier, yes. But heavy and accurate are not opposites."' },
+        { zh: '🗺️**地從哪來？**上一集我們已經問過。今天要接上的是💰**錢從哪來**與🗣️**誰在講**的交會點：樟腦事業要進山，需要隘勇線先「整理」過；隘勇線整理過，山地才變成三井會社口中的「原野」；「原野」才輪得到六君子借錢開墾。安安看著三份資料排成一列，忽然說：「所以……錢、地、故事，其實是同一條線。」小Q點頭：「你抓到這一季最重要的一句話了。」',
+          en: '🗺️ **Where did the land come from?** We asked that last time. Today connects it to 💰 **where the money came from** and 🗣️ **who tells it**: the camphor trade needed the mountains entered, which needed the guard line "reorganised" first; only once reorganised did the hill country become the "open ground" Mitsui spoke of; only then could the six men borrow money to clear it. Looking at the three sources in a row, An-An says suddenly: "So… the money, the land, and the story are all the same line." Little Q nods. "You have just found the most important sentence of this whole season."' },
+        { zh: '⭐ 大溪小知識：據《大溪仕紳敘事考》整理，1907年（明治40年，六君子1908年進阿姆坪開墾的前一年），日本總督府為確保樟腦事業，出動軍警打通隘勇線，遭遇泰雅族抵抗。這場行動動員軍警約1,500人次、巡查近15,000人次、隘勇與人伕近120,000人次——真正被推上第一線的多數是被徵調的隘勇與人伕，而非正規軍人，這批人同樣沒有留下姓名。同一時期，三井合名會社在海山、大溪一帶經營超過1,000甲茶園，其土地取得建立在這場行動之上。第十張史料卡，到手！',
+          en: '⭐ Daxi fact: according to the "Narratives of the Daxi Gentry" research file, in 1907 (Meiji 40, the year before the six men entered Amuping in 1908), the Governor-General mobilised soldiers and police to reorganise the guard line to secure the camphor trade, meeting Atayal resistance. The operation mobilised about 1,500 soldier-and-police postings, nearly 15,000 inspector postings, and nearly 120,000 postings of guards and labourers — most of those actually sent to the front were conscripted labourers rather than regular soldiers, and their names, too, were never recorded. In the same period Mitsui & Co. operated over 1,000 jia of tea plantation around Haishan and Daxi, its land acquired on the strength of this very operation. Archive card ten — acquired!' },
+      ],
+      arcClue: { zh: '傍晚，詹伯伯先下山了。安安一個人在登山口等阿榕的葉子飄完，阿藍落在欄杆上，側著頭看她。安安輕聲問：「阿藍，那十二萬人次裡面……你認識誰嗎？」藍鵲沒有回答，只是抬起翅膀，指向稜線更深的地方——比隘寮遺址還要更遠。安安站起來，想跟上去，阿藍卻沒有動，只是停在那裡，像在等安安自己決定要不要走過去。第十根羽毛落下，落在故事書那頁淡字的旁邊。這一次，旁邊多浮出了一行很小的字：「**其餘，無名。**」安安盯著那四個字看了很久，伸手想擦掉，又停住了——她發現自己其實不想擦掉它。',
+                 en: 'At dusk, Uncle Zhan goes down the mountain first. An-An waits alone at the trailhead as Ah-Rong\'s leaf drifts to its end. Ah-Lan lands on the rail and tilts her head at her. An-An asks softly, "Ah-Lan… among those hundred and twenty thousand — did you know any of them?" The magpie does not answer; she only lifts a wing toward somewhere deeper along the ridge — farther even than the guard-post ruins. An-An stands, meaning to follow, but Ah-Lan does not move; she only waits, as if leaving the choice to walk on entirely to An-An. The tenth feather falls, landing beside the storybook\'s faint page. This time, a small line of writing surfaces alongside it: "**The rest: unnamed.**" An-An stares at those four words a long while. She reaches to wipe them away, then stops — she finds she does not, after all, want to.' },
+      nextPreview: { zh: '下一站——**沒有名字的人**！安安翻開之前蒐集到的所有資料，忽然發現一件事：漢人仕紳，每一個都有姓名、生卒年、做過的事，整整齊齊列了十二位。可是同一個時代，山上的人呢？翻遍所有紀錄，她只找到五個「社」的名字——一個人名都沒有。這一集不比對矛盾了，我們要用**統計**，把這件事本身的不對稱，算給所有人看。',
+                     en: 'Next — **Those Without Names**! Looking back over everything she has collected, An-An notices something: the Han gentry are each recorded with a name, birth and death dates, deeds done — a tidy list of twelve. But from the same era, on the mountain? Search every record, and she finds only five *village* names — not one person. This time there is no contradiction to compare. This time, we use **statistics** to show, to everyone, just how unequal that is.' },
+      reward: 500,
+    },
   ],
 }
 
