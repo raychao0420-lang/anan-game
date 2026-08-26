@@ -158,6 +158,8 @@ export const SHOP_ITEMS = [
   { id: 'hometown_storybook', name: '家鄉故事書', emoji: '📖', category: 'rare', price: 0, desc: '《家鄉時光大冒險》終章，老樹靈阿榕交給安安的傳家故事書，十二頁拼滿了大溪／八德家鄉的故事——老街的匾額、大漢溪的河階、月眉的青蛙、慈湖的月、木博館的神桌、豆干、埤塘、水庫、大拜拜、花海、輕便車……每一頁的角落，都夾著一片小小的榕葉當書籤。最後一頁只寫著一句：「家鄉的故事，交給你了。」', boss: true },
   // ── 連載劇《羅馬與極光》信物（劇情獎勵，不可購買）──
   { id: 'travel_notebook', name: '安安的旅行手帳', emoji: '📔', category: 'rare', price: 0, desc: '《羅馬與極光》終章，十二張貼紙全部貼滿的旅行手帳——萬神殿的光圈、競技場、疊起來的廣場、兩千年的水、最小的國家、羅馬的貓，然後往北：換過三次主人的要塞、鑿進岩石的教堂、馴鹿角的城市、聖誕老人、把名字拿回來、極光。每一頁旁邊都有安安自己算過的數字，還有一行歪歪的字：「這些都是我親手算出來的，不是別人告訴我的。」最後一頁夾著一根橘色的貓毛。', boss: true },
+  // ── 連載劇《大溪疑案簿》信物（劇情獎勵，不可購買）──
+  { id: 'unwritten_daxi', name: '沒有寫下來的大溪', emoji: '📓', category: 'rare', price: 0, desc: '《大溪疑案簿》終章，一本刻意留了空白頁的書。十二張史料卡的故事都寫在裡面——海山堡、河港、大圳、通議第、店屋、礦坑、牌樓、七圓、四十八甲、一九〇七，還有沒有名字的人。只有最後一頁沒有畫任何圖，安安在旁邊寫著：「這裡本來有人。他們的名字，我們沒有查到。可是我們知道——這裡，本來有人。」書頁夾層裡，藏著一根藍色的長尾羽。', boss: true },
 ]
 
 // 新寵物（波波/嚕嚕/圓圓/阿丁/小麥）的食物偏好。原本食物 exp 只列了 6 隻，
@@ -177,6 +179,11 @@ const NEW_PET_FOOD_EXP = {
   xiaoq:   { bone: 30, fish: 80,  meat: 90,  apple: 40,  berry: 50,  nectar: 20, sushi: 70,  cake: 90, shrimp: 60,  stardust_candy: 60, moon_mochi: 60,  reunion_candy: 60, wisdom_cookie: 150 }, // 邏輯貓頭鷹精靈：智慧餅乾是專屬最愛，貓頭鷹本色也愛肉跟魚
   feifei:  { bone: 20, fish: 110, meat: 50,  apple: 40,  berry: 60,  nectar: 40, sushi: 90,  cake: 80, shrimp: 100, stardust_candy: 60, moon_mochi: 60,  reunion_candy: 70, wisdom_cookie: 60, stamp_gummy: 150 }, // 信天翁郵差：郵票軟糖是專屬最愛，海鳥本色也愛魚蝦壽司
   xiaohu:  { bone: 100, fish: 40, meat: 90,  apple: 40,  berry: 40,  nectar: 20, sushi: 50,  cake: 80, shrimp: 40,  stardust_candy: 55, moon_mochi: 60,  reunion_candy: 60, wisdom_cookie: 55, stamp_gummy: 50, pineapple_cake: 150 }, // 黑臘腸：鳳梨酥是專屬最愛，狗狗本色也愛大骨頭烤肉串
+  // 🔴 arong/yuanyuan 原本漏掉這張表，餵食一律拿到 0 exp、永遠無法進化（見 ShopScreen `item.exp[activePet] || 0`）。
+  // 這次補上，順手一起把 along（阿藍）也接進來，三隻都用同一套備援值。
+  arong:    { bone: 20, fish: 30,  meat: 20,  apple: 90,  berry: 80,  nectar: 60, sushi: 30,  cake: 90, shrimp: 20,  stardust_candy: 60, moon_mochi: 60,  reunion_candy: 60, wisdom_cookie: 60, stamp_gummy: 50, pineapple_cake: 60 }, // 老樹靈：吃素，愛果子與甜食
+  yuanyuan: { bone: 20, fish: 130, meat: 40,  apple: 30,  berry: 30,  nectar: 15, sushi: 100, cake: 60, shrimp: 110, stardust_candy: 40, moon_mochi: 40,  reunion_candy: 40, wisdom_cookie: 35, stamp_gummy: 35, pineapple_cake: 35 }, // 老橘貓：愛魚蝦，貓本色
+  along:    { bone: 20, fish: 90,  meat: 50,  apple: 40,  berry: 60,  nectar: 30, sushi: 70,  cake: 50, shrimp: 60,  stardust_candy: 40, moon_mochi: 40,  reunion_candy: 40, wisdom_cookie: 40, stamp_gummy: 40, pineapple_cake: 40 }, // 台灣藍鵲：雜食性，愛魚蝦昆蟲類（用壽司代表）
 }
 SHOP_ITEMS.forEach((item) => {
   if (item.category !== 'food') return

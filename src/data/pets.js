@@ -405,9 +405,30 @@ export const PETS = {
     happyEmoji: '🥰',
     sadEmoji: '🥺',
   },
+  // 阿藍：連載劇《大溪疑案簿》終章加入的台灣藍鵲（事件限定，不可金幣購買）
+  // 主題「想被叫出名字」：她是山那一邊的目擊者，長長的藍尾羽像拖著一條緞帶；
+  // 十二集裡，安安每次都好好叫她「阿藍」，這是她第一次真的相信自己有名字。
+  along: {
+    id: 'along',
+    name: '阿藍',
+    breed: '台灣藍鵲（長尾山娘）',
+    personality: '大溪山區的台灣特有種藍鵲，長長的藍尾羽像拖著一條緞帶；叫聲粗啞、領域性很強，卻一直安靜地在山的那一頭看著這一季發生的每一件事，只希望有一天，有人願意好好叫她的名字',
+    unlockCost: 0,
+    purchasable: false,
+    unlockHint: '完成《大溪疑案簿》終章大溪的另一半，說出阿藍一直沒問出口的心願，她就會收起長長的藍尾羽，落在你的肩膀上，跟你一起回家！',
+    stages: [
+      null,
+      { emoji: '🐦', label: '山中目擊者',   size: '5rem', bg: '#EAF0F8', border: '#7C93B0' },
+      { emoji: '🐦', label: '街口探頭鳥',   size: '5rem', bg: '#E6EFFC', border: '#5C7FC0' },
+      { emoji: '🐦', label: '講故事的藍鵲', size: '5rem', bg: '#E2ECFC', border: '#3A5FD8' },
+      { emoji: '🐦', label: '有名字的阿藍', size: '5rem', bg: '#E8F0FF', border: '#2A4FE0', glow: true },
+    ],
+    happyEmoji: '🥰',
+    sadEmoji: '🥺',
+  },
 }
 
-export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu', 'arong', 'yuanyuan']
+export const PET_ORDER = ['lulu', 'hana', 'kotaro', 'jiji', 'kitsune', 'mejiro', 'penguin', 'owl', 'seal', 'beaver', 'hamster', 'dino', 'monkey', 'raccoon', 'twinkle', 'luna', 'pluto', 'xiaoq', 'feifei', 'xiaohu', 'arong', 'yuanyuan', 'along']
 
 // ── 寵物專屬技能 & 能量系統 ─────────────────────────────────────────────
 // 能量靠答題回復（每題 +5，答對答錯都給），手動按技能鈕發動、消耗 20 能量。
@@ -450,6 +471,8 @@ export const PET_SKILLS = {
   arong:   { name: '家鄉記憶', icon: '🍃', effect: { type: 'shield' },           desc: '這一題答錯不斷連段（老樹記得你努力過）' },
   // 小圓等了七千三百天才等到牠想看的東西 → 技能就是「等」：把時間拉到全場最長
   yuanyuan:{ name: '等一下下', icon: '🌌', effect: { type: 'time',  value: 9 },  desc: '這一題 +9 秒（等了七千三百天的貓，很會等）' },
+  // 阿藍是山那一邊的目擊者，眼睛看得最遠 → 技能是「看得更遠」，多給時間慢慢看清楚
+  along:   { name: '山的眼睛', icon: '👁️', effect: { type: 'time',  value: 8 },  desc: '這一題 +8 秒（阿藍在山裡看得最遠）' },
 }
 
 // 動物小知識：每隻寵物兩則真實的特徵，讓安安一邊養寵物一邊認識牠。
@@ -544,5 +567,9 @@ export const PET_TRAITS = {
   yuanyuan: [
     '貓在暗暗的地方瞳孔會放到又大又圓，是為了讓更多光線進到眼睛裡，所以牠們在微光中看得比人清楚。',
     '橘貓大約每四隻才有一隻是母的，因為決定橘色的基因在 X 染色體上，母貓要兩個 X 都帶橘色才會是橘貓——小圓正好就是少見的那一種。',
+  ],
+  along: [
+    '台灣藍鵲是台灣特有種，尾羽長度幾乎跟身體一樣長，飛起來像拖著一條藍色緞帶。',
+    '牠們會「合作育雛」——去年出生的哥哥姊姊，今年會留下來幫爸媽顧巢、餵新出生的弟弟妹妹。',
   ],
 }

@@ -188,5 +188,14 @@ export const EVO = {
     { body:'#E8AE78', belly:'#F2F5FA', ear:'#B9834E', earInner:'#F0CBB0', nose:'#C08A80' },
     { body:'#F0C088', belly:'#FFFFFF', ear:'#C0904F', earInner:'#F8DCBE', nose:'#B89A92', glow:'#5FE0B0' },
   ],
+  // 阿藍：台灣藍鵲（body=藍色羽身、mark=黑色頭罩、nose=紅色喙與腳、ear=收攏的翅色；
+  // stage3 起 tailLong 換上招牌長尾羽，stage4 named 加一片小小的名牌）
+  along: [
+    null,
+    { body:'#4A6FA5', belly:'#DCE6F0', ear:'#2E4C78', nose:'#C0392B', mark:'#1B1F24' },
+    { body:'#3E6BB0', belly:'#E4ECF6', ear:'#2A5490', nose:'#C8402E', mark:'#181C22' },
+    { body:'#3564C0', belly:'#EAF1FA', ear:'#2458A0', nose:'#D14632', mark:'#14181E', tailLong: true },
+    { body:'#2E5FD0', belly:'#F2F7FF', ear:'#1E4FA0', nose:'#E04A34', mark:'#101318', tailLong: true, named: true, glow:'#8FB8FF' },
+  ],
 }
 

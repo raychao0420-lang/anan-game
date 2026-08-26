@@ -1046,6 +1046,62 @@ function YuanyuanBase({ c }) {
   )
 }
 
+// 阿藍：台灣藍鵲（長尾山娘）。招牌長尾羽 stage3 起（c.tailLong）拉長，
+// stage4（c.named）胸前多一片小小的名牌 —— 呼應「終於被叫出名字」。
+function AlongBase({ c }) {
+  return (
+    <g>
+      {/* ── 長尾羽：stage1-2 較短，stage3 起拉長成招牌長尾 ── */}
+      {c.tailLong ? (
+        <g>
+          <path d="M46,105 C40,120 38,138 34,150 L40,148 C44,134 47,118 50,106 Z" fill={c.body} />
+          <path d="M54,105 C60,120 62,138 66,150 L60,148 C56,134 53,118 50,106 Z" fill={c.body} />
+          <path d="M33,148 l7,3 l-2,6 Z" fill="#FFFFFF" opacity="0.9" />
+          <path d="M67,148 l-7,3 l2,6 Z" fill="#FFFFFF" opacity="0.9" />
+        </g>
+      ) : (
+        <g>
+          <path d="M46,105 C42,114 41,122 39,128 L44,126 C46,120 47,113 50,106 Z" fill={c.body} />
+          <path d="M54,105 C58,114 59,122 61,128 L56,126 C54,120 53,113 50,106 Z" fill={c.body} />
+          <path d="M38,126 l6,2 l-1,5 Z" fill="#FFFFFF" opacity="0.85" />
+          <path d="M62,126 l-6,2 l1,5 Z" fill="#FFFFFF" opacity="0.85" />
+        </g>
+      )}
+      {/* ── 收攏的翅膀 ── */}
+      <path d="M26,84 C16,90 14,100 20,108 L28,100 Q26,92 30,86 Z" fill={c.ear} opacity="0.85" />
+      <path d="M74,84 C84,90 86,100 80,108 L72,100 Q74,92 70,86 Z" fill={c.ear} opacity="0.85" />
+      {/* ── 身體：藍色羽身 ── */}
+      <ellipse cx="50" cy="90" rx="23" ry="19" fill={c.body} />
+      <ellipse cx="50" cy="94" rx="14" ry="12" fill={c.belly} opacity="0.9" />
+      {/* ── 腳：紅色，細長 ── */}
+      <g stroke={c.nose} strokeWidth="2.2" strokeLinecap="round">
+        <path d="M43,107 l-2,7" />
+        <path d="M57,107 l2,7" />
+      </g>
+      {/* ── 頭：招牌黑色頭罩 ── */}
+      <circle cx="50" cy="44" r="24" fill={c.mark} />
+      {/* 後頸露出的藍色羽緣 */}
+      <path d="M28,54 Q50,66 72,54 Q68,64 50,68 Q32,64 28,54 Z" fill={c.body} opacity="0.5" />
+      {/* ── 眼睛：黑瞳、紅色眼圈（藍鵲的招牌） ── */}
+      <circle cx="40" cy="43" r="5.4" fill="#0E0E12" />
+      <circle cx="60" cy="43" r="5.4" fill="#0E0E12" />
+      <circle cx="40" cy="43" r="6.6" fill="none" stroke={c.nose} strokeWidth="1.2" opacity="0.7" />
+      <circle cx="60" cy="43" r="6.6" fill="none" stroke={c.nose} strokeWidth="1.2" opacity="0.7" />
+      <circle cx="42" cy="40.6" r="1.8" fill="white" />
+      <circle cx="62" cy="40.6" r="1.8" fill="white" />
+      {/* ── 喙：短而略勾，紅色 ── */}
+      <path d="M44,50 Q50,47 56,50 L52,56 Q50,58 48,56 Z" fill={c.nose} />
+      {/* ── 名牌：stage4 限定，胸前一片小小的金牌，終於有了名字 ── */}
+      {c.named && (
+        <g>
+          <rect x="42" y="76" width="16" height="7" rx="2" fill="#F3D27A" stroke="#B8862E" strokeWidth="0.8" />
+          <line x1="45" y1="79.5" x2="55" y2="79.5" stroke="#8A5F1E" strokeWidth="0.9" />
+        </g>
+      )}
+    </g>
+  )
+}
+
 function ArongBase({ c }) {
   const leaf = c.leaf || c.belly
   return (
@@ -1629,6 +1685,7 @@ export default function PetAvatar({ petId = 'lulu', evolutionStage = 1, equipped
        : petId === 'xiaohu' ? <XiaohuBase c={colors} />
        : petId === 'arong' ? <ArongBase c={colors} />
        : petId === 'yuanyuan' ? <YuanyuanBase c={colors} />
+       : petId === 'along' ? <AlongBase c={colors} />
        : <OtterBase c={colors} isKotaro={petId === 'kotaro'} />
       }
 

@@ -3406,6 +3406,274 @@ export const SEASON8 = {
                      en: "Next — **The Finale: Daxi's Other Half**! The twelve-station journey reaches its end. An-An will lay out every archive card and ask all three questions — where the money came from, where the land came from, who tells the story — one final time. But Ah-Lan is still waiting for something: the wish she has never quite said aloud. This time, An-An is ready to ask." },
       reward: 500,
     },
+
+    // ─────────────────────────────────────── S8 EP12（終章） ───────────────────────────────────────
+    // 十二站收尾：安安把12張史料卡攤開，三問（💰錢從哪來/🗺️地從哪來/🗣️誰在講故事）問完；
+    // 阿藍入隊，說出「想被叫出名字」的心願；故事書那頁刻意留白，旁邊寫上「這裡本來有人」。
+    // ⚠️ 終章處理鐵則（season8-劇本.md 第四節）：不能給「找到全部名字」的大團圓，
+    //   因為現實中沒有找到。答案是：有些名字真的找不回來了，但「知道有人沒被寫下來」
+    //   這件事本身，就是一種記得。品牌八部曲收官：…想被叫出名字。
+    // culprit 延續全季規則：public-facing、被主動宣稱、可被證據推翻、且未修正的那一份——
+    //   這次是整季規模最大的一份：社區的建鎮週年紀念特輯，宣稱「族群和諧共榮」抹平了全部矛盾。
+    {
+      id: 's8ep12',
+      comicIntro: [
+        { bg: 'school', cast: ['anan', '👩'],
+          say: { zh: '大溪國小活動中心辦「偵探社成果發表會」，阿蕙、詹伯伯、周老師都來了。牆上掛著一張大紅布條：「大溪建鎮週年紀念特輯」。',
+                 en: 'A "Detective Agency Results Day" fills the community hall — Hui, Uncle Zhan, Ms. Chou all come. A banner on the wall reads: "Daxi Founding Anniversary Special Feature."' } },
+        { bg: 'school', cast: ['anan', '📘'],
+          say: { zh: '特輯的結語寫著：「大溪的故事，是先民胼手胝足、族群和諧共榮的美好篇章。」小Q停下腳步：「安安，我們手上的12張卡，都同意這句話嗎？」',
+                 en: 'The feature\'s closing line reads: "Daxi\'s story is one of pioneers laboring together, its peoples living in harmonious accord." Little Q stops. "An-An — do our 12 cards agree with that sentence?"' } },
+      ],
+      comicSolve: [
+        { bg: 'banyan', cast: ['anan', 'arong', '🐦'],
+          say: { zh: '安安把史料卡一張一張攤開：「16 比 0 還在那裡。不是抹平了，是被蓋住了。」',
+                 en: 'An-An lays the cards out, one by one: "Sixteen to zero is still there. Not erased — just covered over."' } },
+        { bg: 'banyan', cast: ['anan', 'arong', '🐦'],
+          say: { zh: '阿藍終於開口，說出了那個心願。故事書最後一頁，安安留白，只在旁邊寫下一句話。〈史料卡 12 · 另一半〉',
+                 en: 'Ah-Lan finally speaks her wish aloud. On the storybook\'s last page, An-An leaves the picture blank, and writes one line beside it. Archive Card 12 — The Other Half.' } },
+      ],
+      no: 12,
+      title: { zh: '終章·大溪的另一半', en: "Finale · Daxi's Other Half" },
+      emoji: '🐦',
+      accent: '#4a6a8a',
+      difficulty: { zh: '四上十單元大混合', en: 'All Grade 4-1 units combined' },
+      card: { id: 'other-half', emoji: '🐦', name: { zh: '史料卡 12 · 另一半', en: 'Archive Card 12 · The Other Half' } },
+      intro: [
+        { zh: '大溪國小活動中心，紅布條掛得又高又大：「大溪建鎮週年紀念特輯發表會」。阿蕙、詹伯伯、周老師都坐在台下，連林阿姨都從老街文具行趕來了。台上主持人念著特輯的結語：「回顧這一頁頁的歷史，大溪的故事，是先民胼手胝足、族群和諧共榮的美好篇章。」台下響起掌聲。安安卻沒有拍手，她低頭看著背包裡那疊史料卡——十一張，一張都沒有落下。',
+          en: 'The community hall at Daxi Primary is hung with a great red banner: "Daxi Founding Anniversary Special — Presentation Day." Hui, Uncle Zhan, and Ms. Chou all sit in the audience; even Auntie Lin has come from her stationery shop on the old street. On stage, the host reads the feature\'s closing line: "Looking back over these pages of history, Daxi\'s story is one of pioneers laboring together, its peoples living in harmonious accord." Applause fills the hall. An-An does not clap. She looks down at the stack of cards in her bag — eleven of them, not one dropped.' },
+        { zh: '小Q🦉從她的背包裡探出頭：「安安，那句話好聽嗎？」安安點頭。小Q：「好聽的話，不一定是假的——可是我們有十一張卡，每一張都是一件兜不攏的事。」牠飛到安安肩上：「這一季，我們問了三個問題：💰錢從哪來、🗺️地從哪來、🗣️誰在講故事。今天是最後一次——把十一張卡全部攤開，問完最後一輪，然後拿去問問看，這句『和諧共榮』，禁不禁得起。」',
+          en: 'Little Q🦉 peeks out from her bag. "An-An, is that a nice-sounding sentence?" An-An nods. Little Q: "A nice sentence is not necessarily a false one — but we have eleven cards, and each one is something that did not add up." He flies to her shoulder. "This season we have asked three questions: 💰 where the money came from, 🗺️ where the land came from, 🗣️ who tells the story. Today, one last time — lay out all eleven cards, ask the final round, and see whether \'harmonious accord\' can survive it."' },
+      ],
+      scenes: [
+        // 1 📗 阿蕙回顧（EP9：帶分數化假分數）
+        {
+          place: { zh: '📗 阿蕙的提問', en: "📗 Hui's Question" },
+          emoji: '🌾',
+          story: { zh: '阿蕙擠到安安旁邊：「小偵探，我後來把校慶影片重拍了，四十八甲半的故事，孩子們都很喜歡。」她想了想：「欸，還記得那題嗎？{48} 又 1/2 甲，化成假分數，一共是幾個 1/2 甲？」小Q笑了：「阿蕙姊姊也開始出題了。安安，複習一下！」',
+                   en: 'Hui pushes over beside An-An. "Detective, I remade the anniversary film — the kids loved the story of the forty-eight and a half jia." She thinks a moment. "Oh — remember that one? {48}½ jia, as an improper fraction — how many halves in all?" Little Q laughs. "Even Hui is setting questions now. An-An, a quick review!"' },
+          clueNote: { zh: '複習EP9：48又1/2甲化成假分數＝97/2甲，這件事的「好處是真的」與「數字被寫大」同時成立', en: 'Review from EP9: 48½ jia as an improper fraction = 97/2. The good it did was real, and the number was also inflated — both at once' },
+          puzzle: {
+            text: { zh: '{48} 又 1/2 甲，化成假分數：[一共]是幾個 1/2 甲？',
+                    en: '{48}½ jia as an improper fraction: how many halves [in all]?' },
+            answer: 97, unit: { zh: '個 1/2 甲', en: 'halves' },
+            hint: { zh: '48 × 2 ＝ 96，再加上原本那 1 個！', en: '48 × 2 = 96 — then add the one you already had!' },
+            teach: [
+              { zh: '帶分數化假分數：整數部分先換成同分母的分數。', en: 'To make an improper fraction, first turn the whole part into the same kind of fraction.' },
+              { zh: '48 甲 ＝ 96 個 1/2 甲。', en: '48 jia = 96 halves.' },
+              { zh: '再加上原本的 1 個 1/2；換你算出答案！', en: 'Add the one you already had — your turn!' },
+            ],
+            reward: { zh: '🌾 97！阿蕙笑著把新影片的網址寫給安安：「這次片名叫《四站，不是一站》。」', en: '🌾 97! Hui, smiling, writes down the new film\'s title for An-An: "This time it\'s called *Four Stations, Not One.*"' },
+          },
+        },
+        // 2 📙 詹伯伯回顧（EP10：年份差）
+        {
+          place: { zh: '📙 詹伯伯的提問', en: "📙 Uncle Zhan's Question" },
+          emoji: '📅',
+          story: { zh: '詹伯伯遞來一張新拍的解說牌照片，上面果然多了一行小字。「照你們說的加了那句話，」他有點驕傲，「小偵探，再考你一次——老紀錄寫 {1907} 年，官方故事從 {1908} 年講起，中間差幾年？」',
+                   en: 'Uncle Zhan hands over a photo of the freshly printed sign — with the extra line added, just as promised. "I did what you said," he says, a little proud. "Detective, test me once more — the old record says {1907}; the official story begins at {1908}. How many years apart?"' },
+          clueNote: { zh: '複習EP10：1908−1907＝1年，那一年裝著十三萬六千五百人次，仍然是真的', en: 'Review from EP10: 1908 − 1907 = 1 year, and that one year still holds 136,500 postings — still true' },
+          puzzle: {
+            text: { zh: '老紀錄 {1907} 年，官方故事從 {1908} 年講起。差幾年？',
+                    en: 'The old record says {1907}; the official story begins at {1908}. How many years apart?' },
+            answer: 1, unit: { zh: '年', en: 'year' },
+            hint: { zh: '1908 − 1907！', en: '1908 − 1907!' },
+            teach: [
+              { zh: '後面的年份 − 前面的年份。', en: 'Later year minus earlier year.' },
+              { zh: '1908 − 1907，看最後一位：8 − 7。', en: '1908 − 1907: compare the last digit, 8 − 7.' },
+              { zh: '換你算出答案！', en: 'Your turn!' },
+            ],
+            reward: { zh: '📅 1 年！詹伯伯把照片收回口袋：「一年而已，可是加上去之後，感覺整面牌都不一樣了。」', en: '📅 One year! Uncle Zhan tucks the photo away. "Just one year — but adding it makes the whole sign feel different."' },
+          },
+        },
+        // 3 📖 周老師回顧（EP11：二位小數除法／倍數）
+        {
+          place: { zh: '📖 周老師的提問', en: "📖 Ms. Chou's Question" },
+          emoji: '⚖️',
+          story: { zh: '周老師抱著人物牆的新照片走過來——牆角多貼了一張留白的說明卡。「小朋友，再幫我確認一次數字，我要印在說明卡上：有名有姓的仕紳與家族代表 {16} 位，查得到姓名的頭目 {5}——不對，是查得到姓名的頭目 {0} 位，社群數是 {5} 個。16 是 5 的幾倍？到小數點第二位。」',
+                   en: 'Ms. Chou arrives carrying a photo of the wall — a blank-space placard now pinned in the corner. "Child, help me confirm the numbers once more, for the placard: {16} named gentry and family representatives, {5} — no, {0} named chiefs, and {5} village communities. How many times is 16 of 5? Two decimal places."' },
+          clueNote: { zh: '複習EP11：16÷5＝3.2倍，人物牆角落那塊留白，仍然留著', en: 'Review from EP11: 16 ÷ 5 = 3.2 times. The blank patch in the corner of the wall is still there' },
+          puzzle: {
+            text: { zh: '{16} 是 {5} 的幾倍？（到小數點第二位）',
+                    en: 'How many times is {16} of {5}? (Two decimal places)' },
+            answer: 3.2, unit: { zh: '倍', en: 'times' },
+            hint: { zh: '16 ÷ 5！', en: '16 ÷ 5!' },
+            teach: [
+              { zh: '「幾倍」用除法：大的 ÷ 小的。', en: '"How many times": larger ÷ smaller.' },
+              { zh: '16 ÷ 5 ＝ 3 餘 1，餘數變成 10 再除以 5 ＝ 0.2。', en: '16 ÷ 5 = 3 remainder 1; turn the remainder into 10 and divide by 5: 0.2.' },
+              { zh: '合起來是 3.2；換你確認！', en: 'Put it together: 3.2 — your turn!' },
+            ],
+            reward: { zh: '⚖️ 3.2 倍！周老師點點頭：「這個數字，我會一直印在牆上。」', en: '⚖️ 3.2 times! Ms. Chou nods. "That number — I will keep it printed on the wall for good."' },
+          },
+        },
+        // 4 🔀 分支選擇（兩分支同答案 6：EP6 大數減法回顧）
+        {
+          kind: 'choice',
+          place: { zh: '阿凱哥也來了', en: 'Kai Also Comes' },
+          emoji: '🔀',
+          story: { zh: '阿凱哥擠過人群，手裡拿著礦坑地圖：「小偵探！我把礦坑遺址整理成一條步道了，要不要先聽我講故事，還是先看數字？」安安猶豫了一下。窗外，藍鵲落在窗台上，安靜地看著這一切。',
+                   en: 'Kai pushes through the crowd, holding the mine map. "Detective! I have turned the mine sites into a proper trail — do you want the story first, or the numbers?" An-An hesitates. Outside, the magpie sits on the sill, watching it all quietly.' },
+          question: { zh: '★ 你來決定！先聽阿凱哥講故事，還是先看礦坑地圖上的數字？（兩條都會算到同一個答案！）',
+                      en: "★ You decide! Kai's story first, or the numbers on the mine map first? (Both lead to the same answer!)" },
+          options: [
+            {
+              id: 'story',
+              label: { zh: '🗣️ 先聽故事', en: '🗣️ Hear the Story First' },
+              scene: {
+                place: { zh: '阿凱哥講古', en: "Kai's Telling" },
+                emoji: '🗣️',
+                story: { zh: '阿凱哥比手畫腳：「我阿公那輩，礦坑一個接一個開，整個桃園挖了 {23} 萬噸煤，大溪自己就佔了 {17} 萬噸！」小Q插話：「安安，複習一下——桃園扣掉大溪，剩下幾萬噸？」',
+                         en: 'Kai gestures broadly. "In my grandfather\'s day the mines went on and on — all Taoyuan dug {23} man tonnes of coal, and Daxi alone was {17}!" Little Q cuts in. "An-An, a quick review — Taoyuan minus Daxi, how many left?"' },
+                clueNote: { zh: '複習EP6：桃園23萬噸−大溪17萬噸＝6萬噸；「木器之鄉」底下真正挖出來的是煤', en: 'Review from EP6: 23 minus 17 = 6 (10,000-tonne units); beneath "the woodware town" was coal' },
+                puzzle: { text: { zh: '全桃園 {23} 萬噸，大溪佔 {17} 萬噸。其餘幾萬噸？', en: 'Taoyuan {23} (×10,000t), Daxi {17}. How many remain?' }, answer: 6, unit: { zh: '萬噸', en: '10,000t' },
+                  hint: { zh: '23 − 17！', en: '23 − 17!' },
+                  teach: [
+                    { zh: '「其餘」用減法：總數 − 大溪的份。', en: '"The rest" is subtraction: total − Daxi\'s share.' },
+                    { zh: '23 − 17，借位減。', en: '23 − 17: borrow and subtract.' },
+                    { zh: '換你算出答案！', en: 'Your turn!' },
+                  ],
+                  reward: { zh: '🗣️ 6 萬噸！阿凱哥拍拍手：「還記得！」', en: '🗣️ Six! Kai claps. "You remembered!"' } },
+              },
+            },
+            {
+              id: 'map',
+              label: { zh: '🗺️ 先看地圖', en: '🗺️ See the Map First' },
+              scene: {
+                place: { zh: '礦坑步道地圖', en: 'The Mine Trail Map' },
+                emoji: '🗺️',
+                story: { zh: '地圖上密密麻麻標著十七個坑口，旁邊還有一行小字：「全桃園 {23} 萬噸，大溪佔 {17} 萬噸。」阿凱哥指著空白處：「小偵探，複習一下——桃園扣掉大溪，剩下幾萬噸？」',
+                         en: 'The map marks seventeen pit-mouths densely, with a note beside it: "All Taoyuan {23} (×10,000t); Daxi {17}." Kai points at the blank margin. "Detective, a quick review — Taoyuan minus Daxi, how many left?"' },
+                clueNote: { zh: '複習EP6：桃園23萬噸−大溪17萬噸＝6萬噸', en: 'Review from EP6: 23 minus 17 = 6 (10,000-tonne units)' },
+                puzzle: { text: { zh: '全桃園 {23} 萬噸，大溪佔 {17} 萬噸。其餘幾萬噸？', en: 'Taoyuan {23} (×10,000t), Daxi {17}. How many remain?' }, answer: 6, unit: { zh: '萬噸', en: '10,000t' },
+                  hint: { zh: '23 − 17！', en: '23 − 17!' },
+                  teach: [
+                    { zh: '「其餘」用減法：總數 − 大溪的份。', en: '"The rest" is subtraction: total − Daxi\'s share.' },
+                    { zh: '23 − 17，借位減。', en: '23 − 17: borrow and subtract.' },
+                    { zh: '換你算出答案！', en: 'Your turn!' },
+                  ],
+                  reward: { zh: '🗺️ 6 萬噸！阿凱哥笑著捲起地圖：「步道下個月開放，歡迎再來！」', en: '🗺️ Six! Kai rolls up the map, smiling. "The trail opens next month — come again!"' } },
+              },
+            },
+          ],
+        },
+        // 5 🌳 阿榕回顧（時間跨度：全季最早1886到今年）
+        {
+          place: { zh: '🌳 阿榕的最後一段記憶', en: "🌳 Ah-Rong's Last Fragment" },
+          emoji: '🍃',
+          story: { zh: '會場外的老榕樹下，一片葉子飄下來，這次畫面很清楚——是安安自己這一季的臉，一站一站疊起來。「安安，我們這一季查到最早的一年，是竹頭角那場，{1886} 年。」阿榕的聲音很溫柔：「距離今年 {2026} 年，隔了幾年？」',
+                   en: 'Beneath the old banyan outside the hall, a leaf drifts down — and this time the picture is clear: An-An\'s own face, station after station, layered together. "An-An, the earliest year we found this season was Zhutou-jiao\'s, {1886}." Ah-Rong\'s voice is gentle. "How many years from that to this year, {2026}?"' },
+          clueNote: { zh: '這一季查到最早的一年是1886年，距今2026年隔了140年——一個半人生的長度', en: 'The earliest year found this season was 1886; to 2026 is 140 years — a span longer than a lifetime and a half' },
+          puzzle: {
+            text: { zh: '從 {1886} 年到 {2026} 年，隔了幾年？',
+                    en: 'From {1886} to {2026}, how many years is that?' },
+            answer: 140, unit: { zh: '年', en: 'years' },
+            hint: { zh: '2026 − 1886！', en: '2026 − 1886!' },
+            teach: [
+              { zh: '「隔了幾年」用減法：後面的年份 − 前面的年份。', en: '"Years between" is subtraction: later year − earlier year.' },
+              { zh: '2026 − 1886，先算百位：20 − 18 ＝ 2（個百）。', en: '2026 − 1886: first the hundreds, 20 − 18 = 2 (hundreds).' },
+              { zh: '再處理後兩位，26 − 86 不夠減，要借位；換你算出答案！', en: 'Then the last two digits — 26 minus 86 needs borrowing. Your turn!' },
+            ],
+            reward: { zh: '🍃 140 年！阿榕的葉子在風裡轉了一圈才落地。「一百四十年，比我這輩子還久兩倍。」牠停頓了很久：「安安，謝謝你，把我看不到的那一半，找回來給我聽。」',
+                      en: '🍃 A hundred and forty years! Ah-Rong\'s leaf spins once in the wind before settling. "A hundred and forty years — more than twice my own life." A long pause. "An-An. Thank you for finding the half I could not see, and telling it to me."' },
+          },
+        },
+        // 6 🐦 阿藍回顧（羽毛／史料卡累計：11+1=12）
+        {
+          place: { zh: '🐦 阿藍的第十二根羽毛', en: "🐦 Ah-Lan's Twelfth Feather" },
+          emoji: '🪶',
+          story: { zh: '安安走到窗邊，把背包裡的十一張史料卡一張一張攤在窗台上。「阿藍，這一季你已經送了我 {11} 根羽毛。」她抬頭看著藍鵲：「今天這一張做完，會是第幾張？」',
+                   en: 'An-An walks to the window and lays her eleven cards out on the sill, one by one. "Ah-Lan, you\'ve given me {11} feathers this season." She looks up at the magpie. "Once today\'s is done, which number will it be?"' },
+          clueNote: { zh: '阿藍已送出11根羽毛＝11張史料卡，今天完成後將是第12張，集滿全部', en: "Ah-Lan has given 11 feathers so far — 11 cards; today's will make the 12th, completing the full set" },
+          puzzle: {
+            text: { zh: '已經有 {11} 根羽毛，今天再加一根，是第幾根？',
+                    en: '{11} feathers so far; one more today makes which number?' },
+            answer: 12, unit: { zh: '根', en: 'feathers' },
+            hint: { zh: '11 加 1！', en: '11 plus 1!' },
+            teach: [
+              { zh: '「再加一」就是現有數量加 1。', en: '"One more" is just the current count plus one.' },
+              { zh: '11 ＋ 1，直接數上去。', en: '11 + 1 — count up one.' },
+              { zh: '換你算出是第幾根！', en: 'Your turn — which number is it?' },
+            ],
+            reward: { zh: '🪶 第 12 根！十二張史料卡在窗台上排成一列，第一次全部到齊。安安忽然說：「阿藍，你還沒告訴過我，你的心願是什麼。」藍鵲張開嘴，卻沒有發出聲音——牠好像，第一次不知道該怎麼開口。',
+                      en: '🪶 The twelfth! Twelve archive cards lie in a row on the sill, complete for the first time. An-An says suddenly: "Ah-Lan — you\'ve never told me what your wish is." The magpie opens her beak, and no sound comes out — as if, for the first time, she does not know how to begin.' },
+          },
+        },
+        // 7 📊 十二張史料卡·三問分類統計（3+5+4=12）
+        {
+          place: { zh: '📊 十二張卡，三個問題', en: '📊 Twelve Cards, Three Questions' },
+          emoji: '📈',
+          chart: { type: 'bar', title: '十二張史料卡分屬哪個問題', highlight: -1, caption: '💰3張／🗺️5張／🗣️4張', data: [{ label: '💰錢從哪來', v: 3 }, { label: '🗺️地從哪來', v: 5 }, { label: '🗣️誰在講故事', v: 4 }] },
+          story: { zh: '小Q把十二張卡分成三堆：「安安，把它們分一分——每一張，主要回答的是哪一個問題？」分完之後：「💰錢從哪來 {3} 張、🗺️地從哪來 {5} 張、🗣️誰在講故事 {4} 張。」牠抬起頭：「三堆加起來，應該剛好是幾張？」',
+                   en: 'Little Q sorts the twelve cards into three piles. "An-An, sort them — which question does each one mainly answer?" Once sorted: "💰 Where the money came from, {3}. 🗺️ Where the land came from, {5}. 🗣️ Who tells the story, {4}." He looks up. "The three piles together should be exactly how many?"' },
+          clueNote: { zh: '十二張史料卡：💰錢從哪來3張、🗺️地從哪來5張、🗣️誰在講故事4張，3+5+4=12，一張不多一張不少', en: 'Twelve cards: 💰 money, 3; 🗺️ land, 5; 🗣️ story, 4 — 3+5+4=12, not one more, not one less' },
+          puzzle: {
+            text: { zh: '💰 {3} 張、🗺️ {5} 張、🗣️ {4} 張。一共幾張？',
+                    en: '{3} + {5} + {4} cards. What is the total?' },
+            answer: 12, unit: { zh: '張', en: 'cards' },
+            hint: { zh: '3+5+4！', en: '3+5+4!' },
+            teach: [
+              { zh: '三堆合起來，一個一個加上去。', en: 'Adding three piles together, one at a time.' },
+              { zh: '3 ＋ 5 ＝ 8，先算這兩堆。', en: '3 + 5 = 8 — do these two first.' },
+              { zh: '再加 4；換你算出總數！', en: 'Then add 4 — your turn to find the total!' },
+            ],
+            reward: { zh: '📈 12 張！小Q看著三堆卡片，輕輕說：「一張都沒少。這一季問的每一件事，都在這裡了。」',
+                      en: '📈 Twelve! Little Q looks at the three piles and says softly: "Not one missing. Everything we asked this season is right here."' },
+          },
+        },
+        // 8 🔍 破案：建鎮週年紀念特輯 vs 十二張證據
+        {
+          place: { zh: '🔍 一句話，蓋不住十二張卡', en: '🔍 One Sentence Cannot Cover Twelve Cards' },
+          emoji: '📰',
+          story: { zh: '安安走回台前，手上捧著十二張史料卡。主持人正要念下一段：「這份特輯，願獻給所有為大溪奉獻的先民……」安安舉手：「可以先讓我說一句話嗎？」全場安靜下來。小Q停在她肩上：「安安，最後一題——三堆卡片，3、5、4，減掉特輯敢承認矛盾的張數（0），還有幾張，是特輯沒說的？」',
+                   en: 'An-An walks back to the front, holding all twelve cards. The host is about to read the next line: "This feature is dedicated to all the pioneers who gave to Daxi…" An-An raises her hand. "Could I say one thing first?" The hall goes quiet. Little Q settles on her shoulder. "An-An, one last question — three piles, 3, 5, 4; the feature admits {0} of these contradictions. How many does it leave unsaid?"' },
+          clueNote: { zh: '⭐ 特輯結語「族群和諧共榮」沒有主動否定任何一件事,卻也沒有承認任何一張卡的矛盾;12−0＝12,十二張全部沒被提及', en: "⭐ The feature's line about \"harmonious accord\" denies nothing outright, but admits none of the twelve cards' contradictions either; 12 − 0 = 12 — all twelve go unmentioned" },
+          puzzle: {
+            text: { zh: '十二張卡，特輯承認了 {0} 張的矛盾。還有幾張沒被提到？',
+                    en: 'Twelve cards; the feature admits {0} of the contradictions. How many go unmentioned?' },
+            answer: 12, unit: { zh: '張', en: 'cards' },
+            hint: { zh: '12 − 0！', en: '12 − 0!' },
+            teach: [
+              { zh: '任何數減掉 0，還是原來的數。', en: 'Any number minus 0 stays the same.' },
+              { zh: '12 − 0 ＝ 12。', en: '12 − 0 = 12.' },
+              { zh: '換你確認答案！', en: 'Your turn to confirm!' },
+            ],
+            reward: { zh: '📰 12 張！安安深呼吸：「特輯說的『和諧共榮』，不是假的——是真的有人和睦相處過，這一季我們也看過很多真心。可是，」她把卡片一張一張舉起來，「這十二張卡，一張都沒有出現在特輯裡。」',
+                      en: '📰 Twelve! An-An takes a breath. "\'Harmonious accord\' is not a lie — there really was warmth between people, and we\'ve seen plenty of it this season. But—" she raises the cards, one by one, "not one of these twelve appears anywhere in the feature."' },
+          },
+        },
+      ],
+      suspects: [
+        { id: 'feature', name: { zh: '📰 建鎮週年紀念特輯', en: '📰 The Founding Anniversary Feature' }, emoji: '📰',
+          say: { zh: '「回顧這一頁頁的歷史，大溪的故事，是先民胼手胝足、族群和諧共榮的美好篇章。」',
+                 en: '"Looking back over these pages of history, Daxi\'s story is one of pioneers laboring together, its peoples living in harmonious accord."' } },
+        { id: 'clients', name: { zh: '📗 十一位委託人的修正', en: "📗 The Eleven Clients' Corrections" }, emoji: '📗',
+          say: { zh: '「解說牌多加了一句、人物牆留了一塊空白、校慶影片改了片名——我們每個人，都只改了自己看得到的那一小塊。」',
+                 en: '"The sign gained a line, the wall kept a blank patch, the film changed its title — each of us only fixed the small corner we could see."' } },
+        { id: 'cards', name: { zh: '📙 十二張史料卡', en: '📙 The Twelve Archive Cards' }, emoji: '📙',
+          say: { zh: '「我們不下定論，只指出兜不攏的地方。十二個地方，一個一個查過，全部有出處。」',
+                 en: '"We reach no verdicts — we only point out what does not add up. Twelve places, each checked, each sourced."' } },
+      ],
+      culprit: 'feature',
+      accuse: { zh: '這是這一季最後一次，也是規模最大的一次——不是三份小小的說法，是一整場典禮的結語。📗十一位委託人的修正沒有問題，他們每個人都誠實面對了自己那一塊，只是誰也沒有義務去修正別人的部分。📙十二張史料卡是我們一整季的硬證據，全部有出處、全部可查證。可是有一份說法，把十二張卡想指出的每一件事，都用一句「和諧共榮」蓋過去了——而且它是今天全場鼓掌通過、掛在牆上最高處的那一份。哪一份，講了一句自己拿不出十二分之一證據的話？',
+                en: 'This is the last, and the largest, of the whole season — not three small accounts, but the closing line of an entire ceremony. 📗 the eleven clients\' corrections are not at fault; each was honest about the corner they could see, though none was obliged to fix anyone else\'s. 📙 the twelve archive cards are this whole season\'s hard evidence, every one sourced, every one checkable. But one account covers everything those twelve cards point to with a single phrase — "harmonious accord" — and it is the one that was just applauded, hanging highest on the wall today. Which one made a claim it cannot back with even one of the twelve?' },
+      wrongAccuse: { zh: '再想一次喔——📗十一位委託人已經各自修正了自己看得到的那一塊，不能要求他們去修正別人的，不能罰。📙十二張史料卡是我們自己查證出來的硬證據，一張都有出處，不能罰。我們要找的是：**用一句好聽的話，把十二件事一次蓋過去，而且今天正被全場鼓掌通過**的那一份。📰',
+                     en: 'Think again — 📗 the eleven clients have each corrected what they could see; they cannot be faulted for not fixing everyone else\'s corner. 📙 the twelve cards are our own verified hard evidence, every one sourced. We want the one that **covers all twelve at once with one pleasant phrase — and is being applauded for it today.** 📰' },
+      solve: [
+        { zh: '答案是📰建鎮週年紀念特輯。「族群和諧共榮」這句話，不完全是假的——這一季，安安真的遇過很多真心：阿蕙重拍了影片、詹伯伯加了一句話、周老師留了一塊空白。可是這句話拿去蓋在十二張卡上，就蓋出了一個問題：**十二張卡裡，沒有一張是「和諧」，全部是「兜不攏」。**',
+          en: 'The answer is 📰 the anniversary feature. "Harmonious accord" is not entirely false — this season An-An truly met a great deal of sincerity: Hui remade her film, Uncle Zhan added a line, Ms. Chou kept a blank space. But laid over all twelve cards, that phrase creates a problem: **not one of the twelve is about "harmony." Every one is about something that failed to add up.**' },
+        { zh: '🗣️**這個故事是誰講的？**小Q把三份資料排開：「委託人們誠實，他們修正了自己那一塊。史料卡誠實，它們只指出矛盾，不下定論。**最不誠實的，反而是那句聽起來最完整的話**——因為它想一次講完，所以什麼都沒有真的講。」安安低聲說：「所以，越想講清楚全部，反而講得越模糊。」小Q點頭：「這就是這一季最後學到的事。」',
+          en: '🗣️ **Who tells this story?** Little Q lays the three sources out. "The clients are honest — they fixed their own corner. The cards are honest — they only point out contradictions, no verdicts. **The least honest thing here is, ironically, the sentence that sounds most complete** — because it tries to say everything at once, it ends up truly saying nothing." An-An says quietly: "So the harder something tries to sum up everything, the vaguer it gets." Little Q nods. "That is the last thing this season has to teach."' },
+        { zh: '主持人愣了一下，把麥克風遞給安安。安安把十二張卡舉高，一張一張念出名字：「海山堡、消失的河港、桃園大圳、通議第、新南三棟、十七礦坑、牌樓式樣、每天七圓、四十八甲、一九〇七、沒有名字、還有——」她停頓了一下，看向窗邊那隻藍鵲：「另一半。」全場很安靜。她繼續說：「特輯的結語，我建議加一句。不是刪掉，是加上。」',
+          en: 'The host, startled, hands her the microphone. An-An raises all twelve cards, reading each name aloud: "Haishan Bao, the Lost River Port, the Taoyuan Canal, the Tongyi Mansion, Three Shophouses, Seventeen Mines, the Façade Style, Seven Yen a Day, Forty-Eight Jia, the Year 1907, Without Names, and—" she pauses, glancing at the magpie by the window, "—the Other Half." The hall is very quiet. She goes on: "I\'d like to suggest one line added to the closing — not removed. Added."' },
+        { zh: '⭐ 大溪小知識：本季十二集依序查考了海山堡（1920年前大溪本屬海山堡，非桃園）、消失的河港、桃園大圳（1924通水）、通議第（林家石城）、新南三棟店屋（礦權交易）、十七礦坑（大溪煤礦業）、牌樓式樣（辰野金吾式非巴洛克）、每天七圓（樟腦捐款興學）、四十八甲學田（借貸開墾）、1907隘勇線（資源與年份數字）、沒有名字的人（漢泰史料不對稱）；每一條都查證自 daxi-history 蒐集的一手史料，凡標⚠️未定案者只作謎題、不作定論。十二張史料卡，全部到手！',
+          en: 'Daxi fact: this season\'s twelve episodes traced, in order, Haishan Bao (Daxi belonged to Haishan Bao before 1920, not Taoyuan), the Lost River Port, the Taoyuan Canal (opened 1924), the Tongyi Mansion (the Lin family\'s stone fortress), the Three Shophouses (mining-rights transfers), the Seventeen Mines (Daxi\'s coal industry), the Façade Style (Tatsuno Kingo style, not Baroque), Seven Yen a Day (camphor funds for schooling), Forty-Eight Jia of school-land (cleared on borrowed money), the 1907 guard line (resource and date figures only), and Those Without Names (the asymmetry between Han and Atayal records); every figure traced back to primary sources gathered in daxi-history, with anything still marked ⚠️ unresolved left as a puzzle, never a verdict. All twelve archive cards — acquired!' },
+      ],
+      arcClue: { zh: '掌聲停了很久之後，安安走到會場外，藍鵲已經飛下來，停在她攤開的手心上。「阿藍，」安安輕輕說，「你可以說了。」藍鵲張開嘴，這一次，聲音出來了，粗粗啞啞的，卻很清楚：「我叫……阿藍。」牠停了很久：「這十二集，你們一直叫我阿藍，我以前都沒有真的相信——因為在所有的紀錄裡，我這一種鳥，連名字都是別人取的『社』。可是你們每次都叫我阿藍，叫了十二次。所以……我現在，相信了。」故事書最後一頁，安安提起筆，畫格裡她真的什麼都沒有畫，只在旁邊一行一行寫下：「這裡本來有人。他們的名字，我們沒有查到。可是我們知道——這裡，本來有人。」藍鵲收起翅膀，落在她的肩膀上，這一次，牠沒有再飛走。',
+                 en: 'Long after the applause fades, An-An steps outside, and the magpie flies down to land in her open palm. "Ah-Lan," she says softly, "you can say it now." The magpie opens her beak, and this time a voice comes out — rough and hoarse, but perfectly clear: "My name… is Ah-Lan." A long pause. "For twelve episodes you have all called me Ah-Lan, and I never quite believed it — because in every record, birds like me are only ever given a name by someone else, a village-name at best. But you called me Ah-Lan every time. Twelve times." "So… now, I believe it." On the storybook\'s last page, An-An lifts her pen. The picture box she leaves entirely blank; beside it she writes, line by line: "There were people here. We never found their names. But we know — there were people here." The magpie folds her wings and settles on An-An\'s shoulder. This time, she does not fly away again.' },
+      petReward: 'along',
+      itemReward: 'unwritten_daxi',
+      reward: 1200,
+    },
   ],
 }
 
