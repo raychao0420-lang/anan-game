@@ -122,10 +122,22 @@ function FractionQuestion({ q }) {
 }
 
 // ── Scratch pad (doodle canvas) ────────────────────────────────────────────────
-function DoodleCanvas() {
+// 放大成全螢幕時，題目卡被蓋住了，所以在標題列補一行題目
+const fracText = (f) => `${f.whole ? f.whole + '又' : ''}${f.num}/${f.den}`
+function shortLabel(q) {
+  if (q.kind !== 'frac') return `${q.num1} ${q.operator} ${q.num2} = ?`
+  if (q.mode === 'cmp')     return `${fracText(q.left)} 和 ${fracText(q.right)} 比大小`
+  if (q.mode === 'imp2mix') return `${fracText(q)} → 帶分數`
+  if (q.mode === 'mix2imp') return `${fracText(q)} → 假分數`
+  return `${fracText(q)} 是哪種分數？`
+}
+
+function DoodleCanvas({ q }) {
   const canvasRef  = useRef(null)
   const drawingRef = useRef(false)
   const lastRef    = useRef(null)
+  const strokesRef = useRef([])          // 已畫的筆劃（原尺寸座標），放大／縮小後照原比例重畫
+  const [full, setFull] = useState(false)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -142,6 +154,11 @@ function DoodleCanvas() {
       ctx.lineWidth   = 2.5
       ctx.lineCap     = 'round'
       ctx.lineJoin    = 'round'
+      for (const s of strokesRef.current) {   // 尺寸變了就把原本寫的重畫回去
+        ctx.beginPath()
+        s.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)))
+        ctx.stroke()
+      }
     }
     const obs = new ResizeObserver(init)
     obs.observe(canvas)
@@ -158,6 +175,7 @@ function DoodleCanvas() {
     e.preventDefault()
     drawingRef.current = true
     lastRef.current    = getXY(e)
+    strokesRef.current.push([lastRef.current])
     const ctx = canvasRef.current.getContext('2d')
     ctx.beginPath()
     ctx.arc(lastRef.current.x, lastRef.current.y, 1, 0, Math.PI * 2)
@@ -174,6 +192,7 @@ function DoodleCanvas() {
     ctx.moveTo(lastRef.current.x, lastRef.current.y)
     ctx.lineTo(pos.x, pos.y)
     ctx.stroke()
+    strokesRef.current[strokesRef.current.length - 1].push(pos)
     lastRef.current = pos
   }
 
@@ -181,13 +200,17 @@ function DoodleCanvas() {
 
   const clear = () => {
     const c = canvasRef.current
+    strokesRef.current = []
     c.getContext('2d').clearRect(0, 0, c.width, c.height)
   }
 
   return (
-    <div className="doodle-area">
+    <div className={`doodle-area${full ? ' doodle-full' : ''}`}>
       <div className="doodle-topbar">
-        <span className="doodle-label">✏️ 算草紙</span>
+        <span className="doodle-label">{full ? shortLabel(q) : '✏️ 算草紙'}</span>
+        <button className="doodle-expand-btn" onClick={() => setFull(f => !f)}>
+          {full ? '⤡ 縮小' : '⤢ 放大'}
+        </button>
         <button className="doodle-clear-btn" onClick={clear} title="清除">🗑️</button>
       </div>
       <canvas
@@ -479,7 +502,7 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
       </AnimatePresence>
 
       {/* Scratch pad – key clears canvas on each new question */}
-      <DoodleCanvas key={qIndex} />
+      <DoodleCanvas key={qIndex} q={currentQ} />
 
       {/* 寵物技能鈕 */}
       <div className="game-skill">

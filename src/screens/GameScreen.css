@@ -377,18 +377,22 @@
     border-bottom: 1px solid #F0F0F0;
     flex-shrink: 0;
   }
-  .doodle-canvas { flex: 1 1 auto; min-height: 0; height: auto; }
+  /* 直向平板：算草紙也要夠大才寫得下直式，保底約四分之一個螢幕高 */
+  .doodle-canvas { flex: 1 1 auto; min-height: clamp(170px, 26svh, 300px); height: auto; }
   .game-numpad { max-width: 440px; }
 }
 
 @media (min-width: 900px) {
+  /* ⚠️ 算草紙高度的真正算法（2026-09-19 安安回報「手寫很容易超過」時才算清楚）：
+     數字鍵盤在這個斷點是 dvh 撐大的，光按鍵＋顯示框就吃掉約 58% 螢幕高，
+     而它直向跨「題目列＋算草紙列」，所以
+       算草紙高度 ＝ max(剩餘高度, 鍵盤高度 − 題目卡高度)。
+     能讓算草紙變大的只有「縮小寵物列與題目卡」與「把左欄加寬」這兩招，
+     其餘空間是鍵盤的硬需求。真的要大面積手寫請按算草紙上的「放大」鈕（全螢幕）。*/
   .game-screen {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    /* 算草紙那列改 minmax 保底高度——矮螢幕的平板（如橫向 iPad）
-       原本 header/timer/pet/question 四個 auto 列會把高度吃光，
-       留給算草紙的 1fr 常常只剩不到一掌高。2026-09-19 使用者實機回報修正。 */
-    grid-template-rows: auto auto auto auto minmax(160px, 1fr);
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: auto auto auto auto 1fr;
     grid-template-areas:
       "header   header"
       "timer    timer"
@@ -398,21 +402,51 @@
     height: 100dvh;
     max-height: 100dvh;
     overflow: hidden;
-    gap: 10px 48px;
-    padding: 24px 48px;
+    gap: 10px 28px;
+    padding: 20px 32px;
     align-items: start;
   }
   .game-header   { grid-area: header; }
   .timer-bar-bg  { grid-area: timer; }
   .game-pet-area { grid-area: pet; align-self: center; justify-self: center; margin: 0; }
-  .question-card { grid-area: question; max-width: none; align-self: start; padding: clamp(10px, 2svh, 20px) 36px clamp(12px, 2.4svh, 24px); }
-  .doodle-area   { grid-area: doodle;   max-width: none; }
+  .question-card { grid-area: question; max-width: none; align-self: start; padding: clamp(6px, 1.4svh, 14px) 28px clamp(8px, 1.8svh, 18px); }
+  .doodle-area   { grid-area: doodle;   max-width: none; align-self: stretch; }
   .game-numpad   { grid-area: numpad;   max-width: none; margin: 0; align-self: center; }
   .game-skill    { grid-area: skill;    max-width: none; align-self: end; }
 
-  /* 寵物泡泡與題目字級改用 svh clamp，矮螢幕自動縮小，把高度讓給算草紙 */
-  .game-pet-bubble { width: clamp(64px, 9svh, 110px); height: clamp(83px, 11.7svh, 143px); }
-  .vq { font-size: clamp(1.8rem, 5svh, 3rem); }
+  /* 寵物與題目字級縮小並改吃 svh，省下來的高度全部讓給算草紙 */
+  .game-pet-bubble { width: clamp(50px, 6.6svh, 82px); height: clamp(65px, 8.6svh, 107px); }
+  .vq { font-size: clamp(1.5rem, 3.8svh, 2.4rem); }
   /* 桌機：草稿畫布填滿剩餘高度，不固定高度，避免擠掉數字鍵盤造成版面溢出 */
   .doodle-canvas { flex: 1 1 auto; height: auto; min-height: 0; }
 }
+
+/* ── 算草紙放大成全螢幕（手寫空間不夠時用）── */
+.doodle-area.doodle-full {
+  position: fixed;
+  inset: 0;
+  z-index: 90;              /* 低於暫停遮罩(100)，暫停時才不會被算草紙蓋住 */
+  max-width: none;
+  width: auto;
+  border-radius: 0;
+  margin: 0;
+  box-shadow: none;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.doodle-full .doodle-canvas { min-height: 0; }
+.doodle-full .doodle-topbar { padding: 8px 14px; }
+.doodle-full .doodle-label  { font-size: 1.25rem; font-weight: 900; color: #333; letter-spacing: 0; }
+.doodle-full .doodle-expand-btn { font-size: 0.95rem; padding: 6px 16px; }
+.doodle-expand-btn {
+  background: #EEF4FF;
+  border: 1px solid #C9DBFF;
+  border-radius: 8px;
+  color: #3B6FD4;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 2px 10px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 8px;
+}
+.doodle-expand-btn:active { background: #DCE8FF; }
