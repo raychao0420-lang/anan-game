@@ -14,11 +14,12 @@ export const CHAPTERS = [
   { label: '兩位數乘法',   range: [96, 100],  icon: '🧮', cat: 'muldiv'  },
   { label: '三位數除法',   range: [111, 115], icon: '➗', cat: 'muldiv'  },
   { label: '四位數加減',   range: [116, 120], icon: '🔢', cat: 'digits3' },
+  { label: '分數',         range: [121, 130], icon: '🍕', cat: 'mixed'   },
   { label: '綜合進階',     range: [56, 70],   icon: '🚀', cat: 'mixed'   },
 ]
 
 // 章節第一關 → 前置關卡（其餘關卡預設前置是 id - 1）
-export const CHAPTER_PREREQS = { 41: 10, 11: 55, 71: 55, 86: 40, 96: 30, 101: 30, 111: 40, 116: 20 }
+export const CHAPTER_PREREQS = { 41: 10, 11: 55, 71: 55, 86: 40, 96: 30, 101: 30, 111: 40, 116: 20, 121: 40 }
 
 export const ALL_STAGE_IDS = CHAPTERS.flatMap(({ range: [a, b] }) => {
   const ids = []

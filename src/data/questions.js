@@ -291,12 +291,114 @@ generators[120] = () => {                                  // 大數加減綜合
   return ops[rand(0, 3)]()
 }
 
+// ── 分數：真分數／假分數／帶分數的辨識、換算與比較（121-130）·翰林四上 ─────
+// 全部即時亂數生成（分母 2~12、分子隨機、題型隨機），不是固定題庫，背不起來。
+// 答案一律是「單一整數」，才能沿用現有的數字鍵盤作答。
+// q 形狀：{ kind:'frac', mode, ...版面資料, answer, display, tip }
+
+// 分數題的共用出口：display 供去重、tip 是題目上方的教學提示（不洩漏本題答案）
+function fracQ(mode, view, answer, tip) {
+  return { kind: 'frac', mode, ...view, answer, display: `f:${mode}:${JSON.stringify(view)}`, tip }
+}
+
+// 辨識：1=真分數 2=假分數 3=帶分數
+function makeFracIdent() {
+  const den  = rand(2, 12)
+  const kind = rand(1, 3)
+  const tip  = '1 真分數（分子<分母）　2 假分數（分子≥分母）　3 帶分數（整數＋真分數）'
+  if (kind === 1) return fracQ('ident', { whole: 0, num: rand(1, den - 1), den }, 1, tip)
+  if (kind === 2) return fracQ('ident', { whole: 0, num: rand(den, den * 3), den }, 2, tip)
+  return fracQ('ident', { whole: rand(1, 9), num: rand(1, den - 1), den }, 3, tip)
+}
+
+// 假分數 → 帶分數：問整數部分，或問分子
+function makeImp2Mix() {
+  const den   = rand(2, 12)
+  const whole = rand(1, 9)
+  const r     = rand(1, den - 1)
+  const askWhole = rand(0, 1) === 0
+  return fracQ('imp2mix',
+    { num: whole * den + r, den, ask: askWhole ? 'whole' : 'num' },
+    askWhole ? whole : r,
+    '假分數→帶分數：分子÷分母，商是整數部分，餘數是新分子')
+}
+
+// 帶分數 → 假分數：問分子（分母不變）
+function makeMix2Imp() {
+  const den   = rand(2, 12)
+  const whole = rand(1, 9)
+  const r     = rand(1, den - 1)
+  return fracQ('mix2imp', { whole, num: r, den }, whole * den + r,
+    '帶分數→假分數：整數×分母＋分子，分母不變')
+}
+
+// 比較：1=左邊大 2=右邊大 3=一樣大。用交叉相乘的整數比較，不吃浮點誤差
+function makeCmp(left, right, tip) {
+  const l = (left.whole || 0) * left.den + left.num
+  const r = (right.whole || 0) * right.den + right.num
+  const lv = l * right.den
+  const rv = r * left.den
+  return fracQ('cmp', { left, right }, lv > rv ? 1 : lv < rv ? 2 : 3, tip)
+}
+
+// 同分母比較（分母相同，比分子；分子相同就是一樣大）
+function makeCmpSameDen() {
+  const den = rand(3, 12)
+  return makeCmp({ num: rand(1, den * 2), den }, { num: rand(1, den * 2), den },
+    '分母一樣時，分子大的比較大')
+}
+
+// 同分子比較（分子相同，分母小的反而大）
+function makeCmpSameNum() {
+  const num = rand(1, 9)
+  const d1  = rand(2, 12)
+  let d2 = rand(2, 12)
+  if (d2 === d1) d2 = d1 === 12 ? 11 : d1 + 1
+  return makeCmp({ num, den: d1 }, { num, den: d2 },
+    '分子一樣時，分母小的每一份比較大')
+}
+
+// 異分母比較（分母互為倍數，要先通分；一半機率做成等值分數＝一樣大）
+function makeCmpDiffDen() {
+  const d1 = rand(2, 6)
+  const k  = rand(2, 4)
+  const a  = rand(1, d1 * 2)
+  const b  = rand(0, 1) ? a * k : rand(1, d1 * k * 2)
+  return makeCmp({ num: a, den: d1 }, { num: b, den: d1 * k },
+    '分母不同要先通分（把分母變成一樣）再比')
+}
+
+// 帶分數與假分數混合比較
+function makeCmpMixed() {
+  const den   = rand(2, 9)
+  const whole = rand(1, 4)
+  return makeCmp({ whole, num: rand(1, den - 1), den }, { num: rand(den, den * (whole + 2)), den },
+    '帶分數先換成假分數，再比分子')
+}
+
+const pick = (...fns) => fns[rand(0, fns.length - 1)]()
+
+generators[121] = () => makeFracIdent()
+generators[122] = () => makeImp2Mix()
+generators[123] = () => makeMix2Imp()
+generators[124] = () => pick(makeImp2Mix, makeMix2Imp)
+generators[125] = () => makeCmpSameDen()
+generators[126] = () => makeCmpSameNum()
+generators[127] = () => makeCmpDiffDen()
+generators[128] = () => pick(makeCmpSameDen, makeCmpSameNum, makeCmpDiffDen)
+generators[129] = () => makeCmpMixed()
+generators[130] = () => pick(makeFracIdent, makeImp2Mix, makeMix2Imp,
+                             makeCmpSameDen, makeCmpSameNum, makeCmpDiffDen, makeCmpMixed)
+
 // 每關開頭的「暖身簡單題」——先讓孩子連續答對、建立信心，再進入正常難度
 const WARMUP_COUNT = 2
 
 // 依本關運算類型，產生一題超簡單的同類暖身題（數字小、不進位／不退位）
 function makeWarmup(operator) {
   switch (operator) {
+    case 'frac': return rand(0, 1)                            // 分數關：小分母的辨識或同分母比較
+      ? makeFracIdent()
+      : makeCmp({ num: rand(1, 4), den: 4 }, { num: rand(1, 4), den: 4 }, '分母一樣時，分子大的比較大')
     case '×': return makeMul(rand(1, 5), rand(1, 5))
     case '÷': return makeDiv(rand(1, 5), rand(2, 3))          // 例：12 ÷ 3
     case '-': { const a = rand(5, 9); return makeSub(a, rand(1, a - 1)) } // 個位不退位
@@ -310,7 +412,8 @@ export function generateStageQuestions(stageId) {
   const seen = new Set()
 
   // 先放暖身題：偵測本關運算類型，給幾題超簡單的同類題暖身
-  const warmupOp = gen().operator
+  const probe = gen()
+  const warmupOp = probe.kind === 'frac' ? 'frac' : probe.operator
   let warmAttempts = 0
   while (questions.length < WARMUP_COUNT && warmAttempts < 50) {
     const q = makeWarmup(warmupOp)
@@ -434,3 +537,15 @@ STAGE_NAMES[117] = '四位數加+'
 STAGE_NAMES[118] = '四位數減'
 STAGE_NAMES[119] = '四位數減+'
 STAGE_NAMES[120] = '🏆 大數加減王'
+
+// 分數（真／假／帶分數的辨識、換算與比較）
+STAGE_NAMES[121] = '認識三種分數'
+STAGE_NAMES[122] = '假分數變帶分數'
+STAGE_NAMES[123] = '帶分數變假分數'
+STAGE_NAMES[124] = '換算綜合'
+STAGE_NAMES[125] = '同分母比大小'
+STAGE_NAMES[126] = '同分子比大小'
+STAGE_NAMES[127] = '通分比大小'
+STAGE_NAMES[128] = '比大小綜合'
+STAGE_NAMES[129] = '帶分數比大小'
+STAGE_NAMES[130] = '🏆 分數大挑戰'

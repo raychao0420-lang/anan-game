@@ -54,6 +54,7 @@ const getTimeLimit = (id) => {
   if (id >= 106 && id <= 110) return 60             // 一位數×三位數：一分鐘
   if (id >= 111 && id <= 115) return 45             // 三位數÷一位數
   if (id >= 116 && id <= 120) return 45             // 四位數加減
+  if (id >= 121 && id <= 130) return 45             // 分數：要換算或通分，給多一點時間
   if (id >= 101 && id <= 105) return 30             // 一位數×兩位數
   if (id >= 11 && id <= 20) return 30               // 3位數
   if (id <= 10 || (id >= 41 && id <= 55)) return 35 // 2位數
@@ -75,6 +76,47 @@ function VerticalQuestion({ q }) {
       <div><span className="vq-op">{operator}</span>{sp.repeat(w - 1 - s2.length)}{s2}</div>
       <div className="vq-line" />
       <div className="vq-ans">{sp.repeat(w - 1)}？</div>
+    </div>
+  )
+}
+
+// ── 分數題：分子分母直式呈現，答案一律是單一數字（沿用數字鍵盤）──────────────
+function Frac({ whole, num, den }) {
+  return (
+    <span className="frac-wrap">
+      {whole ? <span className="frac-whole">{whole}</span> : null}
+      <span className="frac">
+        <span className="frac-num">{num}</span>
+        <span className="frac-den">{den}</span>
+      </span>
+    </span>
+  )
+}
+
+function FractionQuestion({ q }) {
+  const ask = {
+    ident:   '這是什麼分數？',
+    imp2mix: q.ask === 'whole' ? '化成帶分數，整數部分是多少？' : '化成帶分數，分子是多少？',
+    mix2imp: '化成假分數，分子是多少？',
+    cmp:     '哪一個比較大？',
+  }[q.mode]
+  const choices = q.mode === 'ident' ? '1 真分數　2 假分數　3 帶分數'
+                : q.mode === 'cmp'   ? '1 = ① 大　2 = ② 大　3 = 一樣大' : null
+
+  return (
+    <div className="fq">
+      <div className="fq-tip">💡 {q.tip}</div>
+      <div className="fq-body">
+        {q.mode === 'cmp' ? (
+          <>
+            <span className="fq-tag">①</span><Frac {...q.left} />
+            <span className="fq-vs">和</span>
+            <span className="fq-tag">②</span><Frac {...q.right} />
+          </>
+        ) : <Frac whole={q.whole} num={q.num} den={q.den} />}
+      </div>
+      <div className="fq-ask">{ask}</div>
+      {choices && <div className="fq-choices">{choices}</div>}
     </div>
   )
 }
@@ -430,7 +472,9 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
           exit={{ scale: 0.85, opacity: 0 }}
           transition={{ duration: 0.12 }}
         >
-          <VerticalQuestion q={currentQ} />
+          {currentQ.kind === 'frac'
+            ? <FractionQuestion q={currentQ} />
+            : <VerticalQuestion q={currentQ} />}
         </motion.div>
       </AnimatePresence>
 
