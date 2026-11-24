@@ -55,6 +55,7 @@ const getTimeLimit = (id) => {
   if (id >= 111 && id <= 115) return 45             // 三位數÷一位數
   if (id >= 116 && id <= 120) return 45             // 四位數加減
   if (id >= 121 && id <= 130) return 45             // 分數：要換算或通分，給多一點時間
+  if (id >= 131 && id <= 135) return 40             // 估商：兩三位數除法，練習估第一位商數
   if (id >= 101 && id <= 105) return 30             // 一位數×兩位數
   if (id >= 11 && id <= 20) return 30               // 3位數
   if (id <= 10 || (id >= 41 && id <= 55)) return 35 // 2位數
@@ -121,10 +122,40 @@ function FractionQuestion({ q }) {
   )
 }
 
+// ── 估商題：練習除數捨入＋快速估計商的第一位數字 ──────────────────────────
+function EstimateQuestion({ q }) {
+  const isRound = q.mode === 'round10' || q.mode === 'round100'
+  return (
+    <div className="fq">
+      <div className="fq-tip">💡 {q.tip}</div>
+      {isRound ? (
+        <>
+          <div className="fq-body"><span className="estgo-num">{q.value}</span></div>
+          <div className="fq-ask">捨入到最接近的{q.mode === 'round10' ? '整十' : '整百'}數是多少？</div>
+        </>
+      ) : (
+        <>
+          <div className="fq-body">
+            <span className="estgo-num">{q.dividend}</span>
+            <span className="vq-op">÷</span>
+            <span className="estgo-num">{q.divisor}</span>
+          </div>
+          <div className="fq-ask">商的第一位數字，你估計是多少？</div>
+        </>
+      )}
+    </div>
+  )
+}
+
 // ── Scratch pad (doodle canvas) ────────────────────────────────────────────────
 // 放大成全螢幕時，題目卡被蓋住了，所以在標題列補一行題目
 const fracText = (f) => `${f.whole ? f.whole + '又' : ''}${f.num}/${f.den}`
 function shortLabel(q) {
+  if (q.kind === 'estgo') {
+    return q.mode === 'round10' || q.mode === 'round100'
+      ? `${q.value} 捨入＝？`
+      : `${q.dividend} ÷ ${q.divisor} 估商`
+  }
   if (q.kind !== 'frac') return `${q.num1} ${q.operator} ${q.num2} = ?`
   if (q.mode === 'cmp')     return `${fracText(q.left)} 和 ${fracText(q.right)} 比大小`
   if (q.mode === 'imp2mix') return `${fracText(q)} → 帶分數`
@@ -497,6 +528,8 @@ export default function GameScreen({ stageId, onFinish, onExit }) {
         >
           {currentQ.kind === 'frac'
             ? <FractionQuestion q={currentQ} />
+            : currentQ.kind === 'estgo'
+            ? <EstimateQuestion q={currentQ} />
             : <VerticalQuestion q={currentQ} />}
         </motion.div>
       </AnimatePresence>

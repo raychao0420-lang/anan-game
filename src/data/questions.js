@@ -291,6 +291,55 @@ generators[120] = () => {                                  // 大數加減綜合
   return ops[rand(0, 3)]()
 }
 
+// ── 除法估商：除數是兩、三位數時怎麼估第一位商數（131-135）·安安卡關特訓 ─────
+// 答案一律是「單一整數」，沿用數字鍵盤。view 資料各 mode 不同：
+//   round10/round100：{ value }，練習把除數捨入成整十／整百數
+//   lead2/lead3：{ dividend, divisor }，練習估計商的最高位數字（以真正的商構造，保證答案唯一且正確）
+function estQ(mode, view, answer, tip) {
+  return { kind: 'estgo', mode, ...view, answer, display: `estgo:${mode}:${JSON.stringify(view)}`, tip }
+}
+
+// 131：除數怎麼捨入－兩位數捨入到整十
+generators[131] = () => {
+  const b10 = rand(2, 9) * 10                    // 20~90
+  const b = b10 + rand(-5, 4)                    // 落在會捨入回 b10 的範圍內
+  return estQ('round10', { value: b }, Math.round(b / 10) * 10,
+    '把除數看成最接近的整十數：個位數字 5 以上進一位、4 以下直接去掉')
+}
+
+// 132：友善整十數相除－練習「捨入後的數」要怎麼快速除
+generators[132] = () => makeDiv(rand(2, 9), rand(2, 9) * 10)
+
+// 133：估商實戰－三位數÷兩位數，估計商的最高位數字
+generators[133] = () => {
+  const b = rand(11, 99)
+  const qMin = Math.max(1, Math.ceil(100 / b))
+  const qMax = Math.max(qMin, Math.floor(999 / b))
+  const Q = rand(qMin, qMax)
+  let dividend = Q * b + rand(0, b - 1)
+  if (dividend > 999) dividend = Q * b
+  return estQ('lead2', { dividend, divisor: b }, parseInt(String(Q)[0], 10),
+    '除數先捨入成整十數，被除數前面幾位也看成整的，兩個數相除就是估計的第一位商數')
+}
+
+// 134：估商挑戰－四位數÷三位數，估計商的最高位數字
+generators[134] = () => {
+  const b = rand(101, 999)
+  const qMin = Math.max(1, Math.ceil(1000 / b))
+  const qMax = Math.max(qMin, Math.floor(9999 / b))
+  const Q = rand(qMin, qMax)
+  let dividend = Q * b + rand(0, b - 1)
+  if (dividend > 9999) dividend = Q * b
+  return estQ('lead3', { dividend, divisor: b }, parseInt(String(Q)[0], 10),
+    '除數先捨入成整百數，被除數前面幾位也看成整的，兩個數相除就是估計的第一位商數')
+}
+
+// 135：估商綜合王
+generators[135] = () => {
+  const ops = [generators[131], generators[132], generators[133], generators[134]]
+  return ops[rand(0, 3)]()
+}
+
 // ── 分數：真分數／假分數／帶分數的辨識、換算與比較（121-130）·翰林四上 ─────
 // 全部即時亂數生成（分母 2~12、分子隨機、題型隨機），不是固定題庫，背不起來。
 // 答案一律是「單一整數」，才能沿用現有的數字鍵盤作答。
@@ -399,6 +448,7 @@ function makeWarmup(operator) {
     case 'frac': return rand(0, 1)                            // 分數關：小分母的辨識或同分母比較
       ? makeFracIdent()
       : makeCmp({ num: rand(1, 4), den: 4 }, { num: rand(1, 4), den: 4 }, '分母一樣時，分子大的比較大')
+    case 'estgo': return makeDiv(rand(2, 5), 10)               // 估商關暖身：簡單整十數除法
     case '×': return makeMul(rand(1, 5), rand(1, 5))
     case '÷': return makeDiv(rand(1, 5), rand(2, 3))          // 例：12 ÷ 3
     case '-': { const a = rand(5, 9); return makeSub(a, rand(1, a - 1)) } // 個位不退位
@@ -413,7 +463,7 @@ export function generateStageQuestions(stageId) {
 
   // 先放暖身題：偵測本關運算類型，給幾題超簡單的同類題暖身
   const probe = gen()
-  const warmupOp = probe.kind === 'frac' ? 'frac' : probe.operator
+  const warmupOp = probe.kind === 'frac' ? 'frac' : probe.kind === 'estgo' ? 'estgo' : probe.operator
   let warmAttempts = 0
   while (questions.length < WARMUP_COUNT && warmAttempts < 50) {
     const q = makeWarmup(warmupOp)
@@ -537,6 +587,13 @@ STAGE_NAMES[117] = '四位數加+'
 STAGE_NAMES[118] = '四位數減'
 STAGE_NAMES[119] = '四位數減+'
 STAGE_NAMES[120] = '🏆 大數加減王'
+
+// 除法估商（除數是兩、三位數時怎麼估第一位商數）
+STAGE_NAMES[131] = '除數怎麼捨入'
+STAGE_NAMES[132] = '友善數字除法'
+STAGE_NAMES[133] = '估商：兩位數除法'
+STAGE_NAMES[134] = '估商：三位數除法'
+STAGE_NAMES[135] = '🏆 估商特訓王'
 
 // 分數（真／假／帶分數的辨識、換算與比較）
 STAGE_NAMES[121] = '認識三種分數'
